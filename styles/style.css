@@ -172,37 +172,30 @@ input:checked + .slider:before {
     transition: 0.3s;
 }
 
-/* Герой секция */
 .hero {
-    padding: 120px 0 80px;
-    min-height: 100vh;
+    position: relative;
+    width: 100%;
+    min-height: 100vh; /* на весь экран */
     display: flex;
     align-items: center;
+    overflow: hidden;
+    color: var(--text-color);
+    background: 
+        linear-gradient(to right, rgba(0, 0, 0, 1) 35%, rgba(0, 0, 0, 0.6) 55%, rgba(0, 0, 0, 0) 75%),
+        url('d531b492-2abb-4ae4-9488-f8b7c0fb1ac2.png') center right / cover no-repeat;
 }
 
 .hero .container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    align-items: center;
+    position: relative;
+    z-index: 2;
 }
 
-.hero-title {
-    font-size: 3rem;
-    margin-bottom: 1.5rem;
-    line-height: 1.2;
+.hero-content {
+    max-width: 600px;
 }
 
-.hero-description {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    color: var(--secondary-color);
-}
-
-.hero-image img {
-    width: 100%;
-    border-radius: 20px;
-    box-shadow: var(--shadow);
+.hero-image {
+    display: none; /* скрываем <div class="hero-image">, теперь картинка — фон */
 }
 
 /* Кнопки */
