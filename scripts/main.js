@@ -590,7 +590,8 @@ function generateSongTitle() {
         "Танцующие огни",
         "Мечты о цифровом завтра",
         "Ритмы нейросети",
-        "Голос из будущего"
+        "Голос из будущего",
+        "Свое название"
     ];
     return titles[Math.floor(Math.random() * titles.length)];
 }
@@ -613,7 +614,8 @@ function generateChannelName() {
         "Мир инноваций", 
         "Искусство технологий",
         "Путь к знанию",
-        "Вдохновение каждый день"
+        "Вдохновение каждый день",
+        "Название канала"
     ];
     return names[Math.floor(Math.random() * names.length)];
 }
