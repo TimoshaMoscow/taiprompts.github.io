@@ -172,32 +172,37 @@ input:checked + .slider:before {
     transition: 0.3s;
 }
 
+/* Герой секция */
 .hero {
-    position: relative;
-    width: 100%;
-    min-height: 100vh; /* на всю высоту экрана */
+    padding: 120px 0 80px;
+    min-height: 100vh;
     display: flex;
     align-items: center;
-    overflow: hidden;
-    color: var(--text-color);
-
-    /* Фон: плавный переход + картинка */
-    background: 
-        linear-gradient(to right, rgba(0, 0, 0, 1) 35%, rgba(0, 0, 0, 0.6) 55%, rgba(0, 0, 0, 0) 75%),
-        url('images/hero-bg.jpg') center right / cover no-repeat;
 }
 
 .hero .container {
-    position: relative;
-    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
 }
 
-.hero-content {
-    max-width: 600px;
+.hero-title {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
 }
 
-.hero-image {
-    display: none; /* старый div с изображением теперь не нужен */
+.hero-description {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: var(--secondary-color);
+}
+
+.hero-image img {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
 }
 
 /* Кнопки */
