@@ -736,6 +736,16 @@ function checkScroll() {
     });
 }
 
+document.addEventListener('mousemove', (e) => {
+  document.querySelectorAll('.floating-text').forEach(el => {
+    const speed = el.getAttribute('data-speed');
+    const x = (window.innerWidth / 2 - e.pageX) * speed;
+    const y = (window.innerHeight / 2 - e.pageY) * speed;
+    el.style.transform = `translate(${x}px, ${y}px)`;
+  });
+});
+
+
 window.addEventListener('scroll', checkScroll);
 window.addEventListener('load', checkScroll);
 
