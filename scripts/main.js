@@ -106,7 +106,7 @@ const promptTemplates = {
         }
     },
     telegram: {
-        template: "Создай Telegram бота на {language} для '{idea}'. {functionality} Включи: описание функций, команды, клавиатуры, обработку сообщений и deployment инструкции.",
+        template: "Создай Telegram бота на {language} для '{idea}'. {functionality} Включи: описание функций, команды, клавиатуры, обработку сообщений и deployment инструкции. Добавить ИИ в бота: {ai}",
         params: {
             language: {
                 type: 'select',
@@ -117,18 +117,24 @@ const promptTemplates = {
             functionality: {
                 type: 'multiselect',
                 label: 'Функциональность',
-                options: ['Админ-панель', 'Платежи', 'База данных', 'API интеграции', 'Модерация', 'Игры', 'Уведомления'],
+                options: ['Админ-панель', 'Платежи', 'База данных', 'API интеграции', 'Модерация', 'Игры', 'Уведомления', 'Работа с файлами', 'Inline клавиатуры'],
+                default: []
+            },
+            ai: {
+                type: 'select',
+                label: 'Добавить ИИ в бота?',
+                options: ['Да', 'Нет'],
                 default: []
             }
         }
     },
     websites: {
-        template: "Разработай {type} веб-сайт на {stack} для '{idea}'. {features} Включи: структуру, дизайн, функционал, технологии и оптимизацию.",
+        template: "Разработай веб-сайт типа {type} на {stack} по описанию '{idea}'. Включи: структуру сайта, {features}. Основная палитра: {color}. Стиль сайта: {style}",
         params: {
             type: {
                 type: 'select',
                 label: 'Тип сайта',
-                options: ['Лендинг', 'Интернет-магазин', 'Блог', 'Портфолио', 'Социальную сеть', 'Панель управления'],
+                options: ['Лендинг', 'Интернет-магазин', 'Блог', 'Портфолио', 'Социальную сеть', 'Панель управления', 'Многостраничное приложение'],
                 default: 'Лендинг'
             },
             stack: {
@@ -136,6 +142,18 @@ const promptTemplates = {
                 label: 'Технологический стек',
                 options: ['HTML/CSS/JS', 'React', 'Vue.js', 'Angular', 'Node.js', 'PHP', 'Python/Django', 'Ruby on Rails'],
                 default: 'HTML/CSS/JS'
+            },
+            style: {
+                type: 'select',
+                label: 'Стиль сайта',
+                options: ['Минимализм', 'Матовое стекло', 'Брутализм', 'Ретро', 'Киперпанк', 'PHP'],
+                default: 'Матовое стекло'
+            },
+            color: {
+                type: 'select',
+                label: 'Основной цвет',
+                options: ['Красный', 'Оранжевый', 'Голубой', 'Жёлтый', 'Зелёный', 'Чёрный', 'Белый', 'Киберпанк'],
+                default: 'Красный'
             },
             features: {
                 type: 'multiselect',
