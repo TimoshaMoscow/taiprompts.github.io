@@ -1000,6 +1000,28 @@ section {
     font-size: 0.8rem;
 }
 
+.floating-text {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  pointer-events: none;
+  user-select: none;
+  animation: float 10s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(25px, -20px); }
+  100% { transform: translate(0, 0); }
+}
+
+.floating-text:nth-child(1) { animation-duration: 12s; }
+.floating-text:nth-child(2) { animation-duration: 9s; animation-delay: 2s; }
+.floating-text:nth-child(3) { animation-duration: 11s; animation-delay: 4s; }
+
+
 /* Адаптивность для новых элементов */
 @media (max-width: 768px) {
     .tags-container {
