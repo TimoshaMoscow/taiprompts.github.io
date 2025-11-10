@@ -54,7 +54,7 @@ window.addEventListener('scroll', function() {
 // Шаблоны промптов с техническими параметрами
 const promptTemplates = {
     recipes: {
-        template: "Создай подробный рецепт {cuisine} блюда под названием '{idea}'. {dietary} {complexity} Включи ингредиенты, пошаговое приготовление, время готовки и nutritional информацию.",
+        template: "Создай подробный рецепт {cuisine} кухни, блюда с описанием: '{idea}'. Ограничения: {dietary}, Сложность: {complexity}. Включи ингредиенты, пошаговое приготовление, время готовки и полезную информацию, например КБЖУ.",
         params: {
             cuisine: {
                 type: 'select',
@@ -77,7 +77,7 @@ const promptTemplates = {
         }
     },
     minecraft: {
-        template: "Разработай {type} для Minecraft {version} под названием '{idea}'. {features} Совместимость: {compatibility}. Детально опиши функционал, crafting рецепты и механики.",
+        template: "Разработай {type} для Minecraft {version} с описанием: '{idea}'. Особенности: {features} Совместимость: {compatibility}. Детально опиши функционал, рецепты и механики. Также напиши структуру проекта и гайд по сборке проекта в Intellij IDEA если требуется.",
         params: {
             type: {
                 type: 'select',
@@ -88,7 +88,7 @@ const promptTemplates = {
             version: {
                 type: 'select',
                 label: 'Версия Minecraft',
-                options: ['1.20.x', '1.19.x', '1.18.x', '1.17.x', '1.16.x', 'Любая'],
+                options: ['1.20.x', '1.19.x', '1.18.x', '1.17.x', '1.16.x', 'Любая', '1.12x', '1.8x'],
                 default: '1.20.x'
             },
             compatibility: {
@@ -106,7 +106,7 @@ const promptTemplates = {
         }
     },
     telegram: {
-        template: "Создай Telegram бота на {language} для '{idea}'. {functionality} Включи: описание функций, команды, клавиатуры, обработку сообщений и deployment инструкции. Добавить ИИ в бота: {ai}",
+        template: "Создай Telegram бота на {language} с функционалом '{idea}'. Особеннности: {functionality}. Включи: описание функций, команды, клавиатуры, обработку сообщений и deployment инструкции. Добавить ИИ в бота: {ai}",
         params: {
             language: {
                 type: 'select',
@@ -116,7 +116,7 @@ const promptTemplates = {
             },
             functionality: {
                 type: 'multiselect',
-                label: 'Функциональность',
+                label: 'Особеннности',
                 options: ['Админ-панель', 'Платежи', 'База данных', 'API интеграции', 'Модерация', 'Игры', 'Уведомления', 'Работа с файлами', 'Inline клавиатуры'],
                 default: 'Модерация'
             },
@@ -164,7 +164,7 @@ const promptTemplates = {
         }
     },
     images: {
-        template: "Сгенерируй {style} изображение на тему '{idea}'. {aspect_ratio} {quality} С детальным описанием: композиция, цвета, освещение, настроение и детали.",
+        template: "Сгенерируй {style} изображение по описанию: '{idea}'. {aspect_ratio} {quality}. С детальным описанием: композиция, цвета, освещение, настроение и детали.",
         params: {
             style: {
                 type: 'select',
@@ -187,7 +187,7 @@ const promptTemplates = {
         }
     },
     stickers: {
-        template: "Создай {style} стикерпак для {platform} на тему '{idea}'. {emotions} Включи разнообразные эмоции, действия и ситуации.",
+        template: "Создай {style} стикерпак для {platform} с описанием: '{idea}'. Нужные эмоции: {emotions}. Включи разнообразные эмоции, действия и ситуации. Сделай всё на прозрачном фоне, чтобы можно было удобно вставить в любой мессенджер.",
         params: {
             style: {
                 type: 'select',
@@ -210,7 +210,7 @@ const promptTemplates = {
         }
     },
     "3d": {
-        template: "Создай {style} 3D модель {type} на тему '{idea}'. {software} {polygons} Детально опиши: геометрию, материалы, текстуры, освещение и рендеринг.",
+        template: "Создай {style} 3D модель {type} на тему '{idea}'. ПО: {software} Полигональность: {polygons}. Детально опиши: геометрию, материалы, текстуры, освещение и рендеринг.",
         params: {
             style: {
                 type: 'select',
@@ -239,7 +239,7 @@ const promptTemplates = {
         }
     },
     toys: {
-        template: "Разработай концепцию {type} игрушки под названием '{idea}'. {materials} {age_group} Вклюди описание: внешний вид, функционал, материалы и educational ценность.",
+        template: "Разработай концепцию {type} игрушки для {age_group} с описанием: '{idea}'. Материалы: {materials}. Включи описание: внешний вид, функционал, материалы и образовательную ценность.",
         params: {
             type: {
                 type: 'select',
@@ -262,7 +262,7 @@ const promptTemplates = {
         }
     },
     ai: {
-        template: "Создай продвинутый промпт для ИИ на тему '{idea}'. {ai_type} {complexity} Включи: контекст, ограничения, формат ответа и примеры.",
+        template: "Создай продвинутый промпт для ИИ на тему '{idea}'. Тип ИИ: {ai_type},  Сложность: {complexity}. Включи: контекст, ограничения, формат ответа и примеры.",
         params: {
             ai_type: {
                 type: 'select',
