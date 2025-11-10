@@ -279,7 +279,7 @@ const promptTemplates = {
         }
     },
     characterai: {
-        template: "Создай персонажа для Character AI под названием '{idea}'. \n\nИмя: {name}\nСлоган: {slogan}\nПриветствие: {greeting}\nОписание: {description}\nОпределение: {definition}\n\nДополнительные характеристики: {personality} {appearance}",
+        template: "Создай персонажа для Character AI с описанием '{idea}'. Характеристики: {personality} {appearance}, Тип имени: {name}, Тон общения: {tone}.",
         params: {
             name: {
                 type: 'select',
@@ -308,7 +308,7 @@ const promptTemplates = {
         }
     },
     suno: {
-        template: "Создай текст песни для Suno AI на тему '{idea}'. \n\nНазвание: {title}\nЖанр: {genre}\nСтиль: {style}\n\nТекст песни:\n{structure}\n\nОсобенности: {tempo} {instruments}",
+        template: "Создай текст песни для Suno AI по описанию: '{idea}'. Жанр: {genre}, Стиль: {style}, Структура: {structure}, Особенности: {tempo} темп, {instruments}.",
         params: {
             genre: {
                 type: 'select',
@@ -343,7 +343,7 @@ const promptTemplates = {
         }
     },
     youtube: {
-        template: "Создай контент для YouTube канала на тему '{idea}'. \n\nНазвание канала: {channel_name}\nОписание: {description}\nТеги: {tags}\n\nФормат контента: {content_type}\nЦелевая аудитория: {audience}\nЧастота выпуска: {frequency}\n\nПревью: {thumbnail_style}",
+        template: "Создай контент для YouTube канала на тему '{idea}'. Формат контента: {content_type}, Целевая аудитория: {audience}, Частота выпуска: {frequency}, Превью: {thumbnail_style}",
         params: {
             content_type: {
                 type: 'select',
