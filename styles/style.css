@@ -175,14 +175,16 @@ input:checked + .slider:before {
 .hero {
     position: relative;
     width: 100%;
-    min-height: 100vh; /* на весь экран */
+    min-height: 100vh; /* на всю высоту экрана */
     display: flex;
     align-items: center;
     overflow: hidden;
     color: var(--text-color);
+
+    /* Фон: плавный переход + картинка */
     background: 
         linear-gradient(to right, rgba(0, 0, 0, 1) 35%, rgba(0, 0, 0, 0.6) 55%, rgba(0, 0, 0, 0) 75%),
-        url('d531b492-2abb-4ae4-9488-f8b7c0fb1ac2.png') center right / cover no-repeat;
+        url('images/hero-bg.jpg') center right / cover no-repeat;
 }
 
 .hero .container {
@@ -195,7 +197,7 @@ input:checked + .slider:before {
 }
 
 .hero-image {
-    display: none; /* скрываем <div class="hero-image">, теперь картинка — фон */
+    display: none; /* старый div с изображением теперь не нужен */
 }
 
 /* Кнопки */
