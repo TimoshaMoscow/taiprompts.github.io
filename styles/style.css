@@ -174,17 +174,60 @@ input:checked + .slider:before {
 
 /* Герой секция */
 .hero {
-    padding: 120px 0 80px;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
+    position: relative;
+    overflow: hidden; /* чтобы плавающие элементы не выходили за пределы секции */
 }
 
-.hero .container {
+.hero-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
     align-items: center;
+    position: relative;
+}
+
+.floating-text {
+    z-index: 0; /* чтобы надписи были позади контента */
+}
+
+/* Анимация появления контента */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 1s ease forwards;
+}
+
+.delay-1 { animation-delay: 0.3s; }
+.delay-2 { animation-delay: 0.6s; }
+.delay-3 { animation-delay: 0.9s; }
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 992px) {
+    .hero-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .floating-text {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-description {
+        font-size: 1rem;
+    }
 }
 
 .hero-title {
@@ -999,28 +1042,6 @@ section {
     border-radius: 12px;
     font-size: 0.8rem;
 }
-
-.floating-text {
-  position: absolute;
-  color: rgba(255, 255, 255, 0.2);
-  font-size: 22px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  pointer-events: none;
-  user-select: none;
-  animation: float 10s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%   { transform: translate(0, 0); }
-  50%  { transform: translate(25px, -20px); }
-  100% { transform: translate(0, 0); }
-}
-
-.floating-text:nth-child(1) { animation-duration: 12s; }
-.floating-text:nth-child(2) { animation-duration: 9s; animation-delay: 2s; }
-.floating-text:nth-child(3) { animation-duration: 11s; animation-delay: 4s; }
-
 
 /* Адаптивность для новых элементов */
 @media (max-width: 768px) {
