@@ -100,8 +100,8 @@ const promptTemplates = {
             features: {
                 type: 'multiselect',
                 label: 'Особенности',
-                options: ['Новые блоки', 'Новые мобы', 'Генерация структур', 'Магическая система', 'Технологии', 'Квесты', 'Боссы'],
-                default: []
+                options: ['Новые блоки', 'Новые мобы', 'Генерация структур', 'Магическая система', 'Технологии', 'Квесты', 'Боссы', 'GUI', 'Оптимизация', 'Клиентские фишки'],
+                default: 'Оптимизация'
             }
         }
     },
@@ -118,13 +118,13 @@ const promptTemplates = {
                 type: 'multiselect',
                 label: 'Функциональность',
                 options: ['Админ-панель', 'Платежи', 'База данных', 'API интеграции', 'Модерация', 'Игры', 'Уведомления', 'Работа с файлами', 'Inline клавиатуры'],
-                default: []
+                default: 'Модерация'
             },
             ai: {
                 type: 'select',
                 label: 'Добавить ИИ в бота?',
                 options: ['Да', 'Нет'],
-                default: []
+                default: 'Нет' 
             }
         }
     },
@@ -159,7 +159,7 @@ const promptTemplates = {
                 type: 'multiselect',
                 label: 'Функции',
                 options: ['Адаптивный дизайн', 'PWA', 'SEO оптимизация', 'Корзина покупок', 'Блог', 'Комментарии', 'Поиск', 'Код в одном файле'],
-                default: ['Адаптивный дизайн']
+                default: 'Адаптивный дизайн'
             }
         }
     },
@@ -205,7 +205,7 @@ const promptTemplates = {
                 type: 'multiselect',
                 label: 'Эмоции и действия',
                 options: ['Радость', 'Грусть', 'Удивление', 'Смех', 'Любовь', 'Приветствие', 'Прощание', 'Одобрение'],
-                default: ['Радость', 'Приветствие']
+                default: 'Приветствие'
             }
         }
     },
@@ -257,7 +257,7 @@ const promptTemplates = {
                 type: 'select',
                 label: 'Возрастная группа',
                 options: ['0-1 год', '1-3 года', '3-6 лет', '6-12 лет', '12+ лет', 'взрослые'],
-                default: '3-6 лет'
+                default: '6-12 лет'
             }
         }
     },
@@ -267,7 +267,7 @@ const promptTemplates = {
             ai_type: {
                 type: 'select',
                 label: 'Тип ИИ',
-                options: ['ChatGPT', 'Midjourney', 'DALL-E', 'Stable Diffusion', 'Claude', 'Gemini', 'Любой'],
+                options: ['ChatGPT', 'Midjourney', 'DALL-E', 'Stable Diffusion', 'Claude', 'Gemini', 'DeepSeek', 'Любой'],
                 default: 'ChatGPT'
             },
             complexity: {
@@ -291,13 +291,13 @@ const promptTemplates = {
                 type: 'multiselect',
                 label: 'Черты характера',
                 options: ['Дружелюбный', 'Застенчивый', 'Энергичный', 'Серьезный', 'Юмористический', 'Загадочный', 'Мудрый', 'Наивный'],
-                default: ['Дружелюбный']
+                default: 'Дружелюбный'
             },
             appearance: {
                 type: 'multiselect',
                 label: 'Внешность',
                 options: ['Человек', 'Животное', 'Робот', 'Мифическое существо', 'Инопланетянин', 'Аниме персонаж', 'Историческая личность'],
-                default: ['Человек']
+                default: 'Человек'
             },
             tone: {
                 type: 'select',
@@ -478,7 +478,7 @@ promptForm.addEventListener('submit', function(e) {
     let tonePrefix = '';
     switch(tone) {
         case 'professional': tonePrefix = 'Используй профессиональный технический язык. '; break;
-        case 'friendly': tonePrefix = 'Будь дружелюбным и welcoming. '; break;
+        case 'friendly': tonePrefix = 'Будь дружелюбным и приветливым. '; break;
         case 'creative': tonePrefix = 'Прояви креативность и оригинальность. '; break;
         case 'technical': tonePrefix = 'Сфокусируйся на технических деталях. '; break;
         case 'detailed': tonePrefix = 'Дай максимально детализированный ответ. '; break;
