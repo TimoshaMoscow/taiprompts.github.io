@@ -267,7 +267,7 @@ const promptTemplates = {
             ai_type: {
                 type: 'select',
                 label: 'Тип ИИ',
-                options: ['ChatGPT', 'Midjourney', 'DALL-E', 'Stable Diffusion', 'Claude', 'Gemini', 'DeepSeek', 'Dylan @Dylan_TheOmniscient_bot', 'Любой'],
+                options: ['ChatGPT', 'Midjourney', 'DALL-E', 'Stable Diffusion', 'Claude', 'Gemini', 'DeepSeek', 'Dylan', 'Любой'],
                 default: 'ChatGPT'
             },
             complexity: {
