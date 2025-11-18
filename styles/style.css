@@ -1010,3 +1010,136 @@ section {
         font-size: 0.9rem;
     }
 }
+
+/* Секция скачивания */
+.download {
+    background: var(--light-color);
+    padding: 80px 0;
+}
+
+.download-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.download-info h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+}
+
+.download-info > p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    color: var(--secondary-color);
+}
+
+.features-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin: 2rem 0;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: var(--card-bg);
+    border-radius: 10px;
+    border: 1px solid var(--card-border);
+}
+
+.feature-icon {
+    font-size: 1.2rem;
+}
+
+.system-requirements {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 15px;
+    border: 1px solid var(--card-border);
+}
+
+.system-requirements h4 {
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+}
+
+.system-requirements ul {
+    list-style: none;
+}
+
+.system-requirements li {
+    margin-bottom: 0.5rem;
+    padding-left: 0;
+}
+
+.download-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+    border: 2px solid var(--accent-color);
+    position: sticky;
+    top: 20px;
+}
+
+.download-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.download-card h4 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.download-card > p {
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
+}
+
+.download-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.download-note {
+    font-size: 0.8rem;
+    color: var(--secondary-color);
+}
+
+/* Адаптивность для секции скачивания */
+@media (max-width: 992px) {
+    .download-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .features-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .download-card {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .download-info h3 {
+        font-size: 1.5rem;
+    }
+    
+    .download-card {
+        padding: 1.5rem;
+    }
+}
