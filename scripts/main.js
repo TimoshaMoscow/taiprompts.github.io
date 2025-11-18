@@ -342,6 +342,43 @@ const promptTemplates = {
             }
         }
     },
+
+    setup: {
+        template: "Напиши полный код и структуру проекта для {type} на {lang} для {oc} с функционалом {hang}, и инструкцией по сборке для {setupper}. Подробное описание идеи: '{idea}'",
+        params: {
+            type: {
+                type: 'select',
+                label: 'Тип приложения',
+                options: ['Игра', 'Мессенджер', 'Утилита', 'Приложение для видеоконференций', 'Стриминговый сервис', 'Видеохостинг', 'Конструктор сайтов/приложений', 'Цифровая визитка', 'Учебное приложение', 'Другое'],
+                default: 'Игра'
+            },
+            lang: {
+                type: 'select',
+                label: 'Язык программирования',
+                options: ['C#', 'C++', 'Python', 'Java', 'JavaScript', 'TypeScript', 'Rust', 'Go', 'Dart', 'Swift', 'Kotlin', 'Objective-C', 'PHP', 'Ruby', 'Scala', 'Perl', 'Lua', 'Haskell', 'Elixir', 'Clojure', 'F#', 'VB.NET', 'Delphi', 'Assembly', 'SQL', 'R', 'MATLAB', 'Bash', 'PowerShell', 'Groovy', 'Julia', 'Fortran', 'COBOL', 'Lisp', 'Prolog', 'Ada', 'Scheme', 'Verilog', 'VHDL'],
+                default: 'Python'
+            },
+            hang: {
+                type: 'multiselect',
+                label: 'Особенности',
+                options: ['Смена темы', 'Сохранение чего-то в собственный формат файла (пример: program.taiprompts)', 'Автозагрузка', 'Горячие клавиши', 'Ассоциации файлов', 'Уведомления', 'Системные службы', 'Разрешения доступа', 'Иконка приложения', 'Экраны загрузки', 'Фоновые режимы', 'Меню', 'Хранилище данных'],
+                default: 'Умеренный'
+            },
+            setupper: {
+                type: 'select',
+                label: 'Установщики',
+                options: ['Inno Setup', 'WiX Toolset', 'NSIS', 'Advanced Installer', 'InstallShield', 'MSIX', 'DMG', 'PKG', 'Mac App Store', 'Homebrew Cask', 'APT', 'RPM', 'Pacman', 'Snap', 'Flatpak', 'AppImage', 'Make install', 'APK', 'AAB', 'Google Play', 'F-Droid', 'Side loading', 'TestFlight', 'Enterprise distribution', 'Ad-hoc'],
+                default: 'Inno Setup'
+            },
+            oc: {
+                type: 'select',
+                label: 'Система',
+                options: ['Windows', 'Linux', 'Android', 'IOS', 'MacOS', 'Другое'],
+                default: 'Windows'
+            }
+        }
+    },
+    
 school: {
     template: "Помоги с заданием по предмету {subj}, Тип задания: {task}, Учусь в {class}. Подробности по заданию: '{idea}'.",
     params: {
