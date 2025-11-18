@@ -613,39 +613,8 @@ lightbox.addEventListener('click', function(e) {
     }
 });
 
-// Слайдер отзывов
-const reviewSlider = document.querySelector('.reviews-slider');
-const prevButton = document.querySelector('.slider-prev');
-const nextButton = document.querySelector('.slider-next');
-const reviewSlides = document.querySelectorAll('.review-slide');
-
-let currentSlide = 0;
-
-function showSlide(index) {
-    if (index < 0) {
-        currentSlide = reviewSlides.length - 1;
-    } else if (index >= reviewSlides.length) {
-        currentSlide = 0;
-    } else {
-        currentSlide = index;
-    }
-    
-    reviewSlider.scrollTo({
-        left: reviewSlides[currentSlide].offsetLeft,
-        behavior: 'smooth'
-    });
-}
-
-prevButton.addEventListener('click', () => showSlide(currentSlide - 1));
-nextButton.addEventListener('click', () => showSlide(currentSlide + 1));
-
-// Автопрокрутка слайдера
-setInterval(() => {
-    showSlide(currentSlide + 1);
-}, 5000);
-
 // Анимация появления элементов при скролле
-const animatedElements = document.querySelectorAll('.card, .section-title, .type-card, .gallery-item, .review-card, .possibility-card');
+const animatedElements = document.querySelectorAll('.card, .section-title, .type-card, .gallery-item, .possibility-card');
 
 function checkScroll() {
     animatedElements.forEach(element => {
