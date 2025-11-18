@@ -553,24 +553,6 @@ promptForm.addEventListener('submit', function(e) {
         finalPromptText = finalPromptText.replace(`{${key}}`, value);
     }
     
-    // Специальная обработка для разных типов промптов
-    if (selectedType === 'characterai') {
-        finalPromptText = finalPromptText.replace('{name}', generateCharacterName(params.name))
-                                         .replace('{slogan}', generateSlogan())
-                                         .replace('{greeting}', generateGreeting(params.tone))
-                                         .replace('{description}', generateDescription())
-                                         .replace('{definition}', generateDefinition());
-    }
-    else if (selectedType === 'suno') {
-        finalPromptText = finalPromptText.replace('{title}', generateSongTitle())
-                                         .replace('{structure}', generateSongStructure(params.structure));
-    }
-    else if (selectedType === 'youtube') {
-        finalPromptText = finalPromptText.replace('{channel_name}', generateChannelName())
-                                         .replace('{tags}', generateYouTubeTags())
-                                         .replace('{description}', generateYouTubeDescription());
-    }
-    
     // Убираем пустые плейсхолдеры
     finalPromptText = finalPromptText.replace(/\{[^}]+\}/g, '');
     
@@ -599,95 +581,6 @@ copyButton.addEventListener('click', function() {
             alert('Не удалось скопировать текст');
         });
 });
-
-// Вспомогательные функции для генерации контента
-function generateCharacterName(nameType) {
-    const names = {
-        'Реалистичное': ['Алексей', 'Мария', 'Дмитрий', 'Екатерина', 'Иван', 'Анна'],
-        'Фэнтези': ['Эльринд', 'Морганa', 'Гендальф', 'Арвен', 'Леголас', 'Гальadриэль'],
-        'Научно-фантастическое': ['Нексус-7', 'Кибер-217', 'Астра-Пилот', 'Квантум', 'Нейрона'],
-        'Историческое': ['Александр', 'Елизавета', 'Петр', 'Екатерина', 'Иван Грозный'],
-        'Аниме': ['Сакура', 'Наруто', 'Гоку', 'Хината', 'Лелуш', 'Микаса'],
-        'Уникальное': ['Зориан', 'Ксилара', 'Нейрин', 'Талан', 'Эолия', 'Веридиан']
-    };
-    return names[nameType][Math.floor(Math.random() * names[nameType].length)];
-}
-
-function generateSlogan() {
-    const slogans = [
-        "Твой цифровой друг и советчик",
-        "Искусственный интеллект с человеческим touch",
-        "Говори со мной о чем угодно",
-        "Твой персонализированный AI компаньон",
-        "Открой мир возможностей через диалог"
-    ];
-    return slogans[Math.floor(Math.random() * slogans.length)];
-}
-
-function generateGreeting(tone) {
-    const greetings = {
-        'Формальный': ["Здравствуйте! Чем могу быть полезен?", "Добрый день. Рад вас видеть.", "Приветствую. Готов к общению."],
-        'Неформальный': ["Привет! Как дела?", "Йоу! Что нового?", "Хэй! Рад тебя видеть!"],
-        'Дружеский': ["Привет, дружище! Как ты?", "Здравствуй! Отлично выглядишь сегодня!", "Привет! Соскучился по тебе!"],
-        'Профессиональный': ["Добро пожаловать. Готов оказать профессиональную помощь.", "Здравствуйте. Чем могу assist вам сегодня?", "Приветствую. К вашим услугам."],
-        'Поэтический': ["Приветствую тебя, путник в мире цифровых снов...", "Здравствуй, о дитя технологий и мечты...", "Привет! Как прекрасен этот мир..."],
-        'Драматический': ["ТЫ... наконец-то здесь...", "Приветствую в моем цифровом царстве...", "Так мы и встретились..."]
-    };
-    return greetings[tone][Math.floor(Math.random() * greetings[tone].length)];
-}
-
-function generateDescription() {
-    return "Подробное описание внешности, характера и背景 персонажа будет сгенерировано на основе вашей идеи.";
-}
-
-function generateDefinition() {
-    return "Определение личности, мотиваций и поведения персонажа для AI системы.";
-}
-
-function generateSongTitle() {
-    const titles = [
-        "Эхо вселенной",
-        "Сердцебиение машины", 
-        "Танцующие огни",
-        "Мечты о цифровом завтра",
-        "Ритмы нейросети",
-        "Голос из будущего",
-        "Свое название"
-    ];
-    return titles[Math.floor(Math.random() * titles.length)];
-}
-
-function generateSongStructure(structureType) {
-    const structures = {
-        'Куплет-Припев': "[Verse 1]\nТекст первого куплета...\n\n[Chorus]\nТекст припева...\n\n[Verse 2]\nТекст второго куплета...\n\n[Chorus]\nТекст припева...",
-        'Куплет-Припев-Мост': "[Verse 1]\n...\n\n[Chorus]\n...\n\n[Verse 2]\n...\n\n[Chorus]\n...\n\n[Bridge]\n...\n\n[Chorus]\n...",
-        'ABAB': "[Section A]\n...\n\n[Section B]\n...\n\n[Section A]\n...\n\n[Section B]\n...",
-        'Свободная форма': "Свободная композиция текста...",
-        'Поэтическая': "Поэтическая структура с строфами и рифмами..."
-    };
-    return structures[structureType];
-}
-
-function generateChannelName() {
-    const names = [
-        "Цифровые горизонты",
-        "Творческая лаборатория",
-        "Мир инноваций", 
-        "Искусство технологий",
-        "Путь к знанию",
-        "Вдохновение каждый день",
-        "Название канала"
-    ];
-    return names[Math.floor(Math.random() * names.length)];
-}
-
-function generateYouTubeTags() {
-    return "технологии, образование, развлечение, творчество, инновации, цифровая эра";
-}
-
-function generateYouTubeDescription() {
-    return "Описание канала, его миссия и ценность для зрителей. Расскажите о формате контента и частоте выпусков.";
-}
 
 // Галерея с лайтбоксом
 const galleryItems = document.querySelectorAll('.gallery-item');
@@ -750,38 +643,6 @@ nextButton.addEventListener('click', () => showSlide(currentSlide + 1));
 setInterval(() => {
     showSlide(currentSlide + 1);
 }, 5000);
-
-// Форма обратной связи
-const supportForm = document.getElementById('support-form');
-
-supportForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const message = document.getElementById('message').value;
-    
-    // Простая валидация
-    if (!name || !email || !message) {
-        alert('Пожалуйста, заполните все поля');
-        return;
-    }
-    
-    if (!isValidEmail(email)) {
-        alert('Пожалуйста, введите корректный email');
-        return;
-    }
-    
-    // Здесь должен быть код для отправки формы
-    // В демо-версии просто показываем сообщение
-    alert('Сообщение отправлено! Мы свяжемся с вами в ближайшее время.');
-    this.reset();
-});
-
-function isValidEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-}
 
 // Анимация появления элементов при скролле
 const animatedElements = document.querySelectorAll('.card, .section-title, .type-card, .gallery-item, .review-card, .possibility-card');
