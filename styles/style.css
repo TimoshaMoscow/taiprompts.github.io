@@ -1456,3 +1456,57 @@ section {
         gap: 10px;
     }
 }
+
+/* Дополнительные загрузки */
+.additional-downloads {
+    margin: 2rem 0;
+}
+
+.additional-downloads h4 {
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.additional-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.additional-card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border: 1px solid var(--card-border);
+    text-align: center;
+}
+
+.additional-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.additional-content h5 {
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.additional-content p {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.btn-small {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .additional-cards {
+        grid-template-columns: 1fr;
+    }
+}
