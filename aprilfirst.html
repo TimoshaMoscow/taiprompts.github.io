@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAIPrompts - Весенняя версия для 1 апреля</title>
+    <style>
+        /* Базовые стили и сброс */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-color: #f0fff0;
+            --text-color: #2d5016;
+            --accent-color: #4caf50;
+            --secondary-color: #7cb342;
+            --light-color: #e8f5e9;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-border: rgba(76, 175, 80, 0.3);
+            --shadow: 0 8px 32px 0 rgba(124, 179, 66, 0.2);
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(124, 179, 66, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(76, 175, 80, 0.1) 0%, transparent 20%);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Шапка */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            filter: hue-rotate(90deg) brightness(1.2);
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--accent-color);
+        }
+
+        .nav-link:hover:after {
+            content: '😂';
+            position: absolute;
+            right: -10px;
+            top: 0;
+        }
+
+        .burger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .burger span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--text-color);
+            margin: 2px 0;
+            transition: 0.3s;
+        }
+
+        /* Герой секция */
+        .hero {
+            padding: 120px 0 80px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(124, 179, 66, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(76, 175, 80, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(124, 179, 66, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .hero .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            text-shadow: 0 0 10px rgba(124, 179, 66, 0.3);
+            position: relative;
+        }
+
+        .hero-title:after {
+            content: '😂';
+            position: absolute;
+            right: -40px;
+            top: -10px;
+            font-size: 2rem;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--secondary-color);
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            filter: hue-rotate(90deg) brightness(1.1) contrast(1.1);
+        }
+
+        /* Кнопки */
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover:before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(124, 179, 66, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        /* Секции */
+        section {
+            padding: 80px 0;
+            position: relative;
+        }
+
+        section:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 10%, rgba(124, 179, 66, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 90%, rgba(76, 175, 80, 0.05) 0%, transparent 20%);
+            z-index: -1;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            text-shadow: 0 0 10px rgba(124, 179, 66, 0.3);
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(124, 179, 66, 0.3);
+        }
+
+        /* Карточки */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--card-border);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(124, 179, 66, 0.1) 0%, transparent 70%);
+            transform: rotate(45deg);
+            z-index: -1;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(124, 179, 66, 0.3);
+        }
+
+        /* Секция генерации */
+        .generation-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .prompt-types {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .type-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--card-border);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .type-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(124, 179, 66, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .type-card:hover:before {
+            transform: translateX(100%);
+        }
+
+        .type-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(124, 179, 66, 0.3);
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .type-card h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .prompt-customization {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--card-border);
+        }
+
+        /* Стили для ВайбКодинга */
+        .vibe-badge {
+            display: flex;
+            gap: 15px;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .vibe-text {
+            background: var(--accent-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .type-card .vibe-description {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            margin-top: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .type-card .vibe-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 0.5rem;
+        }
+
+        .vibe-tag {
+            background: rgba(124, 179, 66, 0.1);
+            color: var(--accent-color);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        /* Стили для секции ВайбКодинга */
+        .vibecoding {
+            background: var(--light-color);
+            padding: 80px 0;
+        }
+
+        .vibecoding-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .vibecoding-principles {
+            margin-top: 2rem;
+        }
+
+        .vibecoding-principles ul {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .vibecoding-principles li {
+            margin-bottom: 0.8rem;
+            padding-left: 0;
+        }
+
+        .vibecoding-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .vibecoding-stat {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--card-border);
+        }
+
+        .vibecoding-stat .stat-number {
+            display: block;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        /* Галерея */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s;
+            filter: hue-rotate(90deg) brightness(1.1) contrast(1.1);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-item-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.7);
+            color: var(--text-color);
+            padding: 15px;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover .gallery-item-info {
+            transform: translateY(0);
+        }
+
+        /* Лайтбокс */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 80%;
+            border-radius: 10px;
+        }
+
+        .close-lightbox {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+        }
+
+        .lightbox-caption {
+            position: absolute;
+            bottom: 20px;
+            color: white;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Возможности */
+        .possibilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .possibility-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--card-border);
+            transition: transform 0.3s;
+        }
+
+        .possibility-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .possibility-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .possibility-card h3 {
+            margin-bottom: 1rem;
+        }
+
+        /* О нас */
+        .about-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--card-border);
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--secondary-color);
+        }
+
+        /* Футер */
+        .footer {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            padding: 60px 0 20px;
+            border-top: 1px solid var(--card-border);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .footer-section h4:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--card-border);
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 992px) {
+            .hero .container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .generation-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .vibecoding-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-list {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background: var(--card-bg);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: left 0.3s;
+            }
+            
+            .nav-list.active {
+                left: 0;
+            }
+            
+            .burger {
+                display: flex;
+            }
+            
+            .burger.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+            
+            .burger.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .burger.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -6px);
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .prompt-types {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .vibecoding-stats {
+                flex-direction: row;
+                justify-content: center;
+            }
+            
+            .vibecoding-stat {
+                flex: 1;
+                min-width: 100px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .possibilities-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .vibecoding-stats {
+                flex-direction: column;
+            }
+            
+            .vibe-badge {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Весенние элементы */
+        .spring-number {
+            color: var(--accent-color);
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(124, 179, 66, 0.3);
+        }
+
+        .spring-text {
+            color: var(--accent-color);
+            text-shadow: 0 0 10px rgba(124, 179, 66, 0.3);
+        }
+
+        .funny-element {
+            position: relative;
+        }
+
+        .funny-element:before {
+            content: '😂';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 1.5rem;
+            opacity: 0.7;
+        }
+
+        .bird-drip {
+            position: relative;
+        }
+
+        .bird-drip:after {
+            content: '🐦';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.2rem;
+            animation: fly 3s infinite;
+        }
+
+        @keyframes fly {
+            0% {
+                transform: translateX(-50%) translateY(0px);
+            }
+            50% {
+                transform: translateX(-30%) translateY(-10px);
+            }
+            100% {
+                transform: translateX(-50%) translateY(0px);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(124, 179, 66, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(124, 179, 66, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(124, 179, 66, 0);
+            }
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        /* Секция возврата */
+        .return-section {
+            text-align: center;
+            padding: 60px 0;
+            background: var(--light-color);
+        }
+
+        .return-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(124, 179, 66, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .return-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .return-btn:hover:before {
+            left: 100%;
+        }
+
+        .return-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(124, 179, 66, 0.7);
+        }
+        
+        /* Розыгрыш */
+        .joke-box {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            border: 2px dashed var(--accent-color);
+        }
+        
+        .joke-title {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
+        .fish-sticker {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--accent-color);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: wiggle 2s infinite;
+        }
+        
+        @keyframes wiggle {
+            0%, 7% {
+                transform: rotateZ(0);
+            }
+            15% {
+                transform: rotateZ(-15deg);
+            }
+            20% {
+                transform: rotateZ(10deg);
+            }
+            25% {
+                transform: rotateZ(-10deg);
+            }
+            30% {
+                transform: rotateZ(6deg);
+            }
+            35% {
+                transform: rotateZ(-4deg);
+            }
+            40%, 100% {
+                transform: rotateZ(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="#" class="logo">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIwIDBDOC45NTQgMCAwIDguOTU0IDAgMjBTOC45NTQgNDAgMjAgNDBTNDAgMzEuMDQ2IDQwIDIwUzMxLjA0NiAwIDIwIDBaIiBmaWxsPSIjNGNhZjUwIi8+CjxwYXRoIGQ9Ik0yMCAxMEMxNC40NzcgMTAgMTAgMTQuNDc3IDEwIDIwUzE0LjQ3NyAzMCAyMCAzMFMzMCAyNS41MjMgMzAgMjBTMjUuNTIzIDEwIDIwIDEwWiIgZmlsbD0iI2YwZmZmMCIvPgo8cGF0aCBkPSJNMTYgMTZIMjRWMjRIMTZWMjZIMjZWMThIMThWMTZaIiBmaWxsPSIjNGNhZjUwIi8+Cjwvc3ZnPgo=" alt="TAIPrompts" class="logo-img">
+                    <span class="logo-text">TAIPrompts <span class="spring-number">🌱</span></span>
+                </a>
+                <ul class="nav-list">
+                    <li><a href="#home" class="nav-link active">Главная</a></li>
+                    <li><a href="#vibecoding" class="nav-link">ВайбКодинг</a></li>
+                    <li><a href="#generation" class="nav-link">Генерация</a></li>
+                    <li><a href="#examples" class="nav-link">Примеры</a></li>
+                    <li><a href="#possibilities" class="nav-link">Возможности</a></li>
+                </ul>
+                <div class="burger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Герой секция -->
+        <section id="home" class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">TAIPrompts <span class="spring-number">😂</span></h1>
+                    <p class="hero-description">Весенняя версия для 1 апреля!</p>
+                    <div class="vibe-badge">
+                        <span class="vibe-text">#ДеньСмеха</span>
+                        <span class="vibe-text">#1Апреля</span>
+                        <span class="vibe-text">#ВесеннийВайб</span>
+                    </div>
+                    <p class="bird-drip">Создавайте идеальные промпты для нейросетей с весенним настроением</p>
+                    
+                    <div class="joke-box">
+                        <h3 class="joke-title">🎉 С ПЕРВЫМ АПРЕЛЯ! 🎉</h3>
+                        <p>Знаете ли вы, что сегодня наш ИИ научился понимать шутки? Попробуйте его разыграть!</p>
+                        <p><small>Шшш... Это секрет, но он обожает мемы про котов! 🐱</small></p>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDYwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiByeD0iMjAiIGZpbGw9IiNlOGY1ZTkiLz4KPHBhdGggZD0iTTE1MCAxMDBINDUwVjMwMEgxNTBWMTBaIiBmaWxsPSIjZmZmZmZmIi8+CjxjaXJjbGUgY3g9IjMwMCIgY3k9IjIwMCIgcj0iODAiIGZpbGw9IiNmMGZmZjAiLz4KPHBhdGggZD0iTTI2MCAxNjBIMzQwVjI0MEgyNjBWMTYwWiIgZmlsbD0iIzRjYWY1MCIvPgo8cGF0aCBkPSJNMjIwIDEwMEgzODBWMzAwSDIyMFYxMDBaIiBmaWxsPSJub25lIiBzdHJva2U9IiM0Y2FmNTAiIHN0cm9rZS13aWR0aD0iNSIvPgo8dGV4dCB4PSIzMDAiIHk9IjI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmaWxsPSIjNGNhZjUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7wn5GPPC90ZXh0Pgo8L3N2Zz4K" alt="Весенняя генерация промптов">
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция о ВайбКодинге -->
+        <section id="vibecoding" class="vibecoding">
+            <div class="container">
+                <h2 class="section-title">Что такое Весенний ВайбКодинг?</h2>
+                <div class="vibecoding-content">
+                    <div class="vibecoding-text">
+                        <p><strong>ВайбКодеры</strong> — это новая генерация разработчиков, которые используют нейросети для программирования. Мы не пишем код вручную, а создаем точные промпты для ИИ.</p>
+                        
+                        <div class="vibecoding-principles">
+                            <h3>Принципы Весеннего ВайбКодинга:</h3>
+                            <ul>
+                                <li>🌱 <strong>Обновление</strong> — как весенние почки, наши идеи распускаются</li>
+                                <li>🐦 <strong>Свобода</strong> — как птицы, наши мысли летят далеко</li>
+                                <li>🌸 <strong>Красота</strong> — создаем элегантные решения</li>
+                                <li>😄 <strong>Радость</strong> — программируем с улыбкой!</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="vibecoding-stats">
+                        <div class="vibecoding-stat">
+                            <span class="stat-number"><span class="spring-number">🌼</span></span>
+                            <span class="stat-label">весеннее настроение</span>
+                        </div>
+                        <div class="vibecoding-stat">
+                            <span class="stat-number"><span class="spring-number">😂</span></span>
+                            <span class="stat-label">шуток в минуту</span>
+                        </div>
+                        <div class="vibecoding-stat">
+                            <span class="stat-number"><span class="spring-number">🚀</span></span>
+                            <span class="stat-label">скорость разработки</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция генерации -->
+        <section id="generation" class="generation">
+            <div class="container">
+                <h2 class="section-title">Весенняя генерация промптов</h2>
+                <div class="generation-content">
+                    <div class="prompt-types">
+                        <div class="type-card" data-type="telegram">
+                            <h3>🐦 Telegram боты</h3>
+                            <p>Создавайте промпты для ботов на aiogram</p>
+                            <div class="vibe-description">Готовые шаблоны команд, обработчиков и функций</div>
+                            <div class="vibe-tags">
+                                <span class="vibe-tag">aiogram</span>
+                                <span class="vibe-tag">асинхронность</span>
+                                <span class="vibe-tag">API</span>
+                            </div>
+                        </div>
+                        
+                        <div class="type-card" data-type="websites">
+                            <h3>🌼 Веб-сайты</h3>
+                            <p>Современные веб-сайты</p>
+                            <div class="vibe-description">Генерируйте промпты для создания современных сайтов с HTML, CSS и JavaScript</div>
+                            <div class="vibe-tags">
+                                <span class="vibe-tag">HTML/CSS/JS</span>
+                                <span class="vibe-tag">адаптивность</span>
+                                <span class="vibe-tag">PWA</span>
+                            </div>
+                        </div>
+                        
+                        <div class="type-card" data-type="minecraft">
+                            <h3>🌱 Моды Minecraft</h3>
+                            <p>Моды для Minecraft (и не только моды)</p>
+                            <div class="vibe-description">Создавайте промпты для разработки модов с настройкой IntelliJ IDEA</div>
+                            <div class="vibe-tags">
+                                <span class="vibe-tag">Forge</span>
+                                <span class="vibe-tag">Fabric</span>
+                                <span class="vibe-tag">Java</span>
+                            </div>
+                        </div>
+                        
+                        <div class="type-card" data-type="ai">
+                            <h3>🤖 AI & G4F</h3>
+                            <p>Работа с AI и G4F</p>
+                            <div class="vibe-description">Промпты для работы с искусственным интеллектом и библиотекой G4F</div>
+                            <div class="vibe-tags">
+                                <span class="vibe-tag">G4F</span>
+                                <span class="vibe-tag">нейросети</span>
+                                <span class="vibe-tag">автоматизация</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="prompt-customization">
+                        <h3>Весенняя кастомизация промпта</h3>
+                        <div class="card">
+                            <p>Эта версия сайта создана специально для 1 апреля и не содержит функционала генерации промптов.</p>
+                            <p>Для использования полного функционала TAIPrompts перейдите на основную версию сайта.</p>
+                            
+                            <div class="joke-box">
+                                <h4>🎭 А вы знали?</h4>
+                                <p>Петр I как-то разыграл зрителей, пообещав, что актеры выйдут из бутылки, а вместо этого показал плакат "1 апреля"! 😄</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция примеров -->
+        <section id="examples" class="examples">
+            <div class="container">
+                <h2 class="section-title">Весенние примеры промптов</h2>
+                <div class="gallery">
+                    <div class="gallery-item">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI4MCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyODAiIGhlaWdodD0iMjAwIiByeD0iMTUiIGZpbGw9IiNlOGY1ZTkiLz4KPHBhdGggZD0iTTQwIDQwSDI0MFYxNjBINDBWNDBaIiBmaWxsPSIjZmZmZmZmIi8+CjxjaXJjbGUgY3g9IjE0MCIgY3k9IjEwMCIgcj0iMzAiIGZpbGw9IiNmMGZmZjAiLz4KPHBhdGggZD0iTTEyMCA4MEgxNjBWMTIwSDEyMFY4MFoiIGZpbGw9IiM0Y2FmNTAiLz4KPHBhdGggZD0iTTYwIDYwSDIyMFYxNDBINjBWNjBaIiBmaWxsPSJub25lIiBzdHJva2U9IiM0Y2FmNTAiIHN0cm9rZS13aWR0aD0iMyIvPgo8dGV4dCB4PSIxNDAiIHk9IjE2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNGNhZjUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7wn5S8PC90ZXh0Pgo8L3N2Zz4K" alt="Пример промпта 1" data-full="images/example1-full.jpg">
+                        <div class="gallery-item-info">
+                            <h4>Рецепт весеннего салата</h4>
+                            <p>Промпт был создан в TAIPrompts</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI4MCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyODAiIGhlaWdodD0iMjAwIiByeD0iMTUiIGZpbGw9IiNlOGY1ZTkiLz4KPHBhdGggZD0iTTQwIDQwSDI0MFYxNjBINDBWNDBaIiBmaWxsPSIjZmZmZmZmIi8+CjxjaXJjbGUgY3g9IjE0MCIgY3k9IjEwMCIgcj0iMzAiIGZpbGw9IiNmMGZmZjAiLz4KPHBhdGggZD0iTTEyMCA4MEgxNjBWMTIwSDEyMFY4MFoiIGZpbGw9IiM0Y2FmNTAiLz4KPHBhdGggZD0iTTYwIDYwSDIyMFYxNDBINjBWNjBaIiBmaWxsPSJub25lIiBzdHJva2U9IiM0Y2FmNTAiIHN0cm9rZS13aWR0aD0iMyIvPgo8dGV4dCB4PSIxNDAiIHk9IjE2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNGNhZjUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7wn5S8PC90ZXh0Pgo8L3N2Zz4K" alt="Пример промпта 2" data-full="images/example2-full.jpg">
+                        <div class="gallery-item-info">
+                            <h4>Стикерпак для весны</h4>
+                            <p>Промпт был создан в TAIPrompts</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI4MCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyODAiIGhlaWdodD0iMjAwIiByeD0iMTUiIGZpbGw9IiNlOGY1ZTkiLz4KPHBhdGggZD0iTTQwIDQwSDI0MFYxNjBINDBWNDBaIiBmaWxsPSIjZmZmZmZmIi8+CjxjaXJjbGUgY3g9IjE0MCIgY3k9IjEwMCIgcj0iMzAiIGZpbGw9IiNmMGZmZjAiLz4KPHBhdGggZD0iTTEyMCA4MEgxNjBWMTIwSDEyMFY4MFoiIGZpbGw9IiM0Y2FmNTAiLz4KPHBhdGggZD0iTTYwIDYwSDIyMFYxNDBINjBWNjBaIiBmaWxsPSJub25lIiBzdHJva2U9IiM0Y2FmNTAiIHN0cm9rZS13aWR0aD0iMyIvPgo8dGV4dCB4PSIxNDAiIHk9IjE2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNGNhZjUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7wn5S8PC90ZXh0Pgo8L3N2Zz4K" alt="Пример промпта 3" data-full="images/example3-full.jpg">
+                        <div class="gallery-item-info">
+                            <h4>3D модель цветка</h4>
+                            <p>Промпт был создан в TAIPrompts</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI4MCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyODAiIGhlaWdodD0iMjAwIiByeD0iMTUiIGZpbGw9IiNlOGY1ZTkiLz4KPHBhdGggZD0iTTQwIDQwSDI0MFYxNjBINDBWNDBaIiBmaWxsPSIjZmZmZmZmIi8+CjxjaXJjbGUgY3g9IjE0MCIgY3k9IjEwMCIgcj0iMzAiIGZpbGw9IiNmMGZmZjAiLz4KPHBhdGggZD0iTTEyMCA4MEgxNjBWMTIwSDEyMFY4MFoiIGZpbGw9IiM0Y2FmNTAiLz4KPHBhdGggZD0iTTYwIDYwSDIyMFYxNDBINjBWNjBaIiBmaWxsPSJub25lIiBzdHJva2U9IiM0Y2FmNTAiIHN0cm9rZS13aWR0aD0iMyIvPgo8dGV4dCB4PSIxNDAiIHk9IjE2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNGNhZjUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7wn5S8PC90ZXh0Pgo8L3N2Zz4K" alt="Пример промпта 4" data-full="images/example4-full.jpg">
+                        <div class="gallery-item-info">
+                            <h4>Мод для Майнкрафт с цветами</h4>
+                            <p>Промпт был создан в TAIPrompts</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Лайтбокс для галереи -->
+        <div class="lightbox">
+            <span class="close-lightbox">&times;</span>
+            <img class="lightbox-content" id="lightbox-img">
+            <div class="lightbox-caption"></div>
+        </div>
+
+        <!-- Секция возможностей -->
+        <section id="possibilities" class="possibilities">
+            <div class="container">
+                <h2 class="section-title">Весенние возможности TAIPrompts</h2>
+                <div class="possibilities-grid">
+                    <div class="possibility-card">
+                        <div class="possibility-icon">🌱</div>
+                        <h3>Быстрая генерация</h3>
+                        <p>Создавайте промпты за секунды с помощью нашего весеннего генератора</p>
+                    </div>
+                    <div class="possibility-card">
+                        <div class="possibility-icon">🌸</div>
+                        <h3>Кастомизация</h3>
+                        <p>Настраивайте промпты под свои конкретные нужды и требования</p>
+                    </div>
+                    <div class="possibility-card">
+                        <div class="possibility-icon">🐦</div>
+                        <h3>Полная адаптивность</h3>
+                        <p>Работайте с любого устройства - компьютера, планшета или телефона</p>
+                    </div>
+                    <div class="possibility-card">
+                        <div class="possibility-icon">😄</div>
+                        <h3>Сохранение результатов</h3>
+                        <p>Сохраняйте понравившиеся промпты для будущего использования</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция возврата к оригинальному сайту -->
+        <section class="return-section">
+            <div class="container">
+                <h2 class="section-title">Хотите использовать полный функционал?</h2>
+                <p>Эта версия сайта создана специально для 1 апреля и не содержит функционала генерации промптов.</p>
+                <p>Для использования всех возможностей TAIPrompts перейдите на основную версию сайта:</p>
+                <div style="margin-top: 30px;">
+                    <a href="https://timoshamoscow.github.io/taiprompts.github.io/" class="return-btn pulse">Вернуться к оригинальному сайту</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <a href="#" class="logo">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIwIDBDOC45NTQgMCAwIDguOTU0IDAgMjBTOC45NTQgNDAgMjAgNDBTNDAgMzEuMDQ2IDQwIDIwUzMxLjA0NiAwIDIwIDBaIiBmaWxsPSIjNGNhZjUwIi8+CjxwYXRoIGQ9Ik0yMCAxMEMxNC40NzcgMTAgMTAgMTQuNDc3IDEwIDIwUzE0LjQ3NyAzMCAyMCAzMFMzMCAyNS41MjMgMzAgMjBTMjUuNTIzIDEwIDIwIDEwWiIgZmlsbD0iI2YwZmZmMCIvPgo8cGF0aCBkPSJNMTYgMTZIMjRWMjRIMTZWMjZIMjZWMThIMThWMTZaIiBmaWxsPSIjNGNhZjUwIi8+Cjwvc3ZnPgo=" alt="TAIPrompts" class="logo-img">
+                        <span class="logo-text">TAIPrompts <span class="spring-number">🌼</span></span>
+                    </a>
+                    <p>Весенняя версия для 1 апреля</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Навигация</h4>
+                    <ul>
+                        <li><a href="#home">Главная</a></li>
+                        <li><a href="#vibecoding">ВайбКодинг</a></li>
+                        <li><a href="#generation">Генерация</a></li>
+                        <li><a href="#examples">Примеры</a></li>
+                        <li><a href="#possibilities">Возможности</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Контакты</h4>
+                    <p>Email: roll3ogurec0@gmail.com</p>
+                    <p>Тимофей</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Обновления</h4>
+                    <p>Следите за обновлениями на сайте</p>
+                    <p>Новые функции добавляются регулярно!</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 TAIPrompts. Все права защищены. С первым апреля! 😄</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Апрельская рыбка -->
+    <div class="fish-sticker">🐟 Апрельская рыбка!</div>
+
+    <script>
+        // Навигация
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section');
+        const burger = document.querySelector('.burger');
+        const navList = document.querySelector('.nav-list');
+
+        // Плавная прокрутка
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetSection.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                
+                // Закрываем меню на мобильных устройствах
+                if (navList.classList.contains('active')) {
+                    navList.classList.remove('active');
+                    burger.classList.remove('active');
+                }
+            });
+        });
+
+        // Бургер меню
+        burger.addEventListener('click', function() {
+            this.classList.toggle('active');
+            navList.classList.toggle('active');
+        });
+
+        // Активный пункт меню при прокрутке
+        window.addEventListener('scroll', function() {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (pageYOffset >= (sectionTop - 100)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Галерея с лайтбоксом
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const lightbox = document.querySelector('.lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCaption = document.querySelector('.lightbox-caption');
+        const closeLightbox = document.querySelector('.close-lightbox');
+
+        galleryItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const imgSrc = this.querySelector('img').getAttribute('data-full');
+                const caption = this.querySelector('h4').textContent;
+                
+                lightboxImg.setAttribute('src', imgSrc);
+                lightboxCaption.textContent = caption;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        closeLightbox.addEventListener('click', function() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        lightbox.addEventListener('click', function(e) {
+            if (e.target === lightbox) {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Анимация появления элементов при скролле
+        const animatedElements = document.querySelectorAll('.card, .section-title, .type-card, .gallery-item, .possibility-card');
+
+        function checkScroll() {
+            animatedElements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+                
+                if (elementPosition < screenPosition) {
+                    element.classList.add('fade-in');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', checkScroll);
+        window.addEventListener('load', checkScroll);
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            // Добавляем задержки для анимации
+            document.querySelectorAll('.type-card').forEach((card, index) => {
+                card.classList.add(`delay-${index % 3}`);
+            });
+            
+            // Инициализируем первую проверку для анимаций
+            checkScroll();
+            
+            // Случайная шутка при загрузке
+            const jokes = [
+                "Почему программисты не любят природу? В ней слишком много багов! 🐛",
+                "Знаете, чем отличается весенний код от зимнего? Весенний - цветет! 🌸",
+                "Почему ИИ любит 1 апреля? Потому что у него отличное чувство юмора! 😄",
+                "Какой язык программирования самый весенний? Python - он же питон, как змея, которая просыпается весной! 🐍"
+            ];
+            
+            const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
+            console.log(`🎭 Шутка дня: ${randomJoke}`);
+        });
+    </script>
+</body>
+</html>
