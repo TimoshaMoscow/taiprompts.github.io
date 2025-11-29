@@ -4,6 +4,12 @@ const sections = document.querySelectorAll('section');
 const burger = document.querySelector('.burger');
 const navList = document.querySelector('.nav-list');
 
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("service-worker.js")
+          .then(() => console.log("SW registered"))
+          .catch((err) => console.error("SW error:", err));
+      }
+
 // Плавная прокрутка
 navLinks.forEach(link => {
     link.addEventListener('click', function(e) {
