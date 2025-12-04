@@ -83,7 +83,7 @@ const promptTemplates = {
         }
     },
     minecraft: {
-        template: "Разработай {type} для Minecraft {version} с описанием: '{idea}'. Особенности: {features} Совместимость: {compatibility}. Детально опиши функционал, рецепты и механики. Также напиши структуру проекта и гайд по сборке проекта в Intellij IDEA если требуется.",
+        template: "Разработай {type} для Minecraft {version} с описанием: '{idea}'. Особенности: {features}. Совместимость: {compatibility}. Детально опиши функционал, рецепты и механики. Также напиши структуру проекта, полный код и гайд по сборке проекта в Intellij IDEA если требуется. (Например для датапаков не нужен IDEA)",
         params: {
             type: {
                 type: 'select',
@@ -106,7 +106,7 @@ const promptTemplates = {
             features: {
                 type: 'multiselect',
                 label: 'Особенности',
-                options: ['Новые блоки', 'Новые мобы', 'Генерация структур', 'Магическая система', 'Технологии', 'Квесты', 'Боссы', 'GUI', 'Оптимизация', 'Клиентские фишки'],
+                options: ['Новые блоки', 'Новые мобы', 'Новые предметы', 'Генерация структур', 'Магическая система', 'Технологии', 'Квесты', 'Боссы', 'GUI', 'Оптимизация', 'Клиентские фишки', 'Конфиг'],
                 default: 'Оптимизация'
             }
         }
@@ -367,13 +367,13 @@ const promptTemplates = {
             hang: {
                 type: 'multiselect',
                 label: 'Особенности',
-                options: ['Смена темы', 'Сохранение чего-то в собственный формат файла (пример: program.taiprompts)', 'Автозагрузка', 'Горячие клавиши', 'Ассоциации файлов', 'Уведомления', 'Системные службы', 'Разрешения доступа', 'Иконка приложения', 'Экраны загрузки', 'Фоновые режимы', 'Меню', 'Хранилище данных'],
+                options: ['Смена темы', 'Сохранение чего-то в собственный формат файла (пример: название.тип_файла)', 'Автозагрузка', 'Горячие клавиши', 'Ассоциации файлов', 'Уведомления', 'Системные службы', 'Разрешения доступа', 'Иконка приложения', 'Экраны загрузки', 'Фоновые режимы', 'Меню', 'Хранилище данных'],
                 default: 'Умеренный'
             },
             setupper: {
                 type: 'select',
                 label: 'Установщики',
-                options: ['Inno Setup', 'WiX Toolset', 'NSIS', 'Advanced Installer', 'InstallShield', 'MSIX', 'DMG', 'PKG', 'Mac App Store', 'Homebrew Cask', 'APT', 'RPM', 'Pacman', 'Snap', 'Flatpak', 'AppImage', 'Make install', 'APK', 'AAB', 'Google Play', 'F-Droid', 'Side loading', 'TestFlight', 'Enterprise distribution', 'Ad-hoc'],
+                options: ['Inno Setup', 'WiX Toolset', 'NSIS', 'Advanced Installer', 'InstallShield', 'MSIX', 'DMG', 'PKG', 'Mac App Store', 'Homebrew Cask', 'APT', 'RPM', 'Pacman', 'Snap', 'Flatpak', 'AppImage', 'Make install', 'APK', 'AAB', 'Google Play', 'F-Droid', 'Side loading', 'TestFlight', 'Enterprise distribution', 'Ad-hoc', 'SFX архив', 'Другой'],
                 default: 'Inno Setup'
             },
             oc: {
@@ -406,7 +406,7 @@ school: {
             options: ['1-4 класс', '5-8 класс', '9-11 класс', 'Колледж', 'Университет', '1 курс', '2 курс', '3 курс', 'Другой'],
             default: '5-8 класс'
         }
-    } // ← ДОБАВЛЕНА ЗАКРЫВАЮЩАЯ СКОБКА
+    }
 },
     
     youtube: {
