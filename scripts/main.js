@@ -111,9 +111,15 @@ const promptTemplates = {
             }
         }
     },
-    telegram: {
-        template: "Создай Telegram бота на {language} с функционалом '{idea}'. Особеннности: {functionality}. Включи: описание функций, команды, клавиатуры, обработку сообщений и deployment инструкции. Добавить ИИ в бота: {ai}",
+    bots: {
+        template: "Создай {platform} бота на {language} с функционалом '{idea}'. Включи: описание функций, {functionality}, обработку сообщений и установочные инструкции. Добавить ИИ в бота: {ai}",
         params: {
+            platform: {
+                type: 'select',
+                label: 'Платформа',
+                options: ['Telegram', 'Discord', 'Внешний', 'Minecraft', 'MAX', 'Другой', 'Любой'],
+                default: 'Telegram'
+            },
             language: {
                 type: 'select',
                 label: 'Язык программирования',
@@ -123,7 +129,7 @@ const promptTemplates = {
             functionality: {
                 type: 'multiselect',
                 label: 'Особеннности',
-                options: ['Админ-панель', 'Платежи', 'База данных', 'API интеграции', 'Модерация', 'Игры', 'Уведомления', 'Работа с файлами', 'Inline клавиатуры'],
+                options: ['Админ-панель', 'Платежи', 'База данных', 'API интеграции', 'Модерация', 'Игры', 'Уведомления', 'Работа с файлами', 'Inline клавиатуры', 'Команды'],
                 default: 'Модерация'
             },
             ai: {
