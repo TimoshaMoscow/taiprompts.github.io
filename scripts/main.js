@@ -416,7 +416,7 @@ school: {
 },
     
     youtube: {
-        template: "Создай контент для YouTube канала на тему '{idea}'. Формат контента: {content_type}, Целевая аудитория: {audience}, Частота выпуска: {frequency}, Превью: {thumbnail_style}",
+        template: "Создай контент для YouTube канала на тему '{idea}'. Формат контента: {content_type}, Целевая аудитория: {audience}, Частота выпуска: {frequency}, Превью: {thumbnail_style}, Монетизация контента: {monetization}",
         params: {
             content_type: {
                 type: 'select',
@@ -445,7 +445,7 @@ school: {
             monetization: {
                 type: 'select',
                 label: 'Монетизация',
-                options: ['Реклама', 'Спонсорство', 'Краудфандинг', 'Мерч', 'Платная подписка', 'Бесплатный контент'],
+                options: ['Реклама', 'Спонсорство', 'Краудфандинг', 'Мерч', 'Платная подписка', 'Бесплатный контент', 'Нет', 'Другой'],
                 default: 'Реклама'
             }
         }
