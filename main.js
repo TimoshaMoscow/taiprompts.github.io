@@ -16,7 +16,6 @@ files.forEach(file => {
 
 // Навигация
 const navLinks = document.querySelectorAll('.nav-link');
-const sections = document.querySelectorAll('section');
 const burger = document.querySelector('.burger');
 const navList = document.querySelector('.nav-list');
 
@@ -26,17 +25,65 @@ if ("serviceWorker" in navigator) {
         .catch((err) => console.error("SW error:", err));
 }
 
-// Плавная прокрутка
+// Плавная прокрутка (оставь пустым или удали, если нет якорей)
 navLinks.forEach(link => {
     link.addEventListener('click', function(e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
+        const href = this.getAttribute('href');
         
-        window.scrollTo({
-            top: targetSection.offsetTop - 80,
-            behavior: 'smooth'
-        });
+        // Закрываем меню на мобильных устройствах при любом клике
+        if (navList && navList.classList.contains('active')) {
+            navList.classList.remove('active');
+            if (burger) burger.classList.remove('active');
+        }
+        
+        // Если есть якорь (#something) — делаем плавный скролл
+        // Если нет — просто переходим на страницу (браузер сам обработает)
+        if (href && href.startsWith('#')) {
+            e.preventDefault();
+            const targetSection = document.querySelector(href);
+            if (targetSection) {
+                window.scrollTo({
+                    top: targetSection.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    });
+});
+
+// Бургер меню
+if (burger) {
+    burger.addEventListener('click', function() {
+        this.classList.toggle('active');
+        if (navList) {
+            navList.classList.toggle('active');
+        }
+    });
+}
+
+// Активный пункт меню при прокрутке (только для якорей)
+window.addEventListener('scroll', function() {
+    let current = '';
+    
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        
+        if (pageYOffset >= (sectionTop - 100)) {
+            current = section.getAttribute('id');
+        }
+    });
+    
+    navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+            link.classList.remove('active');
+            if (href === `#${current}`) {
+                link.classList.add('active');
+            }
+        }
+    });
+});
         
         // Закрываем меню на мобильных устройствах
         if (navList.classList.contains('active')) {
