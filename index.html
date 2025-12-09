@@ -74,17 +74,15 @@
     <header class="header">
         <div class="container">
             <nav class="nav">
-                <a href="#" class="logo">
+                <a href="index.html" class="logo">
                     <img src="images/logo.png" alt="TAIPrompts" class="logo-img">
                     <span class="logo-text">TAIPrompts</span>
                 </a>
                 <ul class="nav-list">
-                    <li><a href="#home" class="nav-link active">Главная</a></li>
-                    <li><a href="#generation" class="nav-link">Генерация</a></li>
-                    <li><a href="#examples" class="nav-link">Примеры</a></li>
-                    <li><a href="#possibilities" class="nav-link">Возможности</a></li>
-                    <li><a href="#about" class="nav-link">Описание</a></li>
-                    <li><a href="#download" class="nav-link">Другие версии</a></li>
+                    <li><a href="index.html" class="nav-link active">Главная</a></li>
+                    <li><a href="generator.html" class="nav-link">Генерация</a></li>
+                    <li><a href="about.html" class="nav-link">Описание</a></li>
+                    <li><a href="versions.html" class="nav-link">Другие версии</a></li>
                 </ul>
                 <div class="burger">
                     <span></span>
@@ -97,7 +95,7 @@
 
     <main>
         <!-- Герой секция -->
-        <section id="home" class="hero">
+        <section class="hero">
             <div class="container">
                 <div class="hero-content">
                     <h1 class="hero-title">TAIPrompts</h1>
@@ -105,7 +103,7 @@
                     <div class="vibe-badge">
                         <span class="vibe-text">#ВайбКодинг</span>
                     </div>
-                    <a href="#generation" class="btn btn-primary">Начать генерацию</a>
+                    <a href="generator.html" class="btn btn-primary">Начать генерацию</a>
                 </div>
                 <div class="hero-image">
                     <img src="images/hero-bg.jpg" alt="Генерация промптов">
@@ -114,7 +112,7 @@
         </section>
 
         <!-- Секция о ВайбКодинге -->
-        <section id="vibecoding" class="vibecoding">
+        <section class="vibecoding">
             <div class="container">
                 <h2 class="section-title">Что такое ВайбКодинг?</h2>
                 <div class="vibecoding-content">
@@ -150,241 +148,10 @@
             </div>
         </section>
 
-<!-- Секция генерации -->
-<section id="generation" class="generation">
-    <div class="container">
-        <h2 class="section-title">Генерация промптов</h2>
-        
-        <div class="generation-content">
-            <!-- Информационный баннер -->
-            <div class="info-banner">
-                <h3>🎯 Как использовать генератор</h3>
-                <p>Просто выберите тип промпта, настройте параметры и получите готовый промпт для ChatGPT, Midjourney или любой другой нейросети</p>
-                
-                <div class="banner-steps">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <div class="step-text">Выберите категорию промпта</div>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <div class="step-text">Настройте параметры</div>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <div class="step-text">Скопируйте готовый промпт</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Сетка карточек -->
-            <div class="prompt-types-grid">
-                <div class="type-card" data-type="bots">
-                    <h3>📱 Боты и автоматизация</h3>
-                    <p>Создавайте промпты для ботов на любую платформу.</p>
-                    <div class="vibe-description">Готовые шаблоны команд, обработчиков и функций</div>
-                    <div class="vibe-tags">
-                        <span class="vibe-tag">боты</span>
-                        <span class="vibe-tag">асинхронность</span>
-                        <span class="vibe-tag">API</span>
-                    </div>
-                </div>
-                
-                <div class="type-card" data-type="websites">
-                    <h3>🌐 Веб-сайты</h3>
-                    <p>Современные веб-сайты</p>
-                    <div class="vibe-description">Генерируйте промпты для создания современных сайтов с HTML, CSS и JavaScript</div>
-                    <div class="vibe-tags">
-                        <span class="vibe-tag">HTML/CSS/JS</span>
-                        <span class="vibe-tag">адаптивность</span>
-                        <span class="vibe-tag">PWA</span>
-                    </div>
-                </div>
-                
-                <div class="type-card" data-type="minecraft">
-                    <h3>⛏️ Моды Minecraft</h3>
-                    <p>Моды для Minecraft (и не только моды)</p>
-                    <div class="vibe-description">Создавайте промпты для разработки модов с настройкой IntelliJ IDEA</div>
-                    <div class="vibe-tags">
-                        <span class="vibe-tag">Forge</span>
-                        <span class="vibe-tag">Fabric</span>
-                        <span class="vibe-tag">Java</span>
-                    </div>
-                </div>
-                
-                <div class="type-card" data-type="ai">
-                    <h3>🤖 AI & G4F</h3>
-                    <p>Работа с AI и G4F</p>
-                    <div class="vibe-description">Промпты для работы с искусственным интеллектом и библиотекой G4F</div>
-                    <div class="vibe-tags">
-                        <span class="vibe-tag">G4F</span>
-                        <span class="vibe-tag">нейросети</span>
-                        <span class="vibe-tag">автоматизация</span>
-                    </div>
-                </div>
-                
-                <div class="type-card" data-type="recipes">
-                    <h3>🍳 Рецепты</h3>
-                    <p>Создание или улучшение рецептов</p>
-                    <div class="vibe-description">Генерация кулинарных промптов с точными пропорциями и инструкциями</div>
-                    <div class="vibe-tags">
-                        <span class="vibe-tag">гастрономия</span>
-                        <span class="vibe-tag">ингредиенты</span>
-                        <span class="vibe-tag">step-by-step</span>
-                    </div>
-                </div>
-                
-                <div class="type-card" data-type="images">
-                    <h3>🎨 Генерация изображений</h3>
-                    <p>Промпты для создания изображений</p>
-                    <div class="vibe-description">Создавайте детальные промпты для генерации визуального контента</div>
-                    <div class="vibe-tags">
-                        <span class="vibe-tag">Stable Diffusion</span>
-                        <span class="vibe-tag">DALL-E</span>
-                        <span class="vibe-tag">композиция</span>
-                    </div>
-                </div>
-                
-                <div class="type-card" data-type="stickers">
-                    <h3>🖼️ Стикеры и аватары</h3>
-                    <p>Генерация идей для стикеров и аватаров</p>
-                    <div class="vibe-description">Промпты для создания стикерпаков и цифровых аватаров</div>
-                    <div class="vibe-tags">
-                        <span class="vibe-tag">вектор</span>
-                        <span class="vibe-tag">эмоции</span>
-                        <span class="vibe-tag">Telegram</span>
-                    </div>
-                </div>
-                
-                <div class="type-card" data-type="toys">
-                    <h3>🧸 Игрушки</h3>
-                    <p>Идеи для создания игрушек</p>
-                    <div class="vibe-description">Генерация промптов для разработки игр и игрушек</div>
-                    <div class="vibe-tags">
-                        <span class="vibe-tag">геймдизайн</span>
-                        <span class="vibe-tag">механики</span>
-                        <span class="vibe-tag">персонажи</span>
-                    </div>
-                </div>
-                
-                <div class="type-card" data-type="3d">
-                    <h3>🔷 3D модели</h3>
-                    <p>Промпты для 3D моделирования</p>
-                    <div class="vibe-description">Промпты для создания трехмерных моделей и ассетов</div>
-                    <div class="vibe-tags">
-                        <span class="vibe-tag">Blender</span>
-                        <span class="vibe-tag">текстуры</span>
-                        <span class="vibe-tag">рендеринг</span>
-                    </div>
-                </div>
-
-                <div class="type-card" data-type="characterai">
-                    <h3>🤖 Character AI</h3>
-                    <p>Создание персонажей для character.ai</p>
-                    <div class="vibe-description">Генерация промптов для персонажей с именем, слоганом, приветствием и описанием</div>
-                    <div class="vibe-tags">
-                        <span class="vibe-tag">персонажи</span>
-                        <span class="vibe-tag">диалоги</span>
-                        <span class="vibe-tag">c.ai</span>
-                    </div>
-                </div>
-
-                <div class="type-card" data-type="suno">
-                    <h3>🎵 Suno AI</h3>
-                    <p>Создание песен в Suno AI</p>
-                    <div class="vibe-description">Генерация промптов для создания песен с текстом, жанром и структурой</div>
-                    <div class="vibe-tags">
-                        <span class="vibe-tag">музыка</span>
-                        <span class="vibe-tag">тексты</span>
-                        <span class="vibe-tag">Suno</span>
-                    </div>
-                </div>
-
-                <div class="type-card" data-type="youtube">
-                    <h3>📺 YouTube</h3>
-                    <p>Создание контента для YouTube</p>
-                    <div class="vibe-description">Генерация промптов для названий, описаний и тегов YouTube каналов</div>
-                    <div class="vibe-tags">
-                        <span class="vibe-tag">видео</span>
-                        <span class="vibe-tag">SEO</span>
-                        <span class="vibe-tag">контент</span>
-                    </div>
-                </div>
-
-                <div class="type-card" data-type="school">
-                    <h3>📚 Учёба и школа</h3>
-                    <p>Написание сочинений, решение задач и тд</p>
-                    <div class="vibe-description">Генерация промптов для написания сочинений, решения задач и тд</div>
-                    <div class="vibe-tags">
-                        <span class="vibe-tag">школа</span>
-                        <span class="vibe-tag">учеба</span>
-                        <span class="vibe-tag">сочинения</span>
-                    </div>
-                </div>
-                
-                <div class="type-card" data-type="setup">
-                    <h3>💻 Приложения</h3>
-                    <p>Написание кода приложений</p>
-                    <div class="vibe-description">Генерация промптов для написания кода для приложения для MacOS, Linux, Windows и тд.</div>
-                    <div class="vibe-tags">
-                        <span class="vibe-tag">приложения</span>
-                        <span class="vibe-tag">windows</span>
-                        <span class="vibe-tag">установщик</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-        <!-- Секция примеров -->
-        <section id="examples" class="examples">
+        <!-- Секция преимуществ -->
+        <section class="possibilities">
             <div class="container">
-                <h2 class="section-title">Примеры промптов</h2>
-                <div class="gallery">
-                    <div class="gallery-item">
-                        <img src="images/example1.jpg" alt="Пример промпта 1" data-full="images/example1-full.jpg">
-                        <div class="gallery-item-info">
-                            <h4>Рецепт веганского бургера</h4>
-                            <p>Промпт был создан в TAIPrompts</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="images/example2.jpg" alt="Пример промпта 2" data-full="images/example2-full.jpg">
-                        <div class="gallery-item-info">
-                            <h4>Стикерпак для Telegram</h4>
-                            <p>Промпт был создан в TAIPrompts</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="images/example3.jpg" alt="Пример промпта 3" data-full="images/example3-full.jpg">
-                        <div class="gallery-item-info">
-                            <h4>3D модель животного</h4>
-                            <p>Промпт был создан в TAIPrompts</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="images/example4.jpg" alt="Пример промпта 4" data-full="images/example4-full.jpg">
-                        <div class="gallery-item-info">
-                            <h4>Мод для Майнкрафт</h4>
-                            <p>Промпт был создан в TAIPrompts</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Лайтбокс для галереи -->
-        <div class="lightbox">
-            <span class="close-lightbox">&times;</span>
-            <img class="lightbox-content" id="lightbox-img">
-            <div class="lightbox-caption"></div>
-        </div>
-
-        <!-- Секция возможностей -->
-        <section id="possibilities" class="possibilities">
-            <div class="container">
-                <h2 class="section-title">Возможности TAIPrompts</h2>
+                <h2 class="section-title">Преимущества TAIPrompts</h2>
                 <div class="possibilities-grid">
                     <div class="possibility-card">
                         <div class="possibility-icon">🚀</div>
@@ -408,169 +175,41 @@
                     </div>
                     <div class="possibility-card">
                         <div class="possibility-icon">🔍</div>
-                        <h3>Поиск по базе</h3>
-                        <p>Ищите промпты по категориям и ключевым словам</p>
+                        <h3>14 категорий</h3>
+                        <p>От рецептов и стикеров до Minecraft модов и YouTube контента</p>
                     </div>
                     <div class="possibility-card">
-                        <div class="possibility-icon">🔄</div>
-                        <h3>Регулярные обновления</h3>
-                        <p>Мы постоянно добавляем новые шаблоны и возможности</p>
+                        <div class="possibility-icon">🤖</div>
+                        <h3>Технические шаблоны</h3>
+                        <p>Готовые параметры для точных промптов любой сложности</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Секция описания -->
-        <section id="about" class="about">
+        <!-- Призыв к действию -->
+        <section class="cta">
             <div class="container">
-                <h2 class="section-title">О TAIPrompts</h2>
-                <div class="about-content">
-                    <div class="about-text">
-                        <p>TAIPrompts - это современный генератор промптов для ChatGPT, созданный в 2025 году. Наша цель - помочь пользователям максимально эффективно использовать возможности искусственного интеллекта для решения различных задач.</p>
-                        <p>Мы предлагаем готовые шаблоны промптов для различных категорий, включая рецепты, стикеры, изображения, игры, 3D модели, Minecraft, Telegram боты, веб-сайты и многое другое.</p>
-                        <p>С помощью нашего сервиса вы можете не только использовать готовые промпты, но и кастомизировать их под свои конкретные нужды, выбирая тон, добавляя детали и уточнения.</p>
-                    </div>
-                    <div class="about-stats">
-                        <div class="stat">
-                            <span class="stat-number">9999+</span>
-                            <span class="stat-label">Промптов</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">10+</span>
-                            <span class="stat-label">Категорий</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">1000+</span>
-                            <span class="stat-label">Пользователей</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">90%</span>
-                            <span class="stat-label">Довольных клиентов</span>
-                        </div>
-                    </div>
+                <div class="card" style="text-align: center; max-width: 800px; margin: 0 auto;">
+                    <h2 style="margin-bottom: 1rem;">Готовы начать?</h2>
+                    <p style="margin-bottom: 2rem; color: var(--secondary-color); font-size: 1.1rem;">
+                        Попробуйте наш генератор промптов прямо сейчас. Это бесплатно и не требует регистрации!
+                    </p>
+                    <a href="generator.html" class="btn btn-primary" style="font-size: 1.1rem; padding: 15px 40px;">
+                        🚀 Начать генерацию
+                    </a>
                 </div>
             </div>
         </section>
-
-<!-- Секция скачивания -->
-<section id="download" class="download">
-    <div class="container">
-        <h2 class="section-title">Другие версии TAIPrompts</h2>
-        <div class="download-content">
-            <div class="download-info">
-                <div class="download-header">
-                    <h3>🚀 TAIPrompts Desktop</h3>
-                    <p class="download-subtitle">Скачайте десктопную версию для максимального комфорта работы</p>
-                </div>
-                    <div class="platform-card universal">
-                        <div class="platform-header">
-                            <div class="platform-icon">🌐</div>
-                            <div class="platform-title">
-                                <h4>Универсальная веб-версия</h4>
-                                <span class="platform-version">Всегда актуальная</span>
-                            </div>
-                        </div>
-                        <div class="platform-tags">
-                            <span class="platform-tag">🪟 Windows</span>
-                            <span class="platform-tag">📱 Android</span>
-                            <span class="platform-tag">🍎 iOS</span>
-                            <span class="platform-tag">🐧 Linux</span>
-                            <span class="platform-tag">💻 macOS</span>
-                        </div>
-                        <div class="features-list">
-                            <div class="feature">
-                                <span class="feature-icon">🚀</span>
-                                <div class="feature-text">
-                                    <strong>Мгновенный доступ</strong>
-                                    <span>Без установки и регистрации</span>
-                                </div>
-                            </div>
-                            <div class="feature">
-                                <span class="feature-icon">📱</span>
-                                <div class="feature-text">
-                                    <strong>Идеально для мобильных</strong>
-                                    <span>Адаптивный PWA-дизайн</span>
-                                </div>
-                            </div>
-                            <div class="feature">
-                                <span class="feature-icon">🔄</span>
-                                <div class="feature-text">
-                                    <strong>Автообновления</strong>
-                                    <span>Всегда последняя версия</span>
-                                </div>
-                            </div>
-                            <div class="feature">
-                                <span class="feature-icon">💫</span>
-                                <div class="feature-text">
-                                    <strong>Полный функционал</strong>
-                                    <span>Все 14 категорий промптов</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Дополнительные варианты -->
-                <div class="additional-downloads">
-                    <h4>🎮 Другие варианты</h4>
-                    <div class="additional-cards">
-                        <div class="additional-card">
-                            <div class="additional-icon">⛏️</div>
-                            <div class="additional-content">
-                                <h5>Мод для Minecraft</h5>
-                                <p>Forge 1.20.1 • Встроенный в игру генератор</p>
-                                <a href="https://drive.google.com/uc?export=download&id=1jj5iCR6OUr-ZAew15V3Pj4Ta0UVimy1m" 
-                                   class="btn btn-secondary btn-small" 
-                                   download="TAIPrompts-Mod-1.20.1.jar">
-                                    Скачать мод
-                                </a>
-                            </div>
-                        </div>
-                        <div class="additional-card">
-                            <div class="additional-icon">👹</div>
-                            <div class="additional-content">
-                                <h5>Дьявольская версия</h5>
-                                <p>Версия для Хеллоуина. Содержит 666</p>
-                                <a href="666.html" 
-                                   class="btn btn-secondary btn-small">
-                                    Перейти
-                                </a>
-                            </div>
-                        </div>
-                        <div class="additional-card">
-                            <div class="additional-icon">🎅</div>
-                            <div class="additional-content">
-                                <h5>Новогодняя версия</h5>
-                                <p>Специально для Нового года. Нового года не будет, Дед Мороз принял Ислам.</p>
-                                <a href="#download" 
-                                   class="btn btn-secondary btn-small">
-                                    Скоро
-                                </a>
-                            </div>
-                        </div>
-                        <div class="additional-card">
-                            <div class="additional-icon">🌺</div>
-                            <div class="additional-content">
-                                <h5>Весенняя версия</h5>
-                                <p>*кладу вам на стул подушку-пердушку* С 1 апреля!</p>
-                                <a href="#download" 
-                                   class="btn btn-secondary btn-small">
-                                    Скоро
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-             </div>
-          </div>
-</section>
         
+    </main>
+
     <!-- Футер -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <a href="#home" class="logo">
+                    <a href="index.html" class="logo">
                         <img src="images/logo.png" alt="TAIPrompts" class="logo-img">
                         <span class="logo-text">TAIPrompts</span>
                     </a>
@@ -579,11 +218,10 @@
                 <div class="footer-section">
                     <h4>Навигация</h4>
                     <ul>
-                        <li><a href="#home">Главная</a></li>
-                        <li><a href="#generation">Генерация</a></li>
-                        <li><a href="#examples">Примеры</a></li>
-                        <li><a href="#possibilities">Возможности</a></li>
-                        <li><a href="#about">Описание</a></li>
+                        <li><a href="index.html">Главная</a></li>
+                        <li><a href="generator.html">Генерация</a></li>
+                        <li><a href="about.html">Описание</a></li>
+                        <li><a href="versions.html">Другие версии</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -605,8 +243,4 @@
 
     <script src="main.js"></script>
 </body>
-
 </html>
-
-
-
