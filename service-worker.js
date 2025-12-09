@@ -2,8 +2,8 @@ const CACHE_NAME = 'taiprompts-v1.0';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/styles.css',
-  '/app.js',
+  '/style.css',
+  '/main.js',
   '/icon-192.png',
   '/icon-512.png',
   '/manifest.json'
