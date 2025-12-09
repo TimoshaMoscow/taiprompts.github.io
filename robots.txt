@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://timoshamoscow.github.io/taiprompts.github.io/sitemap.xml
