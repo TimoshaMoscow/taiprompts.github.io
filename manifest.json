@@ -1,11 +1,14 @@
 {
   "name": "TAIPrompts",
-  "short_name": "TAI",
-  "start_url": "./",
-  "scope": "./",
+  "short_name": "TAIPrompts",
+  "description": "Создавайте идеальные промпты для нейросетей",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#1a1a1a",
+  "background_color": "#121212",
+  "theme_color": "#2A6FB5",
+  "orientation": "portrait",
+  "lang": "ru",
   "icons": [
     {
       "src": "icons/icon-192.png",
