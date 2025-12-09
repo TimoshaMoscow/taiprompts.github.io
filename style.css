@@ -1510,3 +1510,340 @@ section {
         grid-template-columns: 1fr;
     }
 }
+
+/* Модальное окно кастомизации */
+.customization-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.customization-modal.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 25px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 2.5rem;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--card-border);
+    position: relative;
+    transform: translateY(20px);
+    transition: transform 0.3s;
+}
+
+.customization-modal.active .modal-content {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--card-border);
+}
+
+.modal-title {
+    font-size: 1.8rem;
+    color: var(--text-color);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 2rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.modal-close:hover {
+    background: var(--accent-color);
+    color: white;
+}
+
+.modal-body {
+    padding: 1rem 0;
+}
+
+/* Обновляем стили для секции генерации */
+.generation-content {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.info-banner {
+    background: linear-gradient(135deg, var(--accent-color), #4f6cf0);
+    border-radius: 20px;
+    padding: 2.5rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.info-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: translateX(-100%);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.info-banner h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: white;
+    position: relative;
+    z-index: 1;
+}
+
+.info-banner p {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+}
+
+.banner-steps {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.step-text {
+    color: white;
+    font-size: 0.9rem;
+    text-align: center;
+    max-width: 120px;
+}
+
+.prompt-types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.type-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--card-border);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.type-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    border-color: var(--accent-color);
+}
+
+.type-card h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+}
+
+.type-card p {
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+/* Адаптивность для новых карточек */
+@media (max-width: 992px) {
+    .prompt-types-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    
+    .info-banner {
+        padding: 2rem;
+    }
+    
+    .banner-steps {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .prompt-types-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+    
+    .type-card h3 {
+        font-size: 1.2rem;
+    }
+    
+    .info-banner h3 {
+        font-size: 1.5rem;
+    }
+    
+    .banner-steps {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .step {
+        flex-direction: row;
+        gap: 15px;
+        max-width: 300px;
+    }
+    
+    .step-text {
+        text-align: left;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 576px) {
+    .prompt-types-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .type-card {
+        padding: 1.2rem;
+    }
+    
+    .info-banner {
+        padding: 1.5rem;
+    }
+    
+    .info-banner h3 {
+        font-size: 1.3rem;
+    }
+}
+
+/* Особо маленькие экраны (до 400px) */
+@media (max-width: 400px) {
+    .type-card {
+        padding: 1rem;
+    }
+    
+    .type-card h3 {
+        font-size: 1.1rem;
+    }
+    
+    .vibe-description {
+        font-size: 0.85rem;
+    }
+    
+    .vibe-tag {
+        font-size: 0.65rem;
+        padding: 2px 6px;
+    }
+    
+    .info-banner {
+        padding: 1.2rem;
+    }
+    
+    .info-banner h3 {
+        font-size: 1.2rem;
+    }
+    
+    .info-banner p {
+        font-size: 0.95rem;
+    }
+}
+
+/* Очень маленькие экраны (до 320px) */
+@media (max-width: 320px) {
+    .type-card h3 {
+        font-size: 1rem;
+    }
+    
+    .type-card p {
+        font-size: 0.9rem;
+    }
+    
+    .info-banner {
+        padding: 1rem;
+    }
+    
+    .banner-steps {
+        gap: 10px;
+    }
+    
+    .step-number {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .step-text {
+        font-size: 0.8rem;
+    }
+}

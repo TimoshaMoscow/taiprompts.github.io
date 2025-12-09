@@ -4,11 +4,11 @@ const sections = document.querySelectorAll('section');
 const burger = document.querySelector('.burger');
 const navList = document.querySelector('.nav-list');
 
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("service-worker.js")
-          .then(() => console.log("SW registered"))
-          .catch((err) => console.error("SW error:", err));
-      }
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js")
+        .then(() => console.log("SW registered"))
+        .catch((err) => console.error("SW error:", err));
+}
 
 // Плавная прокрутка
 navLinks.forEach(link => {
@@ -60,6 +60,7 @@ window.addEventListener('scroll', function() {
 // Шаблоны промптов с техническими параметрами
 const promptTemplates = {
     recipes: {
+        name: "🍳 Рецепты",
         template: "Создай подробный рецепт {cuisine} кухни, блюда с описанием: '{idea}'. Ограничения: {dietary}, Сложность: {complexity}. Включи ингредиенты, пошаговое приготовление, время готовки и полезную информацию, например КБЖУ.",
         params: {
             cuisine: {
@@ -83,6 +84,7 @@ const promptTemplates = {
         }
     },
     minecraft: {
+        name: "⛏️ Моды Minecraft",
         template: "Разработай {type} для Minecraft {version} с описанием: '{idea}'. Особенности: {features}. Совместимость: {compatibility}. Детально опиши функционал, рецепты и механики. Также напиши структуру проекта, полный код и гайд по сборке проекта в Intellij IDEA если требуется. (Например для датапаков не нужен IDEA)",
         params: {
             type: {
@@ -112,6 +114,7 @@ const promptTemplates = {
         }
     },
     bots: {
+        name: "📱 Боты и автоматизация",
         template: "Создай {platform} бота на {language} с функционалом '{idea}'. Включи: описание функций, {functionality}, обработку сообщений и установочные инструкции. Добавить ИИ в бота: {ai}",
         params: {
             platform: {
@@ -128,7 +131,7 @@ const promptTemplates = {
             },
             functionality: {
                 type: 'multiselect',
-                label: 'Особеннности',
+                label: 'Особенности',
                 options: ['Админ-панель', 'Платежи', 'База данных', 'API интеграции', 'Модерация', 'Игры', 'Уведомления', 'Работа с файлами', 'Inline клавиатуры', 'Команды'],
                 default: 'Модерация'
             },
@@ -141,6 +144,7 @@ const promptTemplates = {
         }
     },
     websites: {
+        name: "🌐 Веб-сайты",
         template: "Разработай веб-сайт типа {type} на {stack} по описанию '{idea}'. Включи: структуру сайта, {features}. Основная палитра: {color}. Стиль сайта: {style}",
         params: {
             type: {
@@ -176,6 +180,7 @@ const promptTemplates = {
         }
     },
     images: {
+        name: "🎨 Генерация изображений",
         template: "Сгенерируй {style} изображение по описанию: '{idea}'. {aspect_ratio} {quality}. С детальным описанием: композиция, цвета, освещение, настроение и детали.",
         params: {
             style: {
@@ -199,6 +204,7 @@ const promptTemplates = {
         }
     },
     stickers: {
+        name: "🖼️ Стикеры и аватары",
         template: "Создай {style} стикерпак для {platform} с описанием: '{idea}'. Нужные эмоции: {emotions}. Включи разнообразные эмоции, действия и ситуации. Сделай всё на прозрачном фоне, чтобы можно было удобно вставить в любой мессенджер.",
         params: {
             style: {
@@ -222,6 +228,7 @@ const promptTemplates = {
         }
     },
     "3d": {
+        name: "🔷 3D модели",
         template: "Создай {style} 3D модель {type} на тему '{idea}'. ПО: {software} Полигональность: {polygons}. Детально опиши: геометрию, материалы, текстуры, освещение и рендеринг.",
         params: {
             style: {
@@ -251,6 +258,7 @@ const promptTemplates = {
         }
     },
     toys: {
+        name: "🧸 Игрушки",
         template: "Разработай концепцию {type} игрушки для {age_group} с описанием: '{idea}'. Материалы: {materials}. Включи описание: внешний вид, функционал, материалы и образовательную ценность.",
         params: {
             type: {
@@ -274,6 +282,7 @@ const promptTemplates = {
         }
     },
     ai: {
+        name: "🤖 AI & G4F",
         template: "Создай продвинутый промпт для ИИ на тему '{idea}'. Тип ИИ: {ai_type},  Сложность: {complexity}. Включи: контекст, ограничения, формат ответа и примеры.",
         params: {
             ai_type: {
@@ -291,6 +300,7 @@ const promptTemplates = {
         }
     },
     characterai: {
+        name: "🤖 Character AI",
         template: "Создай персонажа для Character AI с описанием '{idea}'. Характеристики: {personality} {appearance}, Тип имени: {name}, Тон общения: {tone}.",
         params: {
             name: {
@@ -320,6 +330,7 @@ const promptTemplates = {
         }
     },
     suno: {
+        name: "🎵 Suno AI",
         template: "Создай текст песни для Suno AI по описанию: '{idea}'. Жанр: {genre}, Стиль: {style}, Структура: {structure}, Особенности: {tempo} темп, {instruments}.",
         params: {
             genre: {
@@ -354,8 +365,8 @@ const promptTemplates = {
             }
         }
     },
-
     setup: {
+        name: "💻 Приложения",
         template: "Напиши полный код и структуру проекта для {type} на {lang} для {oc} с функционалом {hang}, и инструкцией по сборке для {setupper}. Подробное описание идеи: '{idea}'",
         params: {
             type: {
@@ -390,32 +401,32 @@ const promptTemplates = {
             }
         }
     },
-    
-school: {
-    template: "Помоги с заданием по предмету {subj}, Тип задания: {task}, Учусь в {class}. Подробности по заданию: '{idea}'.",
-    params: {
-        subj: {
-            type: 'select',
-            label: 'Предмет',
-            options: ['Математика', 'Русский', 'Литература', 'Информатика', 'География', 'Биология', 'Физика', 'История', 'Химия', 'Другое'],
-            default: 'Математика'
-        },
-        task: {
-            type: 'select',
-            label: 'Задание',
-            options: ['Задача', 'Чертёж', 'Сочинение', 'Изложение', 'Код', 'Сочинение-рассуждение', 'Другое'],
-            default: 'Задача'
-        },
-        class: {
-            type: 'select',
-            label: 'Класс',
-            options: ['1-4 класс', '5-8 класс', '9-11 класс', 'Колледж', 'Университет', '1 курс', '2 курс', '3 курс', 'Другой'],
-            default: '5-8 класс'
+    school: {
+        name: "📚 Учёба и школа",
+        template: "Помоги с заданием по предмету {subj}, Тип задания: {task}, Учусь в {class}. Подробности по заданию: '{idea}'.",
+        params: {
+            subj: {
+                type: 'select',
+                label: 'Предмет',
+                options: ['Математика', 'Русский', 'Литература', 'Информатика', 'География', 'Биология', 'Физика', 'История', 'Химия', 'Другое'],
+                default: 'Математика'
+            },
+            task: {
+                type: 'select',
+                label: 'Задание',
+                options: ['Задача', 'Чертёж', 'Сочинение', 'Изложение', 'Код', 'Сочинение-рассуждение', 'Другое'],
+                default: 'Задача'
+            },
+            class: {
+                type: 'select',
+                label: 'Класс',
+                options: ['1-4 класс', '5-8 класс', '9-11 класс', 'Колледж', 'Университет', '1 курс', '2 курс', '3 курс', 'Другой'],
+                default: '5-8 класс'
+            }
         }
-    }
-},
-    
+    },
     youtube: {
+        name: "📺 YouTube",
         template: "Создай контент для YouTube канала на тему '{idea}'. Формат контента: {content_type}, Целевая аудитория: {audience}, Частота выпуска: {frequency}, Превью: {thumbnail_style}, Монетизация контента: {monetization}",
         params: {
             content_type: {
@@ -452,15 +463,49 @@ school: {
     }
 };
 
-// Генерация промптов
-const typeCards = document.querySelectorAll('.type-card');
-const promptForm = document.getElementById('prompt-form');
-const customInput = document.getElementById('custom-input');
-const toneSelect = document.getElementById('tone-select');
-const finalPrompt = document.getElementById('final-prompt');
-const copyButton = document.getElementById('copy-prompt');
-
+// Модальное окно кастомизации
 let selectedType = 'recipes';
+const modal = document.createElement('div');
+modal.className = 'customization-modal';
+modal.innerHTML = `
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Кастомизация промпта</h3>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="prompt-form">
+                <div id="technical-params" class="technical-params"></div>
+                
+                <div class="form-group">
+                    <label for="custom-input">Ваша идея или описание</label>
+                    <textarea id="custom-input" placeholder="Опишите вашу идею детально..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tone-select">Стиль промпта</label>
+                    <select id="tone-select">
+                        <option value="professional">Профессиональный</option>
+                        <option value="friendly">Дружеский</option>
+                        <option value="creative">Креативный</option>
+                        <option value="technical">Технический</option>
+                        <option value="detailed">Детализированный</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Сгенерировать промпт</button>
+            </form>
+            
+            <div class="generated-prompt">
+                <h4>Ваш промпт:</h4>
+                <div id="final-prompt" class="prompt-output"></div>
+                <button id="copy-prompt" class="btn btn-secondary">Копировать промпт</button>
+            </div>
+        </div>
+    </div>
+`;
+
+document.body.appendChild(modal);
 
 // Функция отображения технических параметров
 function renderTechnicalParams(type) {
@@ -468,6 +513,9 @@ function renderTechnicalParams(type) {
     const params = promptTemplates[type]?.params || {};
     
     let html = '';
+    
+    // Добавляем заголовок с названием типа
+    html += `<h4 style="margin-bottom: 1.5rem; color: var(--accent-color);">${promptTemplates[type]?.name || type}</h4>`;
     
     for (const [key, param] of Object.entries(params)) {
         html += `<div class="param-group">`;
@@ -483,8 +531,9 @@ function renderTechnicalParams(type) {
         }
         else if (param.type === 'multiselect') {
             html += `<div class="multi-select" id="param-${key}">`;
+            const defaultValues = Array.isArray(param.default) ? param.default : [param.default];
             param.options.forEach(option => {
-                const checked = param.default.includes(option) ? 'checked' : '';
+                const checked = defaultValues.includes(option) ? 'checked' : '';
                 html += `
                     <label class="checkbox-label">
                         <input type="checkbox" value="${option}" ${checked}>
@@ -501,18 +550,51 @@ function renderTechnicalParams(type) {
     container.innerHTML = html || '<p>Для этого типа промпта не требуется дополнительных параметров.</p>';
 }
 
-// Обработчик выбора типа промпта
+// Обработчик выбора типа промпта (открытие модального окна)
+const typeCards = document.querySelectorAll('.type-card');
 typeCards.forEach(card => {
     card.addEventListener('click', function() {
-        typeCards.forEach(c => c.classList.remove('active'));
-        this.classList.add('active');
-        
         selectedType = this.getAttribute('data-type');
+        
+        // Обновляем заголовок модального окна
+        const modalTitle = modal.querySelector('.modal-title');
+        modalTitle.textContent = `Кастомизация: ${promptTemplates[selectedType]?.name || selectedType}`;
+        
+        // Рендерим параметры
         renderTechnicalParams(selectedType);
+        
+        // Сбрасываем форму
+        const form = modal.querySelector('#prompt-form');
+        form.reset();
+        modal.querySelector('#final-prompt').textContent = '';
+        
+        // Показываем модальное окно
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
     });
 });
 
+// Закрытие модального окна
+modal.querySelector('.modal-close').addEventListener('click', function() {
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+});
+
+// Закрытие по клику вне окна
+modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+});
+
 // Генерация финального промпта
+const promptForm = modal.querySelector('#prompt-form');
+const customInput = modal.querySelector('#custom-input');
+const toneSelect = modal.querySelector('#tone-select');
+const finalPrompt = modal.querySelector('#final-prompt');
+const copyButton = modal.querySelector('#copy-prompt');
+
 promptForm.addEventListener('submit', function(e) {
     e.preventDefault();
     
@@ -533,13 +615,13 @@ promptForm.addEventListener('submit', function(e) {
     const params = {};
     for (const [key, param] of Object.entries(promptTemplates[selectedType].params)) {
         if (param.type === 'select') {
-            const selectElement = document.getElementById(`param-${key}`);
+            const selectElement = modal.querySelector(`#param-${key}`);
             if (selectElement) {
                 params[key] = selectElement.value;
             }
         }
         else if (param.type === 'multiselect') {
-            const container = document.getElementById(`param-${key}`);
+            const container = modal.querySelector(`#param-${key}`);
             if (container) {
                 const checkboxes = container.querySelectorAll('input[type="checkbox"]:checked');
                 params[key] = Array.from(checkboxes).map(cb => cb.value).join(', ');
@@ -570,6 +652,9 @@ promptForm.addEventListener('submit', function(e) {
     
     finalPromptText = tonePrefix + finalPromptText;
     finalPrompt.textContent = finalPromptText;
+    
+    // Прокручиваем к результату
+    finalPrompt.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 });
 
 // Копирование промпта
@@ -583,9 +668,11 @@ copyButton.addEventListener('click', function() {
         .then(() => {
             const originalText = this.textContent;
             this.textContent = 'Скопировано!';
+            this.classList.add('btn-primary');
             
             setTimeout(() => {
                 this.textContent = originalText;
+                this.classList.remove('btn-primary');
             }, 2000);
         })
         .catch(err => {
@@ -644,9 +731,6 @@ window.addEventListener('load', checkScroll);
 
 // Инициализация
 document.addEventListener('DOMContentLoaded', function() {
-    // Инициализируем первый тип промпта
-    renderTechnicalParams(selectedType);
-    
     // Добавляем задержки для анимации
     document.querySelectorAll('.type-card').forEach((card, index) => {
         card.classList.add(`delay-${index % 3}`);
@@ -654,4 +738,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Инициализируем первую проверку для анимаций
     checkScroll();
+    
+    // Закрытие модального окна по Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+    });
 });
