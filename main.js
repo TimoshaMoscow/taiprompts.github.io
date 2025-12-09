@@ -1,3 +1,19 @@
+console.log('=== TAIPrompts Debug ===');
+console.log('Current page:', window.location.pathname);
+console.log('Files in project:');
+
+// Проверим доступность файлов
+const files = ['index.html', 'generator.html', 'about.html', 'versions.html'];
+files.forEach(file => {
+  fetch(file)
+    .then(response => {
+      console.log(`${file}: ${response.ok ? '✅ OK' : '❌ Not found'}`);
+    })
+    .catch(error => {
+      console.log(`${file}: ❌ Error - ${error.message}`);
+    });
+});
+
 // Навигация
 const navLinks = document.querySelectorAll('.nav-link');
 const sections = document.querySelectorAll('section');
