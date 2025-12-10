@@ -192,10 +192,13 @@ input:checked + .slider:before {
 
 /* Герой секция */
 .hero {
-    padding: 120px 0 80px;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
+    background: linear-gradient(rgba(45, 45, 45, 0.8), rgba(45, 45, 45, 0.8)), 
+    url('hero-bg.jpg') center/cover no-repeat;
+    color: var(--white);
+    padding: 80px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
 }
 
 .hero .container {
@@ -215,12 +218,6 @@ input:checked + .slider:before {
     font-size: 1.2rem;
     margin-bottom: 2rem;
     color: var(--secondary-color);
-}
-
-.hero-image img {
-    width: 100%;
-    border-radius: 20px;
-    box-shadow: var(--shadow);
 }
 
 /* Кнопки */
