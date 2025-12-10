@@ -159,27 +159,9 @@ input:checked + .slider:before {
 }
 
 .burger {
-    /* Базовые настройки макета */
-    display: flex;
+    display: none;
     flex-direction: column;
-    justify-content: space-around; /* Равномерно распределяем линии */
-    box-sizing: border-box; /* Учитывает padding в общей ширине/высоте */
-    cursor: pointer; /* Курсор остается, даже если нет hover эффекта */
-
-    /* Визуальный стиль из .card (Glassmorphism): */
-    width: 50px;           /* Ширина всего блока бургера */
-    height: 40px;          /* Высота всего блока бургера */
-    padding: 8px;          /* Отступы внутри блока */
-    
-    background: rgba(255, 255, 255, 0.05); /* Полупрозрачный фон */
-    backdrop-filter: blur(10px);           /* Эффект размытия фона */
-    -webkit-backdrop-filter: blur(10px);
-    
-    border-radius: 12px;                  /* Скругленные углы */
-    border: 1px solid var(--card-border, rgba(255, 255, 255, 0.18)); /* Тонкая граница */
-    box-shadow: var(--shadow, 0 4px 12px rgba(0, 0, 0, 0.1));
-    
-    /* Убраны transition, transform и :hover */
+    cursor: pointer;
 }
 
 .burger span {
@@ -192,13 +174,10 @@ input:checked + .slider:before {
 
 /* Герой секция */
 .hero {
-    background: linear-gradient(rgba(45, 45, 45, 0.8), rgba(45, 45, 45, 0.8)), 
-    url('hero-bg.jpg') center/cover no-repeat;
-    color: var(--white);
-    padding: 80px 0;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+    padding: 120px 0 80px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
 }
 
 .hero .container {
@@ -218,6 +197,12 @@ input:checked + .slider:before {
     font-size: 1.2rem;
     margin-bottom: 2rem;
     color: var(--secondary-color);
+}
+
+.hero-image img {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
 }
 
 /* Кнопки */
