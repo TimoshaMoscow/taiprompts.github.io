@@ -1,4 +1,4 @@
-const CACHE_NAME = 'taiprompts-v1.4.2';
+const CACHE_NAME = 'taiprompts-v1.4.3';
 const urlsToCache = [
   '/',
   '/index.html',
