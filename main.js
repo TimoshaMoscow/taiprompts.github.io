@@ -687,7 +687,7 @@ if (sections.length > 0) {
         finalPromptText = finalPromptText.replace(/\{[^}]+\}/g, '');
         finalPromptText = tonePrefix + finalPromptText;
         // Добавляем водяной знак
-        finalPromptText += '\n\n---\nСгенерировано в TAIPrompts. https://timoshamoscow.github.io/taiprompts.github.io/';
+        finalPromptText += '\n\n---\nПромпт сгенерирован в TAIPrompts. Скоро...';
         finalPrompt.textContent = finalPromptText;
         
         finalPrompt.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
