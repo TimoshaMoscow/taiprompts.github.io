@@ -18,7 +18,6 @@ files.forEach(file => {
 const navLinks = document.querySelectorAll('.nav-link');
 const burger = document.querySelector('.burger');
 const navList = document.querySelector('.nav-list');
-const login = document.querySelector('.login');
 const sections = document.querySelectorAll('section');
 
 // Service Worker
