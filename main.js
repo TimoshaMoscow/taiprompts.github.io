@@ -161,7 +161,7 @@ if (sections.length > 0) {
         },
         bots: {
             name: "📱 Боты и автоматизация",
-            template: "Создай {platform} бота на {language} с функционалом '{idea}'. Включи: описание функций, {functionality}, обработку сообщений и установочные инструкции. Добавить ИИ в бота: {ai}",
+            template: "Создай бота на {language} для платформы {platform}, с функционалом '{idea}'. Включи: описание функций, {functionality}, обработку сообщений и установочные инструкции. Добавить ИИ в бота: {ai}",
             params: {
                 platform: {
                     type: 'select',
@@ -352,7 +352,7 @@ if (sections.length > 0) {
                 name: {
                     type: 'select',
                     label: 'Тип имени',
-                    options: ['Реалистичное', 'Фэнтези', 'Научно-фантастическое', 'Историческое', 'Аниме', 'Уникальное'],
+                    options: ['Реалистичное', 'Фэнтези', 'Научно-фантастическое', 'Историческое', 'Аниме', 'Уникальное', 'Другое'],
                     default: 'Реалистичное'
                 },
                 personality: {
@@ -377,7 +377,7 @@ if (sections.length > 0) {
         },
         suno: {
             name: "🎵 Suno AI",
-            template: "Создай текст песни для Suno AI по описанию: '{idea}'. Жанр: {genre}, Стиль: {style}, Структура: {structure}, Особенности: {tempo} темп, {instruments}.",
+            template: "Создай текст песни для Suno AI по описанию: '{idea}'. Жанр: {genre}, Стиль: {style}, Структура: {structure}, Особенности: {tempo} темп, {instruments}. Оформление типа: [Verse], [Chorus], [Verse 2] и тд.",
             params: {
                 genre: {
                     type: 'select',
