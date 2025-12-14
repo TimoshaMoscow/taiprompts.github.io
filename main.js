@@ -1,3 +1,25 @@
+async function inject(id, url) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const res = await fetch(url, { cache: "no-store" });
+  el.innerHTML = await res.text();
+}
+
+function setActiveNavLink() {
+  const path = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-link').forEach(a => {
+    const href = a.getAttribute('href');
+    a.classList.toggle('active', href === path);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await inject('site-header', 'components/header.html');
+  await inject('site-footer', 'components/footer.html');
+
+  setActiveNavLink();
+});
+
 console.log('=== TAIPrompts Debug ===');
 console.log('Current page:', window.location.pathname);
 console.log('Files in project:');
