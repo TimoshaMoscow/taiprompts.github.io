@@ -820,29 +820,3 @@ function checkScroll() {
 
 window.addEventListener('scroll', checkScroll);
 window.addEventListener('load', checkScroll);
-
-const loginModal = document.getElementById('login-modal');
-const openLogin = document.getElementById('open-login');
-const closeLogin = document.getElementById('close-login');
-
-if (openLogin && loginModal) {
-    openLogin.addEventListener('click', () => {
-        loginModal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    });
-}
-
-if (closeLogin && loginModal) {
-    closeLogin.addEventListener('click', closeModal);
-}
-
-loginModal?.addEventListener('click', (e) => {
-    if (e.target.classList.contains('modal-overlay')) {
-        closeModal();
-    }
-});
-
-function closeModal() {
-    loginModal.classList.remove('active');
-    document.body.style.overflow = '';
-}
