@@ -1,14 +1,3 @@
-/* =========================
-   TAIPrompts main.js (FULL)
-   - Header/Footer inject
-   - Burger menu works with injected header
-   - Active nav link
-   - Prompt generator (ALL templates + modal)
-   - Lightbox (if exists)
-   - Scroll animations
-   - Service Worker register
-========================= */
-
 async function inject(id, url) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -931,6 +920,12 @@ function runDebug() {
 document.addEventListener("DOMContentLoaded", async () => {
   await inject("site-header", "components/header.html");
   await inject("site-footer", "components/footer.html");
+
+// Автообновление года в футере
+const yearEl = document.getElementById('currentYear');
+if (yearEl) {
+  yearEl.textContent = new Date().getFullYear();
+}
 
   setActiveNavLink();
   initNav();
