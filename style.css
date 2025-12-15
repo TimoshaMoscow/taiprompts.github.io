@@ -212,12 +212,17 @@ input:checked + .slider:before {
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45);
+    background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.65) 0%,   /* сильное затемнение слева */
+        rgba(0, 0, 0, 0.45) 25%, /* плавное ослабление */
+        rgba(0, 0, 0, 0.20) 55%, /* среднее */
+        rgba(0, 0, 0, 0.05) 75%, /* почти нет */
+        rgba(0, 0, 0, 0) 100%    /* прозрачность справа */
+    );
     backdrop-filter: blur(2px);
     z-index: 1;
 }
-
-
 
 /* Кнопки */
 .btn {
