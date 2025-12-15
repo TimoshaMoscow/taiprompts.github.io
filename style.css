@@ -188,12 +188,8 @@ input:checked + .slider:before {
     grid-template-columns: 1fr 1fr;
     gap: 40px;
     align-items: center;
-}
-
-.hero .container,
-.hero * {
     position: relative;
-    z-index: 2;
+    z-index: 3;
 }
 
 .hero-title {
@@ -1864,3 +1860,78 @@ section {
         font-size: 0.8rem;
     }
 }
+
+/* Летающие карточки в hero */
+.hero-flying-cards {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none; /* чтобы не мешали кликам */
+}
+
+.hero-card {
+    position: absolute;
+    background: rgba(33, 37, 41, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 14px 22px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #fff;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+.hero-card:nth-child(1) {
+    top: 20%;
+    left: 55%;
+    animation: floatA 14s infinite;
+}
+
+.hero-card:nth-child(2) {
+    top: 35%;
+    left: 70%;
+    animation: floatB 11s infinite;
+}
+
+.hero-card:nth-child(3) {
+    top: 55%;
+    left: 60%;
+    animation: floatC 16s infinite;
+}
+
+.hero-card:nth-child(4) {
+    top: 30%;
+    left: 82%;
+    animation: floatB 13s infinite;
+}
+
+.hero-card:nth-child(5) {
+    top: 65%;
+    left: 75%;
+    animation: floatA 18s infinite;
+}
+
+@keyframes floatA {
+    0%   { transform: translate(0, 0); }
+    50%  { transform: translate(-20px, -10px); }
+    100% { transform: translate(10px, 8px); }
+}
+
+@keyframes floatB {
+    0%   { transform: translate(0, 0); }
+    50%  { transform: translate(15px, -15px); }
+    100% { transform: translate(-10px, 10px); }
+}
+
+@keyframes floatC {
+    0%   { transform: translate(0, 0); }
+    50%  { transform: translate(-15px, 12px); }
+    100% { transform: translate(18px, -8px); }
+}
+
+
