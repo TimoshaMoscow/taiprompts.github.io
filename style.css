@@ -1934,4 +1934,9 @@ section {
     100% { transform: translate(18px, -8px); }
 }
 
+@media (max-width: 768px) {
+    .hero-flying-cards {
+        display: none;
+    }
+}
 
