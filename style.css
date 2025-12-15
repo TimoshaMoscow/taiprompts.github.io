@@ -208,12 +208,6 @@ input:checked + .slider:before {
     color: var(--secondary-color);
 }
 
-.hero-image img {
-    width: 100%;
-    border-radius: 20px;
-    box-shadow: var(--shadow);
-}
-
 .hero::before {
     content: "";
     position: absolute;
