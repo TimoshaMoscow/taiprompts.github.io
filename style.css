@@ -174,10 +174,13 @@ input:checked + .slider:before {
 
 /* Герой секция */
 .hero {
-    padding: 120px 0 80px;
+    position: relative;
     min-height: 100vh;
     display: flex;
     align-items: center;
+    background: url('images/hero-bg.jpg') center/cover no-repeat;
+    padding: 120px 0 80px;
+    overflow: hidden;
 }
 
 .hero .container {
@@ -185,6 +188,12 @@ input:checked + .slider:before {
     grid-template-columns: 1fr 1fr;
     gap: 40px;
     align-items: center;
+}
+
+.hero .container,
+.hero * {
+    position: relative;
+    z-index: 2;
 }
 
 .hero-title {
@@ -204,6 +213,17 @@ input:checked + .slider:before {
     border-radius: 20px;
     box-shadow: var(--shadow);
 }
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(2px);
+    z-index: 1;
+}
+
+
 
 /* Кнопки */
 .btn {
