@@ -192,12 +192,6 @@ input:checked + .slider:before {
     z-index: 3;
 }
 
-.hero .scrolldown {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    color: var(--secondary-color);
-    text-align: center;
-
 .hero-title {
     font-size: 3rem;
     margin-bottom: 1.5rem;
