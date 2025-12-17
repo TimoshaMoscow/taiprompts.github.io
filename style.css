@@ -2182,93 +2182,178 @@ table.pricing-table {
   }
 }
 
-/* ===== Development / Roadmap page ===== */
+/* ===== TAIPrompts Roadmap (красивый таймлайн) ===== */
 
-.dev-page { padding-top: 80px; } /* запас под фикс-хедер */
+.dev-page { padding-top: 0; }
 
+/* Хиро */
 .dev-hero {
-  padding: 60px 0 30px;
+  padding: 40px 0 25px;
   text-align: center;
 }
 
 .dev-title {
   font-size: 3rem;
-  line-height: 1.15;
+  line-height: 1.1;
   margin-bottom: 12px;
+  letter-spacing: -0.02em;
 }
 
 .dev-subtitle {
-  max-width: 820px;
+  max-width: 860px;
   margin: 0 auto 18px;
   color: var(--secondary-color);
   font-size: 1.1rem;
 }
 
 .dev-alert {
-  max-width: 900px;
+  max-width: 980px;
   margin: 0 auto;
   padding: 14px 18px;
-  border-radius: 16px;
-  border: 1px solid rgba(251, 191, 36, 0.35);
-  background: rgba(251, 191, 36, 0.10);
-  color: #fcd34d;
+  border-radius: 18px;
+  border: 1px solid rgba(251, 191, 36, 0.25);
+  background: rgba(251, 191, 36, 0.08);
+  color: #fde68a;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
 }
 
-.dev-roadmap { padding: 50px 0 80px; }
+/* Родмапа как таймлайн */
+.dev-roadmap {
+  padding: 40px 0 80px;
+}
 
 .dev-columns {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr 70px 1fr;
   gap: 22px;
+  margin-top: 40px;
   align-items: start;
-  margin-top: 30px;
 }
 
+/* центральная линия */
+.dev-columns::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    to bottom,
+    rgba(94,114,228,0.0),
+    rgba(94,114,228,0.45),
+    rgba(94,114,228,0.15),
+    rgba(94,114,228,0.45),
+    rgba(94,114,228,0.0)
+  );
+}
+
+/* колонки */
+.dev-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dev-col:nth-child(1) { grid-column: 1; }
+.dev-col:nth-child(2) { grid-column: 3; }
+.dev-col:nth-child(3) { grid-column: 1; }
+
+/* небольшой “зигзаг” по высоте, чтобы было динамично */
+.dev-col:nth-child(2) { margin-top: 35px; }
+.dev-col:nth-child(3) { margin-top: 70px; }
+
+/* заголовки колонок */
 .dev-col-head {
-  padding: 0 6px 14px;
+  padding: 18px 18px 0;
 }
 
 .dev-col-head h3 {
   margin-top: 10px;
   margin-bottom: 6px;
+  font-size: 1.35rem;
 }
 
-.dev-col-head p { color: var(--secondary-color); }
+.dev-col-head p {
+  color: var(--secondary-color);
+}
 
+/* пилюли */
 .dev-pill {
   display: inline-flex;
-  padding: 6px 12px;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
   border-radius: 999px;
   border: 1px solid var(--card-border);
   background: rgba(255,255,255,0.06);
-  font-weight: 700;
+  font-weight: 800;
   font-size: 0.85rem;
+  letter-spacing: 0.02em;
 }
 
-.dev-pill-now  { box-shadow: 0 0 0 1px rgba(94,114,228,0.25) inset; }
+.dev-pill-now  { box-shadow: 0 0 0 1px rgba(94,114,228,0.22) inset; }
 .dev-pill-next { box-shadow: 0 0 0 1px rgba(16,185,129,0.18) inset; }
 .dev-pill-later{ box-shadow: 0 0 0 1px rgba(236,72,153,0.16) inset; }
 
-.dev-cards { display: grid; gap: 14px; }
-
-.dev-card h4 {
-  margin: 10px 0 6px;
-  font-size: 1.1rem;
+/* карточки */
+.dev-cards {
+  display: grid;
+  gap: 14px;
+  padding: 0 18px 18px;
 }
 
-.dev-card p { color: var(--secondary-color); }
+/* слегка “премиум” вид */
+.dev-card {
+  border-radius: 22px;
+  position: relative;
+  overflow: hidden;
+}
 
+.dev-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 0%, rgba(94,114,228,0.18), transparent 40%),
+              radial-gradient(circle at 80% 20%, rgba(255,255,255,0.05), transparent 45%);
+  pointer-events: none;
+}
+
+.dev-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(94,114,228,0.35);
+}
+
+/* верхушка карточки */
 .dev-card-top {
   display: flex;
   justify-content: space-between;
   gap: 10px;
   align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
+.dev-card h4 {
+  margin: 10px 0 6px;
+  font-size: 1.12rem;
+  position: relative;
+  z-index: 1;
+}
+
+.dev-card p {
+  color: var(--secondary-color);
+  position: relative;
+  z-index: 1;
+}
+
+/* статус */
 .dev-status {
   font-size: 0.8rem;
-  font-weight: 700;
-  padding: 5px 10px;
+  font-weight: 800;
+  padding: 6px 11px;
   border-radius: 999px;
   border: 1px solid var(--card-border);
   background: rgba(255,255,255,0.06);
@@ -2278,32 +2363,88 @@ table.pricing-table {
 .dev-status-next { color: #bbf7d0; }
 .dev-status-later{ color: #fbcfe8; }
 
+/* тег */
 .dev-tag {
   font-size: 0.8rem;
-  padding: 5px 10px;
+  padding: 6px 11px;
   border-radius: 999px;
   background: rgba(94,114,228,0.12);
   color: var(--accent-color);
   border: 1px solid rgba(94,114,228,0.25);
 }
 
-.dev-footer {
-  margin-top: 26px;
+/* точки на таймлайне — по одной на колонку */
+.dev-col {
+  position: relative;
+}
+
+.dev-col::after {
+  content: "";
+  position: absolute;
+  top: 34px;
+  left: calc(100% + 35px);
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: var(--accent-color);
+  box-shadow: 0 0 0 6px rgba(94,114,228,0.15), 0 10px 25px rgba(0,0,0,0.35);
+}
+
+.dev-col:nth-child(2)::after {
+  left: auto;
+  right: calc(100% + 35px);
+  background: rgba(16,185,129,1);
+  box-shadow: 0 0 0 6px rgba(16,185,129,0.12), 0 10px 25px rgba(0,0,0,0.35);
+}
+
+.dev-col:nth-child(3)::after {
+  background: rgba(236,72,153,1);
+  box-shadow: 0 0 0 6px rgba(236,72,153,0.12), 0 10px 25px rgba(0,0,0,0.35);
+}
+
+/* нижний блок по центру */
+.dev-footer-centered {
+  margin: 30px auto 0;
+  max-width: 900px;
   text-align: center;
+  padding: 2.3rem;
 }
 
-.dev-footer p {
+.dev-footer-centered p {
   color: var(--secondary-color);
-  max-width: 850px;
-  margin: 8px auto 0;
+  margin-top: 10px;
+  font-size: 1rem;
+  line-height: 1.7;
 }
 
-/* Responsive */
+/* Адаптив */
 @media (max-width: 992px) {
-  .dev-title { font-size: 2.4rem; }
-  .dev-columns { grid-template-columns: 1fr; }
+  .dev-title { font-size: 2.3rem; }
+
+  .dev-columns {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .dev-columns::before { display: none; }
+
+  .dev-col:nth-child(1),
+  .dev-col:nth-child(2),
+  .dev-col:nth-child(3) {
+    grid-column: auto;
+    margin-top: 0;
+  }
+
+  .dev-col::after {
+    display: none;
+  }
+
+  .dev-col-head { padding: 18px 18px 0; }
+  .dev-cards { padding: 0 18px 18px; }
 }
 
 @media (max-width: 576px) {
   .dev-title { font-size: 2rem; }
+  .dev-alert { border-radius: 16px; }
+  .dev-footer-centered { padding: 2rem 1.4rem; }
 }
