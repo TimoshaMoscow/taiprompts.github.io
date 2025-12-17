@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Тарифы — TAIPrompts</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- inject placeholders -->
+  <div id="site-header"></div>
+
+  <!-- чтобы контент не прятался под fixed header -->
+  <div style="height: 90px;"></div>
+
+  <section class="pricing pricing-hero">
+    <div class="container">
+
+      <div class="pricing-warning">
+        ⚠️ Покупка подписок временно недоступна. Покупка подписок будет доступна скоро. Следите за новостями!
+      </div>
+
+      <h2 class="section-title">Тарифы</h2>
+      <p class="pricing-subtitle">
+        Названия уровней внутри продукта: <b>FREE / BASE / PRO / Полный / Студия</b>.
+        Сейчас кнопки покупки отключены — страница нужна для сравнения возможностей.
+      </p>
+
+      <div class="pricing-grid">
+
+        <!-- FREE -->
+        <div class="card pricing-card current">
+          <h3 class="pricing-title">FREE</h3>
+          <div class="pricing-price">0 ₽ <span>/ мес</span></div>
+
+          <ul class="pricing-features">
+            <li>Базовые категории для старта</li>
+            <li>Подходит, чтобы “попробовать продукт”</li>
+            <li>Премиум-категории видны — мотивируют апгрейд</li>
+          </ul>
+
+          <button class="btn pricing-btn disabled" type="button" aria-disabled="true">
+            У вас уже есть эта подписка
+          </button>
+        </div>
+
+        <!-- BASE -->
+        <div class="card pricing-card">
+          <h3 class="pricing-title">BASE</h3>
+          <div class="pricing-price">199 ₽ <span>/ мес</span></div>
+
+          <ul class="pricing-features">
+            <li>Все возможности FREE</li>
+            <li>+ творческие категории</li>
+            <li>Оптимально для школьников/дизайна</li>
+          </ul>
+
+          <button class="btn pricing-btn disabled" type="button" aria-disabled="true">
+            Покупка недоступна
+          </button>
+        </div>
+
+        <!-- PRO -->
+        <div class="card pricing-card popular">
+          <div class="pricing-badge">Популярный</div>
+          <h3 class="pricing-title">PRO</h3>
+          <div class="pricing-price">399 ₽ <span>/ мес</span></div>
+
+          <ul class="pricing-features">
+            <li>Полный технический функционал</li>
+            <li>Лучшее соотношение цена/возможности</li>
+            <li>Подходит 90% пользователей</li>
+          </ul>
+
+          <button class="btn pricing-btn disabled" type="button" aria-disabled="true">
+            Покупка недоступна
+          </button>
+        </div>
+
+        <!-- FULL -->
+        <div class="card pricing-card">
+          <h3 class="pricing-title">ПОЛНЫЙ</h3>
+          <div class="pricing-price">899 ₽ <span>/ мес</span></div>
+
+          <ul class="pricing-features">
+            <li>Все категории PRO</li>
+            <li>+ генерация приложений и установщиков</li>
+            <li>Без ограничений (кроме Студии)</li>
+          </ul>
+
+          <button class="btn pricing-btn disabled" type="button" aria-disabled="true">
+            Покупка недоступна
+          </button>
+        </div>
+
+        <!-- STUDIO -->
+        <div class="card pricing-card">
+          <h3 class="pricing-title">СТУДИЯ</h3>
+          <div class="pricing-price">1299 ₽ <span>/ мес</span></div>
+
+          <ul class="pricing-features">
+            <li>Владелец — ПОЛНЫЙ</li>
+            <li>До 10 участников — PRO</li>
+            <li>Командные проекты/коллекции</li>
+          </ul>
+
+          <button class="btn pricing-btn disabled" type="button" aria-disabled="true">
+            Покупка недоступна
+          </button>
+        </div>
+
+      </div>
+
+      <p class="pricing-note">
+        Ниже — сравнение по категориям и возможностям.
+      </p>
+
+      <!-- TABLE -->
+      <div class="pricing-table-wrap">
+        <div class="pricing-table-header">
+          <h3>Сравнение тарифов</h3>
+          <p>Категории и доступ по подпискам</p>
+        </div>
+
+        <div class="table-scroll">
+          <table class="pricing-table">
+            <thead>
+              <tr>
+                <th>Функция / Категория</th>
+                <th><span class="tier-chip">FREE</span></th>
+                <th><span class="tier-chip">BASE</span></th>
+                <th class="accent-col"><span class="tier-chip">PRO</span></th>
+                <th><span class="tier-chip">ПОЛНЫЙ</span></th>
+                <th><span class="tier-chip">СТУДИЯ</span></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>🍳 Рецепты</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td>🌐 Веб-сайты (HTML/CSS/JS)</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td>🎨 Генерация изображений (полная)</td>
+                <td class="no">—</td>
+                <td class="yes">✓</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td>🖼️ Стикеры и аватары</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td>📚 Учёба и школа</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td>🧸 Игрушки</td>
+                <td class="no">—</td>
+                <td class="yes">✓</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td>🔷 3D модели</td>
+                <td class="no">—</td>
+                <td class="yes">✓</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td>📱 Боты и автоматизация</td>
+                <td class="no">—</td>
+                <td class="no">—</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td>⛏️ Моды Minecraft</td>
+                <td class="no">—</td>
+                <td class="no">—</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td>🤖 AI & G4F</td>
+                <td class="no">—</td>
+                <td class="no">—</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td>🤖 Character AI</td>
+                <td class="no">—</td>
+                <td class="no">—</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td>🎵 Suno AI</td>
+                <td class="no">—</td>
+                <td class="no">—</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td>📺 YouTube</td>
+                <td class="no">—</td>
+                <td class="no">—</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td>💻 Приложения (код + установщики)</td>
+                <td class="no">—</td>
+                <td class="no">—</td>
+                <td class="no accent-col">—</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td>👥 Команда (до 10 участников PRO)</td>
+                <td class="no">—</td>
+                <td class="no">—</td>
+                <td class="no accent-col">—</td>
+                <td class="no">—</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td>📁 Совместные проекты / коллекции</td>
+                <td class="no">—</td>
+                <td class="no">—</td>
+                <td class="no accent-col">—</td>
+                <td class="no">—</td>
+                <td class="yes">✓</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <!-- JS (только для инжекта хедера/футера + год) -->
+  <script src="main.js"></script>
+</body>
+</html>
