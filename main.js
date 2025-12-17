@@ -950,7 +950,6 @@ function buildPromptText(type, idea, tone = "professional", overrideParams = {})
   return text;
 }
 
-  const promptExamples = {
 const promptExamples = {
   recipes: [
     {
