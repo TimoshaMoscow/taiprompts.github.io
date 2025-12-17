@@ -1027,54 +1027,49 @@ function buildPromptText(type, idea, tone = "professional", overrideParams = {})
   });
 }
 
-  promptForm.addEventListener("submit", (e) => {
-    e.preventDefault();
+promptForm.addEventListener("submit", (e) => {
+  e.preventDefault();
 
-    const customText = customInput.value?.trim();
-    const tone = toneSelect.value;
+  const customText = customInput.value?.trim();
+  const tone = toneSelect.value;
 
-    if (!customText) {
-      alert("Пожалуйста, опишите вашу идею");
-      return;
-    }
-    if (!promptTemplates[selectedType]) {
-      alert("Шаблон для этого типа промпта еще не готов");
-      return;
-    }
+  if (!customText) return alert("Пожалуйста, опишите вашу идею");
+  if (!promptTemplates[selectedType]) return alert("Шаблон для этого типа промпта еще не готов");
 
-    const params = {};
-    for (const [key, param] of Object.entries(promptTemplates[selectedType].params || {})) {
-      if (param.type === "select") {
-        const selectElement = modal.querySelector(`#param-${key}`);
-        if (selectElement) params[key] = selectElement.value;
-      } else if (param.type === "multiselect") {
-        const container = modal.querySelector(`#param-${key}`);
-        if (container) {
-          const checkboxes = container.querySelectorAll('input[type="checkbox"]:checked');
-          params[key] = Array.from(checkboxes).map((cb) => cb.value).join(", ");
-        }
+  const params = {};
+  for (const [key, param] of Object.entries(promptTemplates[selectedType].params || {})) {
+    if (param.type === "select") {
+      const el = modal.querySelector(`#param-${key}`);
+      if (el) params[key] = el.value;
+    } else if (param.type === "multiselect") {
+      const box = modal.querySelector(`#param-${key}`);
+      if (box) {
+        const checked = box.querySelectorAll('input[type="checkbox"]:checked');
+        params[key] = Array.from(checked).map((cb) => cb.value).join(", ");
       }
     }
+  }
 
-    const finalPromptText = buildPromptText(selectedType, customText, tone, params);
+  const finalPromptText = buildPromptText(selectedType, customText, tone, params);
 
-    incGeneration();
-    finalPrompt.textContent = finalPromptText;
-    finalPrompt.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  incGeneration();
+  finalPrompt.textContent = finalPromptText;
+  finalPrompt.scrollIntoView({ behavior: "smooth", block: "nearest" });
+});
 
-
-  copyButton.addEventListener("click", function () {
-    if (!finalPrompt.textContent) {
-      alert("Сначала сгенерируйте промпт");
-      return;
-    }
-
-    navigator.clipboard
-      .writeText(finalPrompt.textContent)
-      .then(() => {
-        const originalText = this.textContent;
-        this.textContent = "Скопировано!";
-        this.classList.add("btn-primary");
+// ✅ копирование — ОДИН раз, не внутри submit
+copyButton.addEventListener("click", function () {
+  if (!finalPrompt.textContent) return alert("Сначала сгенерируйте промпт");
+  navigator.clipboard.writeText(finalPrompt.textContent).then(() => {
+    const originalText = this.textContent;
+    this.textContent = "Скопировано!";
+    this.classList.add("btn-primary");
+    setTimeout(() => {
+      this.textContent = originalText;
+      this.classList.remove("btn-primary");
+    }, 2000);
+  });
+});
 
         setTimeout(() => {
           this.textContent = originalText;
