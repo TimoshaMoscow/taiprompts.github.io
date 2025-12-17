@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#121212" />
+  <title>Итоги года — TAIPrompts</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/x-icon" href="images/logo.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- inject header -->
+  <div id="site-header"></div>
+
+  <div style="height: 90px;"></div>
+
+  <main class="year-page">
+    <section class="year-hero">
+      <div class="container">
+        <div class="year-hero-top">
+          <span class="year-badge">📌 Итоги года</span>
+          <span class="year-small" id="yearLabel">2025</span>
+        </div>
+
+        <h1 class="year-title">TAIPrompts — итоги года</h1>
+        <p class="year-subtitle">
+          Небольшой обзор того, как развивался проект. Если ты разрешил cookies — здесь покажутся и твои локальные цифры.
+        </p>
+
+        <div class="year-alert">
+          🍪 Статистика считается локально (cookies) и никуда не отправляется.
+        </div>
+
+        <div class="year-kpis">
+          <div class="card year-kpi">
+            <div class="year-kpi-num" id="kpiViews">—</div>
+            <div class="year-kpi-label">Просмотров страниц (локально)</div>
+          </div>
+          <div class="card year-kpi">
+            <div class="year-kpi-num" id="kpiClicks">—</div>
+            <div class="year-kpi-label">Кликов по категориям</div>
+          </div>
+          <div class="card year-kpi">
+            <div class="year-kpi-num" id="kpiGens">—</div>
+            <div class="year-kpi-label">Генераций промптов</div>
+          </div>
+          <div class="card year-kpi">
+            <div class="year-kpi-num">14</div>
+            <div class="year-kpi-label">Категорий сейчас</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="year-section">
+      <div class="container">
+        <h2 class="section-title">Главные события</h2>
+
+        <div class="year-timeline">
+          <div class="card year-step">
+            <div class="year-step-top">
+              <span class="year-step-dot"></span>
+              <span class="year-step-title">Многостраничный сайт</span>
+            </div>
+            <p>Разделение на страницы, единый хедер/футер через inject, аккуратная навигация.</p>
+          </div>
+
+          <div class="card year-step">
+            <div class="year-step-top">
+              <span class="year-step-dot"></span>
+              <span class="year-step-title">Генератор с модалкой</span>
+            </div>
+            <p>Выбор категории → параметры → идея → стиль → готовый промпт + копирование.</p>
+          </div>
+
+          <div class="card year-step">
+            <div class="year-step-top">
+              <span class="year-step-dot"></span>
+              <span class="year-step-title">PWA-поддержка</span>
+            </div>
+            <p>Можно установить как приложение (там, где это поддерживается).</p>
+          </div>
+
+          <div class="card year-step">
+            <div class="year-step-top">
+              <span class="year-step-dot"></span>
+              <span class="year-step-title">Roadmap / развитие</span>
+            </div>
+            <p>Планы разделены на «Сейчас / Дальше / Потом», чтобы не обещать лишнего.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="year-section">
+      <div class="container">
+        <h2 class="section-title">Топ категорий по кликам</h2>
+
+        <div class="card year-top">
+          <p class="year-top-hint">
+            Если cookies отключены — тут будет пусто. Нажми “Принять” в баннере cookies на сайте.
+          </p>
+
+          <div class="year-top-list" id="topCategories">
+            <!-- JS заполнит -->
+          </div>
+
+          <div class="year-top-empty" id="topEmpty">
+            Пока нет данных. Открой генератор и покликай категории 🙂
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="year-section">
+      <div class="container">
+        <h2 class="section-title">Что дальше</h2>
+
+        <div class="year-next">
+          <div class="card year-next-card">
+            <h3>✨ Улучшение шаблонов</h3>
+            <p>Больше точности, меньше воды, стабильный формат, улучшение параметров.</p>
+          </div>
+
+          <div class="card year-next-card">
+            <h3>⚡ Удобство</h3>
+            <p>Поиск, фильтры, избранное и коллекции — чтобы всё было быстрее.</p>
+          </div>
+
+          <div class="card year-next-card">
+            <h3>🔒 Профили и подписки</h3>
+            <p>Запланировано, но будет реализовано позже, когда всё будет готово и безопасно.</p>
+          </div>
+        </div>
+
+        <div class="card year-cta">
+          <h3>Хочешь повлиять на проект?</h3>
+          <p>Идеи и предложения — через обратную связь (почта в футере).</p>
+          <a class="btn btn-secondary" href="development.html">Открыть Roadmap</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div style="height: 90px;"></div>
+
+  <!-- inject footer -->
+  <div id="site-footer"></div>
+
+  <script src="main.js"></script>
+
+  <!-- Мини-скрипт только для вывода локальной статистики из cookies -->
+  <script>
+    (function () {
+      // читаем cookie tp_consent / tp_stats (те же имена, что в main.js)
+      function getCookie(name) {
+        const n = encodeURIComponent(name) + "=";
+        const parts = document.cookie.split("; ");
+        for (const p of parts) {
+          if (p.startsWith(n)) return decodeURIComponent(p.slice(n.length));
+        }
+        return null;
+      }
+
+      const consent = getCookie("tp_consent");
+      const rawStats = getCookie("tp_stats");
+
+      // год в шапке
+      document.getElementById("yearLabel").textContent = new Date().getFullYear();
+
+      if (consent !== "accepted" || !rawStats) return;
+
+      let stats;
+      try { stats = JSON.parse(rawStats); } catch { return; }
+
+      const pageViews = stats.pageViews || {};
+      const categoryClicks = stats.categoryClicks || {};
+      const generations = Number(stats.generations || 0);
+
+      const viewsSum = Object.values(pageViews).reduce((a, b) => a + Number(b || 0), 0);
+      const clicksSum = Object.values(categoryClicks).reduce((a, b) => a + Number(b || 0), 0);
+
+      document.getElementById("kpiViews").textContent = viewsSum;
+      document.getElementById("kpiClicks").textContent = clicksSum;
+      document.getElementById("kpiGens").textContent = generations;
+
+      // топ категорий
+      const list = document.getElementById("topCategories");
+      const empty = document.getElementById("topEmpty");
+
+      const entries = Object.entries(categoryClicks)
+        .map(([k, v]) => [k, Number(v || 0)])
+        .filter(([, v]) => v > 0)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 8);
+
+      if (!entries.length) return;
+
+      empty.style.display = "none";
+
+      // красивые названия (можешь расширить при желании)
+      const names = {
+        recipes: "🍳 Рецепты",
+        websites: "🌐 Веб-сайты",
+        bots: "📱 Боты",
+        minecraft: "⛏️ Minecraft",
+        images: "🎨 Изображения",
+        stickers: "🖼️ Стикеры",
+        "3d": "🔷 3D",
+        toys: "🧸 Игрушки",
+        ai: "🤖 AI & G4F",
+        characterai: "🤖 Character AI",
+        suno: "🎵 Suno",
+        setup: "💻 Приложения",
+        school: "📚 Учёба",
+        youtube: "📺 YouTube"
+      };
+
+      list.innerHTML = entries.map(([key, val], idx) => `
+        <div class="year-top-item">
+          <div class="year-top-left">
+            <span class="year-top-rank">#${idx + 1}</span>
+            <span class="year-top-name">${names[key] || key}</span>
+          </div>
+          <div class="year-top-val">${val}</div>
+        </div>
+      `).join("");
+    })();
+  </script>
+</body>
+</html>
