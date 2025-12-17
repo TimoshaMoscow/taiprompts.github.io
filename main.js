@@ -781,6 +781,8 @@ function initGenerator() {
     },
   };
 
+  
+
   // ===== МОДАЛКА =====
   let selectedType = "recipes";
 
@@ -866,7 +868,7 @@ function initGenerator() {
   typeCards.forEach((card) => {
     card.addEventListener("click", function () {
       selectedType = selectedType = this.getAttribute("data-type") || "recipes"; incCategory(selectedType);
-
+      renderExamples(selectedType);
 
       const modalTitle = modal.querySelector(".modal-title");
       modalTitle.textContent = `Кастомизация: ${promptTemplates[selectedType]?.name || selectedType}`;
@@ -904,6 +906,145 @@ function initGenerator() {
   const toneSelect = modal.querySelector("#tone-select");
   const finalPrompt = modal.querySelector("#final-prompt");
   const copyButton = modal.querySelector("#copy-prompt");
+
+  function buildPromptText(type, idea, tone = "professional", overrideParams = {}) {
+  if (!promptTemplates[type]) return "";
+
+  // берём параметры (дефолты) из шаблона
+  const tplParams = promptTemplates[type].params || {};
+  const params = {};
+
+  for (const [key, param] of Object.entries(tplParams)) {
+    if (overrideParams[key] !== undefined) {
+      params[key] = overrideParams[key];
+      continue;
+    }
+
+    if (param.type === "select") {
+      params[key] = param.default ?? (param.options?.[0] ?? "");
+    } else if (param.type === "multiselect") {
+      const def = param.default;
+      if (Array.isArray(def)) params[key] = def.join(", ");
+      else params[key] = def ?? "";
+    }
+  }
+
+  // тон — как у тебя в submit
+  let tonePrefix = "";
+  switch (tone) {
+    case "professional":
+      tonePrefix = "Используй профессиональный технический язык. ";
+      break;
+    case "friendly":
+      tonePrefix = "Будь дружелюбным и приветливым. ";
+      break;
+    case "creative":
+      tonePrefix = "Прояви креативность и оригинальность. ";
+      break;
+    case "technical":
+      tonePrefix = "Сфокусируйся на технических деталях. ";
+      break;
+    case "detailed":
+      tonePrefix = "Дай максимально детализированный ответ. ";
+      break;
+  }
+
+  let text = promptTemplates[type].template;
+
+  // идея
+  text = text.replace("{idea}", idea);
+
+  // параметры
+  for (const [key, value] of Object.entries(params)) {
+    text = text.replace(new RegExp(`\\{${key}\\}`, "g"), value);
+  }
+
+  // подчистка
+  text = text.replace(/\{[^}]+\}/g, "").replace(/\s{2,}/g, " ").trim();
+
+  // финал + watermark
+  text = tonePrefix + text;
+  text += "\n\nTAIPrompts";
+
+  return text;
+}
+
+  const promptExamples = {
+  websites: [
+    { title: "Лендинг для курса", idea: "Лендинг для курса по Python для подростков", tone: "professional" },
+    { title: "Портфолио дизайнера", idea: "Портфолио UI/UX дизайнера в стиле матового стекла", tone: "creative" }
+  ],
+  suno: [
+    { title: "Поп-энергия", idea: "Песня про свободу и ночной город, с ярким припевом", tone: "creative" },
+    { title: "Ностальгия", idea: "Ностальгичная песня про школьные годы и друзей", tone: "detailed" }
+  ],
+  minecraft: [
+    { title: "Мод с рудой", idea: "Новая руда и броня, плюс 1 босс в новом биоме", tone: "technical" },
+    { title: "Датапак квесты", idea: "Датапак с квестовой системой и наградами", tone: "professional" }
+  ]
+};
+
+  function renderExamples(type) {
+  const grid = document.getElementById("examplesGrid");
+  if (!grid) return;
+
+  const examples = promptExamples[type] || [];
+  if (!examples.length) {
+    grid.innerHTML = `<p style="opacity:.6">Примеры скоро появятся</p>`;
+    return;
+  }
+
+  grid.innerHTML = examples.map((ex, i) => {
+    const text = buildPromptText(type, ex.idea, ex.tone || "professional", ex.params || {});
+    return `
+      <div class="example-card" data-i="${i}">
+        <div style="display:flex; justify-content:space-between; gap:10px; align-items:center;">
+          <strong>${ex.title || "Пример"}</strong>
+          <span class="tag" style="margin:0;">${(ex.tone || "professional")}</span>
+        </div>
+
+        <pre>${text}</pre>
+
+        <div class="example-actions">
+          <button class="btn btn-secondary" data-copy>Копировать</button>
+          <button class="btn btn-primary" data-use>Использовать</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  // кнопки
+  grid.querySelectorAll(".example-card").forEach((card) => {
+    const i = Number(card.getAttribute("data-i"));
+    const ex = examples[i];
+    const text = buildPromptText(type, ex.idea, ex.tone || "professional", ex.params || {});
+
+    card.querySelector("[data-copy]").onclick = () => {
+      navigator.clipboard.writeText(text);
+    };
+
+    card.querySelector("[data-use]").onclick = () => {
+      // открываем модалку как будто юзер выбрал категорию
+      selectedType = type;
+
+      const modalTitle = modal.querySelector(".modal-title");
+      modalTitle.textContent = `Кастомизация: ${promptTemplates[selectedType]?.name || selectedType}`;
+
+      renderTechnicalParams(selectedType);
+
+      // выставляем тон
+      toneSelect.value = ex.tone || "professional";
+
+      // заполняем идею
+      customInput.value = ex.idea;
+
+      // если хочешь — можно ещё применить ex.params к полям (скажи, сделаю)
+      modal.querySelector("#final-prompt").textContent = "";
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
+    };
+  });
+}
 
   promptForm.addEventListener("submit", (e) => {
     e.preventDefault();
