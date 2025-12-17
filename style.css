@@ -2741,6 +2741,7 @@ table.pricing-table {
   box-shadow: var(--shadow);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  text-align: center;
 }
 
 .examples-grid {
