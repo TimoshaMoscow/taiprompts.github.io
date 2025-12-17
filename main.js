@@ -951,17 +951,187 @@ function buildPromptText(type, idea, tone = "professional", overrideParams = {})
 }
 
   const promptExamples = {
+const promptExamples = {
+  recipes: [
+    {
+      title: "Быстрый ужин",
+      idea: "Быстрый ужин из курицы и овощей на сковороде",
+      tone: "friendly"
+    },
+    {
+      title: "Здоровый завтрак",
+      idea: "Полезный завтрак для спортсмена с высоким содержанием белка",
+      tone: "professional"
+    }
+  ],
+
   websites: [
-    { title: "Лендинг для курса", idea: "Лендинг для курса по Python для подростков", tone: "professional" },
-    { title: "Портфолио дизайнера", idea: "Портфолио UI/UX дизайнера в стиле матового стекла", tone: "creative" }
+    {
+      title: "Лендинг курса",
+      idea: "Лендинг для онлайн-курса по Python для подростков",
+      tone: "professional"
+    },
+    {
+      title: "Портфолио дизайнера",
+      idea: "Портфолио UI/UX дизайнера в стиле матового стекла",
+      tone: "creative"
+    }
   ],
-  suno: [
-    { title: "Поп-энергия", idea: "Песня про свободу и ночной город, с ярким припевом", tone: "creative" },
-    { title: "Ностальгия", idea: "Ностальгичная песня про школьные годы и друзей", tone: "detailed" }
+
+  images: [
+    {
+      title: "Киберпанк-город",
+      idea: "Ночной киберпанк город под дождём с неоновыми вывесками",
+      tone: "creative"
+    },
+    {
+      title: "Минимализм",
+      idea: "Минималистичный интерьер в светлых тонах",
+      tone: "detailed"
+    }
   ],
+
+  stickers: [
+    {
+      title: "Telegram-стикеры",
+      idea: "Милый кот для Telegram с эмоциями",
+      tone: "friendly"
+    },
+    {
+      title: "Мем-пак",
+      idea: "Мемные стикеры для чата друзей",
+      tone: "creative"
+    }
+  ],
+
+  school: [
+    {
+      title: "Задача по алгебре",
+      idea: "Решить квадратное уравнение с объяснением шагов",
+      tone: "detailed"
+    },
+    {
+      title: "Сочинение",
+      idea: "Сочинение на тему дружбы для 7 класса",
+      tone: "friendly"
+    }
+  ],
+
+  toys: [
+    {
+      title: "Развивающая игрушка",
+      idea: "Развивающая игрушка для детей 5 лет",
+      tone: "professional"
+    },
+    {
+      title: "Настольная игра",
+      idea: "Настольная игра для всей семьи",
+      tone: "creative"
+    }
+  ],
+
+  "3d": [
+    {
+      title: "Персонаж",
+      idea: "Фэнтези персонаж — воин с мечом",
+      tone: "detailed"
+    },
+    {
+      title: "Окружение",
+      idea: "Средневековый город для игры",
+      tone: "professional"
+    }
+  ],
+
+  bots: [
+    {
+      title: "Telegram-бот",
+      idea: "Telegram-бот для напоминаний и заметок",
+      tone: "professional"
+    },
+    {
+      title: "Discord-бот",
+      idea: "Discord-бот для модерации сервера",
+      tone: "technical"
+    }
+  ],
+
   minecraft: [
-    { title: "Мод с рудой", idea: "Новая руда и броня, плюс 1 босс в новом биоме", tone: "technical" },
-    { title: "Датапак квесты", idea: "Датапак с квестовой системой и наградами", tone: "professional" }
+    {
+      title: "Новая руда",
+      idea: "Новая руда, броня и инструменты",
+      tone: "technical"
+    },
+    {
+      title: "Квесты",
+      idea: "Датапак с системой квестов и наград",
+      tone: "professional"
+    }
+  ],
+
+  ai: [
+    {
+      title: "Продвинутый промпт",
+      idea: "Помощник для анализа сложных текстов",
+      tone: "detailed"
+    },
+    {
+      title: "Креативный ИИ",
+      idea: "ИИ для генерации идей стартапов",
+      tone: "creative"
+    }
+  ],
+
+  characterai: [
+    {
+      title: "Дружелюбный персонаж",
+      idea: "Дружелюбный виртуальный помощник",
+      tone: "friendly"
+    },
+    {
+      title: "Загадочный герой",
+      idea: "Загадочный персонаж с тёмным прошлым",
+      tone: "creative"
+    }
+  ],
+
+  suno: [
+    {
+      title: "Поп-песня",
+      idea: "Песня про свободу и ночной город",
+      tone: "creative"
+    },
+    {
+      title: "Ностальгия",
+      idea: "Ностальгичная песня про школьные годы",
+      tone: "detailed"
+    }
+  ],
+
+  youtube: [
+    {
+      title: "Идея видео",
+      idea: "Видео про изучение программирования с нуля",
+      tone: "professional"
+    },
+    {
+      title: "Развлекательный контент",
+      idea: "Развлекательное видео для подростков",
+      tone: "friendly"
+    }
+  ],
+
+  setup: [
+    {
+      title: "Десктоп-приложение",
+      idea: "Приложение для учёта личных задач",
+      tone: "technical"
+    },
+    {
+      title: "Учебное ПО",
+      idea: "Учебное приложение для изучения языков",
+      tone: "professional"
+    }
   ]
 };
 
