@@ -867,7 +867,7 @@ function initGenerator() {
   // Открытие модалки по клику на карточку
   typeCards.forEach((card) => {
     card.addEventListener("click", function () {
-      selectedType = selectedType = this.getAttribute("data-type") || "recipes"; incCategory(selectedType);
+      selectedType = this.getAttribute("data-type") || "recipes"; incCategory(selectedType);
       renderExamples(selectedType);
 
       const modalTitle = modal.querySelector(".modal-title");
@@ -928,6 +928,13 @@ function initGenerator() {
       else params[key] = def ?? "";
     }
   }
+
+  const finalPromptText = buildPromptText(selectedType, customText, tone, params);
+
+  incGeneration();
+  finalPrompt.textContent = finalPromptText;
+  finalPrompt.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
 
   // тон — как у тебя в submit
   let tonePrefix = "";
@@ -1074,46 +1081,6 @@ function initGenerator() {
         }
       }
     }
-
-    let tonePrefix = "";
-    switch (tone) {
-      case "professional":
-        tonePrefix = "Используй профессиональный технический язык. ";
-        break;
-      case "friendly":
-        tonePrefix = "Будь дружелюбным и приветливым. ";
-        break;
-      case "creative":
-        tonePrefix = "Прояви креативность и оригинальность. ";
-        break;
-      case "technical":
-        tonePrefix = "Сфокусируйся на технических деталях. ";
-        break;
-      case "detailed":
-        tonePrefix = "Дай максимально детализированный ответ. ";
-        break;
-    }
-
-    let finalPromptText = promptTemplates[selectedType].template;
-
-    finalPromptText = finalPromptText.replace("{idea}", customText);
-
-    for (const [key, value] of Object.entries(params)) {
-      finalPromptText = finalPromptText.replace(new RegExp(`\\{${key}\\}`, "g"), value);
-    }
-
-    // подчистка незаполненных плейсхолдеров
-    finalPromptText = finalPromptText.replace(/\{[^}]+\}/g, "").replace(/\s{2,}/g, " ").trim();
-
-    finalPromptText = tonePrefix + finalPromptText;
-
-    // watermark
-    finalPromptText += "\n\nTAIPrompts";
-    incGeneration();
-
-    finalPrompt.textContent = finalPromptText;
-    finalPrompt.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  });
 
   copyButton.addEventListener("click", function () {
     if (!finalPrompt.textContent) {
