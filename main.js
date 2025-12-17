@@ -1071,17 +1071,6 @@ copyButton.addEventListener("click", function () {
   });
 });
 
-        setTimeout(() => {
-          this.textContent = originalText;
-          this.classList.remove("btn-primary");
-        }, 2000);
-      })
-      .catch((err) => {
-        console.error("Ошибка копирования: ", err);
-        alert("Не удалось скопировать текст");
-      });
-  });
-
   console.log("✅ Генератор инициализирован");
 }
 
