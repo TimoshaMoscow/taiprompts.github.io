@@ -865,7 +865,8 @@ function initGenerator() {
   // Открытие модалки по клику на карточку
   typeCards.forEach((card) => {
     card.addEventListener("click", function () {
-      selectedType = this.getAttribute("data-type") || "recipes";
+      selectedType = selectedType = this.getAttribute("data-type") || "recipes"; incCategory(selectedType);
+
 
       const modalTitle = modal.querySelector(".modal-title");
       modalTitle.textContent = `Кастомизация: ${promptTemplates[selectedType]?.name || selectedType}`;
@@ -967,6 +968,7 @@ function initGenerator() {
 
     // watermark
     finalPromptText += "\n\nTAIPrompts";
+    incGeneration();
 
     finalPrompt.textContent = finalPromptText;
     finalPrompt.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -1003,7 +1005,7 @@ function runDebug() {
   console.log("=== TAIPrompts Debug ===");
   console.log("Current page:", window.location.pathname);
 
-  const files = ["index.html", "generator.html", "about.html", "versions.html"];
+  const files = ["index.html", "generator.html", "pricing.html", "development.html"];
   files.forEach((file) => {
     fetch(file)
       .then((response) => console.log(`${file}: ${response.ok ? "✅ OK" : "❌ Not found"}`))
@@ -1015,6 +1017,12 @@ function runDebug() {
 document.addEventListener("DOMContentLoaded", async () => {
   await inject("site-header", "components/header.html");
   await inject("site-footer", "components/footer.html");
+  
+initCookieBanner();
+
+// если согласие уже было — пишем просмотр страницы
+incPathView(location.pathname);
+
 
 // Автообновление года в футере
 const yearEl = document.getElementById('currentYear');
