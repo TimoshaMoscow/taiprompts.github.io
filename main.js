@@ -5,6 +5,101 @@ async function inject(id, url) {
   el.innerHTML = await res.text();
 }
 
+// ===== Cookie Utils =====
+function setCookie(name, value, days = 365) {
+  const maxAge = days * 24 * 60 * 60;
+  document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; max-age=${maxAge}; path=/; samesite=lax`;
+}
+
+function getCookie(name) {
+  const n = encodeURIComponent(name) + "=";
+  const parts = document.cookie.split("; ");
+  for (const p of parts) {
+    if (p.startsWith(n)) return decodeURIComponent(p.slice(n.length));
+  }
+  return null;
+}
+
+// ===== Consent + Stats =====
+const CONSENT_COOKIE = "tp_consent"; // accepted | declined
+const STATS_COOKIE = "tp_stats";     // json
+
+function hasConsent() {
+  return getCookie(CONSENT_COOKIE) === "accepted";
+}
+
+function getStats() {
+  const raw = getCookie(STATS_COOKIE);
+  if (!raw) return { v: 1, pageViews: {}, categoryClicks: {}, generations: 0 };
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return { v: 1, pageViews: {}, categoryClicks: {}, generations: 0 };
+  }
+}
+
+function saveStats(stats) {
+  // Важно: cookies ограничены по размеру, поэтому храним компактно
+  setCookie(STATS_COOKIE, JSON.stringify(stats), 365);
+}
+
+function incPathView(path) {
+  if (!hasConsent()) return;
+  const stats = getStats();
+  stats.pageViews[path] = (stats.pageViews[path] || 0) + 1;
+  saveStats(stats);
+}
+
+function incCategory(type) {
+  if (!hasConsent()) return;
+  const stats = getStats();
+  stats.categoryClicks[type] = (stats.categoryClicks[type] || 0) + 1;
+  saveStats(stats);
+}
+
+function incGeneration() {
+  if (!hasConsent()) return;
+  const stats = getStats();
+  stats.generations = (stats.generations || 0) + 1;
+  saveStats(stats);
+}
+
+// ===== Cookie Banner (создаётся JS-ом, HTML менять не надо) =====
+function initCookieBanner() {
+  const existing = getCookie(CONSENT_COOKIE);
+  if (existing === "accepted" || existing === "declined") return;
+
+  const banner = document.createElement("div");
+  banner.className = "cookie-banner";
+  banner.innerHTML = `
+    <div class="cookie-banner__inner">
+      <div class="cookie-banner__text">
+        🍪 Мы используем cookies для простой статистики (просмотры, клики, генерации).
+        Никаких сторонних сервисов.
+      </div>
+      <div class="cookie-banner__actions">
+        <button class="btn btn-secondary cookie-decline">Отказаться</button>
+        <button class="btn btn-primary cookie-accept">Принять</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(banner);
+
+  banner.querySelector(".cookie-accept").addEventListener("click", () => {
+    setCookie(CONSENT_COOKIE, "accepted", 365);
+    banner.remove();
+
+    // Сразу запишем просмотр текущей страницы после согласия
+    incPathView(location.pathname);
+  });
+
+  banner.querySelector(".cookie-decline").addEventListener("click", () => {
+    setCookie(CONSENT_COOKIE, "declined", 365);
+    banner.remove();
+  });
+}
+
 function setActiveNavLink() {
   const path = location.pathname.split("/").pop() || "index.html";
   document.querySelectorAll(".nav-link").forEach((a) => {
