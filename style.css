@@ -2732,6 +2732,15 @@ table.pricing-table {
   opacity: 0.75;
   line-height: 1.5;
   max-width: 70ch;
+  background: rgba(255, 193, 7, 0.12);
+  border: 1px solid rgba(255, 193, 7, 0.35);
+  color: #ffdca8;
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin: 0 auto 22px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .examples-grid {
