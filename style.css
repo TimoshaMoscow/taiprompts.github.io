@@ -1957,3 +1957,97 @@ section {
   background: rgba(99, 102, 241, 0.35);
   color: #fff;
 }
+
+/* ===== Тарифы ===== */
+
+.pricing {
+  background: var(--light-color);
+}
+
+.pricing-warning {
+  background: rgba(255, 193, 7, 0.15);
+  border: 1px solid rgba(255, 193, 7, 0.4);
+  color: #ffd966;
+  padding: 16px 20px;
+  border-radius: 14px;
+  text-align: center;
+  margin-bottom: 40px;
+  font-weight: 500;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
+}
+
+.pricing-card {
+  position: relative;
+  text-align: center;
+}
+
+.pricing-title {
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+}
+
+.pricing-price {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--accent-color);
+  margin-bottom: 20px;
+}
+
+.pricing-features {
+  list-style: none;
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.pricing-features li {
+  margin-bottom: 10px;
+  color: var(--secondary-color);
+}
+
+.pricing-btn {
+  width: 100%;
+}
+
+.pricing-btn.disabled {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--secondary-color);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* FREE — текущая */
+.pricing-card.current {
+  border: 2px solid var(--accent-color);
+}
+
+/* PRO — популярный */
+.pricing-card.popular {
+  border: 2px solid var(--accent-color);
+}
+
+.pricing-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent-color);
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Студия */
+.pricing-card.studio {
+  background: linear-gradient(
+    135deg,
+    rgba(94, 114, 228, 0.15),
+    var(--card-bg)
+  );
+}
