@@ -867,7 +867,8 @@ function initGenerator() {
   // Открытие модалки по клику на карточку
   typeCards.forEach((card) => {
     card.addEventListener("click", function () {
-      selectedType = this.getAttribute("data-type") || "recipes"; incCategory(selectedType);
+    selectedType = this.getAttribute("data-type") || "recipes";
+      incCategory(selectedType);
       renderExamples(selectedType);
 
       const modalTitle = modal.querySelector(".modal-title");
@@ -1054,6 +1055,13 @@ function buildPromptText(type, idea, tone = "professional", overrideParams = {})
         }
       }
     }
+
+    const finalPromptText = buildPromptText(selectedType, customText, tone, params);
+
+    incGeneration();
+    finalPrompt.textContent = finalPromptText;
+    finalPrompt.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
 
   copyButton.addEventListener("click", function () {
     if (!finalPrompt.textContent) {
