@@ -907,10 +907,9 @@ function initGenerator() {
   const finalPrompt = modal.querySelector("#final-prompt");
   const copyButton = modal.querySelector("#copy-prompt");
 
-  function buildPromptText(type, idea, tone = "professional", overrideParams = {}) {
+function buildPromptText(type, idea, tone = "professional", overrideParams = {}) {
   if (!promptTemplates[type]) return "";
 
-  // берём параметры (дефолты) из шаблона
   const tplParams = promptTemplates[type].params || {};
   const params = {};
 
@@ -921,57 +920,31 @@ function initGenerator() {
     }
 
     if (param.type === "select") {
-      params[key] = param.default ?? (param.options?.[0] ?? "");
+      params[key] = param.default ?? param.options?.[0] ?? "";
     } else if (param.type === "multiselect") {
       const def = param.default;
-      if (Array.isArray(def)) params[key] = def.join(", ");
-      else params[key] = def ?? "";
+      params[key] = Array.isArray(def) ? def.join(", ") : def ?? "";
     }
   }
 
-  const finalPromptText = buildPromptText(selectedType, customText, tone, params);
-
-  incGeneration();
-  finalPrompt.textContent = finalPromptText;
-  finalPrompt.scrollIntoView({ behavior: "smooth", block: "nearest" });
-
-
-  // тон — как у тебя в submit
   let tonePrefix = "";
   switch (tone) {
-    case "professional":
-      tonePrefix = "Используй профессиональный технический язык. ";
-      break;
-    case "friendly":
-      tonePrefix = "Будь дружелюбным и приветливым. ";
-      break;
-    case "creative":
-      tonePrefix = "Прояви креативность и оригинальность. ";
-      break;
-    case "technical":
-      tonePrefix = "Сфокусируйся на технических деталях. ";
-      break;
-    case "detailed":
-      tonePrefix = "Дай максимально детализированный ответ. ";
-      break;
+    case "professional": tonePrefix = "Используй профессиональный технический язык. "; break;
+    case "friendly": tonePrefix = "Будь дружелюбным и приветливым. "; break;
+    case "creative": tonePrefix = "Прояви креативность и оригинальность. "; break;
+    case "technical": tonePrefix = "Сфокусируйся на технических деталях. "; break;
+    case "detailed": tonePrefix = "Дай максимально детализированный ответ. "; break;
   }
 
   let text = promptTemplates[type].template;
-
-  // идея
   text = text.replace("{idea}", idea);
 
-  // параметры
   for (const [key, value] of Object.entries(params)) {
     text = text.replace(new RegExp(`\\{${key}\\}`, "g"), value);
   }
 
-  // подчистка
   text = text.replace(/\{[^}]+\}/g, "").replace(/\s{2,}/g, " ").trim();
-
-  // финал + watermark
-  text = tonePrefix + text;
-  text += "\n\nTAIPrompts";
+  text = tonePrefix + text + "\n\nTAIPrompts";
 
   return text;
 }
