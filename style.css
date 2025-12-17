@@ -2714,3 +2714,51 @@ table.pricing-table {
   .year-next { grid-template-columns: 1fr; }
   .year-title { font-size: 2.4rem; }
 }
+
+/* === Prompt examples === */
+
+.prompt-examples {
+  margin-bottom: 40px;
+}
+
+.examples-title {
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+}
+
+.examples-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.example-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.example-card pre {
+  background: var(--light-color);
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+  line-height: 1.4;
+  max-height: 160px;
+  overflow: hidden;
+}
+
+.example-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.example-actions button {
+  flex: 1;
+  font-size: 0.85rem;
+}
