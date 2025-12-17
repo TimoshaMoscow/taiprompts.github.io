@@ -2789,3 +2789,19 @@ table.pricing-table {
 @media (max-width: 900px) {
   .examples-grid { grid-template-columns: 1fr; }
 }
+
+#examplesGrid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 220px; /* чтобы было «воздуха» */
+}
+
+.examples-placeholder {
+  padding: 18px 28px;
+  border: 1px dashed rgba(255,255,255,0.2);
+  border-radius: 14px;
+  color: rgba(255,255,255,0.7);
+  text-align: center;
+  font-size: 15px;
+}
