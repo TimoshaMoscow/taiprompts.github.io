@@ -2715,50 +2715,66 @@ table.pricing-table {
   .year-title { font-size: 2.4rem; }
 }
 
-/* === Prompt examples === */
+/* ================================ */
+/*        Prompt Examples           */
+/* ================================ */
 
-.prompt-examples {
-  margin-bottom: 40px;
+.examples { margin-top: 100px; }
+
+.examples-head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
 }
 
-.examples-title {
-  font-size: 1.3rem;
-  margin-bottom: 20px;
+.examples-subtitle {
+  opacity: 0.75;
+  line-height: 1.5;
+  max-width: 70ch;
 }
 
 .examples-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
 }
 
 .example-card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 16px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
 }
 
 .example-card pre {
-  background: var(--light-color);
-  padding: 12px;
-  border-radius: 10px;
-  font-size: 0.85rem;
   white-space: pre-wrap;
-  line-height: 1.4;
-  max-height: 160px;
-  overflow: hidden;
+  word-break: break-word;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 12px;
+  line-height: 1.55;
+  font-size: 0.95rem;
+  max-height: 260px;
+  overflow: auto;
 }
 
 .example-actions {
   display: flex;
   gap: 10px;
+  margin-top: 12px;
 }
 
-.example-actions button {
-  flex: 1;
-  font-size: 0.85rem;
+.example-actions .btn { flex: 1; }
+
+.examples-empty {
+  opacity: 0.75;
+  padding: 14px 16px;
+  border: 1px dashed rgba(255,255,255,0.18);
+  border-radius: 16px;
+}
+
+@media (max-width: 900px) {
+  .examples-grid { grid-template-columns: 1fr; }
 }
