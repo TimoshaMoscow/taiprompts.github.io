@@ -817,11 +817,16 @@ function initGenerator() {
           <button type="submit" class="btn btn-primary">Сгенерировать промпт</button>
         </form>
 
-        <div class="generated-prompt">
-          <h4>Ваш промпт:</h4>
-          <div id="final-prompt" class="prompt-output"></div>
-          <button id="copy-prompt" class="btn btn-secondary" type="button">Копировать промпт</button>
-        </div>
+<div class="generated-prompt">
+  <h4>Ваш промпт:</h4>
+  <div id="final-prompt" class="prompt-output"></div>
+
+  <div class="example-actions" style="margin-top:12px; justify-content:flex-start;">
+    <button id="copy-prompt" class="btn btn-secondary" type="button">Копировать промпт</button>
+    <button id="download-prompt" class="btn btn-primary" type="button">Скачать .txt</button>
+  </div>
+</div>
+
       </div>
     </div>
   `;
@@ -1240,6 +1245,26 @@ copyButton.addEventListener("click", function () {
   });
 });
 
+const downloadButton = modal.querySelector("#download-prompt");
+
+downloadButton.addEventListener("click", () => {
+  const text = finalPrompt.textContent?.trim();
+  if (!text) return alert("Сначала сгенерируйте промпт");
+
+  const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  const date = new Date().toISOString().slice(0, 10); // 2025-12-18
+  a.href = url;
+  a.download = `TAIPrompts_${selectedType}_${date}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  URL.revokeObjectURL(url);
+});
+
   console.log("✅ Генератор инициализирован");
 }
 
@@ -1247,7 +1272,7 @@ function runDebug() {
   console.log("=== TAIPrompts Debug ===");
   console.log("Current page:", window.location.pathname);
 
-  const files = ["index.html", "generator.html", "pricing.html", "development.html"];
+  const files = ["index.html", "generator.html", "pricing.html", "development.html", "year.html"];
   files.forEach((file) => {
     fetch(file)
       .then((response) => console.log(`${file}: ${response.ok ? "✅ OK" : "❌ Not found"}`))
