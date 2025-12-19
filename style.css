@@ -2528,6 +2528,7 @@ table.pricing-table {
     right: 12px;
     bottom: 12px;
     justify-content: center;
+    /* display: none - чтобы убрать после нового года */
   }
 }
 
