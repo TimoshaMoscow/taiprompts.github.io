@@ -33,17 +33,17 @@
         </p>
 
         <div class="year-alert">
-          🍪 Статистика считается локально (cookies) и никуда не отправляется.
+          🍪 Статистика считается локально и никуда не отправляется.
         </div>
 
         <div class="year-kpis">
           <div class="card year-kpi">
             <div class="year-kpi-num" id="kpiViews">—</div>
-            <div class="year-kpi-label">Просмотров страниц (локально)</div>
+            <div class="year-kpi-label">Просмотров страниц</div>
           </div>
           <div class="card year-kpi">
             <div class="year-kpi-num" id="kpiClicks">—</div>
-            <div class="year-kpi-label">Кликов по категориям</div>
+            <div class="year-kpi-label">Просмотров категорий</div>
           </div>
           <div class="card year-kpi">
             <div class="year-kpi-num" id="kpiGens">—</div>
@@ -67,7 +67,7 @@
               <span class="year-step-dot"></span>
               <span class="year-step-title">Многостраничный сайт</span>
             </div>
-            <p>Разделение на страницы, единый хедер/футер через inject, аккуратная навигация.</p>
+            <p>Разделение на страницы, единые хедери футер, аккуратная навигация.</p>
           </div>
 
           <div class="card year-step">
@@ -89,7 +89,7 @@
           <div class="card year-step">
             <div class="year-step-top">
               <span class="year-step-dot"></span>
-              <span class="year-step-title">Roadmap / развитие</span>
+              <span class="year-step-title">Roadmap</span>
             </div>
             <p>Планы разделены на «Сейчас / Дальше / Потом», чтобы не обещать лишнего.</p>
           </div>
@@ -99,7 +99,7 @@
 
     <section class="year-section">
       <div class="container">
-        <h2 class="section-title">Топ категорий по кликам</h2>
+        <h2 class="section-title">Топ категорий</h2>
 
         <div class="card year-top">
           <p class="year-top-hint">
@@ -197,7 +197,7 @@
         .map(([k, v]) => [k, Number(v || 0)])
         .filter(([, v]) => v > 0)
         .sort((a, b) => b[1] - a[1])
-        .slice(0, 8);
+        .slice(0, 3);
 
       if (!entries.length) return;
 
