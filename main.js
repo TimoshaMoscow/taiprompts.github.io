@@ -887,6 +887,7 @@ function initGenerator() {
 
       modal.classList.add("active");
       document.body.style.overflow = "hidden";
+      document.body.classList.add("modal-open");
     });
   });
 
@@ -894,6 +895,7 @@ function initGenerator() {
   function closeModal() {
     modal.classList.remove("active");
     document.body.style.overflow = "auto";
+    document.body.classList.remove("modal-open");
   }
 
   modal.querySelector(".modal-close").addEventListener("click", closeModal);
