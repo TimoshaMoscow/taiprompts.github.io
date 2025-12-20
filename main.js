@@ -1,3 +1,7 @@
+// ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ =====
+let promptTemplates = {}; // ← Глобальная переменная
+let selectedType = "recipes"; // ← Для генератора
+
 async function inject(id, url) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -673,7 +677,7 @@ if (Object.keys(promptTemplates).length === 0) {
             "Меню",
             "Хранилище данных",
           ],
-          default: "Умеренный",
+          default: "Смена темы",
         },
         setupper: {
           type: "select",
@@ -1461,10 +1465,8 @@ function runDebug() {
 document.addEventListener("DOMContentLoaded", async () => {
   await inject("site-header", "components/header.html");
   await inject("site-footer", "components/footer.html");
-  
-  initCookieBanner();
-  incPathView(location.pathname);
 
+  // Автообновление года в футере
   const yearEl = document.getElementById('currentYear');
   if (yearEl) {
     yearEl.textContent = new Date().getFullYear();
@@ -1472,19 +1474,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   setActiveNavLink();
   initNav();
-  initGenerator(); // ← СОЗДАЁТ modal и promptTemplates
+  initGenerator();
   initLightbox();
   initAnimations();
   runDebug();
-  
-  // НОВЫЕ ФУНКЦИИ (после initGenerator):
-  initSearchAndFilter();
-  initKeyboardShortcuts();
-  initEnhancedCopy();
-  initUrlParameters(); // ← ВАЖНО: должен быть ПОСЛЕ initGenerator()
-  
+
   // Service Worker
-  if ("serviceWorker" in navigator) {
+  if ("serviceWorker" in navigator && location.protocol === 'https:') {
     navigator.serviceWorker
       .register("service-worker.js")
       .then(() => console.log("SW registered"))
