@@ -1,107 +1,8 @@
-// ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ =====
-let promptTemplates = {}; // ← Глобальная переменная
-let selectedType = "recipes"; // ← Для генератора
-
 async function inject(id, url) {
   const el = document.getElementById(id);
   if (!el) return;
   const res = await fetch(url, { cache: "no-store" });
   el.innerHTML = await res.text();
-}
-
-// ===== Cookie Utils =====
-function setCookie(name, value, days = 365) {
-  const maxAge = days * 24 * 60 * 60;
-  document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; max-age=${maxAge}; path=/; samesite=lax`;
-}
-
-function getCookie(name) {
-  const n = encodeURIComponent(name) + "=";
-  const parts = document.cookie.split("; ");
-  for (const p of parts) {
-    if (p.startsWith(n)) return decodeURIComponent(p.slice(n.length));
-  }
-  return null;
-}
-
-// ===== Consent + Stats =====
-const CONSENT_COOKIE = "tp_consent"; // accepted | declined
-const STATS_COOKIE = "tp_stats";     // json
-
-function hasConsent() {
-  return getCookie(CONSENT_COOKIE) === "accepted";
-}
-
-function getStats() {
-  const raw = getCookie(STATS_COOKIE);
-  if (!raw) return { v: 1, pageViews: {}, categoryClicks: {}, generations: 0 };
-  try {
-    return JSON.parse(raw);
-  } catch {
-    return { v: 1, pageViews: {}, categoryClicks: {}, generations: 0 };
-  }
-}
-
-function saveStats(stats) {
-  // Важно: cookies ограничены по размеру, поэтому храним компактно
-  setCookie(STATS_COOKIE, JSON.stringify(stats), 365);
-}
-
-function incPathView(path) {
-  if (!hasConsent()) return;
-  const stats = getStats();
-  stats.pageViews[path] = (stats.pageViews[path] || 0) + 1;
-  saveStats(stats);
-}
-
-function incCategory(type) {
-  if (!hasConsent()) return;
-  const stats = getStats();
-  stats.categoryClicks[type] = (stats.categoryClicks[type] || 0) + 1;
-  saveStats(stats);
-}
-
-function incGeneration() {
-  if (!hasConsent()) return;
-  const stats = getStats();
-  stats.generations = (stats.generations || 0) + 1;
-  saveStats(stats);
-}
-
-// ===== Cookie Banner (создаётся JS-ом, HTML менять не надо) =====
-function initCookieBanner() {
-  const existing = getCookie(CONSENT_COOKIE);
-  if (existing === "accepted" || existing === "declined") return;
-
-  const banner = document.createElement("div");
-  banner.className = "cookie-banner";
-  banner.innerHTML = `
-    <div class="cookie-banner__inner">
-      <div class="cookie-banner__text">
-        🍪 Мы используем cookies для простой статистики (просмотры, клики, генерации).
-        Никаких сторонних сервисов.
-      </div>
-      <div class="cookie-banner__actions">
-        <button class="btn btn-secondary cookie-decline">Отказаться</button>
-        <button class="btn btn-primary cookie-accept">Принять</button>
-      </div>
-    </div>
-  `;
-
-  document.body.appendChild(banner);
-
-  banner.querySelector(".cookie-accept").addEventListener("click", () => {
-    setCookie(CONSENT_COOKIE, "accepted", 365);
-    banner.remove();
-
-    // Сразу запишем просмотр текущей страницы после согласия
-    incPathView(location.pathname);
-  });
-
-  banner.querySelector(".cookie-decline").addEventListener("click", () => {
-    setCookie(CONSENT_COOKIE, "declined", 365);
-    banner.remove();
-  });
 }
 
 function setActiveNavLink() {
@@ -237,8 +138,7 @@ function initGenerator() {
 
   console.log("🚀 Инициализация генератора промптов...");
 
-if (Object.keys(promptTemplates).length === 0) {
-  promptTemplates = {
+  const promptTemplates = {
     recipes: {
       name: "🍳 Рецепты",
       template:
@@ -677,7 +577,7 @@ if (Object.keys(promptTemplates).length === 0) {
             "Меню",
             "Хранилище данных",
           ],
-          default: "Смена темы",
+          default: "Умеренный",
         },
         setupper: {
           type: "select",
@@ -786,184 +686,8 @@ if (Object.keys(promptTemplates).length === 0) {
     },
   };
 
-  // ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
-function showNotification(message, type = 'info') {
-  const notification = document.createElement('div');
-  notification.style.cssText = `
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: var(--card-bg);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
-    padding: 15px 20px;
-    z-index: 10000;
-    max-width: 300px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    animation: slideInRight 0.3s ease;
-  `;
-  
-  const icons = {
-    'info': '🔗',
-    'success': '✅',
-    'warning': '⚠️',
-    'error': '❌'
-  };
-  
-  notification.innerHTML = `
-    <div style="display: flex; align-items: center; gap: 12px;">
-      <div style="font-size: 1.2rem;">${icons[type] || icons.info}</div>
-      <div style="font-weight: 600; font-size: 0.95rem;">${message}</div>
-    </div>
-  `;
-  
-  document.body.appendChild(notification);
-  
-  setTimeout(() => {
-    notification.style.opacity = '0';
-    notification.style.transform = 'translateX(20px)';
-    setTimeout(() => notification.remove(), 300);
-  }, 4000);
-}
-
-function getCurrentParamsFromModal(modal) {
-  const params = {};
-  
-  const paramElements = modal.querySelectorAll('[id^="param-"]');
-  paramElements.forEach(element => {
-    const paramName = element.id.replace('param-', '');
-    
-    if (element.tagName === 'SELECT') {
-      params[paramName] = element.value;
-    } else if (element.classList.contains('multi-select')) {
-      const checked = Array.from(element.querySelectorAll('input:checked'))
-        .map(cb => cb.value);
-      params[paramName] = checked;
-    }
-  });
-  
-  return params;
-}
-
-  // ===== URL ПАРАМЕТРЫ И БЫСТРАЯ ЗАГРУЗКА =====
-function initUrlParameters() {
-  // Проверяем, что мы на странице генератора
-  if (!document.querySelector('.generation')) return;
-  
-  const params = new URLSearchParams(window.location.search);
-  const modal = document.querySelector('.customization-modal');
-  
-  if (!modal) {
-    console.log("Модалка не найдена, URL параметры не будут обработаны");
-    return;
-  }
-  
-  // 1. Обычные URL параметры
-  if (params.has('type')) {
-    const type = params.get('type');
-    
-    // Ждём загрузки promptTemplates
-    const checkTemplates = setInterval(() => {
-      if (promptTemplates && promptTemplates[type]) {
-        clearInterval(checkTemplates);
-        
-        // Ищем карточку и кликаем по ней
-        setTimeout(() => {
-          const card = document.querySelector(`.type-card[data-type="${type}"]`);
-          if (card) {
-            card.click();
-            
-            // Заполняем остальные параметры из URL
-            setTimeout(() => {
-              if (promptTemplates[type]?.params) {
-                Object.keys(promptTemplates[type].params || {}).forEach(key => {
-                  if (params.has(key)) {
-                    const value = params.get(key);
-                    const element = modal.querySelector(`#param-${key}`);
-                    
-                    if (element) {
-                      if (element.tagName === 'SELECT') {
-                        element.value = value;
-                      } else if (element.classList.contains('multi-select')) {
-                        const values = value.split(',');
-                        element.querySelectorAll('input').forEach(checkbox => {
-                          checkbox.checked = values.includes(checkbox.value);
-                        });
-                      }
-                    }
-                  }
-                });
-              }
-              
-              // Заполняем идею
-              if (params.has('idea')) {
-                modal.querySelector('#custom-input').value = decodeURIComponent(params.get('idea'));
-              }
-              
-              // Автоматически генерируем если есть auto параметр
-              if (params.has('auto')) {
-                setTimeout(() => {
-                  const submitBtn = modal.querySelector('button[type="submit"]');
-                  if (submitBtn) submitBtn.click();
-                }, 1000);
-              }
-              
-              // Показываем уведомление (если функция существует)
-              if (typeof showNotification === 'function') {
-                showNotification('🔗 Настройки загружены из URL', 'info');
-              }
-            }, 200);
-          }
-        }, 300);
-      }
-    }, 100);
-  }
-  
-  // 2. Быстрая загрузка из localStorage
-  if (params.has('quickload')) {
-    const quickloadData = JSON.parse(localStorage.getItem('taiprompts_quickload') || 'null');
-    
-    if (quickloadData && quickloadData.type) {
-      setTimeout(() => {
-        const card = document.querySelector(`.type-card[data-type="${quickloadData.type}"]`);
-        if (card) {
-          card.click();
-          
-          setTimeout(() => {
-            if (quickloadData.params) {
-              Object.entries(quickloadData.params).forEach(([key, value]) => {
-                const element = modal.querySelector(`#param-${key}`);
-                if (element) {
-                  if (element.tagName === 'SELECT') {
-                    element.value = value;
-                  } else if (element.classList.contains('multi-select')) {
-                    const values = Array.isArray(value) ? value : [value];
-                    element.querySelectorAll('input').forEach(checkbox => {
-                      checkbox.checked = values.includes(checkbox.value);
-                    });
-                  }
-                }
-              });
-            }
-            
-            if (quickloadData.idea) {
-              modal.querySelector('#custom-input').value = quickloadData.idea;
-            }
-            
-            if (typeof showNotification === 'function') {
-              if (params.get('from') === 'daily') {
-                showNotification('🎯 Промпт дня загружен!', 'success');
-              } else {
-                showNotification('💾 Сохранённый промпт загружен!', 'success');
-              }
-            }
-          }, 200);
-        }
-      }, 500);
-    }
-  }
-}
+  // ===== МОДАЛКА =====
+  let selectedType = "recipes";
 
   const modal = document.createElement("div");
   modal.className = "customization-modal";
@@ -996,16 +720,11 @@ function initUrlParameters() {
           <button type="submit" class="btn btn-primary">Сгенерировать промпт</button>
         </form>
 
-<div class="generated-prompt">
-  <h4>Ваш промпт:</h4>
-  <div id="final-prompt" class="prompt-output"></div>
-
-  <div class="example-actions" style="margin-top:12px; justify-content:flex-start;">
-    <button id="copy-prompt" class="btn btn-secondary" type="button">Копировать промпт</button>
-    <button id="download-prompt" class="btn btn-primary" type="button">Скачать .txt</button>
-  </div>
-</div>
-
+        <div class="generated-prompt">
+          <h4>Ваш промпт:</h4>
+          <div id="final-prompt" class="prompt-output"></div>
+          <button id="copy-prompt" class="btn btn-secondary" type="button">Копировать промпт</button>
+        </div>
       </div>
     </div>
   `;
@@ -1051,9 +770,7 @@ function initUrlParameters() {
   // Открытие модалки по клику на карточку
   typeCards.forEach((card) => {
     card.addEventListener("click", function () {
-    selectedType = this.getAttribute("data-type") || "recipes";
-      incCategory(selectedType);
-      renderExamples(selectedType);
+      selectedType = this.getAttribute("data-type") || "recipes";
 
       const modalTitle = modal.querySelector(".modal-title");
       modalTitle.textContent = `Кастомизация: ${promptTemplates[selectedType]?.name || selectedType}`;
@@ -1066,7 +783,6 @@ function initUrlParameters() {
 
       modal.classList.add("active");
       document.body.style.overflow = "hidden";
-      document.body.classList.add("modal-open");
     });
   });
 
@@ -1074,7 +790,6 @@ function initUrlParameters() {
   function closeModal() {
     modal.classList.remove("active");
     document.body.style.overflow = "auto";
-    document.body.classList.remove("modal-open");
   }
 
   modal.querySelector(".modal-close").addEventListener("click", closeModal);
@@ -1094,357 +809,97 @@ function initUrlParameters() {
   const finalPrompt = modal.querySelector("#final-prompt");
   const copyButton = modal.querySelector("#copy-prompt");
 
-function buildPromptText(type, idea, tone = "professional", overrideParams = {}) {
-  if (!promptTemplates[type]) return "";
+  promptForm.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-  const tplParams = promptTemplates[type].params || {};
-  const params = {};
+    const customText = customInput.value?.trim();
+    const tone = toneSelect.value;
 
-  for (const [key, param] of Object.entries(tplParams)) {
-    if (overrideParams[key] !== undefined) {
-      params[key] = overrideParams[key];
-      continue;
+    if (!customText) {
+      alert("Пожалуйста, опишите вашу идею");
+      return;
+    }
+    if (!promptTemplates[selectedType]) {
+      alert("Шаблон для этого типа промпта еще не готов");
+      return;
     }
 
-    if (param.type === "select") {
-      params[key] = param.default ?? param.options?.[0] ?? "";
-    } else if (param.type === "multiselect") {
-      const def = param.default;
-      params[key] = Array.isArray(def) ? def.join(", ") : def ?? "";
-    }
-  }
-
-  let tonePrefix = "";
-  switch (tone) {
-    case "professional": tonePrefix = "Используй профессиональный технический язык. "; break;
-    case "friendly": tonePrefix = "Будь дружелюбным и приветливым. "; break;
-    case "creative": tonePrefix = "Прояви креативность и оригинальность. "; break;
-    case "technical": tonePrefix = "Сфокусируйся на технических деталях. "; break;
-    case "detailed": tonePrefix = "Дай максимально детализированный ответ. "; break;
-  }
-
-  let text = promptTemplates[type].template;
-  text = text.replace("{idea}", idea);
-
-  for (const [key, value] of Object.entries(params)) {
-    text = text.replace(new RegExp(`\\{${key}\\}`, "g"), value);
-  }
-
-  text = text.replace(/\{[^}]+\}/g, "").replace(/\s{2,}/g, " ").trim();
-  text = tonePrefix + text + "\n\nTAIPrompts";
-
-  return text;
-}
-
-const promptExamples = {
-  recipes: [
-    {
-      title: "Быстрый ужин",
-      idea: "Быстрый ужин из курицы и овощей на сковороде",
-      tone: "friendly"
-    },
-    {
-      title: "Здоровый завтрак",
-      idea: "Полезный завтрак для спортсмена с высоким содержанием белка",
-      tone: "professional"
-    }
-  ],
-
-  websites: [
-    {
-      title: "Лендинг курса",
-      idea: "Лендинг для онлайн-курса по Python для подростков",
-      tone: "professional"
-    },
-    {
-      title: "Портфолио дизайнера",
-      idea: "Портфолио UI/UX дизайнера в стиле матового стекла",
-      tone: "creative"
-    }
-  ],
-
-  images: [
-    {
-      title: "Киберпанк-город",
-      idea: "Ночной киберпанк город под дождём с неоновыми вывесками",
-      tone: "creative"
-    },
-    {
-      title: "Минимализм",
-      idea: "Минималистичный интерьер в светлых тонах",
-      tone: "detailed"
-    }
-  ],
-
-  stickers: [
-    {
-      title: "Telegram-стикеры",
-      idea: "Милый кот для Telegram с эмоциями",
-      tone: "friendly"
-    },
-    {
-      title: "Мем-пак",
-      idea: "Мемные стикеры для чата друзей",
-      tone: "creative"
-    }
-  ],
-
-  school: [
-    {
-      title: "Задача по алгебре",
-      idea: "Решить квадратное уравнение с объяснением шагов",
-      tone: "detailed"
-    },
-    {
-      title: "Сочинение",
-      idea: "Сочинение на тему дружбы для 7 класса",
-      tone: "friendly"
-    }
-  ],
-
-  toys: [
-    {
-      title: "Развивающая игрушка",
-      idea: "Развивающая игрушка для детей 5 лет",
-      tone: "professional"
-    },
-    {
-      title: "Настольная игра",
-      idea: "Настольная игра для всей семьи",
-      tone: "creative"
-    }
-  ],
-
-  "3d": [
-    {
-      title: "Персонаж",
-      idea: "Фэнтези персонаж — воин с мечом",
-      tone: "detailed"
-    },
-    {
-      title: "Окружение",
-      idea: "Средневековый город для игры",
-      tone: "professional"
-    }
-  ],
-
-  bots: [
-    {
-      title: "Telegram-бот",
-      idea: "Telegram-бот для напоминаний и заметок",
-      tone: "professional"
-    },
-    {
-      title: "Discord-бот",
-      idea: "Discord-бот для модерации сервера",
-      tone: "technical"
-    }
-  ],
-
-  minecraft: [
-    {
-      title: "Новая руда",
-      idea: "Новая руда, броня и инструменты",
-      tone: "technical"
-    },
-    {
-      title: "Квесты",
-      idea: "Датапак с системой квестов и наград",
-      tone: "professional"
-    }
-  ],
-
-  ai: [
-    {
-      title: "Продвинутый промпт",
-      idea: "Помощник для анализа сложных текстов",
-      tone: "detailed"
-    },
-    {
-      title: "Креативный ИИ",
-      idea: "ИИ для генерации идей стартапов",
-      tone: "creative"
-    }
-  ],
-
-  characterai: [
-    {
-      title: "Дружелюбный персонаж",
-      idea: "Дружелюбный виртуальный помощник",
-      tone: "friendly"
-    },
-    {
-      title: "Загадочный герой",
-      idea: "Загадочный персонаж с тёмным прошлым",
-      tone: "creative"
-    }
-  ],
-
-  suno: [
-    {
-      title: "Поп-песня",
-      idea: "Песня про свободу и ночной город",
-      tone: "creative"
-    },
-    {
-      title: "Ностальгия",
-      idea: "Ностальгичная песня про школьные годы",
-      tone: "detailed"
-    }
-  ],
-
-  youtube: [
-    {
-      title: "Идея видео",
-      idea: "Видео про изучение программирования с нуля",
-      tone: "professional"
-    },
-    {
-      title: "Развлекательный контент",
-      idea: "Развлекательное видео для подростков",
-      tone: "friendly"
-    }
-  ],
-
-  setup: [
-    {
-      title: "Десктоп-приложение",
-      idea: "Приложение для учёта личных задач",
-      tone: "technical"
-    },
-    {
-      title: "Учебное ПО",
-      idea: "Учебное приложение для изучения языков",
-      tone: "professional"
-    }
-  ]
-};
-
-  function renderExamples(type) {
-  const grid = document.getElementById("examplesGrid");
-  if (!grid) return;
-
-  const examples = promptExamples[type] || [];
-  if (!examples.length) {
-    grid.innerHTML = `<p style="opacity:.6">Примеры скоро появятся</p>`;
-    return;
-  }
-
-  grid.innerHTML = examples.map((ex, i) => {
-    const text = buildPromptText(type, ex.idea, ex.tone || "professional", ex.params || {});
-    return `
-      <div class="example-card" data-i="${i}">
-        <div style="display:flex; justify-content:space-between; gap:10px; align-items:center;">
-          <strong>${ex.title || "Пример"}</strong>
-          <span class="tag" style="margin:0;">${(ex.tone || "professional")}</span>
-        </div>
-
-        <pre>${text}</pre>
-
-        <div class="example-actions">
-          <button class="btn btn-secondary" data-copy>Копировать</button>
-          <button class="btn btn-primary" data-use>Использовать</button>
-        </div>
-      </div>
-    `;
-  }).join("");
-
-  // кнопки
-  grid.querySelectorAll(".example-card").forEach((card) => {
-    const i = Number(card.getAttribute("data-i"));
-    const ex = examples[i];
-    const text = buildPromptText(type, ex.idea, ex.tone || "professional", ex.params || {});
-
-    card.querySelector("[data-copy]").onclick = () => {
-      navigator.clipboard.writeText(text);
-    };
-
-    card.querySelector("[data-use]").onclick = () => {
-      // открываем модалку как будто юзер выбрал категорию
-      selectedType = type;
-
-      const modalTitle = modal.querySelector(".modal-title");
-      modalTitle.textContent = `Кастомизация: ${promptTemplates[selectedType]?.name || selectedType}`;
-
-      renderTechnicalParams(selectedType);
-
-      // выставляем тон
-      toneSelect.value = ex.tone || "professional";
-
-      // заполняем идею
-      customInput.value = ex.idea;
-
-      // если хочешь — можно ещё применить ex.params к полям (скажи, сделаю)
-      modal.querySelector("#final-prompt").textContent = "";
-      modal.classList.add("active");
-      document.body.style.overflow = "hidden";
-    };
-  });
-}
-
-promptForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  const customText = customInput.value?.trim();
-  const tone = toneSelect.value;
-
-  if (!customText) return alert("Пожалуйста, опишите вашу идею");
-  if (!promptTemplates[selectedType]) return alert("Шаблон для этого типа промпта еще не готов");
-
-  const params = {};
-  for (const [key, param] of Object.entries(promptTemplates[selectedType].params || {})) {
-    if (param.type === "select") {
-      const el = modal.querySelector(`#param-${key}`);
-      if (el) params[key] = el.value;
-    } else if (param.type === "multiselect") {
-      const box = modal.querySelector(`#param-${key}`);
-      if (box) {
-        const checked = box.querySelectorAll('input[type="checkbox"]:checked');
-        params[key] = Array.from(checked).map((cb) => cb.value).join(", ");
+    const params = {};
+    for (const [key, param] of Object.entries(promptTemplates[selectedType].params || {})) {
+      if (param.type === "select") {
+        const selectElement = modal.querySelector(`#param-${key}`);
+        if (selectElement) params[key] = selectElement.value;
+      } else if (param.type === "multiselect") {
+        const container = modal.querySelector(`#param-${key}`);
+        if (container) {
+          const checkboxes = container.querySelectorAll('input[type="checkbox"]:checked');
+          params[key] = Array.from(checkboxes).map((cb) => cb.value).join(", ");
+        }
       }
     }
-  }
 
-  const finalPromptText = buildPromptText(selectedType, customText, tone, params);
+    let tonePrefix = "";
+    switch (tone) {
+      case "professional":
+        tonePrefix = "Используй профессиональный технический язык. ";
+        break;
+      case "friendly":
+        tonePrefix = "Будь дружелюбным и приветливым. ";
+        break;
+      case "creative":
+        tonePrefix = "Прояви креативность и оригинальность. ";
+        break;
+      case "technical":
+        tonePrefix = "Сфокусируйся на технических деталях. ";
+        break;
+      case "detailed":
+        tonePrefix = "Дай максимально детализированный ответ. ";
+        break;
+    }
 
-  incGeneration();
-  finalPrompt.textContent = finalPromptText;
-  finalPrompt.scrollIntoView({ behavior: "smooth", block: "nearest" });
-});
+    let finalPromptText = promptTemplates[selectedType].template;
 
-// ✅ копирование — ОДИН раз, не внутри submit
-copyButton.addEventListener("click", function () {
-  if (!finalPrompt.textContent) return alert("Сначала сгенерируйте промпт");
-  navigator.clipboard.writeText(finalPrompt.textContent).then(() => {
-    const originalText = this.textContent;
-    this.textContent = "Скопировано!";
-    this.classList.add("btn-primary");
-    setTimeout(() => {
-      this.textContent = originalText;
-      this.classList.remove("btn-primary");
-    }, 2000);
+    finalPromptText = finalPromptText.replace("{idea}", customText);
+
+    for (const [key, value] of Object.entries(params)) {
+      finalPromptText = finalPromptText.replace(new RegExp(`\\{${key}\\}`, "g"), value);
+    }
+
+    // подчистка незаполненных плейсхолдеров
+    finalPromptText = finalPromptText.replace(/\{[^}]+\}/g, "").replace(/\s{2,}/g, " ").trim();
+
+    finalPromptText = tonePrefix + finalPromptText;
+
+    // watermark
+    finalPromptText += "\n\nTAIPrompts";
+
+    finalPrompt.textContent = finalPromptText;
+    finalPrompt.scrollIntoView({ behavior: "smooth", block: "nearest" });
   });
-});
 
-const downloadButton = modal.querySelector("#download-prompt");
+  copyButton.addEventListener("click", function () {
+    if (!finalPrompt.textContent) {
+      alert("Сначала сгенерируйте промпт");
+      return;
+    }
 
-downloadButton.addEventListener("click", () => {
-  const text = finalPrompt.textContent?.trim();
-  if (!text) return alert("Сначала сгенерируйте промпт");
+    navigator.clipboard
+      .writeText(finalPrompt.textContent)
+      .then(() => {
+        const originalText = this.textContent;
+        this.textContent = "Скопировано!";
+        this.classList.add("btn-primary");
 
-  const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  const date = new Date().toISOString().slice(0, 10); // 2025-12-18
-  a.href = url;
-  a.download = `TAIPrompts_${selectedType}_${date}.txt`;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-
-  URL.revokeObjectURL(url);
-});
+        setTimeout(() => {
+          this.textContent = originalText;
+          this.classList.remove("btn-primary");
+        }, 2000);
+      })
+      .catch((err) => {
+        console.error("Ошибка копирования: ", err);
+        alert("Не удалось скопировать текст");
+      });
+  });
 
   console.log("✅ Генератор инициализирован");
 }
@@ -1453,7 +908,7 @@ function runDebug() {
   console.log("=== TAIPrompts Debug ===");
   console.log("Current page:", window.location.pathname);
 
-  const files = ["index.html", "generator.html", "pricing.html", "development.html", "year.html"];
+  const files = ["index.html", "generator.html", "about.html", "versions.html"];
   files.forEach((file) => {
     fetch(file)
       .then((response) => console.log(`${file}: ${response.ok ? "✅ OK" : "❌ Not found"}`))
@@ -1466,11 +921,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   await inject("site-header", "components/header.html");
   await inject("site-footer", "components/footer.html");
 
-  // Автообновление года в футере
-  const yearEl = document.getElementById('currentYear');
-  if (yearEl) {
-    yearEl.textContent = new Date().getFullYear();
-  }
+// Автообновление года в футере
+const yearEl = document.getElementById('currentYear');
+if (yearEl) {
+  yearEl.textContent = new Date().getFullYear();
+}
 
   setActiveNavLink();
   initNav();
@@ -1480,40 +935,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   runDebug();
 
   // Service Worker
-  if ("serviceWorker" in navigator && location.protocol === 'https:') {
+  if ("serviceWorker" in navigator) {
     navigator.serviceWorker
       .register("service-worker.js")
       .then(() => console.log("SW registered"))
       .catch((err) => console.error("SW error:", err));
   }
 });
-
-// Добавляем стили для анимаций если ещё нет
-if (!document.getElementById('taiprompts-animations')) {
-  const style = document.createElement('style');
-  style.id = 'taiprompts-animations';
-  style.textContent = `
-    @keyframes slideInRight {
-      from {
-        opacity: 0;
-        transform: translateX(100%);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-    
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-  `;
-  document.head.appendChild(style);
-}
