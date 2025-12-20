@@ -233,6 +233,263 @@ function initGenerator() {
 
   console.log("🚀 Инициализация генератора промптов...");
 
+  // URL параметры и быстрая загрузка
+function initUrlParameters() {
+  const params = new URLSearchParams(window.location.search);
+  
+  // Проверяем быструю загрузку из сохранённых промптов
+  if (params.has('quickload')) {
+    const quickloadData = JSON.parse(localStorage.getItem('taiprompts_quickload') || 'null');
+    
+    if (quickloadData && quickloadData.type) {
+      // Задержка для загрузки DOM
+      setTimeout(() => {
+        const card = document.querySelector(`.type-card[data-type="${quickloadData.type}"]`);
+        if (card) {
+          card.click();
+          
+          // Заполняем параметры из сохранённых данных
+          setTimeout(() => {
+            if (quickloadData.params) {
+              Object.entries(quickloadData.params).forEach(([key, value]) => {
+                const element = modal.querySelector(`#param-${key}`);
+                if (element) {
+                  if (element.tagName === 'SELECT') {
+                    element.value = value;
+                  } else if (element.classList.contains('multi-select')) {
+                    const values = Array.isArray(value) ? value : [value];
+                    element.querySelectorAll('input').forEach(checkbox => {
+                      checkbox.checked = values.includes(checkbox.value);
+                    });
+                  }
+                }
+              });
+            }
+            
+            // Устанавливаем идею если есть
+            if (quickloadData.idea) {
+              modal.querySelector('#custom-input').value = quickloadData.idea;
+            }
+            
+            // Показываем уведомление
+            if (params.get('from') === 'daily') {
+              showNotification('🎯 Промпт дня загружен! Настройте параметры и нажмите "Сгенерировать"');
+            } else {
+              showNotification('💾 Сохранённый промпт загружен! Настройте параметры и нажмите "Сгенерировать"');
+            }
+          }, 100);
+        }
+      }, 500);
+    }
+  }
+  
+  // Обычные URL параметры
+  if (params.has('type')) {
+    const type = params.get('type');
+    
+    if (promptTemplates[type]) {
+      setTimeout(() => {
+        const card = document.querySelector(`.type-card[data-type="${type}"]`);
+        if (card) {
+          card.click();
+          
+          // Заполняем остальные параметры из URL
+          Object.keys(promptTemplates[type].params || {}).forEach(key => {
+            if (params.has(key)) {
+              const value = params.get(key);
+              const element = modal.querySelector(`#param-${key}`);
+              
+              if (element) {
+                if (element.tagName === 'SELECT') {
+                  element.value = value;
+                } else if (element.classList.contains('multi-select')) {
+                  const values = value.split(',');
+                  element.querySelectorAll('input').forEach(checkbox => {
+                    checkbox.checked = values.includes(checkbox.value);
+                  });
+                }
+              }
+            }
+          });
+          
+          // Заполняем идею
+          if (params.has('idea')) {
+            modal.querySelector('#custom-input').value = decodeURIComponent(params.get('idea'));
+          }
+          
+          // Автоматически генерируем если есть auto параметр
+          if (params.has('auto')) {
+            setTimeout(() => {
+              const submitBtn = modal.querySelector('button[type="submit"]');
+              if (submitBtn) submitBtn.click();
+            }, 1000);
+          }
+        }
+      }, 500);
+    }
+  }
+  
+  // Кнопка "Поделиться настройками"
+  function addShareButton() {
+    if (!modal) return;
+    
+    const shareButton = document.createElement('button');
+    shareButton.className = 'btn btn-secondary';
+    shareButton.style.marginLeft = '10px';
+    shareButton.style.marginTop = '15px';
+    shareButton.innerHTML = `
+      <span style="display: flex; align-items: center; gap: 8px;">
+        🔗 Поделиться настройками
+      </span>
+    `;
+    
+    modal.querySelector('.generated-prompt').appendChild(shareButton);
+    
+    shareButton.addEventListener('click', function() {
+      const params = new URLSearchParams();
+      params.set('type', selectedType);
+      
+      // Собираем текущие параметры
+      const currentParams = getCurrentParams();
+      Object.entries(currentParams).forEach(([key, value]) => {
+        if (value && value !== promptTemplates[selectedType]?.params?.[key]?.default) {
+          if (Array.isArray(value)) {
+            params.set(key, value.join(','));
+          } else {
+            params.set(key, value);
+          }
+        }
+      });
+      
+      // Добавляем идею если она есть
+      const idea = modal.querySelector('#custom-input').value.trim();
+      if (idea) {
+        params.set('idea', encodeURIComponent(idea));
+      }
+      
+      // Добавляем auto параметр если есть сгенерированный промпт
+      const finalPrompt = modal.querySelector('#final-prompt');
+      if (finalPrompt && finalPrompt.textContent.trim()) {
+        params.set('auto', 'true');
+      }
+      
+      const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+      
+      // Пробуем использовать Web Share API
+      if (navigator.share) {
+        navigator.share({
+          title: `Настройки промпта: ${promptTemplates[selectedType]?.name || selectedType}`,
+          text: `Попробуй эти настройки в TAIPrompts`,
+          url: url
+        }).catch(() => {
+          // Fallback к копированию
+          copyShareUrl(url);
+        });
+      } else {
+        copyShareUrl(url);
+      }
+    });
+    
+    function copyShareUrl(url) {
+      navigator.clipboard.writeText(url).then(() => {
+        const originalHTML = shareButton.innerHTML;
+        shareButton.innerHTML = '<span style="display: flex; align-items: center; gap: 8px;">✅ Ссылка скопирована!</span>';
+        shareButton.style.background = '#10b981';
+        shareButton.style.color = 'white';
+        
+        showNotification('🔗 Ссылка на настройки скопирована в буфер обмена');
+        
+        setTimeout(() => {
+          shareButton.innerHTML = originalHTML;
+          shareButton.style.background = '';
+          shareButton.style.color = '';
+        }, 2000);
+      }).catch(err => {
+        console.error('Ошибка копирования:', err);
+        alert('Не удалось скопировать ссылку');
+      });
+    }
+  }
+  
+  // Утилита для получения текущих параметров
+  function getCurrentParams() {
+    const params = {};
+    
+    const paramElements = modal.querySelectorAll('[id^="param-"]');
+    paramElements.forEach(element => {
+      const paramName = element.id.replace('param-', '');
+      
+      if (element.tagName === 'SELECT') {
+        params[paramName] = element.value;
+      } else if (element.classList.contains('multi-select')) {
+        const checked = Array.from(element.querySelectorAll('input:checked'))
+          .map(cb => cb.value);
+        params[paramName] = checked;
+      }
+    });
+    
+    return params;
+  }
+  
+  // Показать уведомление
+  function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 15px 20px;
+      z-index: 10000;
+      max-width: 300px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      animation: slideInRight 0.3s ease;
+    `;
+    
+    notification.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="font-size: 1.2rem;">🔗</div>
+        <div>
+          <div style="font-weight: 600; font-size: 0.95rem;">${message}</div>
+          <div style="font-size: 0.8rem; color: var(--secondary-color); margin-top: 5px;">
+            Настройки загружены из URL
+          </div>
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.style.opacity = '0';
+      notification.style.transform = 'translateX(20px)';
+      setTimeout(() => notification.remove(), 300);
+    }, 4000);
+  }
+  
+  // Добавляем стили для анимации
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(100%);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+  `;
+  document.head.appendChild(style);
+  
+  // Инициализация
+  addShareButton();
+}
+
   const promptTemplates = {
     recipes: {
       name: "🍳 Рецепты",
@@ -1305,6 +1562,7 @@ if (yearEl) {
   initLightbox();
   initAnimations();
   runDebug();
+  initUrlParameters();
 
   // Service Worker
   if ("serviceWorker" in navigator) {
