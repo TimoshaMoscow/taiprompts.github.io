@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TAIPrompts</title>
+  <script>
+    // Роутер для чистых URL
+    const path = window.location.pathname;
+    
+    const routes = {
+      '/': '/index.html',
+      '/generator': '/generator.html',
+      '/pricing': '/pricing.html',
+      '/development': '/development.html',
+      '/year': '/year.html'
+    };
+    
+    // Проверяем, есть ли маршрут
+    if (routes[path]) {
+      // Перенаправляем на реальный файл
+      window.location.replace(routes[path]);
+    } else {
+      // Показываем 404
+      document.body.innerHTML = `
+        <div style="text-align:center; padding:50px;">
+          <h1>404 - Страница не найдена</h1>
+          <p>Вернуться на <a href="/">главную</a></p>
+        </div>
+      `;
+    }
+  </script>
+</head>
+<body></body>
+</html>
