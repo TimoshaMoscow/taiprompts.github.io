@@ -1312,3 +1312,32 @@ if (yearEl) {
       .catch((err) => console.error("SW error:", err));
   }
 });
+
+// ===== Функции для страницы настроек =====
+window.setCookie = setCookie;
+window.getCookie = getCookie;
+window.hasConsent = hasConsent;
+window.getStats = getStats;
+window.incPathView = incPathView;
+window.incCategory = incCategory;
+window.incGeneration = incGeneration;
+
+// Функция для принудительного обновления статуса cookie
+// (будет использоваться страницей настроек)
+window.updateCookieConsent = function(consent) {
+  if (consent) {
+    setCookie(CONSENT_COOKIE, "accepted", 365);
+    // Записываем просмотр текущей страницы
+    incPathView(location.pathname);
+  } else {
+    setCookie(CONSENT_COOKIE, "declined", 365);
+  }
+  
+  // Генерируем событие для обновления интерфейса
+  const event = new CustomEvent('cookieConsentChanged', {
+    detail: { consent: consent }
+  });
+  window.dispatchEvent(event);
+  
+  return consent;
+};
