@@ -11,21 +11,102 @@
   <div id="site-header"></div>
 
   <main class="container" style="padding-top: 110px; padding-bottom: 80px;">
-    <div class="section-title" style="text-align:left; margin-bottom: 18px;">
+    <div class="section-title" style="text-align:left; margin-bottom: 30px;">
       <h1 style="margin:0;">Настройки</h1>
     </div>
     <div class="card" style="padding: 22px;">
       <h2>Профиль</h2>
       <p class="pricing-warning">⚠️ Настройки временно недоступны. Следите за новостями!</p>
     </div>
+    <!-- Секция основных настроек -->
     <div class="card" style="padding: 22px;">
       <h2>Основные</h2>
-      <p class="pricing-warning">⚠️ Настройки временно недоступны. Следите за новостями!</p>
-    </div>
+      
+      <!-- Галочка для cookie -->
+      <div class="setting-toggle-group">
+        <h3 style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+          <span>Файлы cookie</span>
+          <span id="cookie-status" class="cookie-status"></span>
+        </h3>
+        
+        <label class="setting-toggle">
+          <input type="checkbox" id="cookie-toggle">
+          <span class="toggle-switch"></span>
+        </label>
+        </div>
+      </div>
   </main>
 
   <div id="site-footer"></div>
 
   <script src="main.js"></script>
+  <script>
+    // Скрипт для страницы настроек
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Ждём загрузки header и footer
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      // Инициализация настроек cookie
+      const cookieToggle = document.getElementById('cookie-toggle');
+      const cookieStatus = document.getElementById('cookie-status');
+      const statsInfo = document.getElementById('stats-info');
+      const statsList = document.getElementById('stats-list');
+      const clearBtn = document.getElementById('clear-stats');
+      const exportBtn = document.getElementById('export-stats');
+      
+      // Проверяем текущий статус cookie
+      function updateCookieStatus() {
+        const hasConsent = window.hasConsent ? window.hasConsent() : false;
+        
+        // Устанавливаем состояние переключателя
+        cookieToggle.checked = hasConsent;
+        
+        // Обновляем статус
+        if (hasConsent) {
+          cookieStatus.textContent = '✓ Активны';
+          cookieStatus.className = 'cookie-status active';
+          statsInfo.style.display = 'block';
+          updateStatsDisplay();
+        } else {
+          cookieStatus.textContent = '✗ Отключены';
+          cookieStatus.className = 'cookie-status inactive';
+          statsInfo.style.display = 'none';
+        }
+      }
+      
+      // Обработка изменения переключателя
+      cookieToggle.addEventListener('change', function() {
+        if (!window.setCookie) {
+          console.error('Функции cookie не найдены');
+          return;
+        }
+        
+        if (this.checked) {
+          // Включаем cookie
+          window.setCookie('tp_consent', 'accepted', 365);
+          // Сразу записываем просмотр страницы настроек
+          if (window.incPathView) {
+            window.incPathView('/settings.html');
+          }
+        } else {
+          // Отключаем cookie
+          window.setCookie('tp_consent', 'declined', 365);
+        }
+        
+        // Обновляем статус
+        updateCookieStatus();
+        
+        setTimeout(() => {
+          notification.style.animation = 'slideOut 0.3s ease';
+          setTimeout(() => notification.remove(), 300);
+        }, 3000);
+      }
+      
+      // Инициализируем статус при загрузке
+      updateCookieStatus();
+      // Обновляем статус каждую секунду (на случай изменения в другом окне)
+      setInterval(updateCookieStatus, 1000);
+    });
+  </script>
 </body>
 </html>
