@@ -1,3 +1,23 @@
+// В начале main.js добавьте проверку
+(function() {
+  // Если мы на странице 404.html и URL не содержит .html
+  if (window.location.pathname.endsWith('.html')) {
+    return; // Пропускаем для реальных .html файлов
+  }
+  
+  // Для GitHub Pages: если не на главной и не на известных маршрутах
+  const knownRoutes = ['/', '/generator', '/pricing', '/development', '/year', '/settings'];
+  if (!knownRoutes.includes(window.location.pathname)) {
+    // Показываем загрузку, пока 404.html не перенаправит
+    document.body.innerHTML = `
+      <div style="text-align:center; padding:50px;">
+        <div class="spinner"></div>
+        <p>Загрузка...</p>
+      </div>
+    `;
+  }
+})();
+
 async function inject(id, url) {
   const el = document.getElementById(id);
   if (!el) return;
