@@ -13,7 +13,7 @@
   }
   
   // Известные маршруты
-  const knownRoutes = ['/', '/generator', '/pricing', '/development', '/year', '/settings'];
+  const knownRoutes = ['https://timoshamoscow.github.io/taiprompts.github.io/', 'generator', 'pricing', 'development', 'year', 'settings', '404'];
   
   // Проверяем, известен ли маршрут
   if (!knownRoutes.includes(currentPath)) {
