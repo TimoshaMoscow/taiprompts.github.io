@@ -1,26 +1,3 @@
-(function() {
-  // Текущий путь
-  const currentPath = window.location.pathname;
-  
-  // Если мы уже на странице 404.html
-  if (currentPath === '/404.html' || currentPath === '/404') {
-    return;
-  }
-  
-  // Если URL содержит .html (кроме 404.html)
-  if (currentPath.endsWith('.html') && !currentPath.includes('404.html')) {
-    return;
-  }
-  
-  // Известные маршруты
-  const knownRoutes = ['https://timoshamoscow.github.io/taiprompts.github.io/', 'generator', 'pricing', 'development', 'year', 'settings', '404'];
-  
-  // Проверяем, известен ли маршрут
-  if (!knownRoutes.includes(currentPath)) {
-    window.location.href = '/404.html';
-  }
-})();
-
 async function inject(id, url) {
   const el = document.getElementById(id);
   if (!el) return;
