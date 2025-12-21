@@ -1,13 +1,24 @@
-// В начале main.js добавьте проверку
 (function() {
-  // Если мы на странице 404.html и URL не содержит .html
-  if (window.location.pathname.endsWith('.html')) {
-    return; // Пропускаем для реальных .html файлов
+  // Текущий путь
+  const currentPath = window.location.pathname;
+  
+  // Если мы уже на странице 404.html
+  if (currentPath === '/404.html' || currentPath === '/404') {
+    return;
   }
   
-  // Для GitHub Pages: если не на главной и не на известных маршрутах
+  // Если URL содержит .html (кроме 404.html)
+  if (currentPath.endsWith('.html') && !currentPath.includes('404.html')) {
+    return;
+  }
+  
+  // Известные маршруты
   const knownRoutes = ['/', '/generator', '/pricing', '/development', '/year', '/settings'];
-  if (!knownRoutes.includes(window.location.pathname)) {
+  
+  // Проверяем, известен ли маршрут
+  if (!knownRoutes.includes(currentPath)) {
+    window.location.href = '/404.html';
+  }
 })();
 
 async function inject(id, url) {
