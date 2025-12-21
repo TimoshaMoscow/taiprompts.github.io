@@ -2806,3 +2806,175 @@ table.pricing-table {
   text-align: center;
   font-size: 15px;
 }
+
+/* ===== АДАПТИВНОСТЬ МОДАЛЬНОГО ОКНА ГЕНЕРАТОРА ===== */
+@media (max-width: 768px) {
+  .customization-modal .modal-content {
+    width: 95%;
+    max-width: 95%;
+    max-height: 85vh;
+    padding: 1.5rem;
+    border-radius: 20px;
+  }
+  
+  .modal-header {
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .modal-title {
+    font-size: 1.5rem;
+  }
+  
+  .modal-close {
+    font-size: 1.5rem;
+    width: 35px;
+    height: 35px;
+  }
+  
+  .technical-params {
+    padding: 1rem;
+  }
+  
+  .param-group {
+    margin-bottom: 1rem;
+  }
+  
+  .multi-select {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  
+  .checkbox-label {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+  
+  .generated-prompt {
+    margin-top: 1.5rem;
+    padding: 1.2rem;
+  }
+  
+  .prompt-output {
+    min-height: 120px;
+    max-height: 200px;
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+  
+  .example-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .example-actions .btn {
+    width: 100%;
+  }
+  
+  /* Для очень маленьких экранов */
+  @media (max-width: 480px) {
+    .customization-modal .modal-content {
+      width: 98%;
+      padding: 1.2rem;
+      border-radius: 16px;
+    }
+    
+    .modal-title {
+      font-size: 1.3rem;
+    }
+    
+    .multi-select {
+      grid-template-columns: 1fr;
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select,
+    .param-group select,
+    .param-group input {
+      padding: 10px 12px;
+      font-size: 16px; /* Отключает масштабирование на iOS */
+    }
+    
+    textarea#custom-input {
+      min-height: 100px;
+    }
+    
+    /* Фикс для iOS, чтобы не закрывалась клавиатурой */
+    .modal-body {
+      padding-bottom: 20px;
+    }
+    
+    /* Кнопки в ряд на маленьких экранах */
+    .example-actions {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    
+    .example-actions .btn {
+      flex: 1;
+      min-width: 120px;
+    }
+  }
+  
+  /* Портретный режим на планшетах */
+  @media (max-width: 768px) and (orientation: portrait) {
+    .customization-modal .modal-content {
+      max-height: 80vh;
+    }
+    
+    .modal-body {
+      max-height: 60vh;
+      overflow-y: auto;
+      padding-right: 5px;
+    }
+    
+    /* Скрыть полосу прокрутки на iOS */
+    .modal-body::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  
+  /* Ландшафтный режим на мобильных */
+  @media (max-width: 768px) and (orientation: landscape) {
+    .customization-modal .modal-content {
+      max-height: 90vh;
+    }
+    
+    .modal-body {
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    
+    .technical-params {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+  }
+}
+
+/* Фикс для мобильных устройств, чтобы модалка не выходила за экран */
+.customization-modal {
+  overscroll-behavior: contain;
+}
+
+/* Предотвращение прокрутки фона на iOS */
+.modal-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+/* Фикс для инпутов на iOS */
+@supports (-webkit-touch-callout: none) {
+  .customization-modal .modal-content {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    font-size: 16px !important;
+  }
+}
