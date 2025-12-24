@@ -3162,3 +3162,20 @@ table.pricing-table {
     padding: 0.25rem 0; /* Уменьшенные отступы для вертикального расположения */
     display: block;
 }
+
+.taiprompts_description {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: #ffffff;
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin: 0 auto 22px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.taiprompts_description:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
