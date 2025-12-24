@@ -3150,3 +3150,15 @@ table.pricing-table {
     opacity: 0;
   }
 }
+
+/* Вертикальное расположение ссылок в футере */
+.footer-links-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Расстояние между ссылками */
+}
+
+.footer-links-vertical .nav-link {
+    padding: 0.25rem 0; /* Уменьшенные отступы для вертикального расположения */
+    display: block;
+}
