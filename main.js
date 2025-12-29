@@ -496,26 +496,6 @@ function initGenerator() {
       },
     },
 
-    ai: {
-      name: "🤖 AI & G4F",
-      template:
-        "Создай продвинутый промпт для ИИ на тему '{idea}'. Тип ИИ: {ai_type},  Сложность: {complexity}. Включи: контекст, ограничения, формат ответа и примеры.",
-      params: {
-        ai_type: {
-          type: "select",
-          label: "Тип ИИ",
-          options: ["ChatGPT", "Midjourney", "DALL-E", "Stable Diffusion", "Claude", "Gemini", "DeepSeek", "Dylan", "Любой"],
-          default: "ChatGPT",
-        },
-        complexity: {
-          type: "select",
-          label: "Сложность",
-          options: ["Базовый", "Продвинутый", "Экспертный", "Исследовательский"],
-          default: "Продвинутый",
-        },
-      },
-    },
-
     characterai: {
       name: "🤖 Character AI",
       template:
