@@ -279,7 +279,7 @@ function initGenerator() {
         },
         loader: {
           type: "select",
-          label: "Совместимость",
+          label: "Загрузчик",
           options: ["Forge", "Fabric", "Paper", "Spigot", "Bukkit"],
           default: "Forge",
         },
