@@ -263,7 +263,7 @@ function initGenerator() {
     minecraft: {
       name: "⛏️ Моды Minecraft",
       template:
-        "Разработай {type} для Minecraft {version} с описанием: '{idea}'. Особенности: {features}. Совместимость: {compatibility}. Детально опиши функционал, рецепты и механики. Также напиши структуру проекта, полный код и гайд по сборке проекта в Intellij IDEA если требуется. (Например для датапаков не нужен IDEA)",
+        "Разработай {type} для Minecraft {version} {loader} для {compatibility} с описанием: '{idea}'. Особенности: {features}. Детально опиши функционал и механики. Также напиши структуру проекта, полный код и гайд по сборке проекта в Intellij IDEA если требуется. (Например для датапаков не нужен IDEA)",
       params: {
         type: {
           type: "select",
@@ -274,14 +274,20 @@ function initGenerator() {
         version: {
           type: "select",
           label: "Версия Minecraft",
-          options: ["1.20.x", "1.19.x", "1.18.x", "1.17.x", "1.16.x", "Любая", "1.12x", "1.8x"],
-          default: "1.20.x",
+          options: ["1.21.4", "1.21", "1.20.1", "1.19.2", "1.18.2", "1.17", "1.16.5", "Любая", "1.12.2", "1.8.9"],
+          default: "1.20.1",
+        },
+        loader: {
+          type: "select",
+          label: "Совместимость",
+          options: ["Forge", "Fabric", "Paper", "Spigot", "Bukkit"],
+          default: "Forge",
         },
         compatibility: {
           type: "select",
           label: "Совместимость",
-          options: ["Forge", "Fabric", "Paper", "Spigot", "Bukkit", "Любая"],
-          default: "Forge",
+          options: ["Сервер", "Клиент"],
+          default: "Клиент",
         },
         features: {
           type: "multiselect",
@@ -291,11 +297,13 @@ function initGenerator() {
             "Новые мобы",
             "Новые предметы",
             "Генерация структур",
+            "Изменение мира",
             "Магическая система",
             "Технологии",
             "Квесты",
             "Боссы",
             "GUI",
+            "Рецепты",
             "Оптимизация",
             "Клиентские фишки",
             "Конфиг",
