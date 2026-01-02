@@ -263,13 +263,13 @@ function initGenerator() {
     minecraft: {
       name: "⛏️ Моды Minecraft",
       template:
-        "Разработай {type} для Minecraft {version} {loader} для {compatibility} с описанием: '{idea}'. Особенности: {features}. Детально опиши функционал и механики. Также напиши структуру проекта, полный код и гайд по сборке проекта в Intellij IDEA если требуется. (Например для датапаков не нужен IDEA)",
+        "Разработай {type} для Minecraft {version} {loader} для {compatibility} с описанием: '{idea}'. Особенности: {features}. Детально опиши функционал и механики. Также напиши структуру проекта, полный код и гайд по сборке и установке.",
       params: {
         type: {
           type: "select",
           label: "Тип контента",
-          options: ["мод", "ресурспак", "датапак", "плагин", "аддон"],
-          default: "мод",
+          options: ["Мод", "Ресурспак", "Датапак", "Плагин", "Аддон"],
+          default: "Мод",
         },
         version: {
           type: "select",
@@ -307,6 +307,7 @@ function initGenerator() {
             "Оптимизация",
             "Клиентские фишки",
             "Конфиг",
+            "Технические функции",
           ],
           default: "Оптимизация",
         },
@@ -693,6 +694,7 @@ function initGenerator() {
             "Ad-hoc",
             "SFX архив",
             "Другой",
+            "Свой (Самописный)",
           ],
           default: "Inno Setup",
         },
