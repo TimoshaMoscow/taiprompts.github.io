@@ -1,0 +1,351 @@
+/* Секция генерации */
+.generation {
+    padding: 80px 0;
+}
+
+.generation-content {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* Информационный баннер */
+.info-banner {
+    background: linear-gradient(135deg, var(--accent-color), #4f6cf0);
+    border-radius: 20px;
+    padding: 2.5rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.info-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: translateX(-100%);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.info-banner h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: white;
+    position: relative;
+    z-index: 1;
+}
+
+.info-banner p {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+}
+
+/* Шаги баннера */
+.banner-steps {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.step-text {
+    color: white;
+    font-size: 0.9rem;
+    text-align: center;
+    max-width: 120px;
+}
+
+/* Сетка карточек промптов */
+.prompt-types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.type-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--card-border);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.type-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    border-color: var(--accent-color);
+}
+
+.type-card h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+}
+
+.type-card p {
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+/* Стили для вайб-описаний и тегов */
+.type-card .vibe-description {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    margin-top: 0.5rem;
+    line-height: 1.4;
+}
+
+.type-card .vibe-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 0.5rem;
+    justify-content: center;
+}
+
+.vibe-tag {
+    background: rgba(67, 97, 238, 0.1);
+    color: var(--accent-color);
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+/* Примеры промптов */
+.examples {
+    margin-top: 100px;
+}
+
+.examples-head {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.examples-subtitle {
+    opacity: 0.75;
+    line-height: 1.5;
+    max-width: 70ch;
+    background: rgba(255, 193, 7, 0.12);
+    border: 1px solid rgba(255, 193, 7, 0.35);
+    color: #ffdca8;
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin: 0 auto 22px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+.examples-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    text-align: center;
+}
+
+.example-card {
+    padding: 18px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+}
+
+.example-card pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 12px;
+    line-height: 1.55;
+    font-size: 0.95rem;
+    max-height: 260px;
+    overflow: auto;
+}
+
+.example-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.example-actions .btn {
+    flex: 1;
+}
+
+.examples-empty {
+    opacity: 0.75;
+    padding: 14px 16px;
+    border: 1px dashed rgba(255,255,255,0.18);
+    border-radius: 16px;
+}
+
+/* Плейсхолдер для примеров */
+#examplesGrid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 220px;
+}
+
+.examples-placeholder {
+    padding: 18px 28px;
+    border: 1px dashed rgba(255,255,255,0.2);
+    border-radius: 14px;
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    font-size: 15px;
+}
+
+@media (max-width: 992px) {
+    .prompt-types-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    
+    .info-banner {
+        padding: 2rem;
+    }
+    
+    .banner-steps {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 900px) {
+    .examples-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .prompt-types-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+    
+    .type-card h3 {
+        font-size: 1.2rem;
+    }
+    
+    .info-banner h3 {
+        font-size: 1.5rem;
+    }
+    
+    .banner-steps {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .step {
+        flex-direction: row;
+        gap: 15px;
+        max-width: 300px;
+    }
+    
+    .step-text {
+        text-align: left;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 576px) {
+    .prompt-types-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .type-card {
+        padding: 1.2rem;
+    }
+    
+    .info-banner {
+        padding: 1.5rem;
+    }
+    
+    .info-banner h3 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .type-card {
+        padding: 1rem;
+    }
+    
+    .type-card h3 {
+        font-size: 1.1rem;
+    }
+    
+    .vibe-description {
+        font-size: 0.85rem;
+    }
+    
+    .vibe-tag {
+        font-size: 0.65rem;
+        padding: 2px 6px;
+    }
+    
+    .info-banner {
+        padding: 1.2rem;
+    }
+    
+    .info-banner h3 {
+        font-size: 1.2rem;
+    }
+    
+    .info-banner p {
+        font-size: 0.95rem;
+    }
+}
