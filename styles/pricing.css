@@ -1,0 +1,218 @@
+/* Hero/Top */
+.pricing-hero {
+    padding: 30px 0 0;
+}
+
+.pricing-warning {
+    background: rgba(255, 193, 7, 0.12);
+    border: 1px solid rgba(255, 193, 7, 0.35);
+    color: #ffdca8;
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin: 0 auto 22px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.pricing-subtitle {
+    text-align: center;
+    color: var(--secondary-color);
+    margin: -10px auto 30px;
+    max-width: 900px;
+}
+
+/* Cards grid */
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-bottom: 35px;
+}
+
+.pricing-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 100%;
+}
+
+.pricing-title {
+    font-size: 1.35rem;
+    letter-spacing: 0.5px;
+}
+
+.pricing-price {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.pricing-price span {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--secondary-color);
+}
+
+.pricing-features {
+    list-style: none;
+    display: grid;
+    gap: 10px;
+    margin-top: 6px;
+    color: var(--secondary-color);
+}
+
+.pricing-features li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    line-height: 1.35;
+}
+
+.pricing-features li::before {
+    content: "✓";
+    color: var(--accent-color);
+    font-weight: 700;
+    flex: 0 0 auto;
+    margin-top: 1px;
+}
+
+.pricing-badge {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent-color);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: var(--shadow);
+}
+
+.pricing-card.current {
+    border: 2px solid rgba(94, 114, 228, 0.9);
+    background: linear-gradient(135deg, var(--card-bg), rgba(94, 114, 228, 0.12));
+}
+
+.pricing-card.popular {
+    border: 2px solid rgba(94, 114, 228, 0.9);
+}
+
+.pricing-btn {
+    margin-top: auto;
+    width: 100%;
+    text-align: center;
+}
+
+.pricing-btn.disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+    transform: none !important;
+    box-shadow: none !important;
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid var(--card-border);
+}
+
+.pricing-note {
+    text-align: center;
+    color: var(--secondary-color);
+    margin: 10px 0 25px;
+    font-size: 0.95rem;
+}
+
+/* Comparison table */
+.pricing-table-wrap {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.pricing-table-header {
+    padding: 18px 18px 0;
+    text-align: center;
+}
+
+.pricing-table-header h3 {
+    margin-bottom: 6px;
+    color: var(--text-color);
+}
+
+.pricing-table-header p {
+    color: var(--secondary-color);
+    margin-bottom: 14px;
+}
+
+.table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-top: 1px solid var(--card-border);
+}
+
+table.pricing-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+}
+
+.pricing-table th,
+.pricing-table td {
+    padding: 14px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    vertical-align: middle;
+    text-align: center;
+    color: var(--text-color);
+}
+
+.pricing-table th:first-child,
+.pricing-table td:first-child {
+    text-align: left;
+    color: var(--secondary-color);
+    width: 32%;
+}
+
+.pricing-table th {
+    background: rgba(255, 255, 255, 0.04);
+    font-weight: 700;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.pricing-table .yes {
+    color: #c7d2fe;
+    font-weight: 700;
+}
+
+.pricing-table .no {
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.pricing-table .accent-col {
+    background: rgba(94, 114, 228, 0.08);
+}
+
+.pricing-table .tier-chip {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+    .pricing-warning {
+        margin-bottom: 18px;
+    }
+    .pricing-subtitle {
+        margin-bottom: 22px;
+    }
+}
