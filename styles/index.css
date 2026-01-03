@@ -181,7 +181,7 @@
     }
 }
 
-/* Прокрутка вниз индикатор */
+/* Анимация для всего контейнера - стрелка и текст движутся вместе */
 .hero-scroll-down {
     position: absolute;
     bottom: 40px;
@@ -192,25 +192,9 @@
     align-items: center;
     gap: 10px;
     z-index: 10;
-    animation: bounce 2s infinite;
     opacity: 0.9;
-    /* Убираем подчёркивание */
     text-decoration: none !important;
-}
-
-/* Убираем подчёркивание при наведении */
-.hero-scroll-down:hover {
-    text-decoration: none !important;
-}
-
-/* Можно ещё убрать стандартные стили ссылки */
-.hero-scroll-down,
-.hero-scroll-down:visited,
-.hero-scroll-down:focus,
-.hero-scroll-down:active,
-.hero-scroll-down:hover {
-    text-decoration: none !important;
-    outline: none;
+    animation: bounce 2s infinite;
 }
 
 .scroll-text {
@@ -227,7 +211,6 @@
     border-right: 3px solid rgba(255, 255, 255, 0.8);
     border-bottom: 3px solid rgba(255, 255, 255, 0.8);
     transform: rotate(45deg);
-    animation: bounce 2s infinite;
 }
 
 @keyframes bounce {
@@ -235,31 +218,9 @@
         transform: translateX(-50%) translateY(0);
     }
     40% {
-        transform: translateX(-50%) translateY(-10px);
+        transform: translateX(-50%) translateY(-15px);
     }
     60% {
-        transform: translateX(-50%) translateY(-5px);
-    }
-}
-
-/* Адаптивность */
-@media (max-width: 768px) {
-    .hero-scroll-down {
-        bottom: 30px;
-    }
-    
-    .scroll-text {
-        font-size: 0.8rem;
-    }
-    
-    .scroll-arrow {
-        width: 20px;
-        height: 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .hero-scroll-down {
-        bottom: 20px;
+        transform: translateX(-50%) translateY(-7px);
     }
 }
