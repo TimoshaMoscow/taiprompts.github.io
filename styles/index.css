@@ -181,7 +181,7 @@
     }
 }
 
-/* Анимация для всего контейнера - стрелка и текст движутся вместе */
+/* ===== Прокрутка вниз индикатор ===== */
 .hero-scroll-down {
     position: absolute;
     bottom: 40px;
@@ -190,27 +190,47 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     z-index: 10;
     opacity: 0.9;
     text-decoration: none !important;
+    color: inherit;
+    cursor: pointer;
     animation: bounce 2s infinite;
 }
 
+.hero-scroll-down:hover {
+    opacity: 1;
+}
+
 .scroll-text {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.85);
     font-size: 0.9rem;
     font-weight: 500;
     letter-spacing: 0.5px;
     text-transform: uppercase;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: color 0.3s ease;
+}
+
+.hero-scroll-down:hover .scroll-text {
+    color: white;
 }
 
 .scroll-arrow {
     width: 24px;
     height: 24px;
-    border-right: 3px solid rgba(255, 255, 255, 0.8);
-    border-bottom: 3px solid rgba(255, 255, 255, 0.8);
+    border-right: 3px solid rgba(255, 255, 255, 0.85);
+    border-bottom: 3px solid rgba(255, 255, 255, 0.85);
     transform: rotate(45deg);
+    transition: all 0.3s ease;
+}
+
+.hero-scroll-down:hover .scroll-arrow {
+    border-color: white;
+    width: 26px;
+    height: 26px;
 }
 
 @keyframes bounce {
@@ -222,5 +242,61 @@
     }
     60% {
         transform: translateX(-50%) translateY(-7px);
+    }
+}
+
+/* Адаптивность для индикатора */
+@media (max-width: 768px) {
+    .hero-scroll-down {
+        bottom: 30px;
+        gap: 10px;
+    }
+    
+    .scroll-text {
+        font-size: 0.85rem;
+    }
+    
+    .scroll-arrow {
+        width: 20px;
+        height: 20px;
+        border-width: 2px;
+    }
+    
+    .hero-scroll-down:hover .scroll-arrow {
+        width: 22px;
+        height: 22px;
+    }
+    
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateX(-50%) translateY(0);
+        }
+        40% {
+            transform: translateX(-50%) translateY(-12px);
+        }
+        60% {
+            transform: translateX(-50%) translateY(-6px);
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-scroll-down {
+        bottom: 25px;
+        gap: 8px;
+    }
+    
+    .scroll-text {
+        font-size: 0.8rem;
+    }
+    
+    .scroll-arrow {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .hero-scroll-down:hover .scroll-arrow {
+        width: 20px;
+        height: 20px;
     }
 }
