@@ -943,7 +943,7 @@ function buildPromptText(type, idea, tone = "professional", overrideParams = {})
   }
 
   text = text.replace(/\{[^}]+\}/g, "").replace(/\s{2,}/g, " ").trim();
-  text = tonePrefix + text + "\n\nTAIPrompts";
+  text = tonePrefix + text + "\n\nПромпт создан с помощью TAIPrompts";
 
   return text;
 }
