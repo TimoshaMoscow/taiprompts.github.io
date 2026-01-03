@@ -1,0 +1,28 @@
+/* Стили для юридических страниц (privacy.html, terms.html) */
+.legal-page {
+    padding-top: 110px;
+    padding-bottom: 80px;
+}
+
+.legal-page .section-title {
+    margin-bottom: 2rem;
+}
+
+.legal-page .card {
+    padding: 2rem;
+}
+
+.legal-page h3 {
+    margin: 1.5rem 0 0.8rem;
+    color: var(--accent-color);
+}
+
+.legal-page ul {
+    margin: 0.8rem 0;
+    padding-left: 1.5rem;
+}
+
+.legal-page li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
