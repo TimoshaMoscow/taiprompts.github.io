@@ -1,0 +1,317 @@
+/* ===== Стили для страницы настроек ===== */
+
+.settings-page {
+    padding: 110px 0 80px;
+}
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.setting-section {
+    padding: 25px;
+    border-radius: 20px;
+    border: 1px solid var(--card-border);
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.setting-section h2 {
+    margin-bottom: 1.5rem;
+    color: var(--accent-color);
+    font-size: 1.5rem;
+}
+
+/* Стили для переключателя настроек */
+.setting-toggle-group {
+    margin: 20px 0;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.setting-toggle {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+}
+
+.setting-toggle input[type="checkbox"] {
+    display: none;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 52px;
+    height: 28px;
+    background: #444;
+    border-radius: 14px;
+    transition: all 0.3s;
+}
+
+.toggle-switch::before {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background: white;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s;
+}
+
+.setting-toggle input:checked + .toggle-switch {
+    background: var(--accent-color);
+}
+
+.setting-toggle input:checked + .toggle-switch::before {
+    transform: translateX(24px);
+}
+
+.toggle-label {
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 1.05rem;
+}
+
+.toggle-description {
+    margin: 8px 0 0 67px;
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Статус cookie */
+.cookie-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-left: 10px;
+}
+
+.cookie-status.active {
+    background: rgba(94, 114, 228, 0.15);
+    color: var(--accent-color);
+    border: 1px solid rgba(94, 114, 228, 0.3);
+}
+
+.cookie-status.inactive {
+    background: rgba(255, 107, 107, 0.15);
+    color: #ff6b6b;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+/* Кнопки действий */
+.cookie-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+    margin-left: 67px;
+}
+
+.cookie-actions .btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+}
+
+/* Информация о статистике */
+.stats-info {
+    margin-top: 25px;
+    padding: 15px;
+    background: rgba(94, 114, 228, 0.08);
+    border: 1px solid rgba(94, 114, 228, 0.15);
+    border-radius: 12px;
+}
+
+.stats-info h4 {
+    margin-bottom: 10px;
+    color: var(--accent-color);
+    font-size: 1.1rem;
+}
+
+.stats-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-label {
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+}
+
+.stat-value {
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 0.95rem;
+}
+
+/* Предупреждение */
+.cookie-warning {
+    margin: 20px 0;
+    padding: 15px;
+    background: rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(255, 193, 7, 0.25);
+    border-radius: 12px;
+    color: #ffd166;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Секция профиля */
+.profile-section {
+    text-align: center;
+    padding: 30px;
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(94, 114, 228, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 2rem;
+    color: var(--accent-color);
+    border: 2px solid rgba(94, 114, 228, 0.3);
+}
+
+.profile-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.profile-email {
+    color: var(--secondary-color);
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+}
+
+/* Секция уведомлений */
+.notifications-section .setting-toggle-group {
+    margin-bottom: 15px;
+}
+
+/* Секция темы */
+.theme-options {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.theme-option {
+    flex: 1;
+    min-width: 150px;
+    padding: 15px;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    background: rgba(255, 255, 255, 0.03);
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.theme-option:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.theme-option.active {
+    border-color: var(--accent-color);
+    background: rgba(94, 114, 228, 0.1);
+}
+
+.theme-icon {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.theme-name {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.theme-description {
+    font-size: 0.85rem;
+    color: var(--secondary-color);
+}
+
+/* Кнопки сброса */
+.reset-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.reset-buttons .btn {
+    flex: 1;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .settings-page {
+        padding: 90px 0 60px;
+    }
+    
+    .setting-section {
+        padding: 20px;
+    }
+    
+    .cookie-actions {
+        margin-left: 0;
+        flex-direction: column;
+    }
+    
+    .stats-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .theme-options {
+        flex-direction: column;
+    }
+    
+    .theme-option {
+        min-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .setting-toggle {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .toggle-description {
+        margin: 8px 0 0 0;
+    }
+    
+    .cookie-actions {
+        margin-left: 0;
+    }
+}
