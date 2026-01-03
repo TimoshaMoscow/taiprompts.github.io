@@ -954,20 +954,10 @@ const promptExamples = {
       title: "Быстрый ужин",
       idea: "Быстрый ужин из курицы и овощей на сковороде",
       tone: "friendly"
-    },
-    {
-      title: "Здоровый завтрак",
-      idea: "Полезный завтрак для спортсмена с высоким содержанием белка",
-      tone: "professional"
     }
   ],
 
   websites: [
-    {
-      title: "Лендинг курса",
-      idea: "Лендинг для онлайн-курса по Python для подростков",
-      tone: "professional"
-    },
     {
       title: "Портфолио дизайнера",
       idea: "Портфолио UI/UX дизайнера в стиле матового стекла",
@@ -980,20 +970,10 @@ const promptExamples = {
       title: "Киберпанк-город",
       idea: "Ночной киберпанк город под дождём с неоновыми вывесками",
       tone: "creative"
-    },
-    {
-      title: "Минимализм",
-      idea: "Минималистичный интерьер в светлых тонах",
-      tone: "detailed"
     }
   ],
 
   stickers: [
-    {
-      title: "Telegram-стикеры",
-      idea: "Милый кот для Telegram с эмоциями",
-      tone: "friendly"
-    },
     {
       title: "Мем-пак",
       idea: "Мемные стикеры для чата друзей",
@@ -1003,11 +983,6 @@ const promptExamples = {
 
   school: [
     {
-      title: "Задача по алгебре",
-      idea: "Решить квадратное уравнение с объяснением шагов",
-      tone: "detailed"
-    },
-    {
       title: "Сочинение",
       idea: "Сочинение на тему дружбы для 7 класса",
       tone: "friendly"
@@ -1015,11 +990,6 @@ const promptExamples = {
   ],
 
   toys: [
-    {
-      title: "Развивающая игрушка",
-      idea: "Развивающая игрушка для детей 5 лет",
-      tone: "professional"
-    },
     {
       title: "Настольная игра",
       idea: "Настольная игра для всей семьи",
@@ -1030,13 +1000,8 @@ const promptExamples = {
   "3d": [
     {
       title: "Персонаж",
-      idea: "Фэнтези персонаж — воин с мечом",
+      idea: "Фэнтези персонаж — аниме девушка, по стилю напоминает Genshin Impact",
       tone: "detailed"
-    },
-    {
-      title: "Окружение",
-      idea: "Средневековый город для игры",
-      tone: "professional"
     }
   ],
 
@@ -1045,20 +1010,10 @@ const promptExamples = {
       title: "Telegram-бот",
       idea: "Telegram-бот для напоминаний и заметок",
       tone: "professional"
-    },
-    {
-      title: "Discord-бот",
-      idea: "Discord-бот для модерации сервера",
-      tone: "technical"
     }
   ],
 
   minecraft: [
-    {
-      title: "Новая руда",
-      idea: "Новая руда, броня и инструменты",
-      tone: "technical"
-    },
     {
       title: "Квесты",
       idea: "Датапак с системой квестов и наград",
@@ -1066,38 +1021,15 @@ const promptExamples = {
     }
   ],
 
-  ai: [
-    {
-      title: "Продвинутый промпт",
-      idea: "Помощник для анализа сложных текстов",
-      tone: "detailed"
-    },
-    {
-      title: "Креативный ИИ",
-      idea: "ИИ для генерации идей стартапов",
-      tone: "creative"
-    }
-  ],
-
   characterai: [
     {
-      title: "Дружелюбный персонаж",
-      idea: "Дружелюбный виртуальный помощник",
+      title: "Аниме девушка",
+      idea: "Дружелюбный, соблазнительная аниме девушка",
       tone: "friendly"
-    },
-    {
-      title: "Загадочный герой",
-      idea: "Загадочный персонаж с тёмным прошлым",
-      tone: "creative"
     }
   ],
 
   suno: [
-    {
-      title: "Поп-песня",
-      idea: "Песня про свободу и ночной город",
-      tone: "creative"
-    },
     {
       title: "Ностальгия",
       idea: "Ностальгичная песня про школьные годы",
@@ -1110,11 +1042,6 @@ const promptExamples = {
       title: "Идея видео",
       idea: "Видео про изучение программирования с нуля",
       tone: "professional"
-    },
-    {
-      title: "Развлекательный контент",
-      idea: "Развлекательное видео для подростков",
-      tone: "friendly"
     }
   ],
 
@@ -1123,11 +1050,6 @@ const promptExamples = {
       title: "Десктоп-приложение",
       idea: "Приложение для учёта личных задач",
       tone: "technical"
-    },
-    {
-      title: "Учебное ПО",
-      idea: "Учебное приложение для изучения языков",
-      tone: "professional"
     }
   ]
 };
