@@ -180,3 +180,84 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* Прокрутка вниз индикатор */
+.hero-scroll-down {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+    animation: bounce 2s infinite;
+    opacity: 0.9;
+}
+
+.scroll-text {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.scroll-arrow {
+    width: 24px;
+    height: 24px;
+    border-right: 3px solid rgba(255, 255, 255, 0.8);
+    border-bottom: 3px solid rgba(255, 255, 255, 0.8);
+    transform: rotate(45deg);
+    animation: arrowBounce 1.5s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    40% {
+        transform: translateX(-50%) translateY(-10px);
+    }
+    60% {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}
+
+@keyframes arrowBounce {
+    0%, 20%, 50%, 80%, 100% {
+        opacity: 0.8;
+        transform: rotate(45deg) translateY(0);
+    }
+    40% {
+        opacity: 1;
+        transform: rotate(45deg) translateY(-8px);
+    }
+    60% {
+        opacity: 0.9;
+        transform: rotate(45deg) translateY(-4px);
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .hero-scroll-down {
+        bottom: 30px;
+    }
+    
+    .scroll-text {
+        font-size: 0.8rem;
+    }
+    
+    .scroll-arrow {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-scroll-down {
+        bottom: 20px;
+    }
+}
