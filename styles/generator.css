@@ -1,4 +1,4 @@
-/* Секция генерации */
+/* ===== Секция генерации ===== */
 .generation {
     padding: 80px 0;
 }
@@ -9,7 +9,7 @@
     gap: 40px;
 }
 
-/* Информационный баннер */
+/* ===== Информационный баннер ===== */
 .info-banner {
     background: linear-gradient(135deg, var(--accent-color), #4f6cf0);
     border-radius: 20px;
@@ -56,7 +56,7 @@
     z-index: 1;
 }
 
-/* Шаги баннера */
+/* ===== Шаги баннера ===== */
 .banner-steps {
     display: flex;
     justify-content: center;
@@ -95,7 +95,7 @@
     max-width: 120px;
 }
 
-/* Сетка карточек промптов */
+/* ===== Сетка карточек промптов ===== */
 .prompt-types-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -136,7 +136,7 @@
     flex-grow: 1;
 }
 
-/* Стили для вайб-описаний и тегов */
+/* ===== Стили для вайб-описаний и тегов ===== */
 .type-card .vibe-description {
     font-size: 0.9rem;
     color: var(--secondary-color);
@@ -161,7 +161,7 @@
     font-weight: 500;
 }
 
-/* Примеры промптов */
+/* ===== Примеры промптов (ОДИН ПО ЦЕНТРУ) ===== */
 .examples {
     margin-top: 100px;
 }
@@ -189,65 +189,95 @@
     text-align: center;
 }
 
+/* ===== ОДИН ПРИМЕР ПО ЦЕНТРУ ===== */
 .examples-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 18px;
+    max-width: 800px;
+    margin: 0 auto;
     text-align: center;
 }
 
 .example-card {
-    padding: 18px;
+    width: 100%;
+    max-width: 700px;
+    padding: 22px;
     border-radius: 18px;
-    border: 1px solid rgba(255,255,255,0.08);
-    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
+    transition: all 0.3s ease;
+}
+
+.example-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    border-color: rgba(94, 114, 228, 0.3);
 }
 
 .example-card pre {
     white-space: pre-wrap;
     word-break: break-word;
-    background: rgba(0,0,0,0.25);
-    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 14px;
-    padding: 12px;
+    padding: 16px;
     line-height: 1.55;
     font-size: 0.95rem;
-    max-height: 260px;
+    max-height: 300px;
     overflow: auto;
+    margin: 15px 0;
+    text-align: left;
+    font-family: 'Courier New', monospace;
 }
 
 .example-actions {
     display: flex;
-    gap: 10px;
-    margin-top: 12px;
+    gap: 12px;
+    margin-top: 15px;
+    justify-content: center;
 }
 
 .example-actions .btn {
-    flex: 1;
+    min-width: 140px;
+    padding: 10px 20px;
 }
 
 .examples-empty {
     opacity: 0.75;
-    padding: 14px 16px;
-    border: 1px dashed rgba(255,255,255,0.18);
+    padding: 20px 30px;
+    border: 1px dashed rgba(255, 255, 255, 0.18);
     border-radius: 16px;
+    font-size: 1rem;
 }
 
-/* Плейсхолдер для примеров */
+/* ===== Плейсхолдер для примеров ===== */
 #examplesGrid {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 220px;
+    width: 100%;
 }
 
 .examples-placeholder {
-    padding: 18px 28px;
-    border: 1px dashed rgba(255,255,255,0.2);
-    border-radius: 14px;
-    color: rgba(255,255,255,0.7);
+    padding: 20px 30px;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    color: rgba(255, 255, 255, 0.7);
     text-align: center;
-    font-size: 15px;
+    font-size: 16px;
+    max-width: 500px;
+    width: 100%;
+}
+
+/* ===== АДАПТИВНОСТЬ ===== */
+
+@media (max-width: 1200px) {
+    .example-card {
+        max-width: 650px;
+    }
 }
 
 @media (max-width: 992px) {
@@ -259,14 +289,31 @@
         padding: 2rem;
     }
     
+    .info-banner h3 {
+        font-size: 1.6rem;
+    }
+    
     .banner-steps {
         gap: 20px;
+    }
+    
+    .example-card {
+        max-width: 600px;
+        padding: 20px;
     }
 }
 
 @media (max-width: 900px) {
-    .examples-grid {
-        grid-template-columns: 1fr;
+    .example-card {
+        max-width: 550px;
+    }
+    
+    .example-actions {
+        flex-direction: column;
+    }
+    
+    .example-actions .btn {
+        width: 100%;
     }
 }
 
@@ -281,6 +328,10 @@
     
     .info-banner h3 {
         font-size: 1.5rem;
+    }
+    
+    .info-banner p {
+        font-size: 1rem;
     }
     
     .banner-steps {
@@ -299,9 +350,27 @@
         text-align: left;
         max-width: 200px;
     }
+    
+    .example-card {
+        max-width: 500px;
+        padding: 18px;
+    }
+    
+    .example-card pre {
+        padding: 14px;
+        font-size: 0.9rem;
+    }
 }
 
 @media (max-width: 576px) {
+    .generation {
+        padding: 60px 0;
+    }
+    
+    .generation-content {
+        gap: 30px;
+    }
+    
     .prompt-types-grid {
         grid-template-columns: 1fr;
     }
@@ -316,6 +385,41 @@
     
     .info-banner h3 {
         font-size: 1.3rem;
+    }
+    
+    .info-banner p {
+        font-size: 0.95rem;
+    }
+    
+    .step-number {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .step-text {
+        font-size: 0.85rem;
+    }
+    
+    .example-card {
+        max-width: 100%;
+        padding: 16px;
+    }
+    
+    .examples-subtitle {
+        padding: 12px 14px;
+        font-size: 0.95rem;
+    }
+    
+    .example-card pre {
+        font-size: 0.85rem;
+        padding: 12px;
+    }
+    
+    .example-actions .btn {
+        min-width: 120px;
+        padding: 8px 16px;
+        font-size: 0.9rem;
     }
 }
 
@@ -346,6 +450,59 @@
     }
     
     .info-banner p {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
+    }
+    
+    .examples-placeholder {
+        padding: 16px 20px;
+        font-size: 14px;
+    }
+    
+    .example-actions {
+        gap: 8px;
+    }
+    
+    .example-actions .btn {
+        min-width: 110px;
+        padding: 8px 14px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 320px) {
+    .type-card {
+        padding: 0.8rem;
+    }
+    
+    .type-card h3 {
+        font-size: 1rem;
+    }
+    
+    .info-banner {
+        padding: 1rem;
+    }
+    
+    .info-banner h3 {
+        font-size: 1.1rem;
+    }
+    
+    .step {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .step-text {
+        text-align: center;
+        max-width: 150px;
+    }
+    
+    .example-card {
+        padding: 14px;
+    }
+    
+    .example-card pre {
+        padding: 10px;
+        font-size: 0.8rem;
     }
 }
