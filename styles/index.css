@@ -194,6 +194,23 @@
     z-index: 10;
     animation: bounce 2s infinite;
     opacity: 0.9;
+    /* Убираем подчёркивание */
+    text-decoration: none !important;
+}
+
+/* Убираем подчёркивание при наведении */
+.hero-scroll-down:hover {
+    text-decoration: none !important;
+}
+
+/* Можно ещё убрать стандартные стили ссылки */
+.hero-scroll-down,
+.hero-scroll-down:visited,
+.hero-scroll-down:focus,
+.hero-scroll-down:active,
+.hero-scroll-down:hover {
+    text-decoration: none !important;
+    outline: none;
 }
 
 .scroll-text {
