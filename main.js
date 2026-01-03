@@ -1,3 +1,6 @@
+// ===== Push Notifications =====
+const publicVapidKey = 'BCBq3QR9iEjgOXLnElnkvjdEnIkgeBLoff5E_S6k9G7NXB7xOfyNdAaQhAz7nb9qr4e7aZg6S4yvbEu7hllX_8E';
+
 async function inject(id, url) {
   const el = document.getElementById(id);
   if (!el) return;
