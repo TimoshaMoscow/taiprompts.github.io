@@ -953,6 +953,9 @@ const promptExamples = {
     {
       title: "Быстрый ужин",
       idea: "Быстрый ужин из курицы и овощей на сковороде",
+      cuisine: "мексиканской",
+      dietary: "Высокобелковое",
+      complexity: "Простое",
       tone: "friendly"
     }
   ],
