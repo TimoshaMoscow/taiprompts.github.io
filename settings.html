@@ -8,31 +8,252 @@
   <link rel="stylesheet" href="styles/settings.css">
   <link rel="stylesheet" href="styles/pricing.css">
   <link rel="icon" type="image/x-icon" href="images/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div id="site-header"></div>
 
-  <main class="container" style="padding-top: 110px; padding-bottom: 80px;">
-    <div class="section-title">
-      <h2 style="margin:0;">Настройки</h2>
-    </div>
-    <div class="card" style="padding: 22px;">
-      <h2>Профиль</h2>
-      <p class="pricing-warning">⚠️ Настройки временно недоступны. Следите за новостями!</p>
-    </div>
+  <main class="settings-page">
+    <div class="container">
+      <h1 class="section-title">Настройки</h1>
+      
+      <div class="settings-grid">
+        <!-- Профиль -->
+        <section class="setting-section">
+          <h2>👤 Профиль</h2>
+          <div class="soon-card">
+            <div class="soon-icon">🔄</div>
+            <div class="soon-content">
+              <h4>Скоро</h4>
+              <p>Создайте профиль для сохранения настроек и истории промптов</p>
+            </div>
+          </div>
+        </section>
 
-    <div style="height: 45px;"></div>
-    
-    <!-- Секция основных настроек -->
-    <div class="card" style="padding: 22px;">
-      <h2>Основные</h2>
-      <p class="pricing-warning">⚠️ Настройки временно недоступны. Следите за новостями!</p>
+        <!-- Уведомления -->
+        <section class="setting-section">
+          <h2>🔔 Уведомления</h2>
+          <div class="soon-card">
+            <div class="soon-icon">📨</div>
+            <div class="soon-content">
+              <h4>В разработке</h4>
+              <p>Получайте уведомления о новых функциях и обновлениях</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Cookies и статистика -->
+        <section class="setting-section">
+          <h2>🍪 Cookies и статистика</h2>
+          
+          <div class="setting-toggle-group">
+            <label class="setting-toggle">
+              <input type="checkbox" id="cookie-toggle" checked>
+              <span class="toggle-switch"></span>
+              <span class="toggle-label">Сбор статистики</span>
+              <span class="cookie-status active" id="cookie-status">Активно</span>
+            </label>
+            <p class="toggle-description">
+              Мы собираем анонимную статистику (просмотры страниц, клики по категориям) 
+              только локально в вашем браузере. Эти данные никуда не отправляются.
+            </p>
+            
+            <div class="cookie-actions">
+              <button class="btn btn-secondary" id="view-stats">Показать статистику</button>
+              <button class="btn btn-secondary" id="clear-stats">Очистить статистику</button>
+            </div>
+          </div>
+          
+          <div class="stats-info" id="stats-info" style="display: none;">
+            <h4>📊 Ваша локальная статистика</h4>
+            <div class="stats-list" id="stats-list">
+              <!-- Заполнится JavaScript -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Внешний вид -->
+        <section class="setting-section">
+          <h2>🎨 Внешний вид</h2>
+          <div class="soon-card">
+            <div class="soon-icon">🎨</div>
+            <div class="soon-content">
+              <h4>Скоро</h4>
+              <p>Выбирайте между тёмной и светлой темой, настраивайте цвета интерфейса</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- История промптов -->
+        <section class="setting-section">
+          <h2>📝 История промптов</h2>
+          <div class="soon-card">
+            <div class="soon-icon">💾</div>
+            <div class="soon-content">
+              <h4>В планах</h4>
+              <p>Сохраняйте понравившиеся промпты, создавайте коллекции</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Экспорт данных -->
+        <section class="setting-section">
+          <h2>📤 Экспорт данных</h2>
+          <div class="soon-card">
+            <div class="soon-icon">💾</div>
+            <div class="soon-content">
+              <h4>Запланировано</h4>
+              <p>Экспортируйте ваши промпты и статистику в удобном формате</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Опасная зона -->
+        <section class="setting-section danger-section">
+          <h2 style="color: #ff6b6b;">⚠️ Опасная зона</h2>
+          <p style="color: var(--secondary-color); margin-bottom: 20px;">
+            Эти действия нельзя отменить
+          </p>
+          
+          <div class="soon-card danger-soon">
+            <div class="soon-icon">🚫</div>
+            <div class="soon-content">
+              <h4>Доступно позже</h4>
+              <p>Сброс настроек и управление аккаунтом будут доступны после реализации профилей</p>
+            </div>
+          </div>
+        </section>
       </div>
+    </div>
   </main>
 
   <div id="site-footer"></div>
 
-  <script src="main.js"></script>
+  <script src="main.js?v=1.1.4"></script>
   
+  <script>
+    // Простой JavaScript для страницы настроек
+    document.addEventListener('DOMContentLoaded', function() {
+      const cookieToggle = document.getElementById('cookie-toggle');
+      const cookieStatus = document.getElementById('cookie-status');
+      const viewStatsBtn = document.getElementById('view-stats');
+      const clearStatsBtn = document.getElementById('clear-stats');
+      const statsInfo = document.getElementById('stats-info');
+      const statsList = document.getElementById('stats-list');
+      
+      // Функция для получения статистики из cookies
+      function getStats() {
+        const raw = getCookie('tp_stats');
+        if (!raw) return null;
+        try {
+          return JSON.parse(raw);
+        } catch {
+          return null;
+        }
+      }
+      
+      // Функция для получения cookie (из main.js)
+      function getCookie(name) {
+        const n = encodeURIComponent(name) + "=";
+        const parts = document.cookie.split("; ");
+        for (const p of parts) {
+          if (p.startsWith(n)) return decodeURIComponent(p.slice(n.length));
+        }
+        return null;
+      }
+      
+      // Обновление статуса cookies
+      function updateCookieStatus() {
+        const consent = getCookie('tp_consent');
+        if (consent === 'accepted') {
+          cookieStatus.textContent = 'Активно';
+          cookieStatus.className = 'cookie-status active';
+        } else {
+          cookieStatus.textContent = 'Неактивно';
+          cookieStatus.className = 'cookie-status inactive';
+        }
+      }
+      
+      // Показать статистику
+      viewStatsBtn.addEventListener('click', function() {
+        const stats = getStats();
+        if (!stats) {
+          statsList.innerHTML = '<div class="stat-item"><span class="stat-label">Нет данных</span><span class="stat-value">—</span></div>';
+        } else {
+          const pageViews = stats.pageViews || {};
+          const categoryClicks = stats.categoryClicks || {};
+          const generations = stats.generations || 0;
+          
+          let html = '';
+          
+          // Сумма просмотров
+          const viewsSum = Object.values(pageViews).reduce((a, b) => a + Number(b || 0), 0);
+          html += `<div class="stat-item"><span class="stat-label">Всего просмотров</span><span class="stat-value">${viewsSum}</span></div>`;
+          
+          // Сумма кликов
+          const clicksSum = Object.values(categoryClicks).reduce((a, b) => a + Number(b || 0), 0);
+          html += `<div class="stat-item"><span class="stat-label">Всего кликов</span><span class="stat-value">${clicksSum}</span></div>`;
+          
+          // Генерации
+          html += `<div class="stat-item"><span class="stat-label">Генераций промптов</span><span class="stat-value">${generations}</span></div>`;
+          
+          // Топ категорий
+          const topCategories = Object.entries(categoryClicks)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 3);
+          
+          topCategories.forEach(([cat, count], idx) => {
+            const names = {
+              recipes: 'Рецепты',
+              websites: 'Веб-сайты',
+              bots: 'Боты',
+              minecraft: 'Minecraft',
+              images: 'Изображения',
+              stickers: 'Стикеры',
+              '3d': '3D модели',
+              toys: 'Игрушки',
+              characterai: 'Character AI',
+              suno: 'Suno AI',
+              setup: 'Приложения',
+              school: 'Учёба',
+              youtube: 'YouTube'
+            };
+            html += `<div class="stat-item"><span class="stat-label">${names[cat] || cat}</span><span class="stat-value">${count}</span></div>`;
+          });
+          
+          statsList.innerHTML = html;
+        }
+        
+        statsInfo.style.display = 'block';
+      });
+      
+      // Очистить статистику
+      clearStatsBtn.addEventListener('click', function() {
+        if (confirm('Вы уверены? Вся локальная статистика будет удалена.')) {
+          document.cookie = 'tp_stats=; max-age=0; path=/';
+          updateCookieStatus();
+          statsInfo.style.display = 'none';
+          alert('Статистика очищена');
+        }
+      });
+      
+      // Переключатель cookies
+      cookieToggle.addEventListener('change', function() {
+        if (this.checked) {
+          document.cookie = 'tp_consent=accepted; max-age=31536000; path=/';
+        } else {
+          document.cookie = 'tp_consent=declined; max-age=31536000; path=/';
+        }
+        updateCookieStatus();
+      });
+      
+      // Инициализация
+      updateCookieStatus();
+      
+      // Проверяем текущее состояние
+      const consent = getCookie('tp_consent');
+      cookieToggle.checked = consent === 'accepted';
+    });
+  </script>
 </body>
 </html>
