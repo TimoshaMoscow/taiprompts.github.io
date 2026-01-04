@@ -516,3 +516,133 @@
         top: -5px;
     }
 }
+
+/* ===== CTA для отзывов ===== */
+.testimonials-cta {
+    text-align: center;
+    padding: 40px;
+    background: linear-gradient(135deg, rgba(94, 114, 228, 0.1), rgba(94, 114, 228, 0.05));
+    border-radius: 20px;
+    border: 1px solid rgba(94, 114, 228, 0.15);
+    margin-top: 40px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.testimonials-cta p {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin-bottom: 20px;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+.testimonials-cta .btn {
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(94, 114, 228, 0.2);
+}
+
+.testimonials-cta .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(94, 114, 228, 0.3);
+    gap: 12px;
+}
+
+/* Анимация пульсации для привлечения внимания */
+@keyframes pulseCta {
+    0% {
+        box-shadow: 0 8px 20px rgba(94, 114, 228, 0.2);
+    }
+    50% {
+        box-shadow: 0 8px 25px rgba(94, 114, 228, 0.4);
+    }
+    100% {
+        box-shadow: 0 8px 20px rgba(94, 114, 228, 0.2);
+    }
+}
+
+.testimonials-cta .btn {
+    animation: pulseCta 2s infinite;
+}
+
+/* При наведении останавливаем анимацию */
+.testimonials-cta .btn:hover {
+    animation: none;
+}
+
+/* Вариант с иконкой стрелки */
+.testimonials-cta .btn::after {
+    content: "→";
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+}
+
+.testimonials-cta .btn:hover::after {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .testimonials-cta {
+        padding: 30px 20px;
+        margin-top: 30px;
+    }
+    
+    .testimonials-cta p {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+    
+    .testimonials-cta .btn {
+        padding: 10px 25px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .testimonials-cta {
+        padding: 25px 15px;
+    }
+    
+    .testimonials-cta p {
+        font-size: 1rem;
+    }
+    
+    .testimonials-cta .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Альтернативный дизайн - карточка */
+.testimonials-cta.card-style {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow);
+}
+
+/* Альтернативный дизайн - акцентный */
+.testimonials-cta.accent-style {
+    background: linear-gradient(135deg, var(--accent-color), #4f6cf0);
+    border: none;
+    color: white;
+}
+
+.testimonials-cta.accent-style p {
+    color: white;
+}
+
+.testimonials-cta.accent-style .btn {
+    background: white;
+    color: var(--accent-color);
+    border: none;
+}
