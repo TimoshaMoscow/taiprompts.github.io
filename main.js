@@ -511,7 +511,7 @@ function initGenerator() {
     characterai: {
       name: "🤖 Character AI",
       template:
-        "Создай персонажа для Character AI с описанием '{idea}'. Характеристики: {personality} {appearance}, Тип имени: {name}, Тон общения: {tone}.",
+        "Создай персонажа для Character AI с описанием '{idea}'. Характеристики: {personality} {appearance}, Тип имени: {name}, Тон общения: {tone2}.",
       params: {
         name: {
           type: "select",
