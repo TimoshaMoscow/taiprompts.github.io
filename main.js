@@ -531,7 +531,7 @@ function initGenerator() {
           options: ["Человек", "Животное", "Робот", "Мифическое существо", "Инопланетянин", "Аниме персонаж", "Историческая личность"],
           default: "Человек",
         },
-        tone: {
+        tone2: {
           type: "select",
           label: "Тон общения",
           options: ["Формальный", "Неформальный", "Дружеский", "Профессиональный", "Поэтический", "Драматический"],
@@ -912,12 +912,16 @@ function buildPromptText(type, idea, tone = "professional", overrideParams = {})
   const tplParams = promptTemplates[type].params || {};
   const params = {};
 
-  for (const [key, param] of Object.entries(tplParams)) {
-    if (overrideParams[key] !== undefined) {
-      params[key] = overrideParams[key];
-      continue;
-    }
+  // Сначала копируем значения из overrideParams (это переменные из примера)
+  for (const [key, value] of Object.entries(overrideParams)) {
+    params[key] = value;
+  }
 
+  // Затем заполняем оставшиеся параметры из шаблона
+  for (const [key, param] of Object.entries(tplParams)) {
+    // Если параметр уже есть в overrideParams, пропускаем
+    if (params[key] !== undefined) continue;
+    
     if (param.type === "select") {
       params[key] = param.default ?? param.options?.[0] ?? "";
     } else if (param.type === "multiselect") {
@@ -938,10 +942,13 @@ function buildPromptText(type, idea, tone = "professional", overrideParams = {})
   let text = promptTemplates[type].template;
   text = text.replace("{idea}", idea);
 
+  // Заменяем все параметры в шаблоне
   for (const [key, value] of Object.entries(params)) {
-    text = text.replace(new RegExp(`\\{${key}\\}`, "g"), value);
+    const paramValue = value || ""; // Если значение undefined или null, используем пустую строку
+    text = text.replace(new RegExp(`\\{${key}\\}`, "g"), paramValue);
   }
 
+  // Удаляем оставшиеся неиспользованные параметры {param}
   text = text.replace(/\{[^}]+\}/g, "").replace(/\s{2,}/g, " ").trim();
   text = tonePrefix + text + "\n\nПромпт создан с помощью TAIPrompts";
 
@@ -964,6 +971,11 @@ const promptExamples = {
     {
       title: "Портфолио дизайнера",
       idea: "Портфолио UI/UX дизайнера в стиле матового стекла",
+      type: "Портфолио",
+      stack: "React",
+      style: "Матовое стекло",
+      color: "Голубой",
+      features: "Адаптивный дизайн, PWA, SEO оптимизация",
       tone: "creative"
     }
   ],
@@ -972,6 +984,9 @@ const promptExamples = {
     {
       title: "Киберпанк-город",
       idea: "Ночной киберпанк город под дождём с неоновыми вывесками",
+      style: "футуристическое",
+      aspect_ratio: "16:9 (широкоэкранное)",
+      quality: "Высокое (4K)",
       tone: "creative"
     }
   ],
@@ -980,6 +995,9 @@ const promptExamples = {
     {
       title: "Мем-пак",
       idea: "Мемные стикеры для чата друзей",
+      style: "мемный",
+      platform: "Telegram",
+      emotions: "Радость, Смех, Удивление, Одобрение",
       tone: "creative"
     }
   ],
@@ -988,6 +1006,9 @@ const promptExamples = {
     {
       title: "Сочинение",
       idea: "Сочинение на тему дружбы для 7 класса",
+      subj: "Литература",
+      task: "Сочинение",
+      class: "5-8 класс",
       tone: "friendly"
     }
   ],
@@ -996,6 +1017,9 @@ const promptExamples = {
     {
       title: "Настольная игра",
       idea: "Настольная игра для всей семьи",
+      type: "настольной игры",
+      materials: "комбинированные",
+      age_group: "6-12 лет",
       tone: "creative"
     }
   ],
@@ -1004,6 +1028,10 @@ const promptExamples = {
     {
       title: "Персонаж",
       idea: "Фэнтези персонаж — аниме девушка, по стилю напоминает Genshin Impact",
+      style: "стилизованный",
+      type: "персонажа",
+      software: "Blender",
+      polygons: "Medium (10-50k)",
       tone: "detailed"
     }
   ],
@@ -1012,6 +1040,10 @@ const promptExamples = {
     {
       title: "Telegram-бот",
       idea: "Telegram-бот для напоминаний и заметок",
+      platform: "Telegram",
+      language: "Python",
+      functionality: "Команды, Уведомления, База данных",
+      ai: "Нет",
       tone: "professional"
     }
   ],
@@ -1020,6 +1052,11 @@ const promptExamples = {
     {
       title: "Квесты",
       idea: "Датапак с системой квестов и наград",
+      type: "Датапак",
+      version: "1.20.1",
+      loader: "Fabric",
+      compatibility: "Сервер",
+      features: "Квесты, Награды, GUI, Конфиг",
       tone: "professional"
     }
   ],
@@ -1028,6 +1065,10 @@ const promptExamples = {
     {
       title: "Аниме девушка",
       idea: "Дружелюбный, соблазнительная аниме девушка",
+      name: "Аниме",
+      personality: "Дружелюбный, Юмористический, Наивный",
+      appearance: "Аниме персонаж, Человек",
+      tone2: "Дружеский",
       tone: "friendly"
     }
   ],
@@ -1036,6 +1077,11 @@ const promptExamples = {
     {
       title: "Ностальгия",
       idea: "Ностальгичная песня про школьные годы",
+      genre: "Поп",
+      style: "Ностальгический",
+      tempo: "Медленный",
+      instruments: "Фортепиано, Гитара, Вокал",
+      structure: "Куплет-Припев-Мост",
       tone: "detailed"
     }
   ],
@@ -1044,6 +1090,11 @@ const promptExamples = {
     {
       title: "Идея видео",
       idea: "Видео про изучение программирования с нуля",
+      content_type: "Образовательный",
+      audience: "Взрослые",
+      frequency: "Еженедельно",
+      thumbnail_style: "Профессиональный",
+      monetization: "Реклама",
       tone: "professional"
     }
   ],
@@ -1052,52 +1103,77 @@ const promptExamples = {
     {
       title: "Десктоп-приложение",
       idea: "Приложение для учёта личных задач",
+      type: "Утилита",
+      lang: "Python",
+      hang: "Смена темы, Горячие клавиши, Сохранение чего-то в собственный формат файла",
+      setupper: "Inno Setup",
+      oc: "Windows",
       tone: "technical"
     }
   ]
 };
 
-  function renderExamples(type) {
+function renderExamples(type) {
   const grid = document.getElementById("examplesGrid");
   if (!grid) return;
 
   const examples = promptExamples[type] || [];
-  if (!examples.length) {
-    grid.innerHTML = `<p style="opacity:.6">Примеры скоро появятся</p>`;
+  const firstExample = examples[0];
+  
+  if (!firstExample) {
+    grid.innerHTML = `<div class="examples-placeholder">
+      Выбери категорию, чтобы увидеть пример.
+    </div>`;
     return;
   }
 
-  grid.innerHTML = examples.map((ex, i) => {
-    const text = buildPromptText(type, ex.idea, ex.tone || "professional", ex.params || {});
-    return `
-      <div class="example-card" data-i="${i}">
-        <div style="display:flex; justify-content:space-between; gap:10px; align-items:center;">
-          <strong>${ex.title || "Пример"}</strong>
-          <span class="tag" style="margin:0;">${(ex.tone || "professional")}</span>
-        </div>
-
-        <pre>${text}</pre>
-
-        <div class="example-actions">
-          <button class="btn btn-secondary" data-copy>Копировать</button>
-          <button class="btn btn-primary" data-use>Использовать</button>
-        </div>
+  // Извлекаем все параметры из примера
+  const { title, idea, tone, ...exampleParams } = firstExample;
+  
+  // Генерируем промпт с параметрами из примера
+  const text = buildPromptText(type, idea, tone || "professional", exampleParams);
+  
+  grid.innerHTML = `
+    <div class="example-card">
+      <div style="display:flex; justify-content:space-between; gap:10px; align-items:center; margin-bottom: 15px;">
+        <strong style="font-size: 1.1rem;">${title || "Пример промпта"}</strong>
+        <span class="tag" style="margin:0; background: rgba(94, 114, 228, 0.2); color: var(--accent-color); padding: 4px 10px; border-radius: 20px; font-size: 0.85rem;">
+          ${(tone || "professional")}
+        </span>
       </div>
-    `;
-  }).join("");
 
-  // кнопки
-  grid.querySelectorAll(".example-card").forEach((card) => {
-    const i = Number(card.getAttribute("data-i"));
-    const ex = examples[i];
-    const text = buildPromptText(type, ex.idea, ex.tone || "professional", ex.params || {});
+      <pre>${text}</pre>
 
-    card.querySelector("[data-copy]").onclick = () => {
+      <div class="example-actions">
+        <button class="btn btn-secondary" data-copy style="flex: 1;">
+          📋 Копировать
+        </button>
+        <button class="btn btn-primary" data-use style="flex: 1;">
+          🚀 Использовать
+        </button>
+      </div>
+    </div>
+  `;
+
+  // Кнопки
+  const copyBtn = grid.querySelector("[data-copy]");
+  const useBtn = grid.querySelector("[data-use]");
+
+  if (copyBtn) {
+    copyBtn.onclick = () => {
       navigator.clipboard.writeText(text);
+      const originalText = copyBtn.textContent;
+      copyBtn.textContent = "Скопировано!";
+      copyBtn.classList.add("btn-primary");
+      setTimeout(() => {
+        copyBtn.textContent = originalText;
+        copyBtn.classList.remove("btn-primary");
+      }, 2000);
     };
+  }
 
-    card.querySelector("[data-use]").onclick = () => {
-      // открываем модалку как будто юзер выбрал категорию
+  if (useBtn) {
+    useBtn.onclick = () => {
       selectedType = type;
 
       const modalTitle = modal.querySelector(".modal-title");
@@ -1105,18 +1181,31 @@ const promptExamples = {
 
       renderTechnicalParams(selectedType);
 
-      // выставляем тон
-      toneSelect.value = ex.tone || "professional";
+      // Заполняем значения из примера
+      toneSelect.value = tone || "professional";
+      customInput.value = idea;
 
-      // заполняем идею
-      customInput.value = ex.idea;
+      // Заполняем технические параметры из примера
+      for (const [key, value] of Object.entries(exampleParams)) {
+        const paramEl = modal.querySelector(`#param-${key}`);
+        if (paramEl) {
+          if (paramEl.tagName === 'SELECT') {
+            paramEl.value = value;
+          } else if (paramEl.classList.contains('multi-select')) {
+            // Для мультиселектов
+            const checkboxes = paramEl.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+              checkbox.checked = value.includes(checkbox.value);
+            });
+          }
+        }
+      }
 
-      // если хочешь — можно ещё применить ex.params к полям (скажи, сделаю)
       modal.querySelector("#final-prompt").textContent = "";
       modal.classList.add("active");
       document.body.style.overflow = "hidden";
     };
-  });
+  }
 }
 
 promptForm.addEventListener("submit", (e) => {
