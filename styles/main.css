@@ -240,24 +240,6 @@ section {
     display: block;
 }
 
-.footer-mail {
-    display: inline-block;
-    margin-left: 6px;
-    padding: 6px 14px;
-    border-radius: 999px;
-    background: rgba(99, 102, 241, 0.15);
-    color: #c7d2fe;
-    font-weight: 500;
-    font-size: 14px;
-    text-decoration: none;
-    transition: all 0.25s ease;
-}
-
-.footer-mail:hover {
-    background: rgba(99, 102, 241, 0.35);
-    color: #fff;
-}
-
 /* Анимации */
 @keyframes fadeIn {
     from {
