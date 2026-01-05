@@ -266,7 +266,7 @@ function initGenerator() {
     minecraft: {
       name: "⛏️ Моды Minecraft",
       template:
-        "Разработай {type} для Minecraft {version} {loader} для {compatibility} с описанием: '{idea}'. Особенности: {features}. Детально опиши функционал и механики. Также напиши структуру проекта, полный код и гайд по сборке и установке.",
+        "Разработай {type} для Minecraft {version} {loader} для {compatibility} с описанием: '{idea}'. Особенности: {features}. Детально опиши функционал и механики.",
       params: {
         type: {
           type: "select",
@@ -320,7 +320,7 @@ function initGenerator() {
     bots: {
       name: "📱 Боты и автоматизация",
       template:
-        "Создай бота на {language} для платформы {platform}, с функционалом '{idea}'. Включи: описание функций, {functionality}, обработку сообщений и установочные инструкции. Добавить ИИ в бота: {ai}",
+        "Создай бота на {language} для платформы {platform}, с функционалом '{idea}'. Включи: описание функций, {functionality}, обработку сообщений и установочные инструкции.",
       params: {
         platform: {
           type: "select",
@@ -350,12 +350,6 @@ function initGenerator() {
             "Команды",
           ],
           default: "Модерация",
-        },
-        ai: {
-          type: "select",
-          label: "Добавить ИИ в бота?",
-          options: ["Да", "Нет"],
-          default: "Нет",
         },
       },
     },
@@ -581,7 +575,7 @@ function initGenerator() {
     setup: {
       name: "💻 Приложения",
       template:
-        "Напиши полный код и структуру проекта для {type} на {lang} для {oc} с функционалом {hang}, и инструкцией по сборке для {setupper}. Подробное описание идеи: '{idea}'",
+        "Разработай {type} на {lang} для {oc} с функционалом {hang}, и инструкцией по сборке для {setupper}. Подробное описание идеи: '{idea}'",
       params: {
         type: {
           type: "select",
@@ -697,7 +691,7 @@ function initGenerator() {
             "Ad-hoc",
             "SFX архив",
             "Другой",
-            "Свой (Самописный)",
+            "Свой установщик",
           ],
           default: "Inno Setup",
         },
