@@ -266,7 +266,7 @@ function initGenerator() {
     minecraft: {
       name: "⛏️ Моды Minecraft",
       template:
-        "Разработай {type} для Minecraft {version} {loader} для {compatibility} с описанием: '{idea}'. Особенности: {features}. Детально опиши функционал и механики.",
+        "Разработай {type} для Minecraft {version} {loader} для {compatibility} с описанием: '{idea}'. Особенности: {features} и {additionally}. Детально опиши функционал и механики.",
       params: {
         type: {
           type: "select",
@@ -314,13 +314,23 @@ function initGenerator() {
           ],
           default: "Оптимизация",
         },
+        additionally: {
+          type: "multiselect",
+          label: "Дополнительно",
+          options: [
+            "Полный код",
+            "Структура проекта",
+            "Объяснение ключевых понятий",
+          ],
+          default: "Полный код",
+        },
       },
     },
 
     bots: {
       name: "📱 Боты и автоматизация",
       template:
-        "Создай бота на {language} для платформы {platform}, с функционалом '{idea}'. Включи: описание функций, {functionality}, обработку сообщений и установочные инструкции.",
+        "Создай бота на {language} для платформы {platform}, с функционалом '{idea}'. Включи: описание функций, {functionality}, {additionally}, обработку сообщений и установочные инструкции.",
       params: {
         platform: {
           type: "select",
@@ -351,13 +361,23 @@ function initGenerator() {
           ],
           default: "Модерация",
         },
+        additionally: {
+          type: "multiselect",
+          label: "Дополнительно",
+          options: [
+            "Полный код",
+            "Структура проекта",
+            "Объяснение ключевых понятий",
+          ],
+          default: "Полный код",
+        },
       },
     },
 
     websites: {
       name: "🌐 Веб-сайты",
       template:
-        "Разработай веб-сайт типа {type} на {stack} по описанию '{idea}'. Включи: структуру сайта, {features}. Основная палитра: {color}. Стиль сайта: {style}",
+        "Разработай веб-сайт типа {type} на {stack} по описанию '{idea}'. Включи: {additionally}, {features}. Основная палитра: {color}. Стиль сайта: {style}",
       params: {
         type: {
           type: "select",
@@ -388,6 +408,16 @@ function initGenerator() {
           label: "Функции",
           options: ["Адаптивный дизайн", "PWA", "SEO оптимизация", "Корзина покупок", "Блог", "Комментарии", "Поиск", "Код в одном файле"],
           default: "Адаптивный дизайн",
+        },
+        additionally: {
+          type: "multiselect",
+          label: "Дополнительно",
+          options: [
+            "Полный код",
+            "Структура проекта",
+            "Объяснение ключевых понятий",
+          ],
+          default: "Полный код",
         },
       },
     },
@@ -575,7 +605,7 @@ function initGenerator() {
     setup: {
       name: "💻 Приложения",
       template:
-        "Разработай {type} на {lang} для {oc} с функционалом {hang}, и инструкцией по сборке для {setupper}. Подробное описание идеи: '{idea}'",
+        "Разработай {type} на {lang} для {oc} с функционалом {hang}, включи {additionally}, и инструкцией по сборке для {setupper}. Подробное описание идеи: '{idea}'",
       params: {
         type: {
           type: "select",
@@ -701,6 +731,16 @@ function initGenerator() {
           options: ["Windows", "Linux", "Android", "IOS", "MacOS", "Другое"],
           default: "Windows",
         },
+        additionally: {
+          type: "multiselect",
+          label: "Дополнительно",
+          options: [
+            "Полный код",
+            "Структура проекта",
+            "Объяснение ключевых понятий",
+          ],
+          default: "Полный код",
+        },
       },
     },
 
@@ -769,7 +809,6 @@ function initGenerator() {
   };
 
   
-
   // ===== МОДАЛКА =====
   let selectedType = "recipes";
 
