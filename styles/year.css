@@ -180,3 +180,72 @@
     .year-next { grid-template-columns: 1fr; }
     .year-title { font-size: 2.4rem; }
 }
+
+/* В year.css */
+.year-kpi {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.year-kpi::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.1), 
+        transparent);
+    transition: left 0.6s;
+}
+
+.year-kpi:hover::before {
+    left: 100%;
+}
+
+.year-kpi-num {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent-color), #8a2be2);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: countUp 1.5s ease-out;
+}
+
+@keyframes countUp {
+    from { 
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Конфеетти при достижениях */
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: var(--accent-color);
+    opacity: 0;
+    pointer-events: none;
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+
