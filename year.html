@@ -58,6 +58,37 @@
       </div>
     </section>
 
+    <!-- НОВАЯ СЕКЦИЯ: Личные достижения -->
+    <section class="year-section">
+      <div class="container">
+        <h2 class="section-title">🏆 Ваши достижения</h2>
+        
+        <div class="card" style="padding: 25px;">
+          <div id="achievementsContainer" style="min-height: 100px;">
+            <!-- Здесь появятся достижения при наличии данных -->
+            <div class="achievement-placeholder" style="text-align: center; color: var(--secondary-color); padding: 20px;">
+              Используйте генератор активнее, чтобы получить достижения!
+            </div>
+          </div>
+          
+          <div id="quickActions" style="margin-top: 20px; display: none;">
+            <h4 style="margin-bottom: 10px;">⚡ Быстрый старт</h4>
+            <p style="color: var(--secondary-color); margin-bottom: 15px;">
+              В прошлый раз вы работали с <strong id="lastCategory">...</strong>
+            </p>
+            <div style="display: flex; gap: 10px;">
+              <button id="continueLastBtn" class="btn btn-primary" style="flex: 1;">
+                Продолжить
+              </button>
+              <button onclick="location.href='generator.html'" class="btn btn-secondary" style="flex: 1;">
+                Начать новое
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="year-section">
       <div class="container">
         <h2 class="section-title">Главные события</h2>
@@ -98,21 +129,103 @@
       </div>
     </section>
 
+    <!-- НОВАЯ СЕКЦИЯ: Визуализация данных -->
     <section class="year-section">
       <div class="container">
-        <h2 class="section-title">Топ категорий</h2>
-
-        <div class="card year-top">
-          <p class="year-top-hint">
-            Если cookies отключены — тут будет пусто. Нажми “Принять” в баннере cookies на сайте.
-          </p>
-
-          <div class="year-top-list" id="topCategories">
-            <!-- JS заполнит -->
+        <h2 class="section-title">📊 Визуализация активности</h2>
+        
+        <div class="card" style="padding: 25px;">
+          <div id="visualizations">
+            <div class="viz-tabs" style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--card-border); padding-bottom: 10px;">
+              <button class="viz-tab active" data-viz="categories">📈 По категориям</button>
+              <button class="viz-tab" data-viz="months">📅 По месяцам</button>
+              <button class="viz-tab" data-viz="time">🕐 По времени суток</button>
+            </div>
+            
+            <div id="categoriesViz" class="viz-content">
+              <div class="year-top-list" id="topCategories">
+                <!-- JS заполнит -->
+              </div>
+              
+              <div class="year-top-empty" id="topEmpty">
+                Пока нет данных. Открой генератор и покликай категории 🙂
+              </div>
+              
+              <div id="categoryChart" style="margin-top: 20px; min-height: 200px;">
+                <!-- График появится при наличии данных -->
+              </div>
+            </div>
+            
+            <div id="monthsViz" class="viz-content" style="display: none;">
+              <div id="monthlyChart" style="min-height: 200px; text-align: center; padding: 40px 20px; color: var(--secondary-color);">
+                <p>📅 Активность по месяцам будет отображаться здесь</p>
+                <small>Собирается при использовании сайта</small>
+              </div>
+            </div>
+            
+            <div id="timeViz" class="viz-content" style="display: none;">
+              <div id="timeChart" style="min-height: 200px; text-align: center; padding: 40px 20px; color: var(--secondary-color);">
+                <p>⏰ В какое время вы чаще всего используете TAIPrompts?</p>
+                <small>Данные собираются с вашего согласия</small>
+              </div>
+            </div>
           </div>
+        </div>
+      </div>
+    </section>
 
-          <div class="year-top-empty" id="topEmpty">
-            Пока нет данных. Открой генератор и покликай категории 🙂
+    <!-- НОВАЯ СЕКЦИЯ: Рекомендации -->
+    <section class="year-section">
+      <div class="container">
+        <h2 class="section-title">💡 Персональные рекомендации</h2>
+        
+        <div class="card" style="padding: 25px;">
+          <div id="recommendations">
+            <div class="recommendation-placeholder" style="text-align: center; padding: 30px; color: var(--secondary-color);">
+              <p>Используйте генератор, чтобы получить персональные рекомендации!</p>
+              <a href="generator.html" class="btn btn-primary" style="margin-top: 15px;">
+                🚀 Перейти к генератору
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- НОВАЯ СЕКЦИЯ: Поделиться результатами -->
+    <section class="year-section">
+      <div class="container">
+        <h2 class="section-title">🎉 Поделитесь результатами</h2>
+        
+        <div class="card" style="padding: 25px; text-align: center;">
+          <div style="max-width: 500px; margin: 0 auto;">
+            <p style="margin-bottom: 20px; color: var(--secondary-color);">
+              Расскажите друзьям о ваших результатах в TAIPrompts!
+            </p>
+            
+            <div class="share-buttons" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+              <button id="shareTelegram" class="btn" style="background: #0088cc; color: white;">
+                📤 Telegram
+              </button>
+              <button id="shareTwitter" class="btn" style="background: #1da1f2; color: white;">
+                🐦 Twitter
+              </button>
+              <button id="copyShareText" class="btn btn-secondary">
+                📋 Скопировать текст
+              </button>
+            </div>
+            
+            <div id="sharePreview" style="background: rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; margin-top: 20px; text-align: left; display: none;">
+              <p style="margin: 0; font-size: 0.9em; line-height: 1.5;" id="shareText">
+                <!-- Текст для шаринга -->
+              </p>
+            </div>
+            
+            <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--card-border);">
+              <button id="exportReport" class="btn btn-primary">
+                📥 Экспорт отчёта (JSON)
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -146,6 +259,39 @@
         </div>
       </div>
     </section>
+    
+    <!-- НОВАЯ СЕКЦИЯ: Цели на следующий год -->
+    <section class="year-section">
+      <div class="container">
+        <h2 class="section-title">🎯 Цели на следующий год</h2>
+        
+        <div class="card" style="padding: 25px;">
+          <div style="max-width: 600px; margin: 0 auto;">
+            <p style="color: var(--secondary-color); margin-bottom: 20px;">
+              Поставьте цели на <strong id="nextYearLabel">2026</strong> год:
+            </p>
+            
+            <textarea id="yearGoals" 
+                      placeholder="Например: создать 100 промптов, освоить 5 новых категорий, поделиться результатами с друзьями..." 
+                      style="width: 100%; min-height: 120px; padding: 15px; border-radius: 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); color: var(--text-color); font-family: 'Inter', sans-serif; margin-bottom: 20px;"></textarea>
+            
+            <div style="display: flex; gap: 10px;">
+              <button id="saveGoalsBtn" class="btn btn-primary" style="flex: 1;">
+                💾 Сохранить цели
+              </button>
+              <button id="clearGoalsBtn" class="btn btn-secondary">
+                Очистить
+              </button>
+            </div>
+            
+            <div id="savedGoals" style="margin-top: 25px; padding: 15px; background: rgba(94, 114, 228, 0.1); border-radius: 12px; border: 1px solid rgba(94, 114, 228, 0.2); display: none;">
+              <h4 style="margin-bottom: 10px;">✅ Ваши сохранённые цели:</h4>
+              <p id="goalsText" style="margin: 0; line-height: 1.5;"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <div style="height: 90px;"></div>
@@ -172,7 +318,9 @@
       const rawStats = getCookie("tp_stats");
 
       // год в шапке
-      document.getElementById("yearLabel").textContent = new Date().getFullYear();
+      const currentYear = new Date().getFullYear();
+      document.getElementById("yearLabel").textContent = currentYear;
+      document.getElementById("nextYearLabel").textContent = currentYear + 1;
 
       if (consent !== "accepted" || !rawStats) return;
 
@@ -198,14 +346,14 @@
         .map(([k, v]) => [k, Number(v || 0)])
         .filter(([, v]) => v > 0)
         .sort((a, b) => b[1] - a[1])
-        .slice(0, 3);
+        .slice(0, 5);
 
       if (!entries.length) return;
 
       empty.style.display = "none";
 
-      // красивые названия (можешь расширить при желании)
-      const names = {
+      // красивые названия
+      const categoryNames = {
         recipes: "🍳 Рецепты",
         websites: "🌐 Веб-сайты",
         bots: "📱 Боты",
@@ -214,7 +362,6 @@
         stickers: "🖼️ Стикеры",
         "3d": "🔷 3D",
         toys: "🧸 Игрушки",
-        ai: "🤖 AI & G4F",
         characterai: "🤖 Character AI",
         suno: "🎵 Suno",
         setup: "💻 Приложения",
@@ -226,11 +373,285 @@
         <div class="year-top-item">
           <div class="year-top-left">
             <span class="year-top-rank">#${idx + 1}</span>
-            <span class="year-top-name">${names[key] || key}</span>
+            <span class="year-top-name">${categoryNames[key] || key}</span>
           </div>
           <div class="year-top-val">${val}</div>
         </div>
       `).join("");
+
+      // ===== НОВЫЙ КОД ДЛЯ УЛУЧШЕНИЙ =====
+      
+      // 1. Проверка достижений
+      function checkAchievements() {
+        const achievements = [];
+        const categoriesCount = entries.length;
+        const totalClicks = clicksSum;
+        
+        if (categoriesCount >= 10) {
+          achievements.push({ icon: "🔍", name: "Исследователь", desc: "Просмотрели все категории" });
+        }
+        
+        if (generations >= 10) {
+          achievements.push({ icon: "⚡", name: "Генератор", desc: "Создали 10+ промптов" });
+        }
+        
+        if (generations >= 50) {
+          achievements.push({ icon: "🚀", name: "Мастер промптов", desc: "Создали 50+ промптов" });
+        }
+        
+        if (totalClicks >= 100) {
+          achievements.push({ icon: "🎯", name: "Активный пользователь", desc: "100+ кликов по категориям" });
+        }
+        
+        if (entries.length > 0 && entries[0][1] >= 20) {
+          const favCategory = categoryNames[entries[0][0]] || entries[0][0];
+          achievements.push({ icon: "❤️", name: "Любимая категория", desc: `Чаще всего используете "${favCategory}"` });
+        }
+        
+        return achievements;
+      }
+      
+      // 2. Отображение достижений
+      const achievements = checkAchievements();
+      const achievementsContainer = document.getElementById("achievementsContainer");
+      
+      if (achievements.length > 0) {
+        achievementsContainer.innerHTML = `
+          <div class="achievements-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">
+            ${achievements.map(ach => `
+              <div style="background: rgba(94, 114, 228, 0.1); border: 1px solid rgba(94, 114, 228, 0.2); border-radius: 12px; padding: 15px; text-align: center;">
+                <div style="font-size: 1.8rem; margin-bottom: 8px;">${ach.icon}</div>
+                <div style="font-weight: 600; margin-bottom: 5px;">${ach.name}</div>
+                <div style="font-size: 0.85rem; color: var(--secondary-color);">${ach.desc}</div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+      
+      // 3. Проверка последней использованной категории
+      const lastUsed = localStorage.getItem('tp_last_category');
+      const quickActions = document.getElementById('quickActions');
+      
+      if (lastUsed && categoryNames[lastUsed]) {
+        document.getElementById('lastCategory').textContent = categoryNames[lastUsed];
+        quickActions.style.display = 'block';
+        
+        document.getElementById('continueLastBtn').onclick = function() {
+          window.location.href = `generator.html#${lastUsed}`;
+        };
+      }
+      
+      // 4. Генерация рекомендаций
+      function generateRecommendations() {
+        const recs = [];
+        
+        if (entries.length > 0) {
+          const mostUsed = entries[0];
+          const leastUsed = entries.length > 2 ? entries[entries.length - 1] : null;
+          
+          recs.push({
+            text: `Вы чаще всего используете <strong>${categoryNames[mostUsed[0]] || mostUsed[0]}</strong> (${mostUsed[1]} раз). Попробуйте углубиться в эту тему!`,
+            action: `generator.html#${mostUsed[0]}`
+          });
+          
+          if (leastUsed && leastUsed[1] === 0) {
+            recs.push({
+              text: `Вы ещё не пробовали <strong>${categoryNames[leastUsed[0]] || leastUsed[0]}</strong>. Отличный шанс открыть что-то новое!`,
+              action: `generator.html#${leastUsed[0]}`
+            });
+          }
+        }
+        
+        if (generations < 5) {
+          recs.push({
+            text: `Вы создали всего ${generations} промптов. Попробуйте создать больше — это улучшит ваши навыки работы с ИИ!`,
+            action: 'generator.html'
+          });
+        }
+        
+        if (viewsSum > 50 && generations < viewsSum / 10) {
+          recs.push({
+            text: `Вы много просматриваете (${viewsSum} раз), но мало генерируете. Не стесняйтесь экспериментировать!`,
+            action: 'generator.html'
+          });
+        }
+        
+        return recs;
+      }
+      
+      // 5. Отображение рекомендаций
+      const recommendations = generateRecommendations();
+      const recommendationsContainer = document.getElementById('recommendations');
+      
+      if (recommendations.length > 0) {
+        recommendationsContainer.innerHTML = `
+          <div style="display: flex; flex-direction: column; gap: 15px;">
+            ${recommendations.map(rec => `
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid var(--card-border);">
+                <div style="flex: 1;">
+                  <p style="margin: 0; line-height: 1.5;">${rec.text}</p>
+                </div>
+                <button onclick="location.href='${rec.action}'" class="btn btn-primary" style="margin-left: 15px; white-space: nowrap;">
+                  Попробовать
+                </button>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+      
+      // 6. Генерация текста для шаринга
+      function generateShareText() {
+        const topCategory = entries.length > 0 ? categoryNames[entries[0][0]] || entries[0][0] : "разные категории";
+        return `
+Мой ${currentYear} год в TAIPrompts 🎉
+
+📊 Статистика:
+👁️ ${viewsSum} просмотров страниц
+🖱️ ${clicksSum} кликов по категориям
+⚡ ${generations} сгенерированных промптов
+🏆 Чаще всего использовал: ${topCategory}
+
+#TAIPrompts #ИтогиГода #ИИ
+        `.trim();
+      }
+      
+      // 7. Шаринг в соцсети
+      document.getElementById('shareTelegram').onclick = function() {
+        const text = encodeURIComponent(generateShareText());
+        const url = encodeURIComponent(window.location.href);
+        window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank', 'width=600,height=400');
+      };
+      
+      document.getElementById('shareTwitter').onclick = function() {
+        const text = encodeURIComponent(generateShareText());
+        const url = encodeURIComponent(window.location.href);
+        window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank', 'width=600,height=400');
+      };
+      
+      // 8. Копирование текста
+      document.getElementById('copyShareText').onclick = function() {
+        const shareText = generateShareText();
+        navigator.clipboard.writeText(shareText).then(() => {
+          const originalText = this.textContent;
+          this.textContent = "✅ Скопировано!";
+          setTimeout(() => {
+            this.textContent = originalText;
+          }, 2000);
+        });
+        
+        // Показать превью
+        document.getElementById('shareText').textContent = shareText;
+        document.getElementById('sharePreview').style.display = 'block';
+      };
+      
+      // 9. Экспорт отчёта
+      document.getElementById('exportReport').onclick = function() {
+        const report = {
+          meta: {
+            generated: new Date().toISOString(),
+            year: currentYear,
+            source: "TAIPrompts Year Report"
+          },
+          summary: {
+            totalViews: viewsSum,
+            totalClicks: clicksSum,
+            totalGenerations: generations
+          },
+          categories: entries.map(([name, count]) => ({
+            name: categoryNames[name] || name,
+            count: count
+          })),
+          achievements: achievements.map(ach => ({
+            name: ach.name,
+            description: ach.desc
+          })),
+          pages: Object.entries(pageViews).map(([page, views]) => ({
+            page: page.replace('/', ''),
+            views: views
+          }))
+        };
+        
+        const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `TAIPrompts_Year_Report_${currentYear}.json`;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 100);
+      };
+      
+      // 10. Работа с целями
+      const savedGoals = localStorage.getItem('tp_year_goals');
+      const savedGoalsDiv = document.getElementById('savedGoals');
+      
+      if (savedGoals) {
+        document.getElementById('goalsText').textContent = savedGoals;
+        savedGoalsDiv.style.display = 'block';
+        document.getElementById('yearGoals').value = savedGoals;
+      }
+      
+      document.getElementById('saveGoalsBtn').onclick = function() {
+        const goals = document.getElementById('yearGoals').value.trim();
+        if (goals) {
+          localStorage.setItem('tp_year_goals', goals);
+          document.getElementById('goalsText').textContent = goals;
+          savedGoalsDiv.style.display = 'block';
+          
+          const originalText = this.textContent;
+          this.textContent = "✅ Сохранено!";
+          setTimeout(() => {
+            this.textContent = originalText;
+          }, 2000);
+        }
+      };
+      
+      document.getElementById('clearGoalsBtn').onclick = function() {
+        if (confirm('Удалить сохранённые цели?')) {
+          localStorage.removeItem('tp_year_goals');
+          document.getElementById('yearGoals').value = '';
+          savedGoalsDiv.style.display = 'none';
+        }
+      };
+      
+      // 11. Переключение между визуализациями
+      document.querySelectorAll('.viz-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+          // Убираем активный класс у всех вкладок
+          document.querySelectorAll('.viz-tab').forEach(t => t.classList.remove('active'));
+          // Добавляем активный класс текущей
+          this.classList.add('active');
+          
+          // Скрываем все контенты
+          document.querySelectorAll('.viz-content').forEach(content => {
+            content.style.display = 'none';
+          });
+          
+          // Показываем нужный контент
+          const vizType = this.getAttribute('data-viz');
+          document.getElementById(`${vizType}Viz`).style.display = 'block';
+        });
+      });
+      
+      // 12. Простая визуализация категорий (гистограмма)
+      if (entries.length > 0) {
+        const maxValue = Math.max(...entries.map(e => e[1]));
+        const chartHTML = entries.map(([key, value]) => `
+          <div style="margin-bottom: 15px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+              <span>${categoryNames[key] || key}</span>
+              <span style="font-weight: 600;">${value}</span>
+            </div>
+            <div style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+              <div style="height: 100%; width: ${(value / maxValue) * 100}%; background: linear-gradient(90deg, var(--accent-color), #8a2be2); border-radius: 4px;"></div>
+            </div>
+          </div>
+        `).join('');
+        
+        document.getElementById('categoryChart').innerHTML = chartHTML;
+      }
+      
     })();
   </script>
 </body>
