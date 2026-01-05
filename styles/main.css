@@ -239,6 +239,7 @@ section {
 .footer-links-vertical .nav-link {
     padding: 0.25rem 0;
     display: block;
+    color: var(--secondary-color)
 }
 
 /* Анимации */
