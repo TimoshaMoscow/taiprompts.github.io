@@ -61,131 +61,15 @@
 .year-kpi {
     padding: 18px;
     border-radius: 18px;
-}
-
-.year-kpi-num {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--accent-color);
-    margin-bottom: 6px;
-}
-
-.year-kpi-label {
-    color: var(--secondary-color);
-    font-size: 0.95rem;
-}
-
-.year-section { padding: 60px 0; }
-
-.year-timeline {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 18px;
-}
-
-.year-step { padding: 20px; }
-.year-step-top {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 10px;
-}
-
-.year-step-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 999px;
-    background: var(--accent-color);
-    box-shadow: 0 0 0 6px rgba(94, 114, 228, 0.12);
-}
-
-.year-step-title { font-weight: 700; }
-
-.year-top { padding: 22px; }
-.year-top-hint {
-    color: var(--secondary-color);
-    margin-bottom: 14px;
-}
-
-.year-top-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.year-top-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 14px;
-    padding: 12px 14px;
-    border-radius: 14px;
-    border: 1px solid var(--card-border);
-    background: rgba(255, 255, 255, 0.04);
-}
-
-.year-top-left {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.year-top-rank {
-    padding: 6px 10px;
-    border-radius: 999px;
-    background: rgba(94, 114, 228, 0.18);
-    border: 1px solid rgba(94, 114, 228, 0.32);
-    color: #c7d2fe;
-    font-weight: 700;
-    font-size: 0.9rem;
-}
-
-.year-top-name { font-weight: 600; }
-.year-top-val {
-    font-weight: 800;
-    color: var(--accent-color);
-}
-
-.year-top-empty {
-    margin-top: 12px;
-    color: var(--secondary-color);
-    text-align: center;
-    padding: 14px;
-    border-radius: 14px;
-    border: 1px dashed rgba(255,255,255,0.18);
-}
-
-.year-next {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-}
-
-.year-next-card { padding: 22px; }
-.year-next-card h3 { margin-bottom: 10px; }
-
-.year-cta {
-    margin-top: 22px;
-    text-align: center;
-    padding: 26px;
-}
-
-.year-cta h3 { margin-bottom: 8px; }
-.year-cta p { color: var(--secondary-color); margin-bottom: 16px; }
-
-@media (max-width: 992px) {
-    .year-kpis { grid-template-columns: repeat(2, 1fr); }
-    .year-timeline { grid-template-columns: 1fr; }
-    .year-next { grid-template-columns: 1fr; }
-    .year-title { font-size: 2.4rem; }
-}
-
-/* В year.css */
-.year-kpi {
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+}
+
+.year-kpi:hover {
+    transform: translateY(-3px);
+    border-color: rgba(94, 114, 228, 0.3);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 .year-kpi::before {
@@ -209,10 +93,8 @@
 .year-kpi-num {
     font-size: 2rem;
     font-weight: 800;
-    background: linear-gradient(135deg, var(--accent-color), #8a2be2);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: var(--accent-color);
+    margin-bottom: 6px;
     animation: countUp 1.5s ease-out;
 }
 
@@ -227,14 +109,564 @@
     }
 }
 
-/* Конфеетти при достижениях */
+.year-kpi-label {
+    color: var(--secondary-color);
+    font-size: 0.95rem;
+}
+
+.year-section { 
+    padding: 60px 0;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.year-section:nth-child(2) { animation-delay: 0.1s; }
+.year-section:nth-child(3) { animation-delay: 0.2s; }
+.year-section:nth-child(4) { animation-delay: 0.3s; }
+.year-section:nth-child(5) { animation-delay: 0.4s; }
+.year-section:nth-child(6) { animation-delay: 0.5s; }
+.year-section:nth-child(7) { animation-delay: 0.6s; }
+
+.year-timeline {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.year-step { 
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.year-step:hover {
+    transform: translateY(-3px);
+    border-color: rgba(94, 114, 228, 0.3);
+}
+
+.year-step-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.year-step-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: var(--accent-color);
+    box-shadow: 0 0 0 6px rgba(94, 114, 228, 0.12);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { 
+        box-shadow: 0 0 0 6px rgba(94, 114, 228, 0.12);
+    }
+    50% { 
+        box-shadow: 0 0 0 8px rgba(94, 114, 228, 0.2);
+    }
+}
+
+.year-step-title { 
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.year-top { 
+    padding: 22px;
+    transition: all 0.3s ease;
+}
+
+.year-top:hover {
+    border-color: rgba(94, 114, 228, 0.3);
+}
+
+.year-top-hint {
+    color: var(--secondary-color);
+    margin-bottom: 14px;
+    font-size: 0.9rem;
+}
+
+.year-top-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.year-top-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid var(--card-border);
+    background: rgba(255, 255, 255, 0.04);
+    transition: all 0.3s ease;
+}
+
+.year-top-item:hover {
+    background: rgba(94, 114, 228, 0.08);
+    border-color: rgba(94, 114, 228, 0.3);
+    transform: translateX(5px);
+}
+
+.year-top-left {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.year-top-rank {
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(94, 114, 228, 0.18);
+    border: 1px solid rgba(94, 114, 228, 0.32);
+    color: #c7d2fe;
+    font-weight: 700;
+    font-size: 0.9rem;
+    min-width: 40px;
+    text-align: center;
+}
+
+.year-top-name { 
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.year-top-val {
+    font-weight: 800;
+    color: var(--accent-color);
+    font-size: 1.1rem;
+}
+
+.year-top-empty {
+    margin-top: 12px;
+    color: var(--secondary-color);
+    text-align: center;
+    padding: 14px;
+    border-radius: 14px;
+    border: 1px dashed rgba(255,255,255,0.18);
+    font-size: 0.95rem;
+}
+
+.year-next {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.year-next-card { 
+    padding: 22px;
+    transition: all 0.3s ease;
+}
+
+.year-next-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(94, 114, 228, 0.4);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+}
+
+.year-next-card h3 { 
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: var(--accent-color);
+}
+
+.year-cta {
+    margin-top: 22px;
+    text-align: center;
+    padding: 26px;
+    transition: all 0.3s ease;
+}
+
+.year-cta:hover {
+    border-color: rgba(94, 114, 228, 0.4);
+    transform: scale(1.02);
+}
+
+.year-cta h3 { 
+    margin-bottom: 8px;
+    font-size: 1.3rem;
+}
+
+.year-cta p { 
+    color: var(--secondary-color);
+    margin-bottom: 16px;
+    font-size: 1rem;
+}
+
+/* ===== НОВЫЕ СТИЛИ ДЛЯ ДОБАВЛЕННЫХ ЭЛЕМЕНТОВ ===== */
+
+/* Достижения */
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.achievement-card {
+    background: linear-gradient(135deg, rgba(94, 114, 228, 0.1), rgba(94, 114, 228, 0.05));
+    border: 1px solid rgba(94, 114, 228, 0.2);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.achievement-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(94, 114, 228, 0.4);
+    box-shadow: 0 10px 25px rgba(94, 114, 228, 0.15);
+}
+
+.achievement-card::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: rotate(45deg);
+    transition: transform 0.6s;
+}
+
+.achievement-card:hover::after {
+    transform: rotate(45deg) translate(10%, 10%);
+}
+
+.achievement-icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+    display: block;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.achievement-name {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+    color: var(--text-color);
+}
+
+.achievement-desc {
+    font-size: 0.85rem;
+    color: var(--secondary-color);
+    line-height: 1.4;
+}
+
+.achievement-placeholder {
+    text-align: center;
+    color: var(--secondary-color);
+    padding: 40px 20px;
+    font-size: 1rem;
+}
+
+/* Визуализация */
+.viz-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.viz-tab {
+    padding: 10px 18px;
+    border: none;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--secondary-color);
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.viz-tab:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+}
+
+.viz-tab.active {
+    background: rgba(94, 114, 228, 0.15);
+    color: var(--accent-color);
+    border-color: rgba(94, 114, 228, 0.3);
+    box-shadow: 0 4px 12px rgba(94, 114, 228, 0.1);
+}
+
+.viz-content {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.category-chart-bar {
+    margin-bottom: 15px;
+}
+
+.chart-bar-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+}
+
+.chart-bar-bg {
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+}
+
+.chart-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-color), #8a2be2);
+    border-radius: 5px;
+    width: 0;
+    animation: fillBar 1.5s ease-out forwards;
+    position: relative;
+}
+
+@keyframes fillBar {
+    from { width: 0; }
+    to { width: var(--target-width); }
+}
+
+.chart-bar-fill::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.2), 
+        transparent);
+    animation: shimmer 2s infinite;
+}
+
+/* Рекомендации */
+.recommendation-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    border: 1px solid var(--card-border);
+    transition: all 0.3s ease;
+    margin-bottom: 15px;
+}
+
+.recommendation-card:hover {
+    background: rgba(94, 114, 228, 0.08);
+    border-color: rgba(94, 114, 228, 0.3);
+    transform: translateX(5px);
+}
+
+.recommendation-content {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.recommendation-text {
+    margin: 0;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.recommendation-text strong {
+    color: var(--accent-color);
+}
+
+.recommendation-action {
+    white-space: nowrap;
+}
+
+.recommendation-placeholder {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--secondary-color);
+}
+
+.recommendation-placeholder p {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+/* Шаринг */
+.share-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.share-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.share-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.share-btn.telegram {
+    background: linear-gradient(135deg, #0088cc, #006699);
+    color: white;
+}
+
+.share-btn.twitter {
+    background: linear-gradient(135deg, #1da1f2, #0c85d0);
+    color: white;
+}
+
+.share-btn.export {
+    background: linear-gradient(135deg, var(--accent-color), #4f6cf0);
+    color: white;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.share-preview {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 25px;
+    border: 1px solid var(--card-border);
+    animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+    from { 
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.share-text {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    font-family: 'Courier New', monospace;
+}
+
+/* Цели */
+.goals-textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 18px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--card-border);
+    color: var(--text-color);
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    resize: vertical;
+}
+
+.goals-textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    background: rgba(94, 114, 228, 0.05);
+    box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.1);
+}
+
+.goals-textarea::placeholder {
+    color: var(--secondary-color);
+    opacity: 0.7;
+}
+
+.goals-actions {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.goals-saved {
+    margin-top: 25px;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(94, 114, 228, 0.1), rgba(94, 114, 228, 0.05));
+    border-radius: 16px;
+    border: 1px solid rgba(94, 114, 228, 0.2);
+    animation: fadeIn 0.5s ease;
+}
+
+.goals-saved h4 {
+    margin-bottom: 12px;
+    color: var(--accent-color);
+    font-size: 1.1rem;
+}
+
+.goals-text {
+    margin: 0;
+    line-height: 1.6;
+    font-size: 1rem;
+    white-space: pre-wrap;
+}
+
+/* Быстрые действия */
+.quick-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.quick-action-btn {
+    flex: 1;
+    padding: 12px 20px;
+    font-size: 1rem;
+}
+
+/* Анимация конфеетти (для достижений) */
 .confetti {
     position: fixed;
     width: 10px;
     height: 10px;
-    background: var(--accent-color);
     opacity: 0;
     pointer-events: none;
+    z-index: 10000;
 }
 
 @keyframes confettiFall {
@@ -248,4 +680,130 @@
     }
 }
 
+/* Адаптивность */
+@media (max-width: 992px) {
+    .year-kpis { 
+        grid-template-columns: repeat(2, 1fr); 
+    }
+    
+    .year-timeline { 
+        grid-template-columns: 1fr; 
+    }
+    
+    .year-next { 
+        grid-template-columns: 1fr; 
+    }
+    
+    .year-title { 
+        font-size: 2.4rem; 
+    }
+    
+    .achievements-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+    
+    .recommendation-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .recommendation-content {
+        padding-right: 0;
+    }
+    
+    .share-buttons {
+        flex-direction: column;
+    }
+    
+    .share-btn {
+        width: 100%;
+    }
+}
 
+@media (max-width: 768px) {
+    .year-hero {
+        padding: 30px 0 20px;
+    }
+    
+    .year-title {
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .year-kpi-num {
+        font-size: 1.8rem;
+    }
+    
+    .achievements-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .viz-tabs {
+        flex-direction: column;
+    }
+    
+    .viz-tab {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .goals-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .year-kpis {
+        grid-template-columns: 1fr;
+    }
+    
+    .year-top-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+    
+    .year-top-left {
+        justify-content: center;
+    }
+    
+    .year-step-dot {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .year-step-title {
+        font-size: 1rem;
+    }
+    
+    .quick-actions {
+        flex-direction: column;
+    }
+}
+
+/* Темная тема улучшения */
+@media (prefers-color-scheme: dark) {
+    .year-kpi {
+        background: rgba(33, 37, 41, 0.7);
+    }
+    
+    .achievement-card {
+        background: rgba(33, 37, 41, 0.6);
+    }
+    
+    .viz-tab {
+        background: rgba(33, 37, 41, 0.5);
+    }
+    
+    .recommendation-card {
+        background: rgba(33, 37, 41, 0.5);
+    }
+    
+    .goals-textarea {
+        background: rgba(33, 37, 41, 0.5);
+    }
+}
