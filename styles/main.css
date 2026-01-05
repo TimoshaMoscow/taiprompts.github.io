@@ -226,6 +226,7 @@ section {
     text-align: center;
     padding-top: 20px;
     border-top: 1px solid var(--card-border);
+    color: var(--secondary-color);
 }
 
 /* Вертикальное расположение ссылок в футере */
