@@ -253,84 +253,66 @@
     <script src="main.js?v=1.1.4"></script>
 
     <script>
-        // Проверка на Яндекс.Браузер
-        function isYandexBrowser() {
-            const ua = navigator.userAgent.toLowerCase();
-            const isYaBrowser = ua.includes('yabrowser');
-            const isYaInOpera = ua.includes('opr') && ua.includes('yandex');
-            
-            return isYaBrowser || isYaInOpera;
-        }
+// Проверка на Яндекс.Браузер
+function isYandexBrowser() {
+    const ua = navigator.userAgent.toLowerCase();
+    const isYaBrowser = ua.includes('yabrowser');
+    const isYaInOpera = ua.includes('opr') && ua.includes('yandex');
+    
+    return isYaBrowser || isYaInOpera;
+}
 
-        // Инициализация баннера
-        document.addEventListener('DOMContentLoaded', function() {
-            const banner = document.getElementById('yandexBrowserBanner');
-            const closeBtn = document.getElementById('closeBannerBtn');
-            const learnMoreBtn = document.getElementById('learnMoreBtn');
-            
-            // Проверяем браузер и не было ли закрытия
-            if (isYandexBrowser() && !localStorage.getItem('yandexBannerClosed')) {
-                // Задержка перед показом
-                setTimeout(() => {
-                    banner.style.display = 'block';
-                }, 1500);
-            }
-            
-            // Закрытие баннера
-            closeBtn.addEventListener('click', function() {
-                localStorage.setItem('yandexBannerClosed', 'true');
-                banner.style.opacity = '0';
-                banner.style.transform = 'translateY(30px)';
-                
-                setTimeout(() => {
-                    banner.style.display = 'none';
-                }, 300);
-            });
-            
-            // Кнопка "Подробнее"
-            learnMoreBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                // Здесь можно открыть модальное окно или перенаправить
-                const message = `Проблемы в Яндекс.Браузере могут возникать из-за:
+// Инициализация баннера
+document.addEventListener('DOMContentLoaded', function() {
+    const banner = document.getElementById('yandexBrowserBanner');
+    const closeBtn = document.getElementById('closeBannerBtn');
+    const learnMoreBtn = document.getElementById('learnMoreBtn');
+    
+    // Проверяем только браузер - показываем всегда в Яндекс.Браузере
+    if (isYandexBrowser()) {
+        // Задержка перед показом
+        setTimeout(() => {
+            banner.style.display = 'block';
+        }, 1500);
+    }
+    
+    // Закрытие баннера - ТОЛЬКО НА ЭТОЙ СТРАНИЦЕ, без сохранения
+    closeBtn.addEventListener('click', function() {
+        // Просто скрываем баннер без сохранения
+        banner.style.opacity = '0';
+        banner.style.transform = 'translateY(30px)';
+        
+        setTimeout(() => {
+            banner.style.display = 'none';
+        }, 300);
+    });
+    
+    // Кнопка "Подробнее"
+    learnMoreBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        // Здесь можно открыть модальное окно или перенаправить
+        const message = `Проблемы в Яндекс.Браузере могут возникать из-за:
 • Особенностей блокировки рекламы
 • Встроенного режима Turbo
 • Устаревшего движка на некоторых версиях
 • Конфликтов с расширениями
 
 Рекомендуем обновить Яндекс.Браузер до последней версии или использовать альтернативный браузер.`;
-                alert(message);
-            });
-            
-            // Закрытие по Escape
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && banner.style.display === 'block') {
-                    closeBtn.click();
-                }
-            });
-            
-            // Скрываем при скролле вниз (опционально)
-            let lastScrollTop = 0;
-            window.addEventListener('scroll', function() {
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                
-                if (scrollTop > lastScrollTop && scrollTop > 100) {
-                    // Скролл вниз - скрываем
-                    banner.style.opacity = '0.7';
-                    banner.style.transform = 'translateY(10px)';
-                } else {
-                    // Скролл вверх или вверху - показываем
-                    if (banner.style.display === 'block') {
-                        banner.style.opacity = '1';
-                        banner.style.transform = 'translateY(0)';
-                    }
-                }
-                lastScrollTop = scrollTop;
-            });
-        });
+        alert(message);
+    });
+    
+    // Закрытие по Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && banner.style.display === 'block') {
+            closeBtn.click();
+        }
+    });
+});
     </script>
 
 </body>
 </html>
+
 
 
 
