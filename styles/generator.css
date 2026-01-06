@@ -714,3 +714,468 @@
         letter-spacing: 0.3px;
     }
 }
+
+/* ===== Анимация генерации (полный экран) ===== */
+.generation-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 20, 0.95);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    z-index: 9999;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.generation-overlay.active {
+    display: flex;
+    opacity: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.generation-animation {
+    background: linear-gradient(135deg, rgba(20, 25, 45, 0.95), rgba(30, 35, 60, 0.95));
+    border-radius: 25px;
+    padding: 3rem;
+    max-width: 700px;
+    width: 90%;
+    border: 1px solid rgba(94, 114, 228, 0.3);
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.5),
+        0 0 100px rgba(94, 114, 228, 0.2),
+        inset 0 0 30px rgba(94, 114, 228, 0.1);
+    animation: pulseGlow 3s infinite alternate;
+}
+
+@keyframes pulseGlow {
+    0% {
+        box-shadow: 
+            0 25px 50px rgba(0, 0, 0, 0.5),
+            0 0 80px rgba(94, 114, 228, 0.15),
+            inset 0 0 30px rgba(94, 114, 228, 0.1);
+    }
+    100% {
+        box-shadow: 
+            0 25px 50px rgba(0, 0, 0, 0.5),
+            0 0 120px rgba(94, 114, 228, 0.25),
+            inset 0 0 40px rgba(94, 114, 228, 0.15);
+    }
+}
+
+/* Иконка ИИ */
+.ai-icon {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 2rem;
+}
+
+.ai-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-color), #8a2be2);
+    animation: rotate 8s linear infinite;
+}
+
+@keyframes rotate {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.ai-line {
+    position: absolute;
+    background: var(--accent-color);
+    border-radius: 2px;
+}
+
+.line-1 {
+    width: 100px;
+    height: 3px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(0deg);
+    animation: pulseLine 2s infinite;
+}
+
+.line-2 {
+    width: 100px;
+    height: 3px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(60deg);
+    animation: pulseLine 2s infinite 0.3s;
+}
+
+.line-3 {
+    width: 100px;
+    height: 3px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(120deg);
+    animation: pulseLine 2s infinite 0.6s;
+}
+
+@keyframes pulseLine {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+.ai-dot {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #00ff88;
+    border-radius: 50%;
+    animation: float 3s infinite ease-in-out;
+}
+
+.dot-1 {
+    top: 20%;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.dot-2 {
+    top: 20%;
+    right: 20%;
+    animation-delay: 0.5s;
+}
+
+.dot-3 {
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    animation-delay: 1s;
+}
+
+@keyframes float {
+    0%, 100% { 
+        transform: translateY(0) scale(1);
+        box-shadow: 0 0 10px #00ff88;
+    }
+    50% { 
+        transform: translateY(-10px) scale(1.2);
+        box-shadow: 0 0 20px #00ff88;
+    }
+}
+
+.sparkle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    animation: sparkle 1.5s infinite;
+}
+
+.s1 { top: 10%; left: 40%; animation-delay: 0s; }
+.s2 { top: 30%; right: 10%; animation-delay: 0.2s; }
+.s3 { bottom: 20%; left: 10%; animation-delay: 0.4s; }
+.s4 { bottom: 40%; right: 30%; animation-delay: 0.6s; }
+
+@keyframes sparkle {
+    0%, 100% { 
+        opacity: 0; 
+        transform: scale(0);
+    }
+    50% { 
+        opacity: 1; 
+        transform: scale(1);
+    }
+}
+
+/* Текст анимации */
+.animation-content {
+    text-align: center;
+}
+
+.animation-title {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(45deg, var(--accent-color), #00ff88);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: titleGlow 2s infinite alternate;
+}
+
+@keyframes titleGlow {
+    0% { filter: drop-shadow(0 0 5px rgba(94, 114, 228, 0.5)); }
+    100% { filter: drop-shadow(0 0 15px rgba(94, 114, 228, 0.8)); }
+}
+
+.animation-subtitle {
+    color: var(--secondary-color);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+/* Стадии загрузки */
+.loading-stages {
+    display: flex;
+    justify-content: space-between;
+    margin: 2rem 0;
+    position: relative;
+}
+
+.loading-stages::before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    left: 10%;
+    right: 10%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 1;
+}
+
+.stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    z-index: 2;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.stage.active {
+    opacity: 1;
+}
+
+.stage-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(94, 114, 228, 0.1);
+    border: 2px solid rgba(94, 114, 228, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.stage.active .stage-icon {
+    background: rgba(94, 114, 228, 0.2);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px rgba(94, 114, 228, 0.3);
+    animation: stagePulse 1.5s infinite;
+}
+
+@keyframes stagePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.stage-text {
+    font-size: 0.85rem;
+    color: var(--secondary-color);
+    text-align: center;
+    max-width: 80px;
+}
+
+.stage-check {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: rgba(0, 255, 136, 0.1);
+    border: 2px solid rgba(0, 255, 136, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    opacity: 0;
+}
+
+.stage.completed .stage-check {
+    opacity: 1;
+    background: rgba(0, 255, 136, 0.2);
+    border-color: #00ff88;
+    animation: checkPop 0.3s ease;
+}
+
+@keyframes checkPop {
+    0% { transform: scale(0); }
+    70% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* Прогресс бар */
+.progress-container {
+    margin: 2rem 0;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent-color), #00ff88);
+    border-radius: 5px;
+    transition: width 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.4), 
+        transparent);
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.progress-text {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--accent-color);
+}
+
+/* Факты */
+.fun-facts {
+    margin: 2rem 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.fact {
+    margin: 0.8rem 0;
+    color: var(--secondary-color);
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: fadeInLeft 0.5s forwards;
+}
+
+.fact:nth-child(1) { animation-delay: 0.5s; }
+.fact:nth-child(2) { animation-delay: 1s; }
+.fact:nth-child(3) { animation-delay: 1.5s; }
+.fact:nth-child(4) { animation-delay: 2s; }
+
+@keyframes fadeInLeft {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Подсказка */
+.hint {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    font-style: italic;
+    margin-top: 1rem;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .generation-animation {
+        padding: 2rem;
+        width: 95%;
+    }
+    
+    .ai-icon {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .animation-title {
+        font-size: 1.7rem;
+    }
+    
+    .animation-subtitle {
+        font-size: 1rem;
+    }
+    
+    .stage-text {
+        font-size: 0.8rem;
+        max-width: 70px;
+    }
+    
+    .stage-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 1.3rem;
+    }
+    
+    .fun-facts {
+        padding: 0.8rem;
+    }
+    
+    .fact {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .generation-animation {
+        padding: 1.5rem;
+    }
+    
+    .loading-stages {
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+    }
+    
+    .stage {
+        flex: 0 0 calc(50% - 15px);
+    }
+    
+    .loading-stages::before {
+        display: none;
+    }
+    
+    .ai-icon {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .animation-title {
+        font-size: 1.5rem;
+    }
+}
+
+/* Анимация закрытия */
+@keyframes fadeOutUp {
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+.generation-overlay.closing {
+    animation: fadeOutUp 0.3s ease forwards;
+}
