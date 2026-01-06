@@ -865,7 +865,7 @@ function initGenerator() {
           ],
           default: "HTML/CSS/JS",
         },
-        hang: {
+        func: {
           type: "multiselect",
           label: "Особенности",
           options: [
