@@ -703,7 +703,7 @@ section {
 .yandex-browser-banner__inner {
     max-width: 1200px;
     margin: 0 auto;
-    background: linear-gradient(135deg, #fff8e1, #fff3cd); /* Желтый градиент */
+    background: linear-gradient(135deg, #fff9c4, #fff59d);
     border: 1px solid #ffd54f; /* Яркая желтая рамка */
     box-shadow: 0 8px 32px rgba(255, 193, 7, 0.2);
     backdrop-filter: blur(12px);
