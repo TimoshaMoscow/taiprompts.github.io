@@ -244,6 +244,70 @@
         <img class="lightbox-content" id="lightbox-img">
         <div class="lightbox-caption"></div>
     </div>
+
+    <!-- Анимация генерации (полный экран) -->
+<div class="generation-overlay" id="generationOverlay">
+    <div class="generation-animation">
+        <div class="animation-content">
+            <div class="ai-icon">
+                <div class="ai-circle"></div>
+                <div class="ai-line line-1"></div>
+                <div class="ai-line line-2"></div>
+                <div class="ai-line line-3"></div>
+                <div class="ai-dot dot-1"></div>
+                <div class="ai-dot dot-2"></div>
+                <div class="ai-dot dot-3"></div>
+                <div class="sparkle s1"></div>
+                <div class="sparkle s2"></div>
+                <div class="sparkle s3"></div>
+                <div class="sparkle s4"></div>
+            </div>
+            
+            <h3 class="animation-title" id="animationTitle">Генерируем промпт...</h3>
+            <p class="animation-subtitle" id="animationSubtitle">Анализируем ваши параметры</p>
+            
+            <div class="loading-stages">
+                <div class="stage active">
+                    <div class="stage-icon">🔍</div>
+                    <div class="stage-text">Анализ параметров</div>
+                    <div class="stage-check">✓</div>
+                </div>
+                <div class="stage">
+                    <div class="stage-icon">🧠</div>
+                    <div class="stage-text">Обработка ИИ</div>
+                    <div class="stage-check"></div>
+                </div>
+                <div class="stage">
+                    <div class="stage-icon">✨</div>
+                    <div class="stage-text">Оптимизация промпта</div>
+                    <div class="stage-check"></div>
+                </div>
+                <div class="stage">
+                    <div class="stage-icon">✅</div>
+                    <div class="stage-text">Готово!</div>
+                    <div class="stage-check"></div>
+                </div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">0%</div>
+            </div>
+            
+            <div class="fun-facts">
+                <p class="fact">🎯 Используем лучшие практики промпт-инжиниринга</p>
+                <p class="fact">⚡ Оптимизируем для максимальной эффективности</p>
+                <p class="fact">✨ Добавляем креативные элементы</p>
+                <p class="fact">🤖 Адаптируем под выбранную нейросеть</p>
+            </div>
+            
+            <div class="hint">Подождите немного, магия в процессе...</div>
+        </div>
+    </div>
+</div>
+    
   <div id="site-footer"></div>
 
     <!-- Модальное окно кастомизации будет добавлено JS -->
