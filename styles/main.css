@@ -678,16 +678,6 @@ section {
     }
 }
 
-        :root {
-            --card-bg: rgba(255, 244, 199, 0.98);
-            --card-border: rgba(255, 193, 7, 0.4);
-            --shadow: 0 8px 32px rgba(255, 193, 7, 0.15);
-            --primary-color: #8a6d03;
-            --secondary-color: #664d03;
-            --hover-bg: rgba(255, 193, 7, 0.1);
-            --accent-color: #ffc107;
-        }
-
         /* Баннер Яндекс.Браузера */
         .yandex-browser-banner {
             position: fixed;
