@@ -667,3 +667,50 @@
         padding: 2px 6px;
     }
 }
+
+/* ===== STUDIO TIER ===== */
+.tier-studio {
+    background: rgba(6, 182, 212, 0.2);
+    color: #a5f3fc;
+    border-color: rgba(6, 182, 212, 0.4);
+    
+    /* Общие стили меток */
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    z-index: 2;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Адаптивность для таблетов */
+@media (max-width: 768px) {
+    .tier-studio {
+        top: 8px;
+        right: 8px;
+        padding: 3px 8px;
+        font-size: 0.7rem;
+    }
+}
+
+/* Адаптивность для мобилок */
+@media (max-width: 480px) {
+    .tier-studio {
+        font-size: 0.65rem;
+        padding: 2px 6px;
+    }
+}
+
+/* Очень маленькие экраны */
+@media (max-width: 360px) {
+    .tier-studio {
+        font-size: 0.6rem;
+        padding: 2px 5px;
+        letter-spacing: 0.3px;
+    }
+}
