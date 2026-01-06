@@ -983,26 +983,36 @@ function initGenerator() {
     container.innerHTML = html || "<p>Для этого типа промпта не требуется дополнительных параметров.</p>";
   }
 
-  // Открытие модалки по клику на карточку
-  typeCards.forEach((card) => {
+typeCards.forEach((card) => {
     card.addEventListener("click", function () {
-    selectedType = this.getAttribute("data-type") || "recipes";
-      incCategory(selectedType);
-      renderExamples(selectedType);
+        selectedType = this.getAttribute("data-type") || "recipes";
+        incCategory(selectedType);
+        renderExamples(selectedType);
 
-      const modalTitle = modal.querySelector(".modal-title");
-      modalTitle.textContent = `Кастомизация: ${promptTemplates[selectedType]?.name || selectedType}`;
+        const modalTitle = modal.querySelector(".modal-title");
+        modalTitle.textContent = `Кастомизация: ${promptTemplates[selectedType]?.name || selectedType}`;
 
-      renderTechnicalParams(selectedType);
+        renderTechnicalParams(selectedType);
 
-      const form = modal.querySelector("#prompt-form");
-      form.reset();
-      modal.querySelector("#final-prompt").textContent = "";
+        const form = modal.querySelector("#prompt-form");
+        form.reset();
+        modal.querySelector("#final-prompt").textContent = "";
 
-      modal.classList.add("active");
-      document.body.style.overflow = "hidden";
+        // === ДОБАВИТЬ ЭТО ===
+        // Сброс стадий анимации
+        const stages = document.querySelectorAll('.stage');
+        if (stages.length > 0) {
+            stages.forEach(stage => {
+                stage.classList.remove('active', 'completed');
+            });
+            stages[0].classList.add('active');
+        }
+        // === КОНЕЦ ДОБАВЛЕНИЯ ===
+
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
     });
-  });
+});
 
   // Закрытие
   function closeModal() {
@@ -1341,34 +1351,63 @@ function renderExamples(type) {
   }
 }
 
-promptForm.addEventListener("submit", (e) => {
-  e.preventDefault();
+promptForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  const customText = customInput.value?.trim();
-  const tone = toneSelect.value;
+    const customText = customInput.value?.trim();
+    const tone = toneSelect.value;
 
-  if (!customText) return alert("Пожалуйста, опишите вашу идею");
-  if (!promptTemplates[selectedType]) return alert("Шаблон для этого типа промпта еще не готов");
+    if (!customText) return alert("Пожалуйста, опишите вашу идею");
+    if (!promptTemplates[selectedType]) return alert("Шаблон для этого типа промпта еще не готов");
 
-  const params = {};
-  for (const [key, param] of Object.entries(promptTemplates[selectedType].params || {})) {
-    if (param.type === "select") {
-      const el = modal.querySelector(`#param-${key}`);
-      if (el) params[key] = el.value;
-    } else if (param.type === "multiselect") {
-      const box = modal.querySelector(`#param-${key}`);
-      if (box) {
-        const checked = box.querySelectorAll('input[type="checkbox"]:checked');
-        params[key] = Array.from(checked).map((cb) => cb.value).join(", ");
-      }
+    // Показать анимацию
+    const overlay = document.getElementById('generationOverlay');
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    const animationTitle = document.getElementById('animationTitle');
+    const animationSubtitle = document.getElementById('animationSubtitle');
+    
+    if (overlay) {
+        // Устанавливаем заголовок в зависимости от типа промпта
+        const typeName = promptTemplates[selectedType]?.name || selectedType;
+        animationTitle.textContent = `Генерируем ${typeName.toLowerCase()}...`;
+        animationSubtitle.textContent = `Анализируем параметры: "${customText.substring(0, 30)}${customText.length > 30 ? '...' : ''}"`;
+        
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        // Запускаем анимацию прогресса
+        await animateGenerationProgress(progressFill, progressText, overlay);
     }
-  }
 
-  const finalPromptText = buildPromptText(selectedType, customText, tone, params);
+    const params = {};
+    for (const [key, param] of Object.entries(promptTemplates[selectedType].params || {})) {
+        if (param.type === "select") {
+            const el = modal.querySelector(`#param-${key}`);
+            if (el) params[key] = el.value;
+        } else if (param.type === "multiselect") {
+            const box = modal.querySelector(`#param-${key}`);
+            if (box) {
+                const checked = box.querySelectorAll('input[type="checkbox"]:checked');
+                params[key] = Array.from(checked).map((cb) => cb.value).join(", ");
+            }
+        }
+    }
 
-  incGeneration();
-  finalPrompt.textContent = finalPromptText;
-  finalPrompt.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    // Небольшая задержка для "реалистичности" генерации
+    await new Promise(resolve => setTimeout(resolve, 800));
+
+    const finalPromptText = buildPromptText(selectedType, customText, tone, params);
+
+    incGeneration();
+    finalPrompt.textContent = finalPromptText;
+    finalPrompt.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+    // Скрыть анимацию
+    if (overlay) {
+        overlay.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
 });
 
 // ✅ копирование — ОДИН раз, не внутри submit
@@ -1406,6 +1445,80 @@ downloadButton.addEventListener("click", () => {
 });
 
   console.log("✅ Генератор инициализирован");
+
+  // ===== НОВАЯ ФУНКЦИЯ ДЛЯ АНИМАЦИИ =====
+  // Новая функция для анимации прогресса
+  async function animateGenerationProgress(progressFill, progressText, overlay) {
+    return new Promise(resolve => {
+      let progress = 0;
+      const stages = [
+        { percent: 10, text: "10% - Анализ параметров" },
+        { percent: 25, text: "25% - Инициализация ИИ" },
+        { percent: 40, text: "40% - Обработка запроса" },
+        { percent: 55, text: "55% - Генерация шаблона" },
+        { percent: 70, text: "70% - Оптимизация промпта" },
+        { percent: 85, text: "85% - Добавление деталей" },
+        { percent: 95, text: "95% - Финальная проверка" },
+        { percent: 100, text: "100% - Готово!" }
+      ];
+      
+      const stagesElements = document.querySelectorAll('.stage');
+      
+      function updateProgress() {
+        if (progress < 100) {
+          const nextStage = stages.find(s => s.percent > progress) || stages[stages.length - 1];
+          const increment = Math.random() * 15 + 5; // 5-20% за шаг
+          
+          progress = Math.min(progress + increment, nextStage.percent);
+          
+          progressFill.style.width = `${progress}%`;
+          progressText.textContent = `${Math.round(progress)}%`;
+          
+          // Обновляем заголовок прогресса
+          const stage = stages.find(s => s.percent >= progress) || stages[stages.length - 1];
+          progressText.textContent = stage.text;
+          
+          // Активируем стадии
+          const activeIndex = Math.floor((progress / 100) * stagesElements.length);
+          stagesElements.forEach((el, index) => {
+            if (index <= activeIndex) {
+              el.classList.add('active');
+              if (index < activeIndex) {
+                el.classList.add('completed');
+              }
+            } else {
+              el.classList.remove('active');
+            }
+          });
+          
+          // Случайная задержка для реалистичности
+          const delay = Math.random() * 300 + 100; // 100-400ms
+          setTimeout(updateProgress, delay);
+        } else {
+          // Все стадии завершены
+          stagesElements.forEach(el => {
+            el.classList.add('completed');
+            el.classList.add('active');
+          });
+          
+          // Небольшая задержка перед закрытием
+          setTimeout(() => {
+            if (overlay) {
+              overlay.classList.add('closing');
+              setTimeout(() => {
+                overlay.classList.remove('active', 'closing');
+                resolve();
+              }, 300);
+            } else {
+              resolve();
+            }
+          }, 800);
+        }
+      }
+      
+      updateProgress();
+    });
+  }
 }
 
 function runDebug() {
