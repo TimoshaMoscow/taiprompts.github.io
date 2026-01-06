@@ -236,6 +236,65 @@ function initGenerator() {
 
   console.log("🚀 Инициализация генератора промптов...");
 
+  // В main.js, в начале initGenerator()
+const censorDictionary = {
+    // Русский мат
+    'хуй': 'мужское достоинство',
+    'пизда': 'женское лоно', 
+    'ебал': 'занимался любовью',
+    'блядь': 'нехороший человек',
+    'ебан': 'совершил',
+    'пиздец': 'катастрофа',
+    'охуен': 'потрясающ',
+    'хуев': 'плох',
+    'нахуй': 'к черту',
+    'похуй': 'безразлично',
+    'сука': 'негодяй',
+    'заеб': 'замуч',
+    'выеб': 'выпроводил',
+    'долбоеб': 'неумный человек',
+    
+    // Производные и варианты
+    'жопа': 'ягодицы',
+    'срака': 'задница',
+    'хер': 'то самое',
+    'мудак': 'неприятный человек',
+    'гандон': 'изделие',
+    'петух': 'определённый человек',
+    'шлюха': 'девушка',
+    
+    // Английский мат
+    'fuck': 'блин',
+    'shit': 'черт',
+    'bitch': 'стерва',
+    'asshole': 'придурок',
+    'dick': 'член',
+    'pussy': 'киска',
+    'cock': 'петух',
+    'cum': 'семя',
+};
+
+// Функция цензуры
+function censorText(text) {
+    if (!text) return text;
+    
+    let censored = text.toLowerCase();
+    
+    // Заменяем все нецензурные слова
+    Object.keys(censorDictionary).forEach(badWord => {
+        const regex = new RegExp(badWord, 'gi');
+        censored = censored.replace(regex, censorDictionary[badWord]);
+    });
+    
+    // Если текст изменился - возвращаем с правильным регистром первого слова
+    if (censored !== text.toLowerCase()) {
+        // Восстанавливаем регистр первого слова
+        return censored.charAt(0).toUpperCase() + censored.slice(1);
+    }
+    
+    return text;
+}
+
   const promptTemplates = {
     recipes: {
       name: "🍳 Рецепты",
@@ -1354,10 +1413,15 @@ function renderExamples(type) {
 promptForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const customText = customInput.value?.trim();
+    let customText = customInput.value?.trim();
     const tone = toneSelect.value;
 
     if (!customText) return alert("Пожалуйста, опишите вашу идею");
+    
+    // ===== ЦЕНЗУРА =====
+    const originalText = customText;
+    customText = censorText(customText);
+    
     if (!promptTemplates[selectedType]) return alert("Шаблон для этого типа промпта еще не готов");
 
     // Показать анимацию
