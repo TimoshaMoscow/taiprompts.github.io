@@ -1220,6 +1220,18 @@ const promptExamples = {
     }
   ],
 
+  plugin: [
+    {
+      title: "Плагин для ютуба",
+      idea: "Плагин, который показывает всю информацию о видео на ютубе",
+      type: "Плагин",
+      browser: "Chromium-браузер",
+      func: "Нейросеть",
+      additionally: "Полный код",
+      tone: "professional"
+    }
+  ],
+
   setup: [
     {
       title: "Десктоп-приложение",
