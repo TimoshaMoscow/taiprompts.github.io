@@ -678,116 +678,169 @@ section {
     }
 }
 
-        /* Баннер Яндекс.Браузера */
-        .yandex-browser-banner {
-            position: fixed;
-            left: 20px;
-            right: 20px;
-            bottom: 20px;
-            z-index: 3000;
-            display: none;
-            animation: slideUp 0.4s ease-out forwards;
-        }
+/* Баннер Яндекс.Браузера */
+.yandex-browser-banner {
+    position: fixed;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    z-index: 3000;
+    display: none;
+    animation: slideUp 0.4s ease-out forwards;
+}
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
-        .yandex-browser-banner__inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 18px;
-            padding: 20px 24px;
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            justify-content: space-between;
-        }
+.yandex-browser-banner__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #fff8e1, #fff3cd); /* Желтый градиент */
+    border: 1px solid #ffd54f; /* Яркая желтая рамка */
+    box-shadow: 0 8px 32px rgba(255, 193, 7, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 18px;
+    padding: 20px 24px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+}
 
-        .yandex-browser-banner__content {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            flex: 1;
-        }
+.yandex-browser-banner__content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+}
 
-        .yandex-browser-banner__icon {
-            color: var(--primary-color);
-            font-size: 24px;
-            line-height: 1;
-            min-width: 24px;
-        }
+.yandex-browser-banner__icon {
+    color: #8a6d03; /* Темно-желтый/коричневый */
+    font-size: 24px;
+    line-height: 1;
+    min-width: 24px;
+}
 
-        .yandex-browser-banner__text {
-            color: var(--secondary-color);
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
+.yandex-browser-banner__text {
+    color: #664d03; /* Темный цвет текста */
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
 
-        .yandex-browser-banner__text strong {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
+.yandex-browser-banner__text strong {
+    color: #8a6d03; /* Акцентный цвет */
+    font-weight: 600;
+}
 
-        .yandex-browser-banner__actions {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            flex-shrink: 0;
-        }
+.yandex-browser-banner__actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-shrink: 0;
+}
 
-        .yandex-browser-banner__link {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-size: 0.9rem;
-            padding: 8px 16px;
-            border: 1px solid var(--card-border);
-            border-radius: 10px;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-        }
+.yandex-browser-banner__link {
+    color: #8a6d03;
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 8px 16px;
+    border: 1px solid #ffd54f;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
 
-        .yandex-browser-banner__link:hover {
-            background: var(--hover-bg);
-            border-color: var(--accent-color);
-        }
+.yandex-browser-banner__link:hover {
+    background: rgba(255, 213, 79, 0.2); /* Полупрозрачный желтый */
+    border-color: #ffc107;
+}
 
-        .yandex-browser-banner__close {
-            background: none;
-            border: none;
-            color: var(--secondary-color);
-            font-size: 22px;
-            cursor: pointer;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-        }
+.yandex-browser-banner__close {
+    background: none;
+    border: none;
+    color: #664d03;
+    font-size: 22px;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
 
-        .yandex-browser-banner__close:hover {
-            background: var(--hover-bg);
-            transform: scale(1.1);
-        }
+.yandex-browser-banner__close:hover {
+    background: rgba(255, 213, 79, 0.2);
+    transform: scale(1.1);
+}
 
-        .yandex-browser-banner__close:active {
-            transform: scale(0.95);
-        }
+.yandex-browser-banner__close:active {
+    transform: scale(0.95);
+}
+
+@media (max-width: 768px) {
+    .yandex-browser-banner {
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+    }
+    
+    .yandex-browser-banner__inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 18px 20px;
+    }
+    
+    .yandex-browser-banner__content {
+        width: 100%;
+    }
+    
+    .yandex-browser-banner__actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .yandex-browser-banner__close {
+        order: -1;
+        align-self: flex-end;
+        margin-top: -40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .yandex-browser-banner__inner {
+        padding: 16px 18px;
+    }
+    
+    .yandex-browser-banner__content {
+        gap: 12px;
+    }
+    
+    .yandex-browser-banner__text {
+        font-size: 0.9rem;
+    }
+    
+    .yandex-browser-banner__actions {
+        flex-wrap: wrap;
+    }
+    
+    .yandex-browser-banner__link {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+}
 
         @media (max-width: 768px) {
             .yandex-browser-banner {
