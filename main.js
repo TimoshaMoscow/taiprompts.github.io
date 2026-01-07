@@ -1604,9 +1604,30 @@ promptForm.addEventListener("submit", async (e) => {
 
     if (!customText) return alert("Пожалуйста, опишите вашу идею");
     
-    // ===== ЦЕНЗУРА =====
-    const originalText = customText;
-    customText = censorText(customText, selectedType);
+// ===== ЦЕНЗУРА =====
+const originalText = customText;
+
+// Маппинг типов промптов → категорий цензуры
+const categoryMapping = {
+    'recipes': 'recipes',
+    'websites': 'websites', 
+    'minecraft': 'minecraft',
+    '3d': '3d',
+    'toys': 'toys',
+    'school': 'school',
+    'bots': 'default',
+    'images': 'default',
+    'stickers': 'default',
+    'characterai': 'default',
+    'suno': 'default',
+    'youtube': 'default',
+    'plugin': 'default',
+    'setup': 'default'
+};
+
+const censorCategory = categoryMapping[selectedType] || 'default';
+customText = censorText(customText, censorCategory);
+  
     
     if (!promptTemplates[selectedType]) return alert("Шаблон для этого типа промпта еще не готов");
 
