@@ -236,249 +236,66 @@ function initGenerator() {
 
   console.log("🚀 Инициализация генератора промптов...");
 
-const smartCensorDictionary = {
-    // ===== ХУЙ (все варианты) =====
-    'хуй': {
-        variants: ['хуй', 'хуё', 'хую', 'хуе', 'хуя', 'хуем'], // Все формы
-        base: 'мужское достоинство',
-        categories: {
-            'toys': ['игрушечный человечек', 'фигурка'],
-            '3d': ['анатомическая модель', '3D объект'],
-            'recipes': ['фигурное блюдо', 'кулинарный объект'],
-            'minecraft': ['игровой объект', 'блок-модель'],
-            'default': ['объект', 'предмет']
-        }
-    },
+  // В main.js, в начале initGenerator()
+const censorDictionary = {
+    // Русский мат
+    'ох ебать мой хуй': 'ох как я люблю своего маленького друга',
+    'ебать мой хуй': 'как я люблю своего маленького друга',
+    'хуй': 'мужской друг',
+    'пизда': 'женское лоно', 
+    'ебал': 'занимался любовью',
+    'блядь': 'нехороший человек',
+    'ебанат': 'плохой человек',
+    'пиздец': 'катастрофа',
+    'охуен': 'потрясающ',
+    'хуев': 'плох',
+    'нахуй': 'к черту',
+    'похуй': 'безразлично',
+    'сука': 'негодяй',
+    'заеб': 'замуч',
+    'выеб': 'выпроводил',
+    'долбоеб': 'неумный человек',
+    'ебать': 'очень сильно любить',
+  
+    // Производные и варианты
+    'жопа': 'ягодицы',
+    'срака': 'задница',
+    'хер': 'то самое',
+    'мудак': 'неприятный человек',
+    'гандон': 'изделие',
+    'петух': 'определённый человек',
+    'шлюха': 'девушка',
     
-    // ===== ПИЗДА (ё и без) =====
-    'пизда': {
-        variants: ['пизда', 'пиздё', 'пизде', 'пиздо', 'пизды', 'пиздой'],
-        base: 'женское лоно',
-        categories: {
-            '3d': ['анатомическая структура'],
-            'default': ['объект']
-        }
-    },
-    
-    // ===== ЕБАТЬ (все формы с ё) =====
-    'ебать': {
-        variants: [
-            'ебать', 'ёбать',        // инфинитив
-            'ебу', 'ёбу',            // я
-            'ебешь', 'ёбешь',        // ты
-            'ебет', 'ёбет', 'ебёт',  // он (3 варианта!)
-            'ебем', 'ёбем',          // мы
-            'ебете', 'ёбете',        // вы
-            'ебают', 'ёбают',        // они
-            'ебал', 'ёбал',          // прошедшее м.р.
-            'ебала', 'ёбала',        // прошедшее ж.р.
-            'ебали', 'ёбали',        // прошедшее мн.ч.
-            'ебаный', 'ёбаный',      // причастие
-            'ебанина', 'ёбанина'     // существительное
-        ],
-        base: 'ценить',
-        categories: {
-            'toys': ['играть с', 'взаимодействовать с'],
-            'recipes': ['готовить', 'приготовлять'],
-            'default': ['ценить', 'уважать']
-        }
-    },
-    
-    // ===== БЛЯДЬ (ё в корне) =====
-    'блядь': {
-        variants: ['блядь', 'блёдь', 'бляди', 'блёди', 'блядью', 'блёдью'],
-        base: 'нехороший человек',
-        categories: {
-            'default': ['индивидуум', 'персона']
-        }
-    },
-    
-// ===== ОХУЕТЬ (с ё) =====
-'охуеть': {
-    variants: ['охуеть', 'ахуеть', 'охуел', 'ахуел', 'охуела', 'ахуела', 'охуели', 'ахуели'],
-    base: 'восхититься',
-    categories: {
-        'recipes': ['получить удовольствие от', 'насладиться'], // ← ДОБАВИЛ recipes
-        'default': ['восхититься', 'поразиться']
-    }
-},
-
-// ===== ГОВНО (без ё) =====
-'говно': {
-    variants: ['говно', 'говна', 'говну', 'говном'],
-    base: 'некачественный продукт',
-    categories: {
-        'recipes': ['неудачное блюдо', 'плохое блюдо'], // ← Уже есть
-        'websites': ['плохой сайт'],
-        'default': ['плохой продукт']
-    }
-},
-    
-    // ===== ПИЗДЕЦ (с ё) =====
-    'пиздец': {
-        variants: ['пиздец', 'пиздёц', 'пиздеца', 'пиздёца'],
-        base: 'катастрофа',
-        categories: {
-            'school': ['крайне сложная задача'],
-            'default': ['катастрофа', 'провал']
-        }
-    },
-    
-    // ===== НАХУЙ (с ё) =====
-    'нахуй': {
-        variants: ['нахуй', 'нахую', 'нахуя', 'нахер', 'на хер'],
-        base: 'к чертям',
-        categories: {
-            'default': ['в сторону', 'прочь']
-        }
-    },
-    
-    // ===== ПОХУЙ (с ё) =====
-    'похуй': {
-        variants: ['похуй', 'похую', 'похуя', 'похер', 'по хер'],
-        base: 'безразлично',
-        categories: {
-            'default': ['неважно', 'всё равно']
-        }
-    },
-    
-    // ===== ЗАЕБАТЬ (с ё) =====
-    'заебать': {
-        variants: ['заебать', 'заёбать', 'заебал', 'заёбал', 'заебала', 'заёбала', 'заебали', 'заёбали'],
-        base: 'утомить',
-        categories: {
-            'school': ['утомить от занятий'],
-            'work': ['истощить от работы'],
-            'default': ['утомить', 'надоесть']
-        }
-    },
-    
-    // ===== ВЫЕБАТЬ (с ё) =====
-    'выебать': {
-        variants: ['выебать', 'выёбать', 'выебал', 'выёбал', 'выебала', 'выёбала'],
-        base: 'превзойти',
-        categories: {
-            'games': ['победить в игре'],
-            'default': ['превзойти', 'обойти']
-        }
-    },
-    
-    // ===== СУКА (без ё) =====
-    'сука': {
-        variants: ['сука', 'суки', 'суке', 'суку', 'сукой'],
-        base: 'неприятный человек',
-        categories: {
-            'default': ['индивидуум', 'особь']
-        }
-    },
-    
-    // ===== МУДАК (без ё) =====
-    'мудак': {
-        variants: ['мудак', 'мудака', 'мудаку', 'мудаком'],
-        base: 'неумный человек',
-        categories: {
-            'default': ['индивидуум']
-        }
-    },
-    
-    // ===== ДРОЧИТЬ (с ё) =====
-    'дрочить': {
-        variants: ['дрочить', 'дрочу', 'дрочишь', 'дрочит', 'дрочим', 'дрочите', 'дрочат'],
-        base: 'тренировать',
-        categories: {
-            'school': ['упражняться'],
-            'default': ['тренировать', 'практиковать']
-        }
-    }
+    // Английский мат
+    'fuck': 'блин',
+    'shit': 'черт',
+    'bitch': 'стерва',
+    'asshole': 'придурок',
+    'dick': 'друг',
+    'pussy': 'киска',
+    'cock': 'петух',
+    'cum': 'семя',
 };
 
-function smartCensor(text, category = 'default') {
+// Ценз
+function censorText(text) {
     if (!text) return text;
     
-    let result = text;
+    let censored = text.toLowerCase();
     
-    // Проходим по всем словам в словаре
-    Object.keys(smartCensorDictionary).forEach(key => {
-        const entry = smartCensorDictionary[key];
-        
-        // Для каждого варианта слова
-        entry.variants.forEach(variant => {
-            // Создаём regex с флагом i (регистронезависимый)
-            const regex = new RegExp(`\\b${variant}\\b`, 'gi');
-            
-            if (regex.test(result)) {
-                // Выбираем замену в зависимости от категории
-                let replacement;
-                if (entry.categories && entry.categories[category]) {
-                    // Если есть категориальная замена
-                    const options = entry.categories[category];
-                    replacement = Array.isArray(options) 
-                        ? options[Math.floor(Math.random() * options.length)] // Случайный вариант
-                        : options;
-                } else {
-                    // Базовая замена
-                    replacement = entry.base;
-                }
-                
-                // Заменяем все вхождения
-                result = result.replace(regex, replacement);
-            }
-        });
+    // Сортируем ключи от самых длинных к коротким
+    const sortedKeys = Object.keys(censorDictionary).sort((a, b) => b.length - a.length);
+    
+    sortedKeys.forEach(badWord => {
+        const regex = new RegExp(badWord, 'gi');
+        censored = censored.replace(regex, censorDictionary[badWord]);
     });
     
-    return result;
-}
-
-// ===== ДОПОЛНИТЕЛЬНО: ФУНКЦИЯ ДЛЯ Ё/Е ЗАМЕН =====
-function normalizeYo(text) {
-    // Приводим все ё к е для упрощения поиска
-    return text.replace(/ё/gi, 'е');
-}
-
-function censorWithYoSupport(text, category) {
-    // Нормализуем текст (ё → е)
-    const normalized = normalizeYo(text);
-    let censored = text; // Сохраняем оригинал для замены с правильными буквами
-    
-    Object.keys(smartCensorDictionary).forEach(key => {
-        const entry = smartCensorDictionary[key];
-        
-        entry.variants.forEach(variant => {
-            // Нормализуем вариант (ё → е)
-            const normalizedVariant = normalizeYo(variant);
-            const regex = new RegExp(`\\b${normalizedVariant}\\b`, 'gi');
-            
-            if (regex.test(normalized)) {
-                // Находим совпадения в оригинальном тексте
-                const matches = text.match(new RegExp(variant, 'gi'));
-                if (matches) {
-                    matches.forEach(match => {
-                        // Заменяем с сохранением регистра оригинала
-                        const replacement = getReplacement(key, category);
-                        censored = censored.replace(match, replacement);
-                    });
-                }
-            }
-        });
-    });
-    
-    return censored;
-}
-
-function getReplacement(wordKey, category) {
-    const entry = smartCensorDictionary[wordKey];
-    if (entry.categories && entry.categories[category]) {
-        const options = entry.categories[category];
-        return Array.isArray(options) 
-            ? options[Math.floor(Math.random() * options.length)]
-            : options;
+    if (censored !== text.toLowerCase()) {
+        return censored.charAt(0).toUpperCase() + censored.slice(1);
     }
-    return entry.base;
-}
-
-// Обёртка для совместимости со старым кодом
-function censorText(text, category = 'default') {
-    return censorWithYoSupport(text, category);
+    
+    return text;
 }
 
   const promptTemplates = {
@@ -1604,30 +1421,9 @@ promptForm.addEventListener("submit", async (e) => {
 
     if (!customText) return alert("Пожалуйста, опишите вашу идею");
     
-// ===== ЦЕНЗУРА =====
-const originalText = customText;
-
-// Маппинг типов промптов → категорий цензуры
-const categoryMapping = {
-    'recipes': 'recipes',
-    'websites': 'websites', 
-    'minecraft': 'minecraft',
-    '3d': '3d',
-    'toys': 'toys',
-    'school': 'school',
-    'bots': 'default',
-    'images': 'default',
-    'stickers': 'default',
-    'characterai': 'default',
-    'suno': 'default',
-    'youtube': 'default',
-    'plugin': 'default',
-    'setup': 'default'
-};
-
-const censorCategory = categoryMapping[selectedType] || 'default';
-customText = censorText(customText, censorCategory);
-  
+    // ===== ЦЕНЗУРА =====
+    const originalText = customText;
+    customText = censorText(customText);
     
     if (!promptTemplates[selectedType]) return alert("Шаблон для этого типа промпта еще не готов");
 
