@@ -1179,3 +1179,33 @@
 .generation-overlay.closing {
     animation: fadeOutUp 0.3s ease forwards;
 }
+
+/* ===== УМНЫЕ ФУНКЦИИ ===== */
+.smart-features-hint {
+    background: rgba(94, 114, 228, 0.1);
+    border: 1px solid rgba(94, 114, 228, 0.2);
+    border-radius: 10px;
+    padding: 12px;
+    margin: 20px 0;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #c7d2fe;
+}
+
+.analysis-badge {
+    display: inline-block;
+    background: rgba(94, 114, 228, 0.2);
+    color: var(--accent-color);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    border: 1px solid rgba(94, 114, 228, 0.3);
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+.adapted-param {
+    border-color: var(--accent-color) !important;
+    box-shadow: 0 0 0 2px rgba(94, 114, 228, 0.2) !important;
+    transition: all 0.3s;
+}
