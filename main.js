@@ -1137,6 +1137,10 @@ function applySmartDefaults(type, userInput) {
             </select>
           </div>
 
+          <div class="smart-features-hint">
+              <small>✨ Умные функции: автоматический подбор параметров на основе вашего описания</small>
+          </div>
+
           <button type="submit" class="btn btn-primary">Сгенерировать промпт</button>
         </form>
 
