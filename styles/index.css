@@ -132,37 +132,6 @@
     }
 }
 
-/* Секция преимуществ */
-.possibilities-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-}
-
-.possibility-card {
-    background: var(--card-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 2rem;
-    text-align: center;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--card-border);
-    transition: transform 0.3s;
-}
-
-.possibility-card:hover {
-    transform: translateY(-10px);
-}
-
-.possibility-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-}
-
-.possibility-card h3 {
-    margin-bottom: 1rem;
-}
 
 /* Призыв к действию */
 .cta {
