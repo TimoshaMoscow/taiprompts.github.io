@@ -298,6 +298,153 @@ function censorText(text) {
     return text;
 }
 
+// ===== УМНЫЕ ШАБЛОНЫ И АНАЛИЗ =====
+function analyzeInput(text) {
+    if (!text || typeof text !== 'string') return 'general';
+    
+    const lowerText = text.toLowerCase().trim();
+    
+    const patterns = {
+        'tutorial': ['как сделать', 'как создать', 'как настроить', 'шаг за шагом', 'пошагово', 'инструкция'],
+        'creative': ['придумай', 'создай идею', 'вообрази', 'креатив', 'творческий', 'необычный'],
+        'development': ['разработать', 'создать с нуля', 'построить', 'реализовать', 'программирование', 'код'],
+        'optimization': ['улучшить', 'оптимизировать', 'ускорить', 'сделать лучше', 'повысить', 'модернизировать'],
+        'analysis': ['проанализируй', 'исследовать', 'изучить', 'разобрать', 'оценить'],
+        'planning': ['спланировать', 'организовать', 'структурировать', 'распланировать']
+    };
+    
+    for (const [type, keywords] of Object.entries(patterns)) {
+        if (keywords.some(keyword => lowerText.includes(keyword))) {
+            return type;
+        }
+    }
+    
+    return 'general';
+}
+
+function autoSelectTone(text) {
+    const analysis = analyzeInput(text);
+    const toneMap = {
+        'tutorial': 'detailed',
+        'creative': 'creative', 
+        'development': 'technical',
+        'optimization': 'professional',
+        'analysis': 'professional',
+        'planning': 'detailed',
+        'general': 'professional'
+    };
+    return toneMap[analysis] || 'professional';
+}
+
+// ===== ИНТЕЛЛЕКТУАЛЬНЫЕ ПОДСКАЗКИ =====
+const ideaEnhancers = {
+    'recipes': [
+        "Учтите сезонные продукты для лучшего вкуса и экономии",
+        "Добавьте альтернативные ингредиенты для разных диет",
+        "Предложите варианты подачи для разных случаев",
+        "Включите советы по хранению и разогреву"
+    ],
+    'websites': [
+        "Включите поддержку темной/светлой темы",
+        "Добавьте PWA-функции для установки на устройство",
+        "Оптимизируйте для SEO и скорости загрузки",
+        "Реализуйте адаптивную верстку для всех устройств"
+    ],
+    'minecraft': [
+        "Добавьте конфигурацию через файлы .json",
+        "Создайте систему достижений и прогресса",
+        "Оптимизируйте производительность для слабых ПК",
+        "Включите поддержку модпаков"
+    ],
+    'bots': [
+        "Добавьте систему логирования ошибок",
+        "Реализуйте кэширование частых запросов",
+        "Включите админ-панель для управления",
+        "Добавьте систему плагинов/расширений"
+    ],
+    'images': [
+        "Укажите разрешение и формат файла",
+        "Добавьте варианты композиции и ракурса",
+        "Включите описание настроения и атмосферы",
+        "Уточните цветовую палитру и контраст"
+    ],
+    '3d': [
+        "Укажите полигональную сложность модели",
+        "Добавьте информацию о UV-развертке",
+        "Включите варианты материалов и текстур",
+        "Уточните систему скелета и анимации"
+    ]
+};
+
+function enhancePrompt(type, basePrompt) {
+    const enhancers = ideaEnhancers[type] || [];
+    if (enhancers.length > 0) {
+        const selectedEnhancers = [];
+        
+        for (const enhancer of enhancers) {
+            if (Math.random() > 0.7 && selectedEnhancers.length < 2) {
+                selectedEnhancers.push(enhancer);
+            }
+        }
+        
+        if (selectedEnhancers.length > 0) {
+            return `${basePrompt}. ${selectedEnhancers.join('. ')}`;
+        }
+    }
+    return basePrompt;
+}
+
+// ===== АДАПТИВНЫЕ ПАРАМЕТРЫ =====
+function smartDefaults(type, userInput) {
+    if (!userInput) return {};
+    
+    const lowerInput = userInput.toLowerCase();
+    
+    const defaults = {
+        'recipes': {
+            complexity: lowerInput.includes('быстр') || lowerInput.includes('просто') ? 'Простое' : 
+                       lowerInput.includes('сложн') || lowerInput.includes('шеф') ? 'Сложное' : 
+                       'Средней сложности',
+            dietary: lowerInput.includes('веган') ? 'Веганское' : 
+                    lowerInput.includes('вегетариан') ? 'Вегетарианское' :
+                    lowerInput.includes('глютен') ? 'Без глютена' :
+                    'Без ограничений'
+        },
+        'websites': {
+            type: lowerInput.includes('магазин') ? 'Интернет-магазин' :
+                  lowerInput.includes('блог') ? 'Блог' :
+                  'Лендинг',
+            features: lowerInput.includes('магазин') ? ['Корзина покупок'] : 
+                     ['Адаптивный дизайн']
+        },
+        'minecraft': {
+            version: '1.20.1',
+            compatibility: lowerInput.includes('сервер') ? 'Сервер' : 'Клиент'
+        }
+    };
+    
+    return defaults[type] || {};
+}
+
+function applySmartDefaults(type, userInput) {
+    const defaults = smartDefaults(type, userInput);
+    
+    for (const [param, value] of Object.entries(defaults)) {
+        const element = document.getElementById(`param-${param}`);
+        if (element) {
+            if (element.tagName === 'SELECT') {
+                element.value = value;
+            } else if (element.classList.contains('multi-select')) {
+                const values = Array.isArray(value) ? value : [value];
+                const checkboxes = element.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(cb => {
+                    cb.checked = values.includes(cb.value);
+                });
+            }
+        }
+    }
+}
+
   const promptTemplates = {
     recipes: {
       name: "🍳 Рецепты",
@@ -1095,6 +1242,18 @@ typeCards.forEach((card) => {
   // ===== Генерация =====
   const promptForm = modal.querySelector("#prompt-form");
   const customInput = modal.querySelector("#custom-input");
+  customInput.addEventListener('input', function() {
+    const text = this.value;
+    const tone = autoSelectTone(text);
+    
+    // Автоматически выбираем тон
+    if (toneSelect) {
+        toneSelect.value = tone;
+    }
+    
+    // Применяем умные параметры
+    applySmartDefaults(selectedType, text);
+});
   const toneSelect = modal.querySelector("#tone-select");
   const finalPrompt = modal.querySelector("#final-prompt");
   const copyButton = modal.querySelector("#copy-prompt");
@@ -1420,6 +1579,17 @@ promptForm.addEventListener("submit", async (e) => {
     const tone = toneSelect.value;
 
     if (!customText) return alert("Пожалуйста, опишите вашу идею");
+
+    // Автоматический выбор тона, если не выбран вручную
+    if (tone === 'professional') {
+        tone = autoSelectTone(customText);
+    }
+    
+    // Применяем умные параметры
+    applySmartDefaults(selectedType, customText);
+    
+    // Улучшаем промпт подсказками
+    customText = enhancePrompt(selectedType, customText);
     
     // ===== ЦЕНЗУРА =====
     const originalText = customText;
