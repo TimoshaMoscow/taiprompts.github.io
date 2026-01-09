@@ -229,35 +229,11 @@
     <!-- Скрипты -->
     <script src="main.js?v=1.1.4"></script>
     <script>
-        // Загрузка шапки и футера
-        document.addEventListener('DOMContentLoaded', function() {
-            // Загружаем шапку
-            fetch('header.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('site-header').innerHTML = data;
-                    // Инициализируем бургер-меню после загрузки
-                    if (typeof initBurger === 'function') {
-                        initBurger();
-                    }
-                });
-
-            // Загружаем футер
-            fetch('footer.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('site-footer').innerHTML = data;
-                    // Обновляем год в футере
-                    const yearSpan = document.querySelector('#currentYear');
-                    if (yearSpan) {
-                        yearSpan.textContent = new Date().getFullYear();
-                    }
-                });
-
-            // Инициализация функциональности FAQ
-            initFAQ();
-        });
-
+    // Инициализация FAQ после загрузки страницы
+    document.addEventListener('DOMContentLoaded', function() {
+        initFAQ();
+    });
+        
         // Основная логика FAQ
         function initFAQ() {
             const faqItems = document.querySelectorAll('.faq-item');
