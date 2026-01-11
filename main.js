@@ -237,67 +237,146 @@ function initGenerator() {
   console.log("🚀 Инициализация генератора промптов...");
 
   // В main.js, в начале initGenerator()
-const censorDictionary = {
-    // Русский мат
-    'ох ебать мой хуй': 'ох как я люблю своего маленького друга',
-    'ебать мой хуй': 'как я люблю своего маленького друга',
-    'хуй': 'мужской друг',
-    'пизда': 'женская пещерка', 
-    'ебал': 'занимался любовью',
-    'блядь': 'нехороший человек',
-    'ебанат': 'плохой человек',
-    'пиздец': 'катастрофа',
-    'охуен': 'потрясающ',
-    'хуев': 'плох',
-    'нахуй': 'к черту',
-    'похуй': 'безразлично',
-    'сука': 'негодяй',
-    'заеб': 'замуч',
-    'выеб': 'выпроводил',
-    'долбоеб': 'неумный человек',
-    'ебать': 'очень сильно любить',
-    'секс': 'любовь',
-    'сексуальн': 'игрив',
-  
-    // Производные и варианты
-    'жопа': 'ягодицы',
-    'срака': 'задница',
-    'хер': 'то самое',
-    'мудак': 'неприятный человек',
-    'гандон': 'изделие',
-    'петух': 'определённый человек',
-    'шлюха': 'девушка',
-    
-    // Английский мат
-    'fuck': 'блин',
-    'shit': 'черт',
-    'bitch': 'стерва',
-    'asshole': 'придурок',
-    'dick': 'друг',
-    'pussy': 'киска',
-    'cock': 'петух',
-    'cum': 'семя',
-};
+// В main.js, замените существующую функцию censorText на эту:
 
-// Ценз
 function censorText(text) {
     if (!text) return text;
     
-    let censored = text.toLowerCase();
+    // Расширенный словарь с разными формами и контекстами
+    const censorDictionary = {
+        // Русский мат - основные слова и их формы
+        'хуй': 'мужской друг',
+        'хуя': 'мужского друга',
+        'хую': 'мужскому другу',
+        'хуем': 'мужским другом',
+        'хуе': 'мужском друге',
+        'хуи': 'мужские друзья',
+        'хуё': 'мужской дру...',
+        
+        'пизд': 'пещерк',
+        'пизда': 'пещерка',
+        'пизде': 'пещерке',
+        'пизду': 'пещерку',
+        'пизды': 'пещерки',
+        'пиздо': 'пещерко',
+        
+        'еб': 'люб',
+        'еба': 'люба',
+        'ебе': 'любе',
+        'ебу': 'любу',
+        'ебё': 'любё',
+        'ебы': 'любы',
+        
+        'бля': 'блин',
+        'блять': 'блин',
+        'блядь': 'блин',
+        
+        'нахуй': 'к черту',
+        'похуй': 'без разницы',
+        'нихуя': 'ничего',
+        'охуен': 'потрясающ',
+        'охуительн': 'замечательн',
+        
+        'сука': 'собака',
+        'суки': 'собаки',
+        'суку': 'собаку',
+        
+        // Английский мат
+        'fuck': 'блин',
+        'shit': 'черт',
+        'bitch': 'стерва',
+        'dick': 'мужчина',
+        'cock': 'петушок',
+        'pussy': 'киска',
+        
+        // Общие неприличные слова
+        'секс': 'отношения',
+        'трах': 'обнять',
+        'сперм': 'семен',
+        'вагин': 'женск',
+        'член': 'орган',
+        'сиськ': 'груд',
+    };
+
+    // Разделяем текст на слова с сохранением знаков препинания
+    let words = text.split(/(\s+|[,.!?;:()\[\]{}"'`])/);
     
-    // Сортируем ключи от самых длинных к коротким
-    const sortedKeys = Object.keys(censorDictionary).sort((a, b) => b.length - a.length);
-    
-    sortedKeys.forEach(badWord => {
-        const regex = new RegExp(badWord, 'gi');
-        censored = censored.replace(regex, censorDictionary[badWord]);
-    });
-    
-    if (censored !== text.toLowerCase()) {
-        return censored.charAt(0).toUpperCase() + censored.slice(1);
+    // Функция для нормализации слова (приведение к базовой форме)
+    function normalizeWord(word) {
+        if (!word || word.length < 2) return word;
+        
+        // Приводим к нижнему регистру для сравнения
+        const lowerWord = word.toLowerCase();
+        
+        // Проверяем на полное совпадение
+        for (const [bad, good] of Object.entries(censorDictionary)) {
+            if (lowerWord.includes(bad)) {
+                // Определяем, с какой части слова начинается мат
+                const badIndex = lowerWord.indexOf(bad);
+                
+                // Если мат в начале слова
+                if (badIndex === 0) {
+                    const restOfWord = word.slice(bad.length);
+                    
+                    // Сохраняем оригинальный регистр первой буквы
+                    if (word[0] === word[0].toUpperCase()) {
+                        return good.charAt(0).toUpperCase() + good.slice(1) + restOfWord;
+                    }
+                    return good + restOfWord;
+                }
+                
+                // Если мат в середине или конце слова
+                const prefix = word.slice(0, badIndex);
+                const suffix = word.slice(badIndex + bad.length);
+                
+                // Проверяем, что это не часть другого нормального слова
+                const isStandalone = 
+                    (badIndex === 0 || !/\w/.test(word[badIndex - 1])) &&
+                    (badIndex + bad.length >= word.length || !/\w/.test(word[badIndex + bad.length]));
+                
+                if (isStandalone) {
+                    return prefix + good + suffix;
+                }
+            }
+        }
+        
+        return word;
     }
     
-    return text;
+    // Обрабатываем каждое слово
+    const processedWords = words.map(word => {
+        // Пропускаем пробелы и знаки препинания
+        if (/^\s+$/.test(word) || /^[,.!?;:()\[\]{}"'`]$/.test(word)) {
+            return word;
+        }
+        
+        return normalizeWord(word);
+    });
+    
+    const result = processedWords.join('');
+    
+    // Дополнительная проверка на очевидный обход цензуры
+    if (hasObviousEvasion(result.toLowerCase())) {
+        return "Пожалуйста, формулируйте вашу идею в культурных выражениях.";
+    }
+    
+    return result;
+}
+
+// Функция для обнаружения явных попыток обойти цензуру
+function hasObviousEvasion(text) {
+    const evasionPatterns = [
+        /[хx][уy][йjй]/i,  // хуй с разными символами
+        /[пp][иiи][з3][дdд]/i,  // пизд
+        /[сcс][уyу][кkк]/i,  // сук
+        /[еeе][б6б]/i,  // еб
+        /f\s*u\s*c\s*k/i,  // f u c k с пробелами
+        /s\s*h\s*i\s*t/i,  // s h i t с пробелами
+        /\d+[хx][уy][йjй]/,  // цифры + хуй
+        /[хx][уy][йjй]\d+/,  // хуй + цифры
+    ];
+    
+    return evasionPatterns.some(pattern => pattern.test(text));
 }
 
   const promptTemplates = {
