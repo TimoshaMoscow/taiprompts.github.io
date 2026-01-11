@@ -236,83 +236,68 @@ function initGenerator() {
 
   console.log("🚀 Инициализация генератора промптов...");
 
+  // В main.js, в начале initGenerator()
+const censorDictionary = {
+    // Русский мат
+    'ох ебать мой хуй': 'ох как я люблю своего маленького друга',
+    'ебать мой хуй': 'как я люблю своего маленького друга',
+    'хуй': 'мужской друг',
+    'пизда': 'женская пещерка', 
+    'ебал': 'занимался любовью',
+    'блядь': 'нехороший человек',
+    'ебанат': 'плохой человек',
+    'пиздец': 'катастрофа',
+    'охуен': 'потрясающ',
+    'хуев': 'плох',
+    'нахуй': 'к черту',
+    'похуй': 'безразлично',
+    'сука': 'негодяй',
+    'заеб': 'замуч',
+    'выеб': 'выпроводил',
+    'долбоеб': 'неумный человек',
+    'ебать': 'очень сильно любить',
+    'секс': 'любовь',
+    'сексуальн': 'игрив',
+  
+    // Производные и варианты
+    'жопа': 'ягодицы',
+    'срака': 'задница',
+    'хер': 'то самое',
+    'мудак': 'неприятный человек',
+    'гандон': 'изделие',
+    'петух': 'определённый человек',
+    'шлюха': 'девушка',
+    
+    // Английский мат
+    'fuck': 'блин',
+    'shit': 'черт',
+    'bitch': 'стерва',
+    'asshole': 'придурок',
+    'dick': 'друг',
+    'pussy': 'киска',
+    'cock': 'петух',
+    'cum': 'семя',
+};
+
+// Ценз
 function censorText(text) {
-    if (!text || typeof text !== "string") return text;
-
-    const rules = [
-        // ===== РУССКИЙ МАТ =====
-        { re: /х+у+й+н?[яеиёю]*/gi, rep: "ерунда" },
-        { re: /п+и+з+д+[аеиёуы]*/gi, rep: "пещерка" },
-        { re: /е+б+а?[лтнш]*/gi, rep: "чудесн" },
-        { re: /б+л+[яа]+д+[ьй]*/gi, rep: "блин" },
-        { re: /с+у+к+[аиу]*/gi, rep: "собака" },
-        { re: /м+у+д+[аоы]*/gi, rep: "странный человек" },
-        { re: /г+о+в+н+[оауы]*/gi, rep: "грязь" },
-        { re: /ж+о+п+[ауы]*/gi, rep: "спина" },
-        { re: /д+е+р+ь+м+[оауы]*/gi, rep: "неприятность" },
-
-        // ===== АНГЛИЙСКИЙ =====
-        { re: /f+u+c+k+/gi, rep: "dang" },
-        { re: /s+h+i+t+/gi, rep: "oops" },
-        { re: /b+i+t+c+h+/gi, rep: "mean person" },
-        { re: /a+s+s+/gi, rep: "backside" },
-        { re: /d+i+c+k+/gi, rep: "guy" },
-        { re: /c+o+c+k+/gi, rep: "rooster" },
-        { re: /p+u+s+s+y+/gi, rep: "kitty" },
-
-        // ===== СЕКСУАЛЬНЫЕ ТЕРМИНЫ (СМЯГЧЕНИЕ) =====
-        { re: /с+е+к+с+/gi, rep: "отношения" },
-        { re: /т+р+а+х+/gi, rep: "игра" },
-        { re: /о+р+г+а+з+м+/gi, rep: "эмоции" },
-        { re: /ч+л+е+н+/gi, rep: "орган" },
-        { re: /г+р+у+д+ь+/gi, rep: "верх" },
-    ];
-
-    let normalized = normalize(text);
-
-    for (const rule of rules) {
-        normalized = normalized.replace(rule.re, match => {
-            return preserveCase(match, rule.rep);
-        });
+    if (!text) return text;
+    
+    let censored = text.toLowerCase();
+    
+    // Сортируем ключи от самых длинных к коротким
+    const sortedKeys = Object.keys(censorDictionary).sort((a, b) => b.length - a.length);
+    
+    sortedKeys.forEach(badWord => {
+        const regex = new RegExp(badWord, 'gi');
+        censored = censored.replace(regex, censorDictionary[badWord]);
+    });
+    
+    if (censored !== text.toLowerCase()) {
+        return censored.charAt(0).toUpperCase() + censored.slice(1);
     }
-
-    return normalized;
-}
-
-// ===== НОРМАЛИЗАЦИЯ =====
-function normalize(text) {
-    return text
-        .replace(/[0о]/gi, "о")
-        .replace(/[3з]/gi, "з")
-        .replace(/[6б]/gi, "б")
-        .replace(/[xх]/gi, "х")
-        .replace(/[yу]/gi, "у")
-        .replace(/[eе]/gi, "е")
-        .replace(/[iи]/gi, "и")
-        .replace(/(.)\1{2,}/g, "$1$1"); // хууууй → хуy
-}
-
-// ===== СОХРАНЕНИЕ РЕГИСТРА =====
-function preserveCase(original, replacement) {
-    if (original === original.toUpperCase()) {
-        return replacement.toUpperCase();
-    }
-    if (original[0] === original[0].toUpperCase()) {
-        return replacement[0].toUpperCase() + replacement.slice(1);
-    }
-    return replacement;
-}
-
-// ===== ОБХОД ЦЕНЗУРЫ =====
-function hasObviousEvasion(text) {
-    const patterns = [
-        /[хx]\W*[уy]\W*[йj]/i,
-        /[пp]\W*[иi]\W*[з3]\W*[дd]/i,
-        /[еe]\W*[б6]/i,
-        /f\W*u\W*c\W*k/i,
-        /s\W*h\W*i\W*t/i,
-    ];
-    return patterns.some(p => p.test(text));
+    
+    return text;
 }
 
   const promptTemplates = {
