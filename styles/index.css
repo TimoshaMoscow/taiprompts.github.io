@@ -4,7 +4,7 @@
     min-height: 100vh;
     display: flex;
     align-items: center;
-    background: url('/images/hero-bg.jpg') center/cover no-repeat;
+    background: url('./taiprompts.github.io/images/hero-bg.jpg') center/cover no-repeat;
     padding: 120px 0 80px;
     overflow: hidden;
 }
