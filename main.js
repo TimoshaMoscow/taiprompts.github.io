@@ -1004,8 +1004,8 @@ function censorText(text) {
   <div id="final-prompt" class="prompt-output"></div>
 
   <div class="example-actions" style="margin-top:12px; justify-content:flex-start;">
-    <button id="copy-prompt" class="btn btn-secondary" type="button">Копировать промпт</button>
-    <button id="download-prompt" class="btn btn-primary" type="button">Скачать .txt</button>
+    <button id="copy-prompt" class="btn btn-secondary" type="button">Копировать</button>
+    <button id="download-prompt" class="btn btn-primary" type="button">Скачать</button>
   </div>
 </div>
 
@@ -1519,7 +1519,6 @@ downloadButton.addEventListener("click", () => {
 
   console.log("✅ Генератор инициализирован");
 
-  // ===== НОВАЯ ФУНКЦИЯ ДЛЯ АНИМАЦИИ =====
   // Новая функция для анимации прогресса
   async function animateGenerationProgress(progressFill, progressText, overlay) {
     return new Promise(resolve => {
@@ -1598,7 +1597,7 @@ function runDebug() {
   console.log("=== TAIPrompts Debug ===");
   console.log("Current page:", window.location.pathname);
 
-  const files = ["index.html", "generator.html", "pricing.html", "development.html", "year.html"];
+  const files = ["index.html", "generator.html", "pricing.html", "development.html", "year.html", "faq.html", "settings.html"];
   files.forEach((file) => {
     fetch(file)
       .then((response) => console.log(`${file}: ${response.ok ? "✅ OK" : "❌ Not found"}`))
