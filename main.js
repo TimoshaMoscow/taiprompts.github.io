@@ -226,12 +226,7 @@ function initLightbox() {
 }
 
 function initGenerator() {
-  // === ЗАЩИТА ОТ ЗАКРЫТИЯ ВКЛАДКИ ===
-  window.addEventListener('beforeunload', function(event) {
-    event.preventDefault();
-    event.returnValue = '';
-  });
-  
+
   const typeCards = document.querySelectorAll(".type-card");
   const generationSection = document.querySelector(".generation");
 
@@ -1634,6 +1629,17 @@ if (yearEl) {
   initLightbox();
   initAnimations();
   runDebug();
+
+  // === ЗАЩИТА ОТ ЗАКРЫТИЯ (только на generator.html) ===
+  if (window.location.pathname.includes('generator.html') || 
+      window.location.pathname.endsWith('generator.html') ||
+      window.location.pathname.endsWith('/generator')) {
+    window.addEventListener('beforeunload', function(event) {
+      event.preventDefault();
+      event.returnValue = '';
+    });
+  }
+  // === КОНЕЦ ЗАЩИТЫ ===
 
   // Service Worker
   if ("serviceWorker" in navigator) {
