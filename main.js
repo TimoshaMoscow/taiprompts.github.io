@@ -226,6 +226,12 @@ function initLightbox() {
 }
 
 function initGenerator() {
+  // === ЗАЩИТА ОТ ЗАКРЫТИЯ ВКЛАДКИ ===
+  window.addEventListener('beforeunload', function(event) {
+    event.preventDefault();
+    event.returnValue = '';
+  });
+  
   const typeCards = document.querySelectorAll(".type-card");
   const generationSection = document.querySelector(".generation");
 
