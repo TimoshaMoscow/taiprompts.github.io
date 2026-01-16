@@ -229,6 +229,10 @@ section {
     color: var(--secondary-color);
 }
 
+.footer-bottom p {
+    font-size: 50%;
+}
+
 /* Вертикальное расположение ссылок в футере */
 .footer-links-vertical {
     display: flex;
