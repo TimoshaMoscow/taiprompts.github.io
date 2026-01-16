@@ -238,6 +238,7 @@ section {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    font-size: 80%;
 }
 
 .footer-links-vertical .nav-link {
