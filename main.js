@@ -1519,6 +1519,82 @@ downloadButton.addEventListener("click", () => {
   URL.revokeObjectURL(url);
 });
 
+  console.log("✅ Генератор инициализирован");
+
+  // Новая функция для анимации прогресса
+  async function animateGenerationProgress(progressFill, progressText, overlay) {
+    return new Promise(resolve => {
+      let progress = 0;
+      const stages = [
+        { percent: 10, text: "10% - Анализ параметров" },
+        { percent: 25, text: "25% - Инициализация ИИ" },
+        { percent: 40, text: "40% - Обработка запроса" },
+        { percent: 55, text: "55% - Генерация шаблона" },
+        { percent: 70, text: "70% - Оптимизация промпта" },
+        { percent: 85, text: "85% - Добавление деталей" },
+        { percent: 95, text: "95% - Финальная проверка" },
+        { percent: 100, text: "100% - Готово!" }
+      ];
+      
+      const stagesElements = document.querySelectorAll('.stage');
+      
+      function updateProgress() {
+        if (progress < 100) {
+          const nextStage = stages.find(s => s.percent > progress) || stages[stages.length - 1];
+          const increment = Math.random() * 15 + 5; // 5-20% за шаг
+          
+          progress = Math.min(progress + increment, nextStage.percent);
+          
+          progressFill.style.width = `${progress}%`;
+          progressText.textContent = `${Math.round(progress)}%`;
+          
+          // Обновляем заголовок прогресса
+          const stage = stages.find(s => s.percent >= progress) || stages[stages.length - 1];
+          progressText.textContent = stage.text;
+          
+          // Активируем стадии
+          const activeIndex = Math.floor((progress / 100) * stagesElements.length);
+          stagesElements.forEach((el, index) => {
+            if (index <= activeIndex) {
+              el.classList.add('active');
+              if (index < activeIndex) {
+                el.classList.add('completed');
+              }
+            } else {
+              el.classList.remove('active');
+            }
+          });
+          
+          // Случайная задержка для реалистичности
+          const delay = Math.random() * 300 + 100; // 100-400ms
+          setTimeout(updateProgress, delay);
+        } else {
+          // Все стадии завершены
+          stagesElements.forEach(el => {
+            el.classList.add('completed');
+            el.classList.add('active');
+          });
+          
+          // Небольшая задержка перед закрытием
+          setTimeout(() => {
+            if (overlay) {
+              overlay.classList.add('closing');
+              setTimeout(() => {
+                overlay.classList.remove('active', 'closing');
+                resolve();
+              }, 300);
+            } else {
+              resolve();
+            }
+          }, 800);
+        }
+      }
+      
+      updateProgress();
+    });
+  }
+}
+
 // ===== ПОИСК ПО КАРТОЧКАМ =====
 function initSearch() {
     const searchInput = document.getElementById('searchInput');
@@ -1663,82 +1739,6 @@ function initSearch() {
             searchInput.select();
         }
     });
-}
-
-  console.log("✅ Генератор инициализирован");
-
-  // Новая функция для анимации прогресса
-  async function animateGenerationProgress(progressFill, progressText, overlay) {
-    return new Promise(resolve => {
-      let progress = 0;
-      const stages = [
-        { percent: 10, text: "10% - Анализ параметров" },
-        { percent: 25, text: "25% - Инициализация ИИ" },
-        { percent: 40, text: "40% - Обработка запроса" },
-        { percent: 55, text: "55% - Генерация шаблона" },
-        { percent: 70, text: "70% - Оптимизация промпта" },
-        { percent: 85, text: "85% - Добавление деталей" },
-        { percent: 95, text: "95% - Финальная проверка" },
-        { percent: 100, text: "100% - Готово!" }
-      ];
-      
-      const stagesElements = document.querySelectorAll('.stage');
-      
-      function updateProgress() {
-        if (progress < 100) {
-          const nextStage = stages.find(s => s.percent > progress) || stages[stages.length - 1];
-          const increment = Math.random() * 15 + 5; // 5-20% за шаг
-          
-          progress = Math.min(progress + increment, nextStage.percent);
-          
-          progressFill.style.width = `${progress}%`;
-          progressText.textContent = `${Math.round(progress)}%`;
-          
-          // Обновляем заголовок прогресса
-          const stage = stages.find(s => s.percent >= progress) || stages[stages.length - 1];
-          progressText.textContent = stage.text;
-          
-          // Активируем стадии
-          const activeIndex = Math.floor((progress / 100) * stagesElements.length);
-          stagesElements.forEach((el, index) => {
-            if (index <= activeIndex) {
-              el.classList.add('active');
-              if (index < activeIndex) {
-                el.classList.add('completed');
-              }
-            } else {
-              el.classList.remove('active');
-            }
-          });
-          
-          // Случайная задержка для реалистичности
-          const delay = Math.random() * 300 + 100; // 100-400ms
-          setTimeout(updateProgress, delay);
-        } else {
-          // Все стадии завершены
-          stagesElements.forEach(el => {
-            el.classList.add('completed');
-            el.classList.add('active');
-          });
-          
-          // Небольшая задержка перед закрытием
-          setTimeout(() => {
-            if (overlay) {
-              overlay.classList.add('closing');
-              setTimeout(() => {
-                overlay.classList.remove('active', 'closing');
-                resolve();
-              }, 300);
-            } else {
-              resolve();
-            }
-          }, 800);
-        }
-      }
-      
-      updateProgress();
-    });
-  }
 }
 
 function runDebug() {
