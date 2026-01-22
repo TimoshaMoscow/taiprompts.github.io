@@ -1020,28 +1020,6 @@ function censorText(text) {
   let isPromptGenerated = false;
   let isFormDirty = false;
   
-  // Создаем элемент предупреждения
-  const modalWarning = document.createElement('div');
-  modalWarning.className = 'modal-unsaved-warning';
-  modalWarning.id = 'modalWarning';
-  modalWarning.textContent = 'Несохранённые изменения';
-  
-  // Добавляем предупреждение в заголовок модалки
-  const modalHeader = modal.querySelector('.modal-header');
-  modalHeader.appendChild(modalWarning);
-  modalHeader.classList.add('with-warning');
-  
-  // Функция для обновления уведомления
-  function updateWarningState() {
-    if (isPromptGenerated || isFormDirty) {
-      modalWarning.classList.add('show');
-      modalHeader.classList.add('with-warning');
-    } else {
-      modalWarning.classList.remove('show');
-      modalHeader.classList.remove('with-warning');
-    }
-  }
-  
   // Функция проверки перед закрытием модалки
   function checkBeforeModalClose() {
     // Если промпт уже сгенерирован или форма заполнена
@@ -1058,7 +1036,6 @@ function censorText(text) {
       // Сброс флагов после закрытия
       isPromptGenerated = false;
       isFormDirty = false;
-      updateWarningState();
     }
   }
 
@@ -1104,7 +1081,6 @@ typeCards.forEach((card) => {
         // Сброс флагов при выборе новой категории
         isPromptGenerated = false;
         isFormDirty = false;
-        updateWarningState();
         
         selectedType = this.getAttribute("data-type") || "recipes";
         incCategory(selectedType);
@@ -1165,14 +1141,12 @@ typeCards.forEach((card) => {
   customInput.addEventListener('input', () => {
     if (customInput.value.trim()) {
       isFormDirty = true;
-      updateWarningState();
     }
   });
   
   // Отслеживаем изменения в селектах
   toneSelect.addEventListener('change', () => {
     isFormDirty = true;
-    updateWarningState();
   });
 
 function buildPromptText(type, idea, tone = "professional", overrideParams = {}) {
@@ -1551,8 +1525,7 @@ promptForm.addEventListener("submit", async (e) => {
 
     // Устанавливаем флаг, что промпт сгенерирован
     isPromptGenerated = true;
-    updateWarningState();
-
+  
     // Скрыть анимацию
     if (overlay) {
         overlay.classList.remove('active');
