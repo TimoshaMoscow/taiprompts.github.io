@@ -1016,6 +1016,52 @@ function censorText(text) {
   `;
   document.body.appendChild(modal);
 
+  // ===== ЗАЩИТА МОДАЛКИ ОТ ЗАКРЫТИЯ =====
+  let isPromptGenerated = false;
+  let isFormDirty = false;
+  
+  // Создаем элемент предупреждения
+  const modalWarning = document.createElement('div');
+  modalWarning.className = 'modal-unsaved-warning';
+  modalWarning.id = 'modalWarning';
+  modalWarning.textContent = 'Несохранённые изменения';
+  
+  // Добавляем предупреждение в заголовок модалки
+  const modalHeader = modal.querySelector('.modal-header');
+  modalHeader.appendChild(modalWarning);
+  modalHeader.classList.add('with-warning');
+  
+  // Функция для обновления уведомления
+  function updateWarningState() {
+    if (isPromptGenerated || isFormDirty) {
+      modalWarning.classList.add('show');
+      modalHeader.classList.add('with-warning');
+    } else {
+      modalWarning.classList.remove('show');
+      modalHeader.classList.remove('with-warning');
+    }
+  }
+  
+  // Функция проверки перед закрытием модалки
+  function checkBeforeModalClose() {
+    // Если промпт уже сгенерирован или форма заполнена
+    if (isPromptGenerated || isFormDirty) {
+      return confirm('У вас есть несохранённый промпт. Вы уверены, что хотите закрыть?');
+    }
+    return true;
+  }
+  
+  // Переопределяем закрытие модалки
+  function closeModalWithCheck() {
+    if (checkBeforeModalClose()) {
+      closeModal();
+      // Сброс флагов после закрытия
+      isPromptGenerated = false;
+      isFormDirty = false;
+      updateWarningState();
+    }
+  }
+
   function renderTechnicalParams(type) {
     const container = modal.querySelector("#technical-params");
     const params = promptTemplates[type]?.params || {};
@@ -1055,6 +1101,11 @@ function censorText(text) {
 
 typeCards.forEach((card) => {
     card.addEventListener("click", function () {
+        // Сброс флагов при выборе новой категории
+        isPromptGenerated = false;
+        isFormDirty = false;
+        updateWarningState();
+        
         selectedType = this.getAttribute("data-type") || "recipes";
         incCategory(selectedType);
         renderExamples(selectedType);
@@ -1090,14 +1141,17 @@ typeCards.forEach((card) => {
     document.body.style.overflow = "auto";
   }
 
-  modal.querySelector(".modal-close").addEventListener("click", closeModal);
+  modal.querySelector(".modal-close").addEventListener("click", closeModalWithCheck);
 
   modal.addEventListener("click", (e) => {
-    if (e.target === modal) closeModal();
+    if (e.target === modal) closeModalWithCheck();
   });
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal.classList.contains("active")) closeModal();
+    if (e.key === "Escape" && modal.classList.contains("active")) {
+      e.preventDefault(); // Предотвращаем мгновенное закрытие
+      closeModalWithCheck();
+    }
   });
 
   // ===== Генерация =====
@@ -1106,6 +1160,20 @@ typeCards.forEach((card) => {
   const toneSelect = modal.querySelector("#tone-select");
   const finalPrompt = modal.querySelector("#final-prompt");
   const copyButton = modal.querySelector("#copy-prompt");
+
+  // Отслеживаем изменения в текстовом поле
+  customInput.addEventListener('input', () => {
+    if (customInput.value.trim()) {
+      isFormDirty = true;
+      updateWarningState();
+    }
+  });
+  
+  // Отслеживаем изменения в селектах
+  toneSelect.addEventListener('change', () => {
+    isFormDirty = true;
+    updateWarningState();
+  });
 
 function buildPromptText(type, idea, tone = "professional", overrideParams = {}) {
   if (!promptTemplates[type]) return "";
@@ -1424,6 +1492,9 @@ function renderExamples(type) {
 promptForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    // Отслеживаем изменения
+    isFormDirty = true;
+    
     let customText = customInput.value?.trim();
     const tone = toneSelect.value;
 
@@ -1478,6 +1549,10 @@ promptForm.addEventListener("submit", async (e) => {
     finalPrompt.textContent = finalPromptText;
     finalPrompt.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
+    // Устанавливаем флаг, что промпт сгенерирован
+    isPromptGenerated = true;
+    updateWarningState();
+
     // Скрыть анимацию
     if (overlay) {
         overlay.classList.remove('active');
@@ -1520,6 +1595,15 @@ downloadButton.addEventListener("click", () => {
 });
 
   console.log("✅ Генератор инициализирован");
+
+  // Защита при перезагрузке страницы, если модалка открыта
+  window.addEventListener('beforeunload', function(event) {
+    if (modal.classList.contains('active') && (isPromptGenerated || isFormDirty)) {
+      event.preventDefault();
+      event.returnValue = '';
+      return 'У вас есть несохранённый промпт. Вы уверены, что хотите покинуть страницу?';
+    }
+  });
 
   // Новая функция для анимации прогресса
   async function animateGenerationProgress(progressFill, progressText, overlay) {
