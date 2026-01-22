@@ -1339,3 +1339,41 @@
         font-size: 0.85rem;
     }
 }
+
+/* ===== УВЕДОМЛЕНИЕ О НЕСОХРАНЁННЫХ ИЗМЕНЕНИЯХ ===== */
+.modal-unsaved-warning {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 193, 7, 0.15);
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    color: #ffd54f;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    display: none;
+    align-items: center;
+    gap: 6px;
+    z-index: 10;
+}
+
+.modal-unsaved-warning.show {
+    display: flex;
+    animation: pulseWarning 2s infinite;
+}
+
+@keyframes pulseWarning {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+}
+
+.modal-unsaved-warning::before {
+    content: "⚠️";
+    font-size: 0.9rem;
+}
+
+/* Когда модалка активна, показываем в заголовке */
+.modal-header.with-warning {
+    padding-right: 140px; /* Место для уведомления */
+    position: relative;
+}
