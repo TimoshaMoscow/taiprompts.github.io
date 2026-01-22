@@ -39,7 +39,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h2 class="section-title">Тарифы</h2>
 
       <div class="pricing-warning">
-        ⚠️ Покупка подписок временно недоступна. Покупка подписок будет доступна скоро. Следите за новостями!
+        ⚠️ Покупка подписок временно недоступна. Будет доступно скоро. Следите за новостями!
       </div>
 
       <!-- Переключатель периодов -->
@@ -163,33 +163,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </button>
         </div>
 
-        <!-- STUDIO -->
-        <div class="card pricing-card">
-          <h3 class="pricing-title">STUDIO</h3>
-          
-          <!-- Месячная цена -->
-          <div class="pricing-price monthly">
-            1299 ₽ <span>/ мес</span>
-          </div>
-          
-          <!-- Годовая цена -->
-          <div class="pricing-price yearly" style="display: none;">
-            1082 ₽ <span>/ мес</span>
-            <div class="per-month">12990 ₽ / год</div>
-            <div class="savings">Экономия 15%</div>
-          </div>
-
-          <ul class="pricing-features">
-            <li>Владелец — FULL</li>
-            <li>До 10 участников — PRO</li>
-            <li>Командные проекты/коллекции</li>
-          </ul>
-
-          <button class="btn pricing-btn disabled" type="button" aria-disabled="true">
-            Покупка недоступна
-          </button>
-        </div>
-
       </div>
 
       <p class="pricing-note">
@@ -212,7 +185,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <th><span class="tier-chip">BASIC</span></th>
                 <th class="accent-col"><span class="tier-chip">PRO</span></th>
                 <th><span class="tier-chip">FULL</span></th>
-                <th><span class="tier-chip">STUDIO</span></th>
               </tr>
             </thead>
 
@@ -343,24 +315,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <td class="yes">✓</td>
               </tr>
 
-              <tr>
-                <td>👥 Команда</td>
-                <td class="no">—</td>
-                <td class="no">—</td>
-                <td class="no accent-col">—</td>
-                <td class="no">—</td>
-                <td class="yes">✓</td>
-              </tr>
-
-              <tr>
-                <td>📁 Совместные проекты</td>
-                <td class="no">—</td>
-                <td class="no">—</td>
-                <td class="no accent-col">—</td>
-                <td class="no">—</td>
-                <td class="yes">✓</td>
-              </tr>
-
             </tbody>
           </table>
         </div>
@@ -398,7 +352,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           
           // Обновляем заметку
           if (period === 'yearly') {
-            billingNote.textContent = 'Оплачивайте раз в год, экономите 11%';
+            billingNote.textContent = 'Оплачивайте раз в год, экономите до 15%';
           } else {
             billingNote.textContent = 'Оплачивайте ежемесячно, отмена в любой момент';
           }
