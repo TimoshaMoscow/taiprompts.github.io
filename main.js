@@ -1519,6 +1519,152 @@ downloadButton.addEventListener("click", () => {
   URL.revokeObjectURL(url);
 });
 
+// ===== ПОИСК ПО КАРТОЧКАМ =====
+function initSearch() {
+    const searchInput = document.getElementById('searchInput');
+    const searchStats = document.getElementById('searchStats');
+    const foundCount = document.getElementById('foundCount');
+    const totalCount = document.getElementById('totalCount');
+    const typeCards = document.querySelectorAll('.type-card');
+    
+    if (!searchInput || typeCards.length === 0) return;
+    
+    // Установим общее количество
+    totalCount.textContent = typeCards.length;
+    
+    function highlightText(text, searchTerm) {
+        if (!searchTerm) return text;
+        
+        const regex = new RegExp(`(${searchTerm})`, 'gi');
+        return text.replace(regex, '<span class="highlight">$1</span>');
+    }
+    
+    function searchCards(searchTerm) {
+        searchTerm = searchTerm.toLowerCase().trim();
+        let visibleCount = 0;
+        
+        typeCards.forEach(card => {
+            // Собираем весь текст карточки для поиска
+            const title = card.querySelector('h3')?.textContent || '';
+            const description = card.querySelector('p')?.textContent || '';
+            const vibeDescription = card.querySelector('.vibe-description')?.textContent || '';
+            const tags = Array.from(card.querySelectorAll('.vibe-tag'))
+                .map(tag => tag.textContent)
+                .join(' ');
+            
+            const allText = `${title} ${description} ${vibeDescription} ${tags}`.toLowerCase();
+            
+            // Проверяем совпадение
+            const isVisible = searchTerm === '' || allText.includes(searchTerm);
+            
+            // Показываем/скрываем карточку
+            card.style.display = isVisible ? '' : 'none';
+            card.style.opacity = isVisible ? '1' : '0';
+            card.style.transform = isVisible ? '' : 'scale(0.95)';
+            card.style.transition = 'all 0.3s ease';
+            
+            if (isVisible) {
+                visibleCount++;
+                
+                // Подсветка текста (только если есть поисковый запрос)
+                if (searchTerm) {
+                    const titleEl = card.querySelector('h3');
+                    const descEl = card.querySelector('p');
+                    const vibeEl = card.querySelector('.vibe-description');
+                    
+                    if (titleEl) {
+                        const originalTitle = titleEl.getAttribute('data-original') || titleEl.textContent;
+                        titleEl.setAttribute('data-original', originalTitle);
+                        titleEl.innerHTML = highlightText(originalTitle, searchTerm);
+                    }
+                    
+                    if (descEl) {
+                        const originalDesc = descEl.getAttribute('data-original') || descEl.textContent;
+                        descEl.setAttribute('data-original', originalDesc);
+                        descEl.innerHTML = highlightText(originalDesc, searchTerm);
+                    }
+                    
+                    if (vibeEl) {
+                        const originalVibe = vibeEl.getAttribute('data-original') || vibeEl.textContent;
+                        vibeEl.setAttribute('data-original', originalVibe);
+                        vibeEl.innerHTML = highlightText(originalVibe, searchTerm);
+                    }
+                }
+            } else {
+                // Восстанавливаем оригинальный текст при скрытии
+                const titleEl = card.querySelector('h3');
+                const descEl = card.querySelector('p');
+                const vibeEl = card.querySelector('.vibe-description');
+                
+                if (titleEl?.hasAttribute('data-original')) {
+                    titleEl.innerHTML = titleEl.getAttribute('data-original');
+                }
+                if (descEl?.hasAttribute('data-original')) {
+                    descEl.innerHTML = descEl.getAttribute('data-original');
+                }
+                if (vibeEl?.hasAttribute('data-original')) {
+                    vibeEl.innerHTML = vibeEl.getAttribute('data-original');
+                }
+            }
+        });
+        
+        // Обновляем статистику
+        foundCount.textContent = visibleCount;
+        searchStats.classList.toggle('visible', searchTerm !== '');
+        
+        // Показываем сообщение "ничего не найдено"
+        let noResultsEl = document.querySelector('.no-results');
+        if (visibleCount === 0 && searchTerm !== '') {
+            if (!noResultsEl) {
+                const grid = document.querySelector('.prompt-types-grid');
+                noResultsEl = document.createElement('div');
+                noResultsEl.className = 'no-results';
+                noResultsEl.innerHTML = `
+                    <i class="fas fa-search"></i>
+                    <h3>Ничего не найдено</h3>
+                    <p>Попробуйте другой поисковый запрос или проверьте опечатки</p>
+                    <button id="clearSearch" class="btn btn-secondary" style="margin-top: 15px;">
+                        Очистить поиск
+                    </button>
+                `;
+                grid.appendChild(noResultsEl);
+                
+                // Обработчик кнопки очистки
+                noResultsEl.querySelector('#clearSearch').addEventListener('click', () => {
+                    searchInput.value = '';
+                    searchInput.focus();
+                    searchCards('');
+                });
+            }
+            noResultsEl.style.display = 'block';
+        } else if (noResultsEl) {
+            noResultsEl.style.display = 'none';
+        }
+    }
+    
+    // Обработчик ввода
+    searchInput.addEventListener('input', (e) => {
+        searchCards(e.target.value);
+    });
+    
+    // Очистка по кнопке ESC
+    searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            searchInput.value = '';
+            searchCards('');
+        }
+    });
+    
+    // Фокус на поиск при нажатии Ctrl+F
+    document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+            e.preventDefault();
+            searchInput.focus();
+            searchInput.select();
+        }
+    });
+}
+
   console.log("✅ Генератор инициализирован");
 
   // Новая функция для анимации прогресса
@@ -1629,6 +1775,7 @@ if (yearEl) {
   initGenerator();
   initLightbox();
   initAnimations();
+  initSearch();
   runDebug();
 
   // === ЗАЩИТА ОТ ЗАКРЫТИЯ (только на generator.html) ===
