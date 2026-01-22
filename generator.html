@@ -60,6 +60,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             </div>
                         </div>
                     </div>
+
+<!-- Поиск по карточкам -->
+<div class="search-container">
+    <div class="search-wrapper">
+        <input 
+            type="text" 
+            class="search-input" 
+            id="searchInput"
+            placeholder="Поиск по категориям, тегам или описаниям..."
+            aria-label="Поиск по карточкам промптов"
+        >
+        <div class="search-icon">
+            <i class="fas fa-search"></i>
+        </div>
+    </div>
+    <div class="search-stats" id="searchStats">
+        Найдено <span id="foundCount">0</span> из <span id="totalCount">0</span> карточек
+    </div>
+</div>
                     
                     <!-- Сетка карточек -->
                     <div class="prompt-types-grid">
