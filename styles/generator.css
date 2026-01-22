@@ -1209,3 +1209,133 @@
     box-shadow: 0 0 0 2px rgba(94, 114, 228, 0.2) !important;
     transition: all 0.3s;
 }
+
+/* ===== ПОИСК ПО КАРТОЧКАМ ===== */
+.search-container {
+    margin: 20px 0 40px;
+    position: relative;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.search-wrapper {
+    position: relative;
+}
+
+.search-input {
+    width: 100%;
+    padding: 16px 20px 16px 50px;
+    border-radius: 50px;
+    border: 2px solid rgba(94, 114, 228, 0.3);
+    background: rgba(33, 37, 41, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--text-color);
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.search-input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.2);
+    background: rgba(33, 37, 41, 0.95);
+}
+
+.search-input::placeholder {
+    color: var(--secondary-color);
+    opacity: 0.7;
+}
+
+.search-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+    pointer-events: none;
+    transition: color 0.3s;
+}
+
+.search-input:focus + .search-icon {
+    color: var(--accent-color);
+}
+
+.search-stats {
+    text-align: center;
+    margin-top: 10px;
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.search-stats.visible {
+    opacity: 1;
+}
+
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--secondary-color);
+    font-size: 1.1rem;
+    background: rgba(33, 37, 41, 0.3);
+    border-radius: 20px;
+    border: 2px dashed var(--card-border);
+}
+
+.no-results i {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    display: block;
+    color: var(--secondary-color);
+    opacity: 0.5;
+}
+
+.highlight {
+    background: linear-gradient(120deg, rgba(94, 114, 228, 0.3), rgba(94, 114, 228, 0.1));
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #c7d2fe;
+}
+
+/* Адаптивность для поиска */
+@media (max-width: 768px) {
+    .search-container {
+        margin: 15px 0 30px;
+    }
+    
+    .search-input {
+        padding: 14px 16px 14px 45px;
+        font-size: 0.95rem;
+    }
+    
+    .search-icon {
+        left: 16px;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .search-container {
+        margin: 10px 0 25px;
+    }
+    
+    .search-input {
+        padding: 12px 14px 12px 42px;
+        font-size: 0.9rem;
+    }
+    
+    .search-icon {
+        left: 14px;
+        font-size: 1rem;
+    }
+    
+    .search-stats {
+        font-size: 0.85rem;
+    }
+}
