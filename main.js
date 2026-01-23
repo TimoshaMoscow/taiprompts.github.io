@@ -305,7 +305,7 @@ function censorText(text) {
 
   const promptTemplates = {
     recipes: {
-      name: "🍳 Рецепты",
+      name: "Рецепты",
       template:
         "Создай подробный рецепт {cuisine} кухни, блюда с описанием: '{idea}'. Ограничения: {dietary}, Сложность: {complexity}. Включи ингредиенты, пошаговое приготовление, время готовки и полезную информацию, например КБЖУ.",
       params: {
@@ -331,7 +331,7 @@ function censorText(text) {
     },
 
     minecraft: {
-      name: "⛏️ Моды Minecraft",
+      name: "Моды Minecraft",
       template:
         "Разработай {type} для Minecraft {version} {loader} для {compatibility} с описанием: '{idea}'. Особенности: {features} и {additionally}. Детально опиши функционал и механики.",
       params: {
@@ -395,7 +395,7 @@ function censorText(text) {
     },
 
     bots: {
-      name: "📱 Боты и автоматизация",
+      name: "Боты и автоматизация",
       template:
         "Создай бота на {language} для платформы {platform}, с функционалом '{idea}'. Включи: описание функций, {functionality}, {additionally}, обработку сообщений и установочные инструкции.",
       params: {
@@ -442,7 +442,7 @@ function censorText(text) {
     },
 
     websites: {
-      name: "🌐 Веб-сайты",
+      name: "Веб-сайты",
       template:
         "Разработай веб-сайт типа {type} на {stack} по описанию '{idea}'. Включи: {additionally}, {features}. Основная палитра: {color}. Стиль сайта: {style}",
       params: {
@@ -490,7 +490,7 @@ function censorText(text) {
     },
 
     images: {
-      name: "🎨 Генерация изображений",
+      name: "Генерация изображений",
       template:
         "Сгенерируй {style} изображение по описанию: '{idea}'. {aspect_ratio} {quality}. С детальным описанием: композиция, цвета, освещение, настроение и детали.",
       params: {
@@ -516,7 +516,7 @@ function censorText(text) {
     },
 
     stickers: {
-      name: "🖼️ Стикеры и аватары",
+      name: "Стикеры и аватары",
       template:
         "Создай {style} стикерпак для {platform} с описанием: '{idea}'. Нужные эмоции: {emotions}. Включи разнообразные эмоции, действия и ситуации. Сделай всё на прозрачном фоне, чтобы можно было удобно вставить в любой мессенджер.",
       params: {
@@ -542,7 +542,7 @@ function censorText(text) {
     },
 
     "3d": {
-      name: "🔷 3D модели",
+      name: "3D модели",
       template:
         "Создай {style} 3D модель {type} на тему '{idea}'. ПО: {software} Полигональность: {polygons}. Детально опиши: геометрию, материалы, текстуры, освещение и рендеринг.",
       params: {
@@ -574,7 +574,7 @@ function censorText(text) {
     },
 
     toys: {
-      name: "🧸 Игрушки",
+      name: "Игрушки",
       template:
         "Разработай концепцию {type} игрушки для {age_group} с описанием: '{idea}'. Материалы: {materials}. Включи описание: внешний вид, функционал, материалы и образовательную ценность.",
       params: {
@@ -600,7 +600,7 @@ function censorText(text) {
     },
 
     characterai: {
-      name: "🤖 Character AI",
+      name: "Character AI",
       template:
         "Создай персонажа для Character AI с описанием '{idea}'. Характеристики: {personality} {appearance}, Тип имени: {name}, Тон общения: {tone2}.",
       params: {
@@ -632,7 +632,7 @@ function censorText(text) {
     },
 
     suno: {
-      name: "🎵 Suno AI",
+      name: "Suno AI",
       template:
         "Создай текст песни для Suno AI по описанию: '{idea}'. Жанр: {genre}, Стиль: {style}, Структура: {structure}, Особенности: {tempo} темп, {instruments}. Оформление типа: [Verse], [Chorus], [Verse 2] и тд.",
       params: {
@@ -670,7 +670,7 @@ function censorText(text) {
     },
 
     setup: {
-      name: "💻 Приложения",
+      name: "Приложения",
       template:
         "Разработай {type} на {lang} для {oc} с функционалом {hang}, включи {additionally}, и инструкцией по сборке для {setupper}. Подробное описание идеи: '{idea}'",
       params: {
@@ -814,7 +814,7 @@ function censorText(text) {
     },
 
     school: {
-      name: "📚 Учёба и школа",
+      name: "Учёба и школа",
       template: "Помоги с заданием по предмету {subj}, Тип задания: {task}, Учусь в {class}. Подробности по заданию: '{idea}'.",
       params: {
         subj: {
@@ -839,7 +839,7 @@ function censorText(text) {
     },
 
     youtube: {
-      name: "📺 YouTube",
+      name: "YouTube",
       template:
         "Создай контент для YouTube канала на тему '{idea}'. Формат контента: {content_type}, Целевая аудитория: {audience}, Частота выпуска: {frequency}, Превью: {thumbnail_style}, Монетизация контента: {monetization}",
       params: {
@@ -877,7 +877,7 @@ function censorText(text) {
     },
     
     plugin: {
-      name: "↕️ Плагины и расширения",
+      name: "Плагины и расширения",
       template:
         "Разработай {type} на {lang} для {browser} с функционалом {func}, включи {additionally}, и инструкцию по сборке. Подробное описание идеи: '{idea}'",
       params: {
