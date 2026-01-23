@@ -361,7 +361,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         .map(([k, v]) => [k, Number(v || 0)])
         .filter(([, v]) => v > 0)
         .sort((a, b) => b[1] - a[1])
-        .slice(0, 5);
+        .slice(0, 3);
 
       if (!entries.length) return;
 
@@ -381,7 +381,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         suno: "🎵 Suno",
         setup: "💻 Приложения",
         school: "📚 Учёба",
-        youtube: "📺 YouTube"
+        youtube: "📺 YouTube",
+        plugin: "↕️ Плагины"
       };
 
       list.innerHTML = entries.map(([key, val], idx) => `
