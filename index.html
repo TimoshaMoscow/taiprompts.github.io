@@ -175,20 +175,86 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 </section>
 
-        <!-- Призыв к действию -->
-        <section class="cta">
-            <div class="container">
-                <div class="card" style="text-align: center; max-width: 800px; margin: 0 auto;">
-                    <h2 style="margin-bottom: 1rem;">Готовы начать?</h2>
-                    <p style="margin-bottom: 2rem; color: var(--secondary-color); font-size: 1.1rem;">
-                        Попробуйте наш генератор промптов прямо сейчас.
-                    </p>
-                    <a href="generator.html" class="btn btn-primary" style="font-size: 1.1rem; padding: 15px 40px;">
-                        Начать генерацию
-                    </a>
+<!-- Сравнение промптов -->
+<section class="comparison">
+    <div class="container">
+        <h2 class="section-title">Почему TAIPrompts лучше?</h2>
+        <p class="section-subtitle" style="text-align: center; color: var(--secondary-color); margin-bottom: 50px;">
+            Сравните обычный промпт и промпт, созданный с помощью нашего генератора
+        </p>
+        
+        <div class="comparison-grid">
+            <!-- Без TAIPrompts -->
+            <div class="comparison-card bad">
+                <div class="comparison-header">
+                    <div class="comparison-label">
+                        <span class="badge bad-badge">❌ Без TAIPrompts</span>
+                    </div>
+                    <h3 class="comparison-title">Плохой пример</h3>
+                    <p class="comparison-desc">Неструктурированный, неполный, требует ручной доработки</p>
+                </div>
+                
+                <div class="comparison-content">
+                    <pre class="prompt-example bad-example">напиши песню по описанию, скажи название жанр. текст оформи [Verse] [Chorus] и тд
+описание:
+песня про Персонажа (Персонаж) из мультсериала Сказочный Патруль X сезон.
+
+описание персонажа с вики: [ВСТАВЬ ССЫЛКУ ИЛИ ТЕКСТ ОПИСАНИЯ ЗДЕСЬ]</pre>
+                    
+                    <div class="comparison-problems">
+                        <h4>Проблемы этого промпта:</h4>
+                        <ul>
+                            <li>❌ <strong>Не указан жанр</strong> — AI не знает, какую музыку создавать</li>
+                            <li>❌ <strong>Нет стиля и настроения</strong> — будет случайный результат</li>
+                            <li>❌ <strong>Не указаны инструменты</strong> — AI выберет наугад</li>
+                            <li>❌ <strong>Неполная структура</strong> — может создать слишком короткую песню</li>
+                            <li>❌ <strong>Слишком общее описание</strong> — результат будет шаблонным</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </section>
+            
+            <!-- С TAIPrompts -->
+            <div class="comparison-card good">
+                <div class="comparison-header">
+                    <div class="comparison-label">
+                        <span class="badge good-badge">✅ С TAIPrompts</span>
+                    </div>
+                    <h3 class="comparison-title">Отличный пример</h3>
+                    <p class="comparison-desc">Структурированный, детальный, готов к использованию</p>
+                </div>
+                
+                <div class="comparison-content">
+                    <pre class="prompt-example good-example">Прояви креативность и оригинальность. Создай текст песни для Suno AI по описанию: 'Тоска по дому и семье'. Жанр: Поп, Стиль: Грустный, Структура: Куплет-Припев, Особенности: Умеренный темп, Гитара, Скрипка, Духовые, Вокал. Оформление типа: [Verse], [Chorus], [Verse 2] и тд.
+
+Промпт создан с помощью TAIPrompts</pre>
+                    
+                    <div class="comparison-benefits">
+                        <h4>Преимущества этого промпта:</h4>
+                        <ul>
+                            <li>✅ <strong>Конкретный жанр</strong> — Pop, точно понятно направление</li>
+                            <li>✅ <strong>Чёткое настроение</strong> — грустный стиль, предсказуемый результат</li>
+                            <li>✅ <strong>Указаны инструменты</strong> — AI знает, какие звуки использовать</li>
+                            <li>✅ <strong>Детальная структура</strong> — будет полноценная композиция</li>
+                            <li>✅ <strong>Креативное начало</strong> — AI проявит оригинальность</li>
+                            <li>✅ <strong>Готов к использованию</strong> — можно сразу отправить в нейросеть</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="comparison-cta" style="text-align: center; margin-top: 50px;">
+            <p style="font-size: 1.2rem; margin-bottom: 25px; color: var(--text-color);">
+                Хотите создавать такие же качественные промпты за секунды?
+            </p>
+            <a href="generator.html" class="btn btn-primary" style="font-size: 1.1rem; padding: 15px 40px;">
+                <i class="fas fa-bolt" style="margin-right: 10px;"></i>
+                Попробовать генератор
+            </a>
+        </div>
+    </div>
+</section>
 
 <!-- Секция отзывов -->
 <section class="testimonials">
@@ -253,15 +319,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </div>
             </div>
         </div>
-                <div class="testimonials-cta">
-                    <p>Используете TAIPrompts? Поделитесь впечатлениями!</p>
-                    <a href="https://t.me/TAIPrompts_bot"
-                       class="btn btn-primary">
-                       Написать отзыв
-                    </a>
-                </div>
+        <div class="testimonials-cta">
+            <p>Используете TAIPrompts? Поделитесь впечатлениями!</p>
+            <a href="https://t.me/TAIPrompts_bot"
+                class="btn btn-primary">
+                Написать отзыв
+            </a>
+        </div>
     </div>
 </section>
+
         
     </main>
 
@@ -411,4 +478,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </body>
 </html>
+
 
