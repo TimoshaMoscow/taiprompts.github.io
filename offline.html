@@ -1,0 +1,106 @@
+<!-- offline.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAIPrompts - Оффлайн</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0a0a23 0%, #12122a 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .offline-container {
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            color: #5e72e4;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        
+        p {
+            color: #a0aec0;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #5e72e4;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #4a5fc1;
+            transform: translateY(-2px);
+        }
+        
+        .tip {
+            margin-top: 25px;
+            padding: 15px;
+            background: rgba(94, 114, 228, 0.1);
+            border-radius: 10px;
+            font-size: 14px;
+            color: #90cdf4;
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="icon">📡</div>
+        <h1>Нет подключения к интернету</h1>
+        <p>TAIPrompts требует подключение для генерации промптов. Проверьте ваше интернет-соединение и попробуйте снова.</p>
+        
+        <button class="btn" onclick="window.location.reload()">
+            Обновить страницу
+        </button>
+        
+        <div class="tip">
+            💡 Некоторые функции могут работать в оффлайн-режиме после первой загрузки
+        </div>
+    </div>
+    
+    <script>
+        // Проверяем соединение при клике
+        document.querySelector('.btn').addEventListener('click', () => {
+            if (navigator.onLine) {
+                window.location.href = '/';
+            }
+        });
+        
+        // Автоматическое обновление при появлении сети
+        window.addEventListener('online', () => {
+            window.location.href = '/';
+        });
+    </script>
+</body>
+</html>
