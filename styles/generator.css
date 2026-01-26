@@ -1377,3 +1377,124 @@
     padding-right: 140px; /* Место для уведомления */
     position: relative;
 }
+
+/* ===== СЕКЦИЯ ШАРИНГА ===== */
+.share-section {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.share-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.share-buttons .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    flex: 1;
+    min-width: 120px;
+}
+
+.btn-telegram {
+    background: rgba(0, 136, 204, 0.15);
+    color: #0088cc;
+    border: 1px solid rgba(0, 136, 204, 0.3);
+}
+
+.btn-telegram:hover {
+    background: #0088cc;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 136, 204, 0.2);
+}
+
+.btn-whatsapp {
+    background: rgba(37, 211, 102, 0.15);
+    color: #25d366;
+    border: 1px solid rgba(37, 211, 102, 0.3);
+}
+
+.btn-whatsapp:hover {
+    background: #25d366;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.2);
+}
+
+.url-preview {
+    position: relative;
+    margin-top: 10px;
+}
+
+.url-preview input {
+    width: 100%;
+    padding: 12px 15px;
+    padding-right: 45px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(94, 114, 228, 0.3);
+    border-radius: 10px;
+    color: var(--text-color);
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.url-preview::after {
+    content: '📋';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.5;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+.url-preview:hover::after {
+    opacity: 1;
+}
+
+/* Адаптивность для шаринга */
+@media (max-width: 768px) {
+    .share-buttons {
+        flex-direction: column;
+    }
+    
+    .share-buttons .btn {
+        width: 100%;
+    }
+    
+    .url-preview input {
+        font-size: 0.8rem;
+        padding: 10px 12px;
+        padding-right: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .share-section {
+        margin-top: 20px;
+        padding-top: 15px;
+    }
+    
+    .share-buttons .btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+    
+    .url-preview input {
+        font-size: 0.75rem;
+    }
+}
