@@ -1523,6 +1523,10 @@ promptForm.addEventListener("submit", async (e) => {
     finalPrompt.textContent = finalPromptText;
     finalPrompt.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
+    // ===== СОЗДАНИЕ ССЫЛКИ НА ПРОМПТ =====
+    const promptUrl = generatePromptLink(selectedType, customText, tone, params);
+    updateShareButtons(promptUrl);
+
     // Устанавливаем флаг, что промпт сгенерирован
     isPromptGenerated = true;
   
@@ -1532,6 +1536,88 @@ promptForm.addEventListener("submit", async (e) => {
         document.body.style.overflow = 'auto';
     }
 });
+
+// ===== ФУНКЦИИ ДЛЯ РАБОТЫ СО ССЫЛКАМИ =====
+function generatePromptLink(type, idea, tone, params) {
+    // Создаем объект с данными промпта
+    const promptData = {
+        t: type,
+        i: encodeURIComponent(idea),
+        tone: tone,
+        p: params,
+        v: '1.0' // версия формата
+    };
+    
+    // Кодируем в base64 для компактности
+    const jsonStr = JSON.stringify(promptData);
+    const base64Str = btoa(jsonStr);
+    
+    // Возвращаем URL с хэшем
+    const baseUrl = window.location.origin + window.location.pathname;
+    return `${baseUrl}#prompt=${base64Str}`;
+}
+
+function updateShareButtons(url) {
+    const shareSection = document.createElement('div');
+    shareSection.className = 'share-section';
+    shareSection.innerHTML = `
+        <div class="share-buttons">
+            <button id="copy-link" class="btn btn-secondary" type="button">
+                <i class="fas fa-link"></i> Копировать ссылку
+            </button>
+            <button id="share-telegram" class="btn btn-telegram" type="button">
+                <i class="fab fa-telegram"></i> Поделиться в Telegram
+            </button>
+            <button id="share-whatsapp" class="btn btn-whatsapp" type="button">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </button>
+        </div>
+        <div class="url-preview">
+            <input type="text" id="prompt-url" readonly value="${url}">
+        </div>
+    `;
+    
+    // Находим контейнер для промпта и добавляем секцию шаринга
+    const generatedPrompt = document.querySelector('.generated-prompt');
+    if (generatedPrompt) {
+        // Удаляем старую секцию, если есть
+        const oldShareSection = generatedPrompt.querySelector('.share-section');
+        if (oldShareSection) oldShareSection.remove();
+        
+        generatedPrompt.appendChild(shareSection);
+        
+        // Обработчики кнопок
+        setupShareButtons(url);
+    }
+}
+
+function setupShareButtons(url) {
+    // Копирование ссылки
+    document.getElementById('copy-link').addEventListener('click', () => {
+        navigator.clipboard.writeText(url).then(() => {
+            const btn = document.getElementById('copy-link');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> Скопировано!';
+            btn.classList.add('btn-primary');
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.remove('btn-primary');
+            }, 2000);
+        });
+    });
+    
+    // Поделиться в Telegram
+    document.getElementById('share-telegram').addEventListener('click', () => {
+        const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent('Посмотрите промпт, который я создал в TAIPrompts!')}`;
+        window.open(telegramUrl, '_blank', 'width=600,height=400');
+    });
+    
+    // Поделиться в WhatsApp
+    document.getElementById('share-whatsapp').addEventListener('click', () => {
+        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent('Посмотрите промпт, который я создал в TAIPrompts! ' + url)}`;
+        window.open(whatsappUrl, '_blank');
+    });
+}
 
 // ✅ копирование — ОДИН раз, не внутри submit
 copyButton.addEventListener("click", function () {
@@ -1810,6 +1896,69 @@ function runDebug() {
   });
 }
 
+// ===== ЗАГРУЗКА ПРОМПТА ИЗ ССЫЛКИ =====
+function loadPromptFromHash() {
+    const hash = window.location.hash;
+    if (!hash.startsWith('#prompt=')) return;
+    
+    try {
+        const base64Str = hash.replace('#prompt=', '');
+        const jsonStr = atob(base64Str);
+        const promptData = JSON.parse(jsonStr);
+        
+        // Проверяем версию
+        if (promptData.v !== '1.0') {
+            console.warn('Устаревшая версия промпта');
+            return;
+        }
+        
+        // Загружаем данные в форму
+        selectedType = promptData.t;
+        
+        const modalTitle = document.querySelector(".modal-title");
+        modalTitle.textContent = `Загруженный промпт: ${promptTemplates[selectedType]?.name || selectedType}`;
+        
+        renderTechnicalParams(selectedType);
+        
+        // Заполняем параметры
+        setTimeout(() => {
+            const params = promptData.p || {};
+            for (const [key, value] of Object.entries(params)) {
+                const paramEl = document.querySelector(`#param-${key}`);
+                if (paramEl) {
+                    if (paramEl.tagName === 'SELECT') {
+                        paramEl.value = value;
+                    } else if (paramEl.classList.contains('multi-select')) {
+                        const checkboxes = paramEl.querySelectorAll('input[type="checkbox"]');
+                        checkboxes.forEach(checkbox => {
+                            checkbox.checked = value.includes(checkbox.value);
+                        });
+                    }
+                }
+            }
+            
+            // Заполняем основное поле
+            document.querySelector('#custom-input').value = decodeURIComponent(promptData.i);
+            document.querySelector('#tone-select').value = promptData.tone || 'professional';
+            
+            // Открываем модалку
+            const modal = document.querySelector('.customization-modal');
+            modal.classList.add("active");
+            document.body.style.overflow = "hidden";
+            
+            // Генерируем промпт автоматически
+            setTimeout(() => {
+                const submitEvent = new Event('submit', { cancelable: true });
+                document.querySelector('#prompt-form').dispatchEvent(submitEvent);
+            }, 500);
+            
+        }, 100);
+        
+    } catch (error) {
+        console.error('Ошибка загрузки промпта:', error);
+    }
+}
+
 // ====== START ======
 document.addEventListener("DOMContentLoaded", async () => {
   await inject("site-header", "components/header.html");
@@ -1833,6 +1982,7 @@ if (yearEl) {
   initLightbox();
   initAnimations();
   initSearch();
+  loadPromptFromHash(); // <--
   runDebug();
 
   // === ЗАЩИТА ОТ ЗАКРЫТИЯ (только на generator.html) ===
