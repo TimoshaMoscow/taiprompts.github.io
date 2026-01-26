@@ -1562,6 +1562,8 @@ function generatePromptLink(type, idea, tone, params) {
 }
 
 function updateShareButtons(url) {
+    console.log('updateShareButtons вызвана, URL:', url);
+    
     const shareSection = document.createElement('div');
     shareSection.className = 'share-section';
     shareSection.innerHTML = `
@@ -1581,17 +1583,25 @@ function updateShareButtons(url) {
         </div>
     `;
     
-    // Находим контейнер для промпта и добавляем секцию шаринга
+    // Находим контейнер для промпта
     const generatedPrompt = document.querySelector('.generated-prompt');
+    console.log('generatedPrompt найден:', generatedPrompt);
+    
     if (generatedPrompt) {
         // Удаляем старую секцию, если есть
         const oldShareSection = generatedPrompt.querySelector('.share-section');
-        if (oldShareSection) oldShareSection.remove();
+        if (oldShareSection) {
+            console.log('Удаляем старую share-section');
+            oldShareSection.remove();
+        }
         
         generatedPrompt.appendChild(shareSection);
+        console.log('share-section добавлена');
         
         // Обработчики кнопок
         setupShareButtons(url);
+    } else {
+        console.error('ОШИБКА: generatedPrompt не найден!');
     }
 }
 
