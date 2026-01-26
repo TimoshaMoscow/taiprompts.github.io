@@ -331,27 +331,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         
     </main>
 
-        <!-- Баннер для Яндекс.Браузера -->
-    <div id="yandexBrowserBanner" class="yandex-browser-banner">
-        <div class="yandex-browser-banner__inner">
-            <div class="yandex-browser-banner__content">
-                <div class="yandex-browser-banner__icon">⚠️</div>
-                <div class="yandex-browser-banner__text">
-                    <strong>Внимание:</strong> Сайт может некорректно работать в Яндекс.Браузере из-за его особенностей. 
-                    Для оптимальной работы рекомендуем использовать Chrome, Firefox или Edge.
-                </div>
-            </div>
-            <div class="yandex-browser-banner__actions">
-                <a href="#" class="yandex-browser-banner__link" id="learnMoreBtn">
-                    Подробнее
-                </a>
-                <button class="yandex-browser-banner__close" id="closeBannerBtn" aria-label="Закрыть">
-                    ×
-                </button>
-            </div>
-        </div>
-    </div>
-
     <div id="site-footer"></div>
 
 <a class="corner-year-banner" href="year.html" title="Итоги года" style="display: none;">
@@ -361,62 +340,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <script src="main.js?v=1.1.4"></script>
 
     <script>
-// Проверка на Яндекс.Браузер
-function isYandexBrowser() {
-    const ua = navigator.userAgent.toLowerCase();
-    const isYaBrowser = ua.includes('yabrowser');
-    const isYaInOpera = ua.includes('opr') && ua.includes('yandex');
-    
-    return isYaBrowser || isYaInOpera;
-}
-
-// Инициализация баннера
-document.addEventListener('DOMContentLoaded', function() {
-    const banner = document.getElementById('yandexBrowserBanner');
-    const closeBtn = document.getElementById('closeBannerBtn');
-    const learnMoreBtn = document.getElementById('learnMoreBtn');
-    
-    // Проверяем только браузер - показываем всегда в Яндекс.Браузере
-    if (isYandexBrowser()) {
-        // Задержка перед показом
-        setTimeout(() => {
-            banner.style.display = 'block';
-        }, 1500);
-    }
-    
-    // Закрытие баннера - ТОЛЬКО НА ЭТОЙ СТРАНИЦЕ, без сохранения
-    closeBtn.addEventListener('click', function() {
-        // Просто скрываем баннер без сохранения
-        banner.style.opacity = '0';
-        banner.style.transform = 'translateY(30px)';
         
-        setTimeout(() => {
-            banner.style.display = 'none';
-        }, 300);
-    });
-    
-    // Кнопка "Подробнее"
-    learnMoreBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        // Здесь можно открыть модальное окно или перенаправить
-        const message = `Проблемы в Яндекс.Браузере могут возникать из-за:
-• Особенностей блокировки рекламы
-• Встроенного режима Turbo
-• Устаревшего движка на некоторых версиях
-• Конфликтов с расширениями
-
-Рекомендуем обновить Яндекс.Браузер до последней версии или использовать альтернативный браузер.`;
-        alert(message);
-    });
-    
-    // Закрытие по Escape
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && banner.style.display === 'block') {
-            closeBtn.click();
-        }
-    });
-});
-
 // Функция для управления отображением карточек преимуществ
 function initPossibilitiesToggle() {
     const grid = document.getElementById('possibilitiesGrid');
@@ -477,7 +401,3 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </body>
 </html>
-
-
-
-
