@@ -967,12 +967,12 @@ function censorText(text) {
   };
 
   
-  // ===== МОДАЛКА =====
-  let selectedType = "recipes";
+// ===== МОДАЛКА =====
+let selectedType = "recipes";
 
-  const modal = document.createElement("div");
-  modal.className = "customization-modal";
-  modal.innerHTML = `
+const modal = document.createElement("div");
+modal.className = "customization-modal";
+modal.innerHTML = `
     <div class="modal-content" role="dialog" aria-modal="true">
       <div class="modal-header">
         <h3 class="modal-title">Кастомизация промпта</h3>
@@ -1001,16 +1001,20 @@ function censorText(text) {
           <button type="submit" class="btn btn-primary">Сгенерировать промпт</button>
         </form>
 
-<div class="generated-prompt">
-  <h4>Ваш промпт:</h4>
-  <div id="final-prompt" class="prompt-output"></div>
+        <div class="generated-prompt">
+          <h4>Ваш промпт:</h4>
+          <div id="final-prompt" class="prompt-output"></div>
 
-  <div class="example-actions" style="margin-top:12px; justify-content:flex-start;">
-    <button id="copy-prompt" class="btn btn-secondary" type="button">Копировать</button>
-    <button id="download-prompt" class="btn btn-primary" type="button">Скачать</button>
-  </div>
-</div>
-
+          <div class="example-actions" style="margin-top:12px; justify-content:flex-start;">
+            <button id="copy-prompt" class="btn btn-secondary" type="button">
+              <i class="fas fa-copy"></i> Копировать промпт
+            </button>
+            <button id="download-prompt" class="btn btn-primary" type="button">
+              <i class="fas fa-download"></i> Скачать
+            </button>
+          </div>
+          <!-- Секция шаринга будет добавлена сюда автоматически -->
+        </div>
       </div>
     </div>
   `;
