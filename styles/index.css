@@ -49,15 +49,8 @@
     position: absolute;
     inset: 0;
     z-index: 2;
-    pointer-events: auto;
-    border: 2px solid transparent; 
-    transition: all 0.3s ease;
+    pointer-events: none;
 }
-
-.hero-flying-cards:hover {
-    border-color: var(--accent-color);
-}
-
 
 .hero-card {
     position: absolute;
