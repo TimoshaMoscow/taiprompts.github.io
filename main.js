@@ -2686,7 +2686,7 @@ function createPromptShareLink() {
   
   // Возвращаем полную ссылку
   const baseUrl = window.location.origin + window.location.pathname;
-  return `${baseUrl}?p=${shortId}&d=${base64Data.substring(0, 100)}`; // Ограничиваем длину
+  return `${baseUrl}?p=${shortId}&d=${encodeURIComponent(base64Data)}`; // Без ограничений длины
 }
 
 // Создание короткого ID из данных
@@ -2702,15 +2702,15 @@ function createShortId(data) {
 // Загрузка промпта из ссылки
 function loadPromptFromUrl() {
   const urlParams = new URLSearchParams(window.location.search);
-  const promptData = urlParams.get('d');
+  const promptDataEncoded = urlParams.get('d');
   const promptId = urlParams.get('p');
   
-  if (!promptData || !promptId) return false;
+  if (!promptDataEncoded || !promptId) return false;
   
   try {
-    // Декодируем данные
-    const jsonString = decodeURIComponent(atob(promptData));
-    const data = JSON.parse(jsonString);
+    // Декодируем URI и затем base64
+    const promptData = decodeURIComponent(promptDataEncoded);
+    const jsonString = atob(promptData);
     
     // Проверяем версию
     if (data.version !== '1.0') {
