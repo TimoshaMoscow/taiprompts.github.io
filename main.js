@@ -964,7 +964,186 @@ function censorText(text) {
     },
   };
 
+// ===== ВАЛИДАЦИЯ КОМБИНАЦИЙ =====
+const validationRules = {
+  websites: {
+    // "Код в одном файле" не работает для фреймворков
+    incompatible: [
+      {
+        when: { stack: ["React", "Vue.js", "Angular", "Node.js", "Python/Django", "Ruby on Rails"] },
+        cannotHave: ["Код в одном файле"],
+        message: "Для фреймворков невозможно сгенерировать код в одном файле"
+      },
+      {
+        when: { type: ["Интернет-магазин", "Социальная сеть", "Панель управления"] },
+        cannotHave: ["Код в одном файле"],
+        message: "Для сложных проектов рекомендуется структура проекта, а не один файл"
+      }
+    ],
+    
+    // Рекомендации по стилям
+    recommendations: [
+      {
+        when: { type: ["Интернет-магазин", "Панель управления"] },
+        recommendedStyle: ["Минимализм", "Матовое стекло"],
+        message: "Для {type} лучше подходит {style}"
+      },
+      {
+        when: { type: ["Портфолио", "Блог"] },
+        recommendedStyle: ["Минимализм", "Матовое стекло", "Аниме-фэнтези"],
+        message: "Для творческих проектов можно использовать креативные стили"
+      }
+    ],
+    
+    // Цветовые рекомендации
+    colorWarnings: [
+      {
+        when: { style: ["PHP"] },
+        warningFor: ["Чёрный (#000000)", "Белый (#ffffff)"],
+        message: "Для стиля 'PHP' лучше подходят яркие цвета из 2000-х"
+      },
+      {
+        when: { style: ["Киберпанк"] },
+        recommendedColors: ["Тайский промпт (#5c71e5)", "Подход звезды (#e431f5)", "Киберпанк (#FF0055)"],
+        message: "Для киберпанк стиля лучше подходят неоновые цвета"
+      }
+    ]
+  },
   
+  bots: {
+    incompatible: [
+      {
+        when: { platform: ["Minecraft"] },
+        cannotHave: ["API интеграции", "Платежи"],
+        message: "Для Minecraft ботов некоторые функции недоступны"
+      }
+    ]
+  },
+  
+  // Добавь правила для других категорий по аналогии
+  images: {
+    recommendations: [
+      {
+        when: { style: ["анимешное"] },
+        recommendedAspect: ["16:9 (широкоэкранное)", "9:16 (вертикальное)"],
+        message: "Для аниме стиля подходят широкоэкранные форматы"
+      }
+    ]
+  }
+};
+
+// Функция проверки валидации
+function validateCombination(type, selectedParams) {
+  const rules = validationRules[type];
+  if (!rules) return { valid: true, warnings: [], errors: [] };
+  
+  const warnings = [];
+  const errors = [];
+  
+  // Проверка несовместимых комбинаций
+  if (rules.incompatible) {
+    rules.incompatible.forEach(rule => {
+      // Проверяем, подходит ли условие "when"
+      let conditionMet = true;
+      Object.keys(rule.when).forEach(paramKey => {
+        if (!selectedParams[paramKey] || !rule.when[paramKey].includes(selectedParams[paramKey])) {
+          conditionMet = false;
+        }
+      });
+      
+      if (conditionMet) {
+        // Проверяем, есть ли несовместимые параметры
+        rule.cannotHave.forEach(forbidden => {
+          if (selectedParams.features && selectedParams.features.includes(forbidden)) {
+            errors.push(`❌ ${rule.message}`);
+          }
+        });
+      }
+    });
+  }
+  
+  // Проверка рекомендаций
+  if (rules.recommendations) {
+    rules.recommendations.forEach(rule => {
+      let conditionMet = true;
+      Object.keys(rule.when).forEach(paramKey => {
+        if (!selectedParams[paramKey] || !rule.when[paramKey].includes(selectedParams[paramKey])) {
+          conditionMet = false;
+        }
+      });
+      
+      if (conditionMet && rule.recommendedStyle && !rule.recommendedStyle.includes(selectedParams.style)) {
+        const message = rule.message
+          .replace('{type}', selectedParams.type)
+          .replace('{style}', rule.recommendedStyle.join(' или '));
+        warnings.push(`💡 ${message}`);
+      }
+    });
+  }
+  
+  // Проверка цветовых предупреждений
+  if (rules.colorWarnings) {
+    rules.colorWarnings.forEach(rule => {
+      let conditionMet = true;
+      Object.keys(rule.when).forEach(paramKey => {
+        if (!selectedParams[paramKey] || !rule.when[paramKey].includes(selectedParams[paramKey])) {
+          conditionMet = false;
+        }
+      });
+      
+      if (conditionMet) {
+        if (rule.warningFor && rule.warningFor.includes(selectedParams.color)) {
+          warnings.push(`🎨 ${rule.message}`);
+        }
+        if (rule.recommendedColors && !rule.recommendedColors.includes(selectedParams.color)) {
+          warnings.push(`🎨 Для стиля '${selectedParams.style}' рекомендуем: ${rule.recommendedColors.join(', ')}`);
+        }
+      }
+    });
+  }
+  
+  return {
+    valid: errors.length === 0,
+    warnings,
+    errors
+  };
+}
+
+// Функция для отображения валидационных сообщений
+function showValidationMessages(validation) {
+  const container = document.getElementById('validationMessages');
+  if (!container) return;
+  
+  container.innerHTML = '';
+  
+  if (validation.errors.length > 0) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'validation-error';
+    errorDiv.innerHTML = `
+      <strong>⚠️ Проблемы с комбинацией:</strong>
+      <ul>${validation.errors.map(e => `<li>${e}</li>`).join('')}</ul>
+    `;
+    container.appendChild(errorDiv);
+  }
+  
+  if (validation.warnings.length > 0) {
+    const warningDiv = document.createElement('div');
+    warningDiv.className = 'validation-warning';
+    warningDiv.innerHTML = `
+      <strong>💡 Рекомендации:</strong>
+      <ul>${validation.warnings.map(w => `<li>${w}</li>`).join('')}</ul>
+    `;
+    container.appendChild(warningDiv);
+  }
+  
+  if (validation.errors.length === 0 && validation.warnings.length === 0) {
+    const successDiv = document.createElement('div');
+    successDiv.className = 'validation-success';
+    successDiv.textContent = '✅ Все параметры совместимы';
+    container.appendChild(successDiv);
+  }
+}
+
   // ===== МОДАЛКА =====
   let selectedType = "recipes";
 
@@ -1037,42 +1216,73 @@ function censorText(text) {
     }
   }
 
-  function renderTechnicalParams(type) {
-    const container = modal.querySelector("#technical-params");
-    const params = promptTemplates[type]?.params || {};
-    let html = `<h4 style="margin-bottom: 1.5rem; color: var(--accent-color);">${promptTemplates[type]?.name || type}</h4>`;
-
+// Модифицируем renderTechnicalParams для добавления валидации
+function renderTechnicalParams(type) {
+  const container = modal.querySelector("#technical-params");
+  const params = promptTemplates[type]?.params || {};
+  let html = `<h4 style="margin-bottom: 1.5rem; color: var(--accent-color);">${promptTemplates[type]?.name || type}</h4>`;
+  
+  // Добавляем контейнер для валидационных сообщений
+  html += `<div id="validationMessages" style="margin-bottom: 20px;"></div>`;
+  
+  // Функция для обновления валидации при изменении параметров
+  const updateValidation = () => {
+    const selectedParams = {};
     for (const [key, param] of Object.entries(params)) {
-      html += `<div class="param-group">`;
-      html += `<label>${param.label}</label>`;
-
-      if (param.type === "select") {
-        html += `<select id="param-${key}" class="tech-param">`;
-        param.options.forEach((option) => {
-          const selected = option === param.default ? "selected" : "";
-          html += `<option value="${option}" ${selected}>${option}</option>`;
-        });
-        html += `</select>`;
-      } else if (param.type === "multiselect") {
-        html += `<div class="multi-select" id="param-${key}">`;
-        const defaultValues = Array.isArray(param.default) ? param.default : [param.default];
-        param.options.forEach((option) => {
-          const checked = defaultValues.includes(option) ? "checked" : "";
-          html += `
-            <label class="checkbox-label">
-              <input type="checkbox" value="${option}" ${checked}>
-              ${option}
-            </label>
-          `;
-        });
-        html += `</div>`;
+      const element = container.querySelector(`#param-${key}`);
+      if (element) {
+        if (param.type === "select") {
+          selectedParams[key] = element.value;
+        } else if (param.type === "multiselect") {
+          const checked = element.querySelectorAll('input[type="checkbox"]:checked');
+          selectedParams[key] = Array.from(checked).map(cb => cb.value);
+        }
       }
+    }
+    
+    const validation = validateCombination(type, selectedParams);
+    showValidationMessages(validation);
+  };
 
+  for (const [key, param] of Object.entries(params)) {
+    html += `<div class="param-group">`;
+    html += `<label>${param.label}</label>`;
+
+    if (param.type === "select") {
+      html += `<select id="param-${key}" class="tech-param" data-param="${key}">`;
+      param.options.forEach((option) => {
+        const selected = option === param.default ? "selected" : "";
+        html += `<option value="${option}" ${selected}>${option}</option>`;
+      });
+      html += `</select>`;
+    } else if (param.type === "multiselect") {
+      html += `<div class="multi-select" id="param-${key}" data-param="${key}">`;
+      const defaultValues = Array.isArray(param.default) ? param.default : [param.default];
+      param.options.forEach((option) => {
+        const checked = defaultValues.includes(option) ? "checked" : "";
+        html += `
+          <label class="checkbox-label">
+            <input type="checkbox" value="${option}" ${checked} data-param="${key}">
+            ${option}
+          </label>
+        `;
+      });
       html += `</div>`;
     }
 
-    container.innerHTML = html || "<p>Для этого типа промпта не требуется дополнительных параметров.</p>";
+    html += `</div>`;
   }
+
+  container.innerHTML = html || "<p>Для этого типа промпта не требуется дополнительных параметров.</p>";
+  
+  // Добавляем обработчики событий для валидации
+  container.querySelectorAll('select.tech-param, .multi-select input[type="checkbox"]').forEach(element => {
+    element.addEventListener('change', updateValidation);
+  });
+  
+  // Инициализируем валидацию с текущими значениями
+  setTimeout(updateValidation, 100);
+}
 
 typeCards.forEach((card) => {
     card.addEventListener("click", function () {
