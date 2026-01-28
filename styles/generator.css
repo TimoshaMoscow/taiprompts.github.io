@@ -1498,3 +1498,59 @@
         font-size: 0.75rem;
     }
 }
+
+/* ===== ВАЛИДАЦИЯ ===== */
+#validationMessages {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 15px;
+  border: 1px solid var(--card-border);
+  margin-bottom: 20px;
+}
+
+.validation-error {
+  background: rgba(255, 59, 48, 0.1);
+  border-left: 4px solid #ff3b30;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.validation-error strong {
+  color: #ff3b30;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.validation-error ul {
+  margin: 5px 0 0 20px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.validation-warning {
+  background: rgba(255, 193, 7, 0.1);
+  border-left: 4px solid #ffc107;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.validation-warning strong {
+  color: #ffc107;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.validation-warning ul {
+  margin: 5px 0 0 20px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.validation-success {
+  background: rgba(52, 199, 89, 0.1);
+  border-left: 4px solid #34c759;
+  padding: 10px 15px;
+  border-radius: 5px;
+  color: #34c759;
+  font-weight: 500;
+}
