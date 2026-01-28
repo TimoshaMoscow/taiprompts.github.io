@@ -975,7 +975,7 @@ const validationRules = {
         message: "Для фреймворков невозможно сгенерировать код в одном файле"
       },
       {
-        when: { type: ["Интернет-магазин", "Социальная сеть", "Панель управления"] },
+        when: { type: ["Интернет-магазин", "Социальная сеть", "Панель управления", "Многостраничное приложение"] },
         cannotHave: ["Код в одном файле"],
         message: "Для сложных проектов рекомендуется структура проекта, а не один файл"
       }
@@ -992,6 +992,11 @@ const validationRules = {
         when: { type: ["Портфолио", "Блог"] },
         recommendedStyle: ["Минимализм", "Матовое стекло", "Аниме-фэнтези"],
         message: "Для творческих проектов можно использовать креативные стили"
+      },
+      {
+        when: { type: ["Лендинг"] },
+        recommendedFeatures: ["SEO оптимизация", "Адаптивный дизайн"],
+        message: "Для лендинга обязательно нужны: {features}"
       }
     ],
     
@@ -1004,8 +1009,13 @@ const validationRules = {
       },
       {
         when: { style: ["Киберпанк"] },
-        recommendedColors: ["Тайский промпт (#5c71e5)", "Подход звезды (#e431f5)", "Киберпанк (#FF0055)"],
+        recommendedColors: ["Тайский промпт (#5c71e5)", "Подход звезды (#e431f5)"],
         message: "Для киберпанк стиля лучше подходят неоновые цвета"
+      },
+      {
+        when: { type: ["Интернет-магазин"] },
+        recommendedColors: ["Ты трубка (#db0f00)", "Обнаружение (#26d13c)"],
+        message: "Для магазина рекомендуем яркие цвета для призыва к действию"
       }
     ]
   },
@@ -1016,23 +1026,294 @@ const validationRules = {
         when: { platform: ["Minecraft"] },
         cannotHave: ["API интеграции", "Платежи"],
         message: "Для Minecraft ботов некоторые функции недоступны"
+      },
+      {
+        when: { language: ["PHP"] },
+        cannotHave: ["Админ-панель", "Inline клавиатуры"],
+        message: "Для PHP сложно реализовать некоторые функции ботов"
+      }
+    ],
+    
+    recommendations: [
+      {
+        when: { platform: ["Telegram", "Discord"] },
+        recommendedFeatures: ["Команды", "Модерация"],
+        message: "Для чат-ботов рекомендуем функции: {features}"
+      },
+      {
+        when: { functionality: ["Платежи"] },
+        recommendedLanguage: ["Python", "JavaScript", "TypeScript"],
+        message: "Для платежей рекомендуем языки: {languages}"
       }
     ]
   },
   
-  // Добавь правила для других категорий по аналогии
   images: {
     recommendations: [
       {
         when: { style: ["анимешное"] },
         recommendedAspect: ["16:9 (широкоэкранное)", "9:16 (вертикальное)"],
-        message: "Для аниме стиля подходят широкоэкранные форматы"
+        message: "Для аниме стиля рекомендуем широкоэкранные форматы"
+      },
+      {
+        when: { style: ["реалистичное", "футуристическое"] },
+        recommendedQuality: ["Высокое (4K)"],
+        message: "Для детализированных стилей рекомендуем высокое качество 4K"
+      },
+      {
+        when: { aspect_ratio: ["9:16 (вертикальное)"] },
+        recommendedStyle: ["реалистичное", "мультяшное", "анимешное"],
+        message: "Для вертикального формата лучше подходят эти стили"
+      }
+    ]
+  },
+  
+  stickers: {
+    recommendations: [
+      {
+        when: { platform: ["WhatsApp"] },
+        recommendedStyle: ["мультяшный", "минималистичный"],
+        message: "Для WhatsApp лучше подходят простые стили"
+      },
+      {
+        when: { style: ["анимешный"] },
+        recommendedPlatform: ["Telegram", "Discord"],
+        message: "Аниме стикеры популярны в Telegram и Discord"
+      },
+      {
+        when: { emotions: ["Радость", "Смех"] },
+        recommendedStyle: ["мультяшный", "мемный"],
+        message: "Для весёлых эмоций подходят мультяшные и мемные стили"
+      }
+    ]
+  },
+  
+  minecraft: {
+    incompatible: [
+      {
+        when: { version: ["1.8.9", "1.12.2"] },
+        cannotHave: ["Оптимизация", "Технические функции"],
+        message: "Для старых версий Minecraft некоторые функции недоступны"
+      }
+    ],
+    
+    recommendations: [
+      {
+        when: { type: ["Мод"] },
+        recommendedLoader: ["Forge", "Fabric"],
+        message: "Для модов рекомендуем: {loader}"
+      },
+      {
+        when: { type: ["Плагин"] },
+        recommendedLoader: ["Paper", "Spigot", "Bukkit"],
+        message: "Для плагинов рекомендуем: {loader}"
+      },
+      {
+        when: { features: ["Новые мобы", "Боссы"] },
+        recommendedVersion: ["1.20.1", "1.21"],
+        message: "Для сложных мобов нужны современные версии"
+      }
+    ]
+  },
+  
+  "3d": {
+    recommendations: [
+      {
+        when: { style: ["low-poly"] },
+        recommendedPolygons: ["Low-poly (<10k)", "Medium (10-50k)"],
+        message: "Для low-poly стиля рекомендуем низкую полигональность"
+      },
+      {
+        when: { type: ["персонажа"] },
+        recommendedSoftware: ["Blender", "Maya", "ZBrush"],
+        message: "Для персонажей рекомендуем: {software}"
+      },
+      {
+        when: { software: ["Blender"] },
+        recommendedStyle: ["реалистичный", "стилизованный", "мультяшный"],
+        message: "Blender хорошо подходит для этих стилей"
+      }
+    ]
+  },
+  
+  characterai: {
+    recommendations: [
+      {
+        when: { appearance: ["Аниме персонаж"] },
+        recommendedPersonality: ["Дружелюбный", "Юмористический", "Наивный"],
+        message: "Для аниме персонажей подходят: {personality}"
+      },
+      {
+        when: { appearance: ["Робот", "Инопланетянин"] },
+        recommendedTone: ["Формальный", "Профессиональный"],
+        message: "Для неорганических существ подходит формальный тон"
+      },
+      {
+        when: { personality: ["Загадочный", "Мудрый"] },
+        recommendedName: ["Фэнтези", "Уникальное", "Историческое"],
+        message: "Для таких персонажей подходят необычные имена"
+      }
+    ]
+  },
+  
+  suno: {
+    recommendations: [
+      {
+        when: { genre: ["Метал", "Рок"] },
+        recommendedTempo: ["Быстрый", "Очень быстрый"],
+        message: "Для рока и метала рекомендуем быстрый темп"
+      },
+      {
+        when: { genre: ["Джаз", "Классика"] },
+        recommendedInstruments: ["Фортепиано", "Скрипка", "Духовые"],
+        message: "Для этих жанров рекомендуем классические инструменты"
+      },
+      {
+        when: { style: ["Грустный", "Ностальгический"] },
+        recommendedTempo: ["Медленный", "Умеренный"],
+        message: "Для грустных песен подходит медленный темп"
+      }
+    ]
+  },
+  
+  recipes: {
+    incompatible: [
+      {
+        when: { dietary: ["Веганское"] },
+        cannotHave: ["Высокобелковое"], // веганское ≠ высокобелковое по умолчанию
+        message: "Для веганских блюд сложно достичь высокого содержания белка"
+      }
+    ],
+    
+    recommendations: [
+      {
+        when: { cuisine: ["итальянской"] },
+        recommendedComplexity: ["Простое", "Средней сложности"],
+        message: "Итальянская кухня обычно простая в приготовлении"
+      },
+      {
+        when: { dietary: ["Низкоуглеводное"] },
+        recommendedCuisine: ["азиатской", "средиземноморской"],
+        message: "Для низкоуглеводной диеты подходят эти кухни"
+      }
+    ]
+  },
+  
+  setup: {
+    incompatible: [
+      {
+        when: { oc: ["IOS", "MacOS"] },
+        cannotHave: ["Inno Setup", "WiX Toolset", "NSIS"],
+        message: "Для MacOS/iOS нужны другие установщики (DMG, PKG)"
+      },
+      {
+        when: { oc: ["Android"] },
+        cannotHave: ["Inno Setup", "MSIX", "DMG"],
+        message: "Для Android нужны APK, AAB или Google Play"
+      }
+    ],
+    
+    recommendations: [
+      {
+        when: { type: ["Игра"] },
+        recommendedLang: ["C#", "C++", "Python"],
+        message: "Для игр рекомендуем: {lang}"
+      },
+      {
+        when: { lang: ["JavaScript", "TypeScript"] },
+        recommendedOC: ["Windows", "Linux", "MacOS"],
+        message: "Эти языки кроссплатформенны"
+      },
+      {
+        when: { setupper: ["Google Play", "App Store"] },
+        recommendedOC: ["Android", "IOS"],
+        message: "Эти установщики для мобильных платформ"
+      }
+    ]
+  },
+  
+  plugin: {
+    recommendations: [
+      {
+        when: { browser: ["Chromium-браузер", "Firefox"] },
+        recommendedLang: ["HTML/CSS/JS", "TypeScript"],
+        message: "Для браузерных расширений рекомендуем: {lang}"
+      },
+      {
+        when: { browser: ["VS Code", "Figma"] },
+        recommendedLang: ["TypeScript", "JavaScript"],
+        message: "Для этих программ рекомендуем: {lang}"
+      },
+      {
+        when: { func: ["Нейросеть"] },
+        recommendedLang: ["Python", "JavaScript"],
+        message: "Для нейросетей рекомендуем: {lang}"
+      }
+    ]
+  },
+  
+  youtube: {
+    recommendations: [
+      {
+        when: { content_type: ["Образовательный"] },
+        recommendedAudience: ["Взрослые", "Профессиональная"],
+        message: "Для образовательного контента подходит аудитория: {audience}"
+      },
+      {
+        when: { audience: ["Дети"] },
+        recommendedContent: ["Развлекательный", "Образовательный"],
+        message: "Для детской аудитории рекомендуем: {content}"
+      },
+      {
+        when: { monetization: ["Реклама", "Спонсорство"] },
+        recommendedFrequency: ["Еженедельно", "2-3 раза в неделю"],
+        message: "Для монетизации важна регулярность: {frequency}"
+      }
+    ]
+  },
+  
+  school: {
+    recommendations: [
+      {
+        when: { class: ["1 класс", "2 класс", "3 класс"] },
+        recommendedTask: ["Поделка", "Сочинение"],
+        message: "Для младших классов подходят: {task}"
+      },
+      {
+        when: { subj: ["Информатика"] },
+        recommendedTask: ["Код", "Задача"],
+        message: "Для информатики рекомендуем: {task}"
+      },
+      {
+        when: { task: ["Сочинение-рассуждение"] },
+        recommendedSubj: ["Литература", "История"],
+        message: "Для сочинений-рассуждений подходят предметы: {subj}"
+      }
+    ]
+  },
+  
+  toys: {
+    recommendations: [
+      {
+        when: { age_group: ["0-1 год", "1-3 года"] },
+        recommendedMaterials: ["текстиль", "пластик", "экологичные"],
+        message: "Для малышей рекомендуем безопасные материалы: {materials}"
+      },
+      {
+        when: { type: ["развивающей"] },
+        recommendedAge: ["1-3 года", "3-6 лет", "6-12 лет"],
+        message: "Развивающие игрушки для возрастов: {age}"
+      },
+      {
+        when: { materials: ["металл"] },
+        recommendedAge: ["6-12 лет", "12+ лет"],
+        message: "Металлические игрушки для детей старше 6 лет"
       }
     ]
   }
 };
 
-// Функция проверки валидации
+// Функция проверки валидации (универсальная версия)
 function validateCombination(type, selectedParams) {
   const rules = validationRules[type];
   if (!rules) return { valid: true, warnings: [], errors: [] };
@@ -1043,18 +1324,34 @@ function validateCombination(type, selectedParams) {
   // Проверка несовместимых комбинаций
   if (rules.incompatible) {
     rules.incompatible.forEach(rule => {
-      // Проверяем, подходит ли условие "when"
       let conditionMet = true;
       Object.keys(rule.when).forEach(paramKey => {
-        if (!selectedParams[paramKey] || !rule.when[paramKey].includes(selectedParams[paramKey])) {
+        const paramValue = selectedParams[paramKey];
+        // Поддержка как одиночных значений, так и массивов
+        if (!paramValue || !rule.when[paramKey].includes(paramValue)) {
           conditionMet = false;
         }
       });
       
       if (conditionMet) {
-        // Проверяем, есть ли несовместимые параметры
         rule.cannotHave.forEach(forbidden => {
-          if (selectedParams.features && selectedParams.features.includes(forbidden)) {
+          // Проверяем в features, functionality, или других массивах
+          let hasForbidden = false;
+          
+          // Проверяем все возможные массивы параметров
+          Object.keys(selectedParams).forEach(key => {
+            const value = selectedParams[key];
+            if (Array.isArray(value) && value.includes(forbidden)) {
+              hasForbidden = true;
+            }
+          });
+          
+          // Также проверяем одиночные значения
+          if (Object.values(selectedParams).includes(forbidden)) {
+            hasForbidden = true;
+          }
+          
+          if (hasForbidden) {
             errors.push(`❌ ${rule.message}`);
           }
         });
@@ -1062,27 +1359,75 @@ function validateCombination(type, selectedParams) {
     });
   }
   
-  // Проверка рекомендаций
+  // Проверка рекомендаций (универсальная)
   if (rules.recommendations) {
     rules.recommendations.forEach(rule => {
       let conditionMet = true;
       Object.keys(rule.when).forEach(paramKey => {
-        if (!selectedParams[paramKey] || !rule.when[paramKey].includes(selectedParams[paramKey])) {
+        const paramValue = selectedParams[paramKey];
+        if (!paramValue || !rule.when[paramKey].includes(paramValue)) {
           conditionMet = false;
         }
       });
       
-      if (conditionMet && rule.recommendedStyle && !rule.recommendedStyle.includes(selectedParams.style)) {
-        const message = rule.message
-          .replace('{type}', selectedParams.type)
-          .replace('{style}', rule.recommendedStyle.join(' или '));
-        warnings.push(`💡 ${message}`);
+      if (conditionMet) {
+        // Ищем все recommended* поля в правиле
+        Object.keys(rule).forEach(ruleKey => {
+          if (ruleKey.startsWith('recommended')) {
+            // Извлекаем имя параметра из ключа (recommendedStyle → style)
+            const paramName = ruleKey.replace('recommended', '').toLowerCase();
+            
+            // Пробуем найти значение в selectedParams
+            let actualValue = selectedParams[paramName];
+            
+            // Если не нашли напрямую, ищем варианты (aspect_ratio, content_type и т.д.)
+            if (!actualValue) {
+              // Пробуем найти похожие ключи
+              Object.keys(selectedParams).forEach(key => {
+                if (key.toLowerCase().includes(paramName.toLowerCase())) {
+                  actualValue = selectedParams[key];
+                }
+              });
+            }
+            
+            // Если нашли значение и оно не входит в рекомендованные
+            if (actualValue && !rule[ruleKey].includes(actualValue)) {
+              const recommendations = rule[ruleKey].join(', ');
+              let message = rule.message;
+              
+              // Заменяем плейсхолдеры
+              message = message.replace('{type}', selectedParams.type || '')
+                               .replace('{style}', recommendations)
+                               .replace('{features}', recommendations)
+                               .replace('{loader}', recommendations)
+                               .replace('{lang}', recommendations)
+                               .replace('{languages}', recommendations)
+                               .replace('{software}', recommendations)
+                               .replace('{personality}', recommendations)
+                               .replace('{tone}', recommendations)
+                               .replace('{tempo}', recommendations)
+                               .replace('{instruments}', recommendations)
+                               .replace('{complexity}', recommendations)
+                               .replace('{cuisine}', recommendations)
+                               .replace('{audience}', recommendations)
+                               .replace('{content}', recommendations)
+                               .replace('{frequency}', recommendations)
+                               .replace('{task}', recommendations)
+                               .replace('{subj}', recommendations)
+                               .replace('{materials}', recommendations)
+                               .replace('{age}', recommendations)
+                               .replace('{values}', recommendations);
+              
+              warnings.push(`💡 ${message}`);
+            }
+          }
+        });
       }
     });
   }
   
-  // Проверка цветовых предупреждений
-  if (rules.colorWarnings) {
+  // Проверка цветовых рекомендаций (только для websites)
+  if (rules.colorWarnings && type === 'websites') {
     rules.colorWarnings.forEach(rule => {
       let conditionMet = true;
       Object.keys(rule.when).forEach(paramKey => {
