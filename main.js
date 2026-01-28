@@ -964,6 +964,283 @@ function censorText(text) {
     },
   };
 
+// ===== КРОСС-РЕКОМЕНДАЦИИ =====
+const crossRecommendations = {
+  // Если выбрал X категорию, рекомендовать Y
+  websites: [
+    {
+      triggerKeywords: ['ресторан', 'кафе', 'еда', 'меню', 'блюд', 'кухн'],
+      recommendCategory: 'recipes',
+      message: 'Хотите также создать меню для сайта?',
+      presetParams: {
+        cuisine: 'русской',
+        complexity: 'Средней сложности'
+      }
+    },
+    {
+      triggerKeywords: ['портфолио', 'дизайн', 'иллюстрац', 'арт', 'худож', 'творч'],
+      recommendCategory: 'images',
+      message: 'Добавьте изображения для портфолио!',
+      presetParams: {
+        style: 'реалистичное',
+        quality: 'Высокое (4K)'
+      }
+    },
+    {
+      triggerKeywords: ['магазин', 'товар', 'прода', 'купи', 'товар', 'ассортимент'],
+      recommendCategory: 'youtube',
+      message: 'Создайте контент для продвижения магазина!',
+      presetParams: {
+        content_type: 'Обзоры',
+        audience: 'Взрослые'
+      }
+    }
+  ],
+  
+  recipes: [
+    {
+      triggerKeywords: ['ресторан', 'кафе', 'меню', 'заведен'],
+      recommendCategory: 'websites',
+      message: 'Создайте сайт для вашего ресторана!',
+      presetParams: {
+        type: 'Лендинг',
+        style: 'Минимализм',
+        color: 'Прочитка (#f58631)'
+      }
+    }
+  ],
+  
+  minecraft: [
+    {
+      triggerKeywords: ['сервер', 'игрок', 'сообщество', 'мультиплеер'],
+      recommendCategory: 'bots',
+      message: 'Добавьте бота для управления сервером!',
+      presetParams: {
+        platform: 'Discord',
+        language: 'Python'
+      }
+    }
+  ],
+  
+  bots: [
+    {
+      triggerKeywords: ['магазин', 'заказ', 'товар', 'покуп'],
+      recommendCategory: 'websites',
+      message: 'Создайте сайт для вашего магазина!',
+      presetParams: {
+        type: 'Интернет-магазин',
+        features: ['Корзина покупок', 'Поиск']
+      }
+    }
+  ],
+  
+  images: [
+    {
+      triggerKeywords: ['стикер', 'аватар', 'эмодзи', 'смайл'],
+      recommendCategory: 'stickers',
+      message: 'Превратите изображения в стикеры!',
+      presetParams: {
+        style: 'мультяшный',
+        platform: 'Telegram'
+      }
+    }
+  ],
+  
+  youtube: [
+    {
+      triggerKeywords: ['обучен', 'туториал', 'инструкц', 'как сделать'],
+      recommendCategory: 'school',
+      message: 'Создайте учебные материалы по теме!',
+      presetParams: {
+        subj: 'Информатика',
+        task: 'Код'
+      }
+    }
+  ]
+};
+
+// Функция для анализа текста и показа рекомендаций:
+function checkCrossRecommendations(category, userText) {
+  const recommendations = crossRecommendations[category];
+  if (!recommendations || !userText) return null;
+  
+  const userTextLower = userText.toLowerCase();
+  const matched = [];
+  
+  recommendations.forEach(rec => {
+    // Проверяем каждое ключевое слово
+    rec.triggerKeywords.forEach(keyword => {
+      if (userTextLower.includes(keyword.toLowerCase())) {
+        matched.push({
+          ...rec,
+          matchedKeyword: keyword
+        });
+      }
+    });
+  });
+  
+  return matched.length > 0 ? matched : null;
+}
+
+// ===== КОНТЕКСТУАЛЬНЫЕ ПАРАМЕТРЫ =====
+const contextRules = {
+  websites: [
+    {
+      triggers: ['ресторан', 'кафе', 'бар', 'кофейн', 'пиццер'],
+      autoSet: {
+        type: 'Лендинг',
+        color: 'Прочитка (#f58631)',
+        features: ['Адаптивный дизайн', 'SEO оптимизация'],
+        style: 'Минимализм'
+      },
+      suggestions: [
+        "Добавьте раздел 'Меню'",
+        "Интегрируйте систему онлайн-заказа",
+        "Фотогалерея блюд"
+      ]
+    },
+    {
+      triggers: ['магазин', 'интернет-магазин', 'экоммерц', 'товар', 'продаж'],
+      autoSet: {
+        type: 'Интернет-магазин',
+        color: 'Ты трубка (#db0f00)',
+        features: ['Корзина покупок', 'Поиск', 'SEO оптимизация'],
+        style: 'Матовое стекло'
+      },
+      suggestions: [
+        "Система фильтрации товаров",
+        "Отзывы покупателей",
+        "Сравнение товаров"
+      ]
+    },
+    {
+      triggers: ['портфолио', 'художник', 'дизайнер', 'фотограф', 'арт'],
+      autoSet: {
+        type: 'Портфолио',
+        color: 'Тайский промпт (#5c71e5)',
+        style: 'Матовое стекло',
+        features: ['Адаптивный дизайн', 'Смена темы']
+      },
+      suggestions: [
+        "Слайдер работ",
+        "Биография автора",
+        "Контактная форма"
+      ]
+    }
+  ],
+  
+  recipes: [
+    {
+      triggers: ['быстр', 'просто', 'легк', 'на скорую'],
+      autoSet: {
+        complexity: 'Простое',
+        dietary: 'Без ограничений'
+      },
+      suggestions: [
+        "Используйте простые ингредиенты",
+        "Время готовки до 30 минут"
+      ]
+    },
+    {
+      triggers: ['здоров', 'диет', 'фитнес', 'пп'],
+      autoSet: {
+        dietary: 'Низкоуглеводное',
+        cuisine: 'средиземноморской'
+      },
+      suggestions: [
+        "Укажите калорийность",
+        "Добавьте альтернативные ингредиенты"
+      ]
+    }
+  ],
+  
+  images: [
+    {
+      triggers: ['лого', 'бренд', 'фирменн', 'компани'],
+      autoSet: {
+        style: 'минималистичное',
+        aspect_ratio: '1:1 (квадрат)'
+      },
+      suggestions: [
+        "Создайте несколько вариантов",
+        "Используйте цвета бренда"
+      ]
+    }
+  ]
+};
+
+// Функция автоподстановки
+function applyContextualParams(category, userText) {
+  const rules = contextRules[category];
+  if (!rules || !userText) return { autoParams: {}, suggestions: [] };
+  
+  const userTextLower = userText.toLowerCase();
+  const autoParams = {};
+  const suggestions = [];
+  
+  rules.forEach(rule => {
+    const hasTrigger = rule.triggers.some(trigger => 
+      userTextLower.includes(trigger.toLowerCase())
+    );
+    
+    if (hasTrigger) {
+      // Автоподстановка параметров
+      Object.assign(autoParams, rule.autoSet);
+      
+      // Собираем suggestions
+      if (rule.suggestions) {
+        suggestions.push(...rule.suggestions);
+      }
+    }
+  });
+  
+  return { autoParams, suggestions };
+}
+
+// Функция для показа suggestions
+function showContextSuggestions(suggestions) {
+  const container = document.getElementById('contextSuggestions');
+  if (!container) {
+    const newContainer = document.createElement('div');
+    newContainer.id = 'contextSuggestions';
+    newContainer.className = 'context-suggestions';
+    // Вставляем перед сгенерированным промптом
+    const generatedPrompt = modal.querySelector('.generated-prompt');
+    if (generatedPrompt) {
+      generatedPrompt.parentNode.insertBefore(newContainer, generatedPrompt);
+    }
+  }
+  
+  if (suggestions.length === 0) {
+    container.style.display = 'none';
+    return;
+  }
+  
+  container.innerHTML = `
+    <div class="suggestions-header">
+      <i class="fas fa-lightbulb"></i>
+      <span>Идеи для вашего промпта:</span>
+    </div>
+    <ul class="suggestions-list">
+      ${suggestions.map(s => `<li>${s}</li>`).join('')}
+    </ul>
+  `;
+  container.style.display = 'block';
+}
+
+// Дебаунс функция
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
 // ===== ВАЛИДАЦИЯ КОМБИНАЦИЙ =====
 const validationRules = {
   websites: {
@@ -1489,6 +1766,92 @@ function showValidationMessages(validation) {
   }
 }
 
+// ===== КРОСС-РЕКОМЕНДАЦИИ =====
+function showCrossRecommendations() {
+  const recommendationsContainer = document.getElementById('crossRecommendations');
+  if (!recommendationsContainer) {
+    // Создаём контейнер если его нет
+    const container = document.createElement('div');
+    container.id = 'crossRecommendations';
+    container.className = 'cross-recommendations';
+    // Вставляем перед формой
+    const form = modal.querySelector('#prompt-form');
+    if (form) {
+      form.parentNode.insertBefore(container, form);
+    }
+  }
+  
+  const userText = customInput.value.trim();
+  if (!userText || userText.length < 5) {
+    recommendationsContainer.style.display = 'none';
+    return;
+  }
+  
+  // Проверяем рекомендации для текущей категории
+  const matchedRecommendations = checkCrossRecommendations(selectedType, userText);
+  
+  if (!matchedRecommendations || matchedRecommendations.length === 0) {
+    recommendationsContainer.style.display = 'none';
+    return;
+  }
+  
+  // Показываем рекомендации
+  recommendationsContainer.innerHTML = `
+    <div class="recommendations-header">
+      <i class="fas fa-lightbulb"></i>
+      <span>Связанные возможности</span>
+    </div>
+    ${matchedRecommendations.map(rec => `
+      <div class="recommendation-card" data-category="${rec.recommendCategory}">
+        <div class="recommendation-text">${rec.message}</div>
+        <div class="recommendation-actions">
+          <button class="btn btn-sm btn-secondary try-recommendation" 
+                  data-category="${rec.recommendCategory}"
+                  data-preset='${JSON.stringify(rec.presetParams || {})}'>
+            Попробовать
+          </button>
+        </div>
+      </div>
+    `).join('')}
+  `;
+  
+  recommendationsContainer.style.display = 'block';
+  
+  // Обработчики для кнопок
+  recommendationsContainer.querySelectorAll('.try-recommendation').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const newCategory = this.getAttribute('data-category');
+      const presetParams = JSON.parse(this.getAttribute('data-preset') || '{}');
+      
+      // Переключаем категорию
+      switchToCategory(newCategory, presetParams);
+    });
+  });
+}
+
+// Функция переключения категории
+function switchToCategory(newCategory, presetParams = {}) {
+  selectedType = newCategory;
+  incCategory(newCategory);
+  
+  // Обновляем модалку
+  const modalTitle = modal.querySelector(".modal-title");
+  modalTitle.textContent = `Кастомизация: ${promptTemplates[newCategory]?.name || newCategory}`;
+  
+  // Сохраняем текст пользователя
+  const currentText = customInput.value;
+  renderTechnicalParams(newCategory);
+  customInput.value = currentText;
+  
+  // Применяем пресет параметры
+  if (Object.keys(presetParams).length > 0) {
+    setTimeout(() => applyPresetParams(presetParams), 100);
+  }
+  
+  // Показываем новые рекомендации
+  setTimeout(showCrossRecommendations, 300);
+}
+
   // ===== МОДАЛКА =====
   let selectedType = "recipes";
 
@@ -1691,11 +2054,63 @@ typeCards.forEach((card) => {
   const copyButton = modal.querySelector("#copy-prompt");
 
   // Отслеживаем изменения в текстовом поле
-  customInput.addEventListener('input', () => {
-    if (customInput.value.trim()) {
-      isFormDirty = true;
-    }
-  });
+customInput.addEventListener('input', () => {
+  if (customInput.value.trim()) {
+    isFormDirty = true;
+  }
+  
+  // Анализируем текст для кросс-рекомендаций
+  if (customInput.value.trim().length > 10) {
+    showCrossRecommendations();
+  }
+});
+
+// ДОБАВЬТЕ ДЕБАУНС ДЛЯ КОНТЕКСТУАЛЬНЫХ ПАРАМЕТРОВ (после вышеуказанного кода)
+customInput.addEventListener('input', debounce(() => {
+  const text = customInput.value.trim();
+  if (text.length < 15) return;
+  
+  const result = applyContextualParams(selectedType, text);
+  
+  // Применяем автопараметры
+  if (Object.keys(result.autoParams).length > 0) {
+    applyPresetParams(result.autoParams);
+    
+    // Показываем уведомление
+    showContextToast(`Автоматически настроены параметры для "${promptTemplates[selectedType]?.name || selectedType}"`);
+  }
+  
+  // Показываем suggestions
+  showContextSuggestions(result.suggestions);
+}, 800));
+
+// Функция для показа toast-уведомлений
+function showContextToast(message) {
+  // Удаляем старый toast если есть
+  const oldToast = document.querySelector('.context-toast');
+  if (oldToast) oldToast.remove();
+  
+  // Создаём новый toast
+  const toast = document.createElement('div');
+  toast.className = 'context-toast';
+  toast.innerHTML = `
+    <div class="toast-content">
+      <i class="fas fa-magic"></i>
+      <span>${message}</span>
+    </div>
+  `;
+  
+  document.body.appendChild(toast);
+  
+  // Анимация появления
+  setTimeout(() => toast.classList.add('show'), 10);
+  
+  // Удаление через 3 секунды
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
   
   // Отслеживаем изменения в селектах
   toneSelect.addEventListener('change', () => {
