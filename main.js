@@ -1890,10 +1890,10 @@ function switchToCategory(newCategory, presetParams = {}) {
   <h4>Ваш промпт:</h4>
   <div id="final-prompt" class="prompt-output"></div>
 
-  <div class="example-actions" style="margin-top:12px; justify-content:flex-start;">
-    <button id="copy-prompt" class="btn btn-secondary" type="button">Копировать</button>
-    <button id="download-prompt" class="btn btn-primary" type="button">Скачать</button>
-  </div>
+<div class="example-actions" style="margin-top:12px; justify-content:flex-start; gap: 10px;">
+  <button id="copy-prompt" class="btn btn-secondary" type="button">Копировать</button>
+  <button id="share-prompt" class="btn btn-primary" type="button">Поделиться</button>
+  <button id="download-prompt" class="btn btn-primary" type="button">Скачать</button>
 </div>
 
       </div>
@@ -2535,6 +2535,35 @@ downloadButton.addEventListener("click", () => {
   URL.revokeObjectURL(url);
 });
 
+// ✅ кнопка "Поделиться"
+const shareButton = modal.querySelector("#share-prompt");
+if (shareButton) {
+  shareButton.addEventListener("click", function () {
+    if (!customInput.value.trim() && !finalPrompt.textContent) {
+      return alert("Сначала создайте промпт или введите идею");
+    }
+    
+    // Создаём ссылку
+    const shareLink = createPromptShareLink();
+    
+    // Копируем в буфер и показываем уведомление
+    navigator.clipboard.writeText(shareLink).then(() => {
+      showShareToast('Ссылка на промпт скопирована в буфер!', shareLink);
+    }).catch(err => {
+      console.error('Ошибка копирования:', err);
+      showShareToast('Ссылка на промпт создана!', shareLink);
+    });
+  });
+}
+
+// Автозагрузка промпта из URL параметров
+setTimeout(() => {
+  const loaded = loadPromptFromUrl();
+  if (loaded) {
+    console.log('Промпт загружен из URL');
+  }
+}, 1500);
+
   console.log("✅ Генератор инициализирован");
 
   // Защита при перезагрузке страницы, если модалка открыта
@@ -2618,6 +2647,177 @@ downloadButton.addEventListener("click", () => {
       updateProgress();
     });
   }
+}
+
+// ===== ШИФРОВАНИЕ И ПОДЕЛИТЬСЯ =====
+
+// Функция создания ссылки для промпта
+function createPromptShareLink() {
+  // Собираем все данные промпта
+  const promptData = {
+    type: selectedType,
+    idea: customInput.value.trim(),
+    tone: toneSelect.value,
+    params: {},
+    timestamp: new Date().toISOString(),
+    version: '1.0'
+  };
+  
+  // Собираем параметры
+  const params = promptTemplates[selectedType]?.params || {};
+  for (const [key, param] of Object.entries(params)) {
+    const element = modal.querySelector(`#param-${key}`);
+    if (element) {
+      if (param.type === "select") {
+        promptData.params[key] = element.value;
+      } else if (param.type === "multiselect") {
+        const checkboxes = element.querySelectorAll('input[type="checkbox"]:checked');
+        promptData.params[key] = Array.from(checkboxes).map(cb => cb.value);
+      }
+    }
+  }
+  
+  // Преобразуем в JSON и кодируем в base64
+  const jsonString = JSON.stringify(promptData);
+  const base64Data = btoa(encodeURIComponent(jsonString)); // Двойное кодирование для безопасности
+  
+  // Создаём короткий идентификатор (первые 8 символов хеша)
+  const shortId = createShortId(base64Data);
+  
+  // Возвращаем полную ссылку
+  const baseUrl = window.location.origin + window.location.pathname;
+  return `${baseUrl}?p=${shortId}&d=${base64Data.substring(0, 100)}`; // Ограничиваем длину
+}
+
+// Создание короткого ID из данных
+function createShortId(data) {
+  let hash = 0;
+  for (let i = 0; i < data.length; i++) {
+    hash = ((hash << 5) - hash) + data.charCodeAt(i);
+    hash = hash & hash; // Преобразуем в 32-битное целое
+  }
+  return Math.abs(hash).toString(36).substring(0, 8);
+}
+
+// Загрузка промпта из ссылки
+function loadPromptFromUrl() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const promptData = urlParams.get('d');
+  const promptId = urlParams.get('p');
+  
+  if (!promptData || !promptId) return false;
+  
+  try {
+    // Декодируем данные
+    const jsonString = decodeURIComponent(atob(promptData));
+    const data = JSON.parse(jsonString);
+    
+    // Проверяем версию
+    if (data.version !== '1.0') {
+      console.warn('Несовместимая версия промпта');
+      return false;
+    }
+    
+    // Автоматически открываем модалку и заполняем данные
+    setTimeout(() => {
+      // Ищем карточку нужной категории и кликаем
+      const targetCard = document.querySelector(`.type-card[data-type="${data.type}"]`);
+      if (targetCard) {
+        targetCard.click();
+        
+        // После открытия модалки заполняем данные
+        setTimeout(() => {
+          if (data.idea) customInput.value = data.idea;
+          if (data.tone) toneSelect.value = data.tone;
+          
+          // Заполняем параметры
+          Object.keys(data.params).forEach(key => {
+            const paramEl = modal.querySelector(`#param-${key}`);
+            if (paramEl) {
+              if (paramEl.tagName === 'SELECT') {
+                paramEl.value = data.params[key];
+              } else if (paramEl.classList.contains('multi-select')) {
+                const checkboxes = paramEl.querySelectorAll('input[type="checkbox"]');
+                const values = Array.isArray(data.params[key]) ? data.params[key] : [data.params[key]];
+                checkboxes.forEach(checkbox => {
+                  checkbox.checked = values.includes(checkbox.value);
+                });
+              }
+              paramEl.dispatchEvent(new Event('change'));
+            }
+          });
+          
+          // Показываем уведомление
+          showShareToast('Промпт загружен из ссылки!');
+        }, 500);
+      }
+    }, 1000);
+    
+    return true;
+  } catch (error) {
+    console.error('Ошибка загрузки промпта:', error);
+    return false;
+  }
+}
+
+// Уведомление для поделиться
+function showShareToast(message, link = null) {
+  const toast = document.createElement('div');
+  toast.className = 'share-toast';
+  
+  if (link) {
+    toast.innerHTML = `
+      <div class="toast-content">
+        <i class="fas fa-link"></i>
+        <span>${message}</span>
+        <div class="toast-link">
+          <input type="text" value="${link}" readonly id="shareLinkInput">
+          <button class="btn-copy-link" title="Скопировать ссылку">
+            <i class="fas fa-copy"></i>
+          </button>
+        </div>
+      </div>
+    `;
+  } else {
+    toast.innerHTML = `
+      <div class="toast-content">
+        <i class="fas fa-check-circle"></i>
+        <span>${message}</span>
+      </div>
+    `;
+  }
+  
+  document.body.appendChild(toast);
+  
+  setTimeout(() => toast.classList.add('show'), 10);
+  
+  // Обработчик копирования ссылки
+  if (link) {
+    toast.querySelector('.btn-copy-link')?.addEventListener('click', function() {
+      navigator.clipboard.writeText(link);
+      const icon = this.querySelector('i');
+      icon.className = 'fas fa-check';
+      setTimeout(() => {
+        icon.className = 'fas fa-copy';
+      }, 2000);
+    });
+    
+    // Также можно кликнуть на само поле ввода
+    toast.querySelector('#shareLinkInput')?.addEventListener('click', function() {
+      this.select();
+      navigator.clipboard.writeText(this.value);
+      const icon = toast.querySelector('.btn-copy-link i');
+      icon.className = 'fas fa-check';
+      setTimeout(() => {
+        icon.className = 'fas fa-copy';
+      }, 2000);
+    });
+  }
+  
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 300);
+  }, link ? 8000 : 3000); // Для ссылки показываем дольше
 }
 
 // ===== ПОИСК ПО КАРТОЧКАМ =====
