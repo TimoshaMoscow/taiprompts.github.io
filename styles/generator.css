@@ -1949,3 +1949,133 @@
     font-size: 0.8rem;
   }
 }
+
+/* ===== УВЕДОМЛЕНИЯ ДЛЯ ПОДЕЛИТЬСЯ ===== */
+.share-toast {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(33, 37, 41, 0.98);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(94, 114, 228, 0.3);
+  border-radius: 16px;
+  padding: 20px;
+  color: white;
+  font-size: 0.95rem;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  z-index: 10000;
+  opacity: 0;
+  transition: all 0.3s ease;
+  max-width: 500px;
+  width: 90%;
+}
+
+.share-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.share-toast .toast-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.share-toast .toast-content i {
+  color: var(--accent-color);
+  font-size: 1.2rem;
+  margin-right: 8px;
+}
+
+.toast-link {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+#shareLinkInput {
+  flex: 1;
+  padding: 10px 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  color: white;
+  font-size: 0.9rem;
+  font-family: 'Courier New', monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+#shareLinkInput:hover {
+  border-color: var(--accent-color);
+}
+
+#shareLinkInput:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+.btn-copy-link {
+  background: rgba(94, 114, 228, 0.2);
+  border: 1px solid rgba(94, 114, 228, 0.4);
+  color: var(--accent-color);
+  border-radius: 10px;
+  width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.btn-copy-link:hover {
+  background: var(--accent-color);
+  color: white;
+  transform: scale(1.05);
+}
+
+.btn-copy-link:active {
+  transform: scale(0.95);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .share-toast {
+    bottom: 80px;
+    padding: 16px;
+    width: 95%;
+    max-width: 95%;
+  }
+  
+  #shareLinkInput {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+  
+  .toast-link {
+    flex-direction: column;
+  }
+  
+  .btn-copy-link {
+    width: 100%;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .share-toast {
+    bottom: 70px;
+    padding: 14px;
+    font-size: 0.9rem;
+  }
+  
+  #shareLinkInput {
+    font-size: 0.8rem;
+  }
+}
