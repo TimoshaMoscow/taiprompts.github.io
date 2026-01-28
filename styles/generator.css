@@ -1718,3 +1718,234 @@
     font-size: 0.8rem;
   }
 }
+
+/* ===== ШАБЛОНЫ ПРОМПТОВ ===== */
+.prompt-templates {
+  background: rgba(94, 114, 228, 0.08);
+  border: 1px solid rgba(94, 114, 228, 0.15);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+  animation: fadeIn 0.4s ease;
+}
+
+.templates-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  color: var(--accent-color);
+}
+
+.templates-header h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.templates-header i {
+  font-size: 1.2rem;
+  color: var(--accent-color);
+}
+
+.templates-count {
+  background: rgba(94, 114, 228, 0.2);
+  color: var(--accent-color);
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-left: auto;
+}
+
+.templates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.template-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.template-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-color);
+  box-shadow: 0 8px 20px rgba(94, 114, 228, 0.15);
+}
+
+.template-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.template-badge {
+  background: rgba(94, 114, 228, 0.15);
+  color: var(--accent-color);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.template-tone {
+  background: rgba(255, 193, 7, 0.15);
+  color: #ffc107;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.template-title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-color);
+  line-height: 1.3;
+}
+
+.template-description {
+  font-size: 0.9rem;
+  color: var(--secondary-color);
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+.template-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--accent-color);
+  color: var(--accent-color);
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
+
+.btn-outline:hover {
+  background: var(--accent-color);
+  color: white;
+}
+
+.btn-icon {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--secondary-color);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.btn-icon:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+}
+
+.no-templates {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 30px 20px;
+  color: var(--secondary-color);
+}
+
+.no-templates i {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  opacity: 0.5;
+}
+
+.no-templates p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Toast для шаблонов */
+.template-toast {
+  position: fixed;
+  bottom: 150px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(25, 135, 84, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 12px 20px;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 8px 25px rgba(25, 135, 84, 0.3);
+  z-index: 10000;
+  opacity: 0;
+  transition: all 0.3s ease;
+  max-width: 80%;
+  text-align: center;
+}
+
+.template-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.template-toast i {
+  color: #a3e9b8;
+  margin-right: 8px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .templates-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .template-card {
+    padding: 14px;
+  }
+  
+  .template-toast {
+    bottom: 120px;
+    padding: 10px 16px;
+    font-size: 0.85rem;
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .prompt-templates {
+    padding: 16px;
+  }
+  
+  .template-actions {
+    flex-direction: column;
+  }
+  
+  .btn-outline {
+    width: 100%;
+  }
+  
+  .template-toast {
+    bottom: 100px;
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+}
