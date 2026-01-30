@@ -301,23 +301,6 @@ function censorText(text) {
     return text;
 }
 
-// ===== Функция для обновления цвета в select =====
-function updateColorSelect(select) {
-  if (!select) return;
-  const selectedValue = select.value;
-  select.setAttribute('data-value', selectedValue);
-  
-  const colorMatch = selectedValue.match(/\((#[\da-f]{6})\)/i);
-  if (colorMatch) {
-    select.style.setProperty('--selected-color', colorMatch[1]);
-  }
-}
-
-// Инициализация при загрузке
-window.addEventListener('load', function() {
-  document.querySelectorAll('.color-select').forEach(updateColorSelect);
-});
-
 const promptTemplates = {
   recipes: {
     name: "Рецепты",
@@ -2236,14 +2219,14 @@ function renderTechnicalParams(type) {
 
     // тут
     if (param.type === "select") {
-      if (key === 'color') {
-        // Особый случай для color с классом color-select
-        html += `<select id="param-${key}" class="tech-param color-select" data-param="${key}">`;
-        param.options.forEach((option) => {
-          const selected = option === param.default ? "selected" : "";
-          html += `<option value="${option}" ${selected}>${option}</option>`;
-        });
-        html += `</select>`;
+if (key === 'color') {
+    html += `<select id="param-${key}" class="tech-param" data-param="${key}">`;
+    param.options.forEach((option) => {
+        const selected = option === param.default ? "selected" : "";
+        html += `<option value="${option}" ${selected}>${option}</option>`;
+    });
+    html += `</select>`;
+}
       } else {
         // Обычный select для остальных
         html += `<select id="param-${key}" class="tech-param" data-param="${key}">`;
@@ -2281,22 +2264,6 @@ function renderTechnicalParams(type) {
   
   // Инициализируем валидацию с текущими значениями
   setTimeout(updateValidation, 100);
-
-// Обновляем цветной select если он есть
-setTimeout(() => {
-  const colorSelect = container.querySelector('.color-select');
-  if (colorSelect) {
-    // Устанавливаем начальное значение data-value
-    updateColorSelect(colorSelect);
-    
-    colorSelect.addEventListener('change', function() {
-      updateColorSelect(this);
-    });
-    
-    // Также обновляем при инициализации модалки
-    updateColorSelect(colorSelect);
-  }
- }, 50);
 }
 
 typeCards.forEach((card) => {
@@ -2854,18 +2821,6 @@ downloadButton.addEventListener("click", () => {
 
   URL.revokeObjectURL(url);
 });
-
-  // Инициализируем цветные селекты
-  document.addEventListener('change', function(e) {
-    if (e.target.classList.contains('color-select')) {
-      updateColorSelect(e.target);
-    }
-  });
-  
-  // Инициализируем существующие
-  setTimeout(() => {
-    document.querySelectorAll('.color-select').forEach(updateColorSelect);
-  }, 300);
 
   console.log("✅ Генератор инициализирован");
 
