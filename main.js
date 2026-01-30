@@ -2217,13 +2217,26 @@ function renderTechnicalParams(type) {
     html += `<div class="param-group">`;
     html += `<label>${param.label}</label>`;
 
+    // тут
     if (param.type === "select") {
-      html += `<select id="param-${key}" class="tech-param" data-param="${key}">`;
-      param.options.forEach((option) => {
-        const selected = option === param.default ? "selected" : "";
-        html += `<option value="${option}" ${selected}>${option}</option>`;
-      });
-      html += `</select>`;
+      if (key === 'color') {
+        // Особый случай для color с классом color-select
+        html += `<select id="param-${key}" class="tech-param color-select" data-param="${key}">`;
+        param.options.forEach((option) => {
+          const selected = option === param.default ? "selected" : "";
+          html += `<option value="${option}" ${selected}>${option}</option>`;
+        });
+        html += `</select>`;
+      } else {
+        // Обычный select для остальных
+        html += `<select id="param-${key}" class="tech-param" data-param="${key}">`;
+        param.options.forEach((option) => {
+          const selected = option === param.default ? "selected" : "";
+          html += `<option value="${option}" ${selected}>${option}</option>`;
+        });
+        html += `</select>`;
+      }
+      // тут
     } else if (param.type === "multiselect") {
       html += `<div class="multi-select" id="param-${key}" data-param="${key}">`;
       const defaultValues = Array.isArray(param.default) ? param.default : [param.default];
@@ -2251,6 +2264,24 @@ function renderTechnicalParams(type) {
   
   // Инициализируем валидацию с текущими значениями
   setTimeout(updateValidation, 100);
+
+  // Обновляем цветной select если он есть
+  setTimeout(() => {
+    const colorSelect = container.querySelector('.color-select');
+    if (colorSelect) {
+      updateColorSelect(colorSelect);
+      colorSelect.addEventListener('change', function() {
+        updateColorSelect(this);
+      });
+    }
+  }, 50);
+}
+
+// Функция для обновления цвета в select
+function updateColorSelect(select) {
+  const selectedValue = select.value;
+  // Обновляем data-атрибут для CSS
+  select.setAttribute('data-value', selectedValue);
 }
 
 typeCards.forEach((card) => {
@@ -2808,6 +2839,18 @@ downloadButton.addEventListener("click", () => {
 
   URL.revokeObjectURL(url);
 });
+
+  // Инициализируем цветные селекты
+  document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('color-select')) {
+      updateColorSelect(e.target);
+    }
+  });
+  
+  // Инициализируем существующие
+  setTimeout(() => {
+    document.querySelectorAll('.color-select').forEach(updateColorSelect);
+  }, 300);
 
   console.log("✅ Генератор инициализирован");
 
