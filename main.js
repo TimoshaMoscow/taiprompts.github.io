@@ -301,217 +301,478 @@ function censorText(text) {
     return text;
 }
 
-  const promptTemplates = {
-    recipes: {
-      name: "Рецепты",
-      template:
-        "Создай подробный рецепт {cuisine} кухни, блюда с описанием: '{idea}'. Ограничения: {dietary}, Сложность: {complexity}. Включи ингредиенты, пошаговое приготовление, время готовки и полезную информацию, например КБЖУ.",
-      params: {
-        cuisine: {
-          type: "select",
-          label: "Тип кухни",
-          options: ["любой", "итальянской", "азиатской", "мексиканской", "русской", "французской", "средиземноморской"],
-          default: "любой",
-        },
-        dietary: {
-          type: "select",
-          label: "Диетические требования",
-          options: ["Без ограничений", "Веганское", "Вегетарианское", "Без глютена", "Низкоуглеводное", "Высокобелковое"],
-          default: "Без ограничений",
-        },
-        complexity: {
-          type: "select",
-          label: "Сложность",
-          options: ["Простое", "Средней сложности", "Сложное", "Шеф-повар"],
-          default: "Средней сложности",
-        },
-      },
-    },
+const promptTemplates = {
+  recipes: {
+    name: "Рецепты",
+    template: function(params, idea, tone) {
+      const { cuisine, dietary, complexity } = params;
+      
+      // Логика для измерений
+      let measurements = "в граммах и миллилитрах";
+      if (cuisine.includes("русской") || cuisine.includes("американской")) {
+        measurements = "в стаканах, ложках и граммах";
+      }
+      
+      // Логика для сложности
+      let timeNote = "";
+      if (complexity.includes("Простое")) {
+        timeNote = "Время приготовления до 30 минут. ";
+      } else if (complexity.includes("Сложное")) {
+        timeNote = "Время приготовления 1.5-3 часа. ";
+      }
+      
+      // Логика для диеты
+      let dietNote = "";
+      if (dietary.includes("Веган")) {
+        dietNote = "Исключите все продукты животного происхождения. ";
+      } else if (dietary.includes("Высокобелковое")) {
+        dietNote = "Акцент на белковые ингредиенты. ";
+      }
+      
+      let tonePrefix = "";
+      switch (tone) {
+        case "professional": tonePrefix = "Используй профессиональный кулинарный язык. "; break;
+        case "friendly": tonePrefix = "Будь дружелюбным и приветливым. "; break;
+        case "creative": tonePrefix = "Прояви креативность и оригинальность. "; break;
+        case "technical": tonePrefix = "Сфокусируйся на технических деталях. "; break;
+        case "detailed": tonePrefix = "Дай максимально детализированный ответ. "; break;
+      }
+      
+      return `${tonePrefix}Создай подробный рецепт ${cuisine} кухни, блюда с описанием: '${idea}'. 
+Ограничения: ${dietary}, Сложность: ${complexity}. 
+${timeNote}${dietNote}
+Включи ингредиенты ${measurements}, пошаговое приготовление, время готовки и полезную информацию, например КБЖУ.
 
-    minecraft: {
-      name: "Моды Minecraft",
-      template:
-        "Разработай {type} для Minecraft {version} {loader} для {compatibility} с описанием: '{idea}'. Особенности: {features} и {additionally}. Детально опиши функционал и механики.",
-      params: {
-        type: {
-          type: "select",
-          label: "Тип контента",
-          options: ["Мод", "Ресурспак", "Датапак", "Плагин", "Аддон"],
-          default: "Мод",
-        },
-        version: {
-          type: "select",
-          label: "Версия Minecraft",
-          options: ["1.21.8", "1.21.4", "1.21", "1.20.1", "1.19.2", "1.18.2", "1.17", "1.16.5", "1.12.2", "1.8.9", "Любая"],
-          default: "1.20.1",
-        },
-        loader: {
-          type: "select",
-          label: "Загрузчик",
-          options: ["Forge", "Fabric", "Paper", "Spigot", "Bukkit"],
-          default: "Forge",
-        },
-        compatibility: {
-          type: "select",
-          label: "Совместимость",
-          options: ["Сервер", "Клиент"],
-          default: "Клиент",
-        },
-        features: {
-          type: "multiselect",
-          label: "Особенности",
-          options: [
-            "Новые блоки",
-            "Новые мобы",
-            "Новые предметы",
-            "Генерация структур",
-            "Изменение мира",
-            "Магическая система",
-            "Технологии",
-            "Квесты",
-            "Боссы",
-            "GUI",
-            "Рецепты",
-            "Оптимизация",
-            "Клиентские фишки",
-            "Конфиг",
-            "Технические функции",
-          ],
-          default: "Оптимизация",
-        },
-        additionally: {
-          type: "multiselect",
-          label: "Дополнительно",
-          options: [
-            "Полный код",
-            "Структура проекта",
-            "Объяснение ключевых понятий",
-          ],
-          default: "Полный код",
-        },
+Промпт создан с помощью TAIPrompts`;
+    },
+    params: {
+      cuisine: {
+        type: "select",
+        label: "Тип кухни",
+        options: ["любой", "итальянской", "азиатской", "мексиканской", "русской", "французской", "средиземноморской"],
+        default: "любой",
+      },
+      dietary: {
+        type: "select",
+        label: "Диетические требования",
+        options: ["Без ограничений", "Веганское", "Вегетарианское", "Без глютена", "Низкоуглеводное", "Высокобелковое"],
+        default: "Без ограничений",
+      },
+      complexity: {
+        type: "select",
+        label: "Сложность",
+        options: ["Простое", "Средней сложности", "Сложное", "Шеф-повар"],
+        default: "Средней сложности",
       },
     },
+  },
 
-    bots: {
-      name: "Боты и автоматизация",
-      template:
-        "Создай бота на {language} для платформы {platform}, с функционалом '{idea}'. Включи: описание функций, {functionality}, {additionally}, обработку сообщений и установочные инструкции.",
-      params: {
-        platform: {
-          type: "select",
-          label: "Платформа",
-          options: ["Telegram", "Discord", "Внешний", "Minecraft", "MAX", "Другой", "Любой"],
-          default: "Telegram",
-        },
-        language: {
-          type: "select",
-          label: "Язык программирования",
-          options: ["Python", "JavaScript", "TypeScript", "Java", "PHP", "Go", "Любой"],
-          default: "Python",
-        },
-        functionality: {
-          type: "multiselect",
-          label: "Особенности",
-          options: [
-            "Админ-панель",
-            "Платежи",
-            "База данных",
-            "API интеграции",
-            "Модерация",
-            "Игры",
-            "Уведомления",
-            "Работа с файлами",
-            "Inline клавиатуры",
-            "Команды",
-          ],
-          default: "Модерация",
-        },
-        additionally: {
-          type: "multiselect",
-          label: "Дополнительно",
-          options: [
-            "Полный код",
-            "Структура проекта",
-            "Объяснение ключевых понятий",
-          ],
-          default: "Полный код",
-        },
-      },
-    },
+  websites: {
+    name: "Веб-сайты",
+    template: function(params, idea, tone) {
+      const { type, stack, style, color, features, additionally } = params;
+      
+      // Автоподстановка языка и фреймворков
+      let stackDetails = stack;
+      let backendLang = "";
+      
+      if (stack === "React") {
+        stackDetails = "React (JavaScript/TypeScript)";
+        backendLang = "Node.js (JavaScript)";
+      } else if (stack === "Vue.js") {
+        stackDetails = "Vue.js (JavaScript)";
+        backendLang = "Node.js (JavaScript)";
+      } else if (stack === "Angular") {
+        stackDetails = "Angular (TypeScript)";
+        backendLang = "Node.js (TypeScript)";
+      } else if (stack === "Node.js") {
+        stackDetails = "Node.js (JavaScript) с Express.js";
+        backendLang = "Node.js (JavaScript)";
+      } else if (stack === "Python/Django") {
+        stackDetails = "Django (Python)";
+        backendLang = "Django (Python)";
+      } else if (stack === "Ruby on Rails") {
+        stackDetails = "Ruby on Rails (Ruby)";
+        backendLang = "Ruby on Rails (Ruby)";
+      }
+      
+      // Логика для бекенда
+      let backendNote = "";
+      if (features.includes("Бекенд")) {
+        backendNote = `Бекенд: ${backendLang} с REST API. `;
+      }
+      
+      // Логика для PWA
+      let pwaDetails = "";
+      if (features.includes("PWA")) {
+        pwaDetails = "Service Worker для оффлайн-режима, манифест, добавление на главный экран. ";
+      }
+      
+      // Логика для адаптивности
+      let responsiveDetails = "";
+      if (features.includes("Адаптивный дизайн")) {
+        responsiveDetails = "Адаптация под мобильные устройства, планшеты и десктоп. ";
+      }
+      
+      // Логика для SEO
+      let seoDetails = "";
+      if (features.includes("SEO оптимизация")) {
+        seoDetails = "Семантическая разметка, мета-теги, скорость загрузки. ";
+      }
+      
+      let tonePrefix = "";
+      switch (tone) {
+        case "professional": tonePrefix = "Используй профессиональный технический язык. "; break;
+        case "friendly": tonePrefix = "Будь дружелюбным и приветливым. "; break;
+        case "creative": tonePrefix = "Прояви креативность и оригинальность. "; break;
+        case "technical": tonePrefix = "Сфокусируйся на технических деталях. "; break;
+        case "detailed": tonePrefix = "Дай максимально детализированный ответ. "; break;
+      }
+      
+      return `${tonePrefix}Разработай веб-сайт типа "${type}" на ${stackDetails} по описанию: "${idea}". 
+${backendNote}${responsiveDetails}${pwaDetails}${seoDetails}
+Основная палитра: ${color}. Стиль сайта: ${style}.
 
-    websites: {
-      name: "Веб-сайты",
-      template:
-        "Разработай веб-сайт типа {type} на {stack} по описанию '{idea}'. Включи: {additionally}, {features}. Основная палитра: {color}. Стиль сайта: {style}",
-      params: {
-        type: {
-          type: "select",
-          label: "Тип сайта",
-          options: ["Лендинг", "Интернет-магазин", "Блог", "Портфолио", "Социальная сеть", "Панель управления", "Многостраничное приложение"],
-          default: "Лендинг",
-        },
-        stack: {
-          type: "select",
-          label: "Технологический стек",
-          options: ["HTML/CSS/JS", "React", "Vue.js", "Angular", "Node.js", "PHP", "Python/Django", "Ruby on Rails"],
-          default: "HTML/CSS/JS",
-        },
-        style: {
-          type: "select",
-          label: "Стиль сайта",
-          options: ["Минимализм", "Матовое стекло", "Брутализм", "Ретро", "Киберпанк", "PHP", "Аниме-фэнтези"],
-          default: "Матовое стекло",
-        },
-        color: {
-          type: "select",
-          label: "Основная палитра",
-          options: ["Тайский тип (#5c71e5)", "Убразный (#db0f00)", "Прочитка (#f58631)", "Глубокие прятки (#276fdb)", "Лимонный (#f5ee22)", "Обнаружение (#26d13c)", "Угольный (#000000)", "Ванильный (#fffff7)", "Подход звезды (#e431f5)", "Другой"],
-          default: "Тайский тип (#5c71e5)",
-        },
-        features: {
-          type: "multiselect",
-          label: "Функции",
-          options: ["Адаптивный дизайн", "PWA", "SEO оптимизация", "Корзина покупок", "Блог", "Комментарии", "Поиск", "Код в одном файле", "Смена темы", "Бекенд", "Аккаунты и подписки"],
-          default: "Адаптивный дизайн",
-        },
-        additionally: {
-          type: "multiselect",
-          label: "Дополнительно",
-          options: [
-            "Полный код",
-            "Структура проекта",
-            "Объяснение ключевых понятий",
-          ],
-          default: "Полный код",
-        },
-      },
-    },
+Включи: ${additionally}, ${features}.
 
-    images: {
-      name: "Генерация изображений",
-      template:
-        "Сгенерируй {style} изображение по описанию: '{idea}'. {aspect_ratio} {quality}. С детальным описанием: композиция, цвета, освещение, настроение и детали.",
-      params: {
-        style: {
-          type: "select",
-          label: "Стиль изображения",
-          options: ["реалистичное", "мультяшное", "фэнтези", "футуристическое", "минималистичное", "абстрактное", "анимешное"],
-          default: "реалистичное",
-        },
-        aspect_ratio: {
-          type: "select",
-          label: "Соотношение сторон",
-          options: ["1:1 (квадрат)", "16:9 (широкоэкранное)", "9:16 (вертикальное)", "4:3 (стандартное)", "21:9 (кинематографическое)"],
-          default: "1:1 (квадрат)",
-        },
-        quality: {
-          type: "select",
-          label: "Качество",
-          options: ["Высокое (4K)", "Среднее (HD)", "Низкое (для web)"],
-          default: "Высокое (4K)",
-        },
+Промпт создан с помощью TAIPrompts`;
+    },
+    params: {
+      type: {
+        type: "select",
+        label: "Тип сайта",
+        options: ["Лендинг", "Интернет-магазин", "Блог", "Портфолио", "Социальная сеть", "Панель управления", "Многостраничное приложение"],
+        default: "Лендинг",
+      },
+      stack: {
+        type: "select",
+        label: "Технологический стек",
+        options: ["HTML/CSS/JS", "React", "Vue.js", "Angular", "Node.js", "PHP", "Python/Django", "Ruby on Rails"],
+        default: "HTML/CSS/JS",
+      },
+      style: {
+        type: "select",
+        label: "Стиль сайта",
+        options: ["Минимализм", "Матовое стекло", "Брутализм", "Ретро", "Киберпанк", "PHP", "Аниме-фэнтези"],
+        default: "Матовое стекло",
+      },
+      color: {
+        type: "select",
+        label: "Основная палитра",
+        options: ["Тайский тип (#5c71e5)", "Убразный (#db0f00)", "Прочитка (#f58631)", "Глубокие прятки (#276fdb)", "Лимонный (#f5ee22)", "Обнаружение (#26d13c)", "Угольный (#000000)", "Ванильный (#fffff7)", "Подход звезды (#e431f5)", "Другой"],
+        default: "Тайский тип (#5c71e5)",
+      },
+      features: {
+        type: "multiselect",
+        label: "Функции",
+        options: ["Адаптивный дизайн", "PWA", "SEO оптимизация", "Корзина покупок", "Блог", "Комментарии", "Поиск", "Код в одном файле", "Смена темы", "Бекенд", "Аккаунты и подписки"],
+        default: "Адаптивный дизайн",
+      },
+      additionally: {
+        type: "multiselect",
+        label: "Дополнительно",
+        options: [
+          "Полный код",
+          "Структура проекта",
+          "Объяснение ключевых понятий",
+        ],
+        default: "Полный код",
       },
     },
+  },
+
+  bots: {
+    name: "Боты и автоматизация",
+    template: function(params, idea, tone) {
+      const { platform, language, functionality, additionally } = params;
+      
+      // Автоподстановка библиотек
+      let libraries = "";
+      if (platform === "Telegram" && language === "Python") {
+        libraries = "Библиотека: python-telegram-bot или aiogram. ";
+      } else if (platform === "Telegram" && language === "JavaScript") {
+        libraries = "Библиотека: Telegraf.js. ";
+      } else if (platform === "Telegram" && language === "PHP") {
+        libraries = "Библиотека: Telegram Bot API SDK. ";
+      } else if (platform === "Discord" && language === "Python") {
+        libraries = "Библиотека: discord.py. ";
+      } else if (platform === "Discord" && language === "JavaScript") {
+        libraries = "Библиотека: discord.js. ";
+      } else if (platform === "Discord" && language === "Java") {
+        libraries = "Библиотека: JDA (Java Discord API). ";
+      }
+      
+      // Логика для базы данных
+      let dbDetails = "";
+      if (functionality.includes("База данных")) {
+        if (language === "Python") {
+          dbDetails = "База данных: SQLite для простоты или PostgreSQL для продакшена. ";
+        } else if (language === "JavaScript") {
+          dbDetails = "База данных: SQLite или PostgreSQL с Prisma ORM. ";
+        } else if (language === "Java") {
+          dbDetails = "База данных: H2 (встроенная) или PostgreSQL с Hibernate. ";
+        }
+      }
+      
+      // Логика для асинхронности
+      let asyncNote = "";
+      if (language === "Python") {
+        asyncNote = "Используй асинхронное программирование (async/await). ";
+      } else if (language === "JavaScript") {
+        asyncNote = "Используй асинхронное программирование (async/await). ";
+      }
+      
+      // Логика для API
+      let apiNote = "";
+      if (functionality.includes("API интеграции")) {
+        apiNote = "Интеграция с внешними API через асинхронные запросы. ";
+      }
+      
+      let tonePrefix = "";
+      switch (tone) {
+        case "professional": tonePrefix = "Используй профессиональный технический язык. "; break;
+        case "friendly": tonePrefix = "Будь дружелюбным и приветливым. "; break;
+        case "creative": tonePrefix = "Прояви креативность и оригинальность. "; break;
+        case "technical": tonePrefix = "Сфокусируйся на технических деталях. "; break;
+        case "detailed": tonePrefix = "Дай максимально детализированный ответ. "; break;
+      }
+      
+      return `${tonePrefix}Создай бота на ${language} для платформы ${platform}, с функционалом '${idea}'. 
+${libraries}${dbDetails}${asyncNote}${apiNote}
+Включи: описание функций, ${functionality}, ${additionally}, обработку сообщений и установочные инструкции.
+
+Промпт создан с помощью TAIPrompts`;
+    },
+    params: {
+      platform: {
+        type: "select",
+        label: "Платформа",
+        options: ["Telegram", "Discord", "Внешний", "Minecraft", "MAX", "Другой", "Любой"],
+        default: "Telegram",
+      },
+      language: {
+        type: "select",
+        label: "Язык программирования",
+        options: ["Python", "JavaScript", "TypeScript", "Java", "PHP", "Go", "Любой"],
+        default: "Python",
+      },
+      functionality: {
+        type: "multiselect",
+        label: "Особенности",
+        options: [
+          "Админ-панель",
+          "Платежи",
+          "База данных",
+          "API интеграции",
+          "Модерация",
+          "Игры",
+          "Уведомления",
+          "Работа с файлами",
+          "Inline клавиатуры",
+          "Команды",
+        ],
+        default: "Модерация",
+      },
+      additionally: {
+        type: "multiselect",
+        label: "Дополнительно",
+        options: [
+          "Полный код",
+          "Структура проекта",
+          "Объяснение ключевых понятий",
+        ],
+        default: "Полный код",
+      },
+    },
+  },
+
+  minecraft: {
+    name: "Моды Minecraft",
+    template: function(params, idea, tone) {
+      const { type, version, loader, compatibility, features, additionally } = params;
+      
+      // Автоподстановка API
+      let apiDetails = "";
+      if (loader === "Forge") {
+        apiDetails = "Используй Forge MDK и Forge API. ";
+      } else if (loader === "Fabric") {
+        apiDetails = "Используй Fabric Loader и Fabric API. ";
+      } else if (loader === "Paper") {
+        apiDetails = "Используй Paper API для плагинов. ";
+      } else if (loader === "Spigot" || loader === "Bukkit") {
+        apiDetails = "Используй Spigot/Bukkit API. ";
+      }
+      
+      // Логика для версии
+      let versionDetails = "";
+      if (version.includes("1.12") || version.includes("1.8")) {
+        versionDetails = "Учти особенности старых версий (Minecraft 1.12.2 или 1.8.9). ";
+      } else if (version.includes("1.20") || version.includes("1.21")) {
+        versionDetails = "Используй актуальные фичи новых версий. ";
+      }
+      
+      // Логика для Java
+      let javaVersion = "";
+      if (version.includes("1.17") || version.includes("1.18") || version.includes("1.19") || version.includes("1.20") || version.includes("1.21")) {
+        javaVersion = "Требуется Java 17+. ";
+      } else {
+        javaVersion = "Требуется Java 8. ";
+      }
+      
+      // Логика для GUI
+      let guiDetails = "";
+      if (features.includes("GUI")) {
+        guiDetails = "Добавь графический интерфейс (Container, Screen). ";
+      }
+      
+      // Логика для конфига
+      let configDetails = "";
+      if (features.includes("Конфиг")) {
+        configDetails = "Конфигурация через JSON/TOML файлы. ";
+      }
+      
+      // Логика для оптимизации
+      let optimizationNote = "";
+      if (features.includes("Оптимизация")) {
+        optimizationNote = "Оптимизируй производительность, используй кэширование. ";
+      }
+      
+      return `Разработай ${type} для Minecraft ${version} ${loader} для ${compatibility} с описанием: '${idea}'. 
+${apiDetails}${versionDetails}${javaVersion}${guiDetails}${configDetails}${optimizationNote}
+Особенности: ${features} и ${additionally}. 
+Детально опиши функционал и механики.
+
+Промпт создан с помощью TAIPrompts`;
+    },
+    params: {
+      type: {
+        type: "select",
+        label: "Тип контента",
+        options: ["Мод", "Ресурспак", "Датапак", "Плагин", "Аддон"],
+        default: "Мод",
+      },
+      version: {
+        type: "select",
+        label: "Версия Minecraft",
+        options: ["1.21.8", "1.21.4", "1.21", "1.20.1", "1.19.2", "1.18.2", "1.17", "1.16.5", "1.12.2", "1.8.9", "Любая"],
+        default: "1.20.1",
+      },
+      loader: {
+        type: "select",
+        label: "Загрузчик",
+        options: ["Forge", "Fabric", "Paper", "Spigot", "Bukkit"],
+        default: "Forge",
+      },
+      compatibility: {
+        type: "select",
+        label: "Совместимость",
+        options: ["Сервер", "Клиент"],
+        default: "Клиент",
+      },
+      features: {
+        type: "multiselect",
+        label: "Особенности",
+        options: [
+          "Новые блоки",
+          "Новые мобы",
+          "Новые предметы",
+          "Генерация структур",
+          "Изменение мира",
+          "Магическая система",
+          "Технологии",
+          "Квесты",
+          "Боссы",
+          "GUI",
+          "Рецепты",
+          "Оптимизация",
+          "Клиентские фишки",
+          "Конфиг",
+          "Технические функции",
+        ],
+        default: "Оптимизация",
+      },
+      additionally: {
+        type: "multiselect",
+        label: "Дополнительно",
+        options: [
+          "Полный код",
+          "Структура проекта",
+          "Объяснение ключевых понятий",
+        ],
+        default: "Полный код",
+      },
+    },
+  },
+
+  images: {
+    name: "Генерация изображений",
+    template: function(params, idea, tone) {
+      const { style, aspect_ratio, quality } = params;
+      
+      // Логика для аспекта
+      let aspectDetails = "";
+      if (aspect_ratio.includes("16:9")) {
+        aspectDetails = "Широкоэкранный формат для обоев. ";
+      } else if (aspect_ratio.includes("9:16")) {
+        aspectDetails = "Вертикальный формат для Stories/Reels. ";
+      } else if (aspect_ratio.includes("1:1")) {
+        aspectDetails = "Квадратный формат для соцсетей. ";
+      }
+      
+      // Логика для качества
+      let qualityDetails = "";
+      if (quality.includes("4K")) {
+        qualityDetails = "Высокое разрешение 3840x2160. ";
+      } else if (quality.includes("HD")) {
+        qualityDetails = "Стандартное HD 1920x1080. ";
+      }
+      
+      // Логика для стиля
+      let styleDetails = "";
+      if (style.includes("реалистичное")) {
+        styleDetails = "Фотореалистичная детализация. ";
+      } else if (style.includes("анимешное")) {
+        styleDetails = "Стиль аниме/манга. ";
+      } else if (style.includes("фэнтези")) {
+        styleDetails = "Фэнтезийная атмосфера. ";
+      }
+      
+      let tonePrefix = "";
+      switch (tone) {
+        case "professional": tonePrefix = "Используй профессиональный язык. "; break;
+        case "creative": tonePrefix = "Прояви креативность и оригинальность. "; break;
+        case "detailed": tonePrefix = "Дай максимально детализированный ответ. "; break;
+      }
+      
+      return `${tonePrefix}Сгенерируй ${style} изображение по описанию: '${idea}'. 
+${aspectDetails}${qualityDetails}${styleDetails}
+Аспект: ${aspect_ratio}. Качество: ${quality}.
+
+С детальным описанием: композиция, цвета, освещение, настроение и детали.
+
+Промпт создан с помощью TAIPrompts`;
+    },
+    params: {
+      style: {
+        type: "select",
+        label: "Стиль изображения",
+        options: ["реалистичное", "мультяшное", "фэнтези", "футуристическое", "минималистичное", "абстрактное", "анимешное"],
+        default: "реалистичное",
+      },
+      aspect_ratio: {
+        type: "select",
+        label: "Соотношение сторон",
+        options: ["1:1 (квадрат)", "16:9 (широкоэкранное)", "9:16 (вертикальное)", "4:3 (стандартное)", "21:9 (кинематографическое)"],
+        default: "1:1 (квадрат)",
+      },
+      quality: {
+        type: "select",
+        label: "Качество",
+        options: ["Высокое (4K)", "Среднее (HD)", "Низкое (для web)"],
+        default: "Высокое (4K)",
+      },
+    },
+  },
 
     stickers: {
       name: "Стикеры и аватары",
@@ -2120,7 +2381,7 @@ function showContextToast(message) {
 function buildPromptText(type, idea, tone = "professional", overrideParams = {}) {
   if (!promptTemplates[type]) return "";
 
-  const tplParams = promptTemplates[type].params || {};
+  const tpl = promptTemplates[type];
   const params = {};
 
   // Сначала копируем значения из overrideParams (это переменные из примера)
@@ -2128,39 +2389,52 @@ function buildPromptText(type, idea, tone = "professional", overrideParams = {})
     params[key] = value;
   }
 
-  // Затем заполняем оставшиеся параметры из шаблона
+  // Затем заполняем оставшиеся параметры из формы
+  const tplParams = tpl.params || {};
   for (const [key, param] of Object.entries(tplParams)) {
     // Если параметр уже есть в overrideParams, пропускаем
     if (params[key] !== undefined) continue;
     
     if (param.type === "select") {
-      params[key] = param.default ?? param.options?.[0] ?? "";
+      const el = modal.querySelector(`#param-${key}`);
+      if (el) params[key] = el.value;
     } else if (param.type === "multiselect") {
-      const def = param.default;
-      params[key] = Array.isArray(def) ? def.join(", ") : def ?? "";
+      const box = modal.querySelector(`#param-${key}`);
+      if (box) {
+        const checked = box.querySelectorAll('input[type="checkbox"]:checked');
+        params[key] = Array.from(checked).map(cb => cb.value);
+      }
     }
   }
 
-  let tonePrefix = "";
-  switch (tone) {
-    case "professional": tonePrefix = "Используй профессиональный технический язык. "; break;
-    case "friendly": tonePrefix = "Будь дружелюбным и приветливым. "; break;
-    case "creative": tonePrefix = "Прояви креативность и оригинальность. "; break;
-    case "technical": tonePrefix = "Сфокусируйся на технических деталях. "; break;
-    case "detailed": tonePrefix = "Дай максимально детализированный ответ. "; break;
+  // Если шаблон - функция, вызываем её с параметрами
+  if (typeof tpl.template === 'function') {
+    return tpl.template(params, idea, tone);
   }
 
-  let text = promptTemplates[type].template;
+  // Иначе используем старый строковый шаблон
+  let text = tpl.template;
   text = text.replace("{idea}", idea);
 
   // Заменяем все параметры в шаблоне
   for (const [key, value] of Object.entries(params)) {
-    const paramValue = value || ""; // Если значение undefined или null, используем пустую строку
+    const paramValue = Array.isArray(value) ? value.join(", ") : value || "";
     text = text.replace(new RegExp(`\\{${key}\\}`, "g"), paramValue);
   }
 
   // Удаляем оставшиеся неиспользованные параметры {param}
   text = text.replace(/\{[^}]+\}/g, "").replace(/\s{2,}/g, " ").trim();
+  
+  // Добавляем тон в начало для строковых шаблонов
+  let tonePrefix = "";
+  switch (tone) {
+    case "professional": tonePrefix = "Используй профессиональный язык. "; break;
+    case "friendly": tonePrefix = "Будь дружелюбным и приветливым. "; break;
+    case "creative": tonePrefix = "Прояви креативность и оригинальность. "; break;
+    case "technical": tonePrefix = "Сфокусируйся на технических деталях. "; break;
+    case "detailed": tonePrefix = "Дай максимально детализированный ответ. "; break;
+  }
+  
   text = tonePrefix + text + "\n\nПромпт создан с помощью TAIPrompts";
 
   return text;
