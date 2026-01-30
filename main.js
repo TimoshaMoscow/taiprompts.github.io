@@ -1225,6 +1225,14 @@ ${aspectDetails}${qualityDetails}${styleDetails}
     },
   };
 
+// Функция для обновления цвета в select (должна быть глобальной)
+function updateColorSelect(select) {
+  if (!select) return;
+  const selectedValue = select.value;
+  // Обновляем data-атрибут для CSS
+  select.setAttribute('data-value', selectedValue);
+}
+
 // ===== КРОСС-РЕКОМЕНДАЦИИ =====
 const crossRecommendations = {
   // Если выбрал X категорию, рекомендовать Y
@@ -2275,13 +2283,6 @@ function renderTechnicalParams(type) {
       });
     }
   }, 50);
-}
-
-// Функция для обновления цвета в select
-function updateColorSelect(select) {
-  const selectedValue = select.value;
-  // Обновляем data-атрибут для CSS
-  select.setAttribute('data-value', selectedValue);
 }
 
 typeCards.forEach((card) => {
