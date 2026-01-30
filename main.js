@@ -2217,26 +2217,13 @@ function renderTechnicalParams(type) {
     html += `<div class="param-group">`;
     html += `<label>${param.label}</label>`;
 
-    // тут
     if (param.type === "select") {
-if (key === 'color') {
-    html += `<select id="param-${key}" class="tech-param" data-param="${key}">`;
-    param.options.forEach((option) => {
+      html += `<select id="param-${key}" class="tech-param" data-param="${key}">`;
+      param.options.forEach((option) => {
         const selected = option === param.default ? "selected" : "";
         html += `<option value="${option}" ${selected}>${option}</option>`;
-    });
-    html += `</select>`;
-}
-      } else {
-        // Обычный select для остальных
-        html += `<select id="param-${key}" class="tech-param" data-param="${key}">`;
-        param.options.forEach((option) => {
-          const selected = option === param.default ? "selected" : "";
-          html += `<option value="${option}" ${selected}>${option}</option>`;
-        });
-        html += `</select>`;
-      }
-      // тут
+      });
+      html += `</select>`;
     } else if (param.type === "multiselect") {
       html += `<div class="multi-select" id="param-${key}" data-param="${key}">`;
       const defaultValues = Array.isArray(param.default) ? param.default : [param.default];
