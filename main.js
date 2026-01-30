@@ -301,6 +301,23 @@ function censorText(text) {
     return text;
 }
 
+// ===== Функция для обновления цвета в select =====
+function updateColorSelect(select) {
+  if (!select) return;
+  const selectedValue = select.value;
+  select.setAttribute('data-value', selectedValue);
+  
+  const colorMatch = selectedValue.match(/\((#[\da-f]{6})\)/i);
+  if (colorMatch) {
+    select.style.setProperty('--selected-color', colorMatch[1]);
+  }
+}
+
+// Инициализация при загрузке
+window.addEventListener('load', function() {
+  document.querySelectorAll('.color-select').forEach(updateColorSelect);
+});
+
 const promptTemplates = {
   recipes: {
     name: "Рецепты",
@@ -1224,24 +1241,6 @@ ${aspectDetails}${qualityDetails}${styleDetails}
       },
     },
   };
-
-// Функция для обновления цвета в select
-function updateColorSelect(select) {
-  if (!select) return;
-  const selectedValue = select.value;
-  select.setAttribute('data-value', selectedValue);
-  
-  // Также обновляем CSS-переменную для inline стилей (опционально)
-  const colorMatch = selectedValue.match(/\((#[\da-f]{6})\)/i);
-  if (colorMatch) {
-    select.style.setProperty('--selected-color', colorMatch[1]);
-  }
-}
-
-// Инициализация при загрузке
-window.addEventListener('load', function() {
-  document.querySelectorAll('.color-select').forEach(updateColorSelect);
-});
 
 // ===== КРОСС-РЕКОМЕНДАЦИИ =====
 const crossRecommendations = {
