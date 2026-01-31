@@ -339,9 +339,8 @@ const promptTemplates = {
       }
       
       return `${tonePrefix}Создай подробный рецепт ${cuisine} кухни, блюда с описанием: '${idea}'. 
-Ограничения: ${dietary}, Сложность: ${complexity}. 
+Ограничения: ${dietary}, Сложность: ${complexity}. Включи ингредиенты ${measurements}, пошаговое приготовление, время готовки и полезную информацию.
 ${timeNote}${dietNote}
-Включи ингредиенты ${measurements}, пошаговое приготовление, время готовки и полезную информацию, например КБЖУ.
 
 Промпт создан с помощью TAIPrompts`;
     },
@@ -431,9 +430,7 @@ ${timeNote}${dietNote}
       
       return `${tonePrefix}Разработай веб-сайт типа "${type}" на ${stackDetails} по описанию: "${idea}". 
 ${backendNote}${responsiveDetails}${pwaDetails}${seoDetails}
-Основная палитра: ${color}. Стиль сайта: ${style}.
-
-Включи: ${additionally}, ${features}.
+Основная палитра: ${color}. Стиль сайта: ${style}. Включи: ${additionally}, ${features}.
 
 Промпт создан с помощью TAIPrompts`;
     },
@@ -538,8 +535,7 @@ ${backendNote}${responsiveDetails}${pwaDetails}${seoDetails}
       }
       
       return `${tonePrefix}Создай бота на ${language} для платформы ${platform}, с функционалом '${idea}'. 
-${libraries}${dbDetails}${asyncNote}${apiNote}
-Включи: описание функций, ${functionality}, ${additionally}, обработку сообщений и установочные инструкции.
+${libraries}${dbDetails}${asyncNote}${apiNote}. Включи: описание функций, ${functionality}, ${additionally}, обработку сообщений и установочные инструкции.
 
 Промпт создан с помощью TAIPrompts`;
     },
@@ -638,9 +634,7 @@ ${libraries}${dbDetails}${asyncNote}${apiNote}
       }
       
       return `Разработай ${type} для Minecraft ${version} ${loader} для ${compatibility} с описанием: '${idea}'. 
-${apiDetails}${versionDetails}${javaVersion}${guiDetails}${configDetails}${optimizationNote}
-Особенности: ${features} и ${additionally}. 
-Детально опиши функционал и механики.
+${apiDetails}${versionDetails}${javaVersion}${guiDetails}${configDetails}${optimizationNote}. Особенности: ${features} и ${additionally}. Детально опиши функционал и механики.
 
 Промпт создан с помощью TAIPrompts`;
     },
@@ -732,7 +726,7 @@ ${apiDetails}${versionDetails}${javaVersion}${guiDetails}${configDetails}${optim
       if (style.includes("реалистичное")) {
         styleDetails = "Фотореалистичная детализация. ";
       } else if (style.includes("анимешное")) {
-        styleDetails = "Стиль аниме/манга. ";
+        styleDetails = "Стиль аниме, манги или игры Genshin Impact. ";
       } else if (style.includes("фэнтези")) {
         styleDetails = "Фэнтезийная атмосфера. ";
       }
@@ -745,10 +739,7 @@ ${apiDetails}${versionDetails}${javaVersion}${guiDetails}${configDetails}${optim
       }
       
       return `${tonePrefix}Сгенерируй ${style} изображение по описанию: '${idea}'. 
-${aspectDetails}${qualityDetails}${styleDetails}
-Аспект: ${aspect_ratio}. Качество: ${quality}.
-
-С детальным описанием: композиция, цвета, освещение, настроение и детали.
+${aspectDetails}${qualityDetails}${styleDetails}. Аспект: ${aspect_ratio}. Качество: ${quality}.
 
 Промпт создан с помощью TAIPrompts`;
     },
