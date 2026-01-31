@@ -394,6 +394,9 @@ ${timeNote}${dietNote}
       } else if (stack === "Ruby on Rails") {
         stackDetails = "Ruby on Rails (Ruby)";
         backendLang = "Ruby on Rails (Ruby)";
+      } else if (stack === "HTML/CSS/JS") {
+        stackDetails = "HTML/CSS/JS";
+        backendLang = "Node.js (JavaScript)";
       }
       
       // Логика для бекенда
