@@ -434,7 +434,7 @@ ${timeNote}${dietNote}
       
       return `${tonePrefix}Разработай веб-сайт типа "${type}" на ${stackDetails} по описанию: "${idea}". 
 ${backendNote}${responsiveDetails}${pwaDetails}${seoDetails}
-Основная палитра: ${color}. Стиль сайта: ${style}. Включи: ${additionally}, ${features}.
+Основная палитра: ${color}. Стиль сайта: ${style}. Для картинок используй ссылки на изображения. Включи: ${additionally}, ${features} и иконки типа ${emoji}.
 
 Промпт создан с помощью TAIPrompts`;
     },
@@ -468,6 +468,12 @@ ${backendNote}${responsiveDetails}${pwaDetails}${seoDetails}
         label: "Функции",
         options: ["Адаптивный дизайн", "PWA", "SEO оптимизация", "Корзина покупок", "Блог", "Комментарии", "Поиск", "Код в одном файле", "Смена темы", "Бекенд", "Аккаунты и подписки"],
         default: "Адаптивный дизайн",
+      },
+      emoji: {
+        type: "select",
+        label: "Оформление",
+        options: ["Стандартные эмодзи", "Иконки Font Awesome", "Изображения"],
+        default: "Стандартные эмодзи",
       },
       additionally: {
         type: "multiselect",
