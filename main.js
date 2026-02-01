@@ -370,7 +370,7 @@ ${timeNote}${dietNote}
   websites: {
     name: "Веб-сайты",
     template: function(params, idea, tone) {
-      const { type, stack, style, color, features, additionally } = params;
+      const { type, stack, style, color, features, additionally, emoji } = params;
       
       // Автоподстановка языка и фреймворков
       let stackDetails = stack;
