@@ -458,7 +458,7 @@ const promptTemplates = {
   images: {
     name: "Генерация изображений",
     template:
-      "Сгенерируй {style} изображение по описанию: '{idea}'. Аспект: {aspect_ratio}. Качество: {quality}.",
+      "Сгенерируй {style} изображение {aspect_ratio} качества {quality} по описанию: '{idea}'.",
     params: {
       style: {
         type: "select",
@@ -475,7 +475,7 @@ const promptTemplates = {
       quality: {
         type: "select",
         label: "Качество",
-        options: ["Высокое (4K)", "Среднее (HD)", "Низкое (для web)"],
+        options: ["Высокое (4K)", "Среднее (HD)", "Низкое (144p)"],
         default: "Высокое (4K)",
       },
     },
