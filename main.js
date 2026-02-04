@@ -425,13 +425,13 @@ const promptTemplates = {
       version: {
         type: "select",
         label: "Версия Minecraft",
-        options: ["1.21.8", "1.21.4", "1.21", "1.20.1", "1.19.2", "1.18.2", "1.17", "1.16.5", "1.12.2", "1.8.9", "Любая"],
+        options: ["1.21.8", "1.21.4", "1.21", "1.20.1", "1.19.2", "1.18.2", "1.17", "1.16.5", "1.12.2", "1.8.9"],
         default: "1.20.1",
       },
       loader: {
         type: "select",
         label: "Загрузчик",
-        options: ["Forge", "Fabric", "Paper", "Spigot", "Bukkit"],
+        options: ["Forge", "Fabric", "Paper", "Spigot", "Bukkit", "Vanilla", "-"],
         default: "Forge",
       },
       compatibility: {
