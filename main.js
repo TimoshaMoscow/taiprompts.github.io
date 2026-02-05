@@ -2762,12 +2762,6 @@ initCookieBanner();
 incPathView(location.pathname);
 
 
-// Автообновление года в футере
-const yearEl = document.getElementById('currentYear');
-if (yearEl) {
-  yearEl.textContent = new Date().getFullYear();
-}
-
   setActiveNavLink();
   initNav();
   initGenerator();
