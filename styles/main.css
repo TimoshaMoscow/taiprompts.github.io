@@ -242,7 +242,7 @@ section {
 }
 
 .footer-links-vertical .nav-link {
-    padding: 0.25rem 0;
+    padding: 0.1rem 0;
     display: block;
     color: var(--secondary-color)
 }
