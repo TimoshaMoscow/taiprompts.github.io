@@ -76,7 +76,7 @@ body {
 .nav-link {
     color: var(--text-color);
     text-decoration: none;
-    padding: 0.5rem 1rem;
+    padding: 0.1rem 1rem;
     transition: color 0.3s;
 }
 
