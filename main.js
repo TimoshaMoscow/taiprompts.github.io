@@ -323,8 +323,8 @@ const promptTemplates = {
       complexity: {
         type: "select",
         label: "Сложность",
-        options: ["Простое", "Средней сложности", "Сложное", "Шеф-повар"],
-        default: "Средней сложности",
+        options: ["Легкая", "Нормальная", "Сложная", "Невозможная"],
+        default: "Легкая",
       },
     },
   },
@@ -332,7 +332,7 @@ const promptTemplates = {
   websites: {
     name: "Веб-сайты",
     template:
-      "Разработай веб-сайт типа {type} на {stack} по описанию: '{idea}'. Основная палитра: {color}. Стиль сайта: {style}. Для всех изображений автоматически находи подходящие картинки и используй исключительно прямые ссылки на файлы изображений (jpg/png/webp), доступные по прямому URL. Включи: {additionally}, {features} и иконки типа {emoji}.",
+      "Разработай веб-сайт типа {type} на {stack} по описанию: '{idea}'. Основная палитра: {color}. Стиль сайта: {style}. Сложность реализации: {complexity}. Для всех изображений автоматически находи подходящие картинки и используй исключительно прямые ссылки на файлы изображений (jpg/png/webp), доступные по прямому URL. Включи: {additionally}, {features} и иконки типа {emoji}.",
     params: {
       type: {
         type: "select",
@@ -370,6 +370,12 @@ const promptTemplates = {
         options: ["Стандартные эмодзи", "Иконки Font Awesome", "Изображения"],
         default: "Стандартные эмодзи",
       },
+      complexity: {
+        type: "select",
+        label: "Сложность",
+        options: ["Легкая", "Нормальная", "Сложная", "Невозможная"],
+        default: "Легкая",
+      },
       additionally: {
         type: "multiselect",
         label: "Дополнительно",
@@ -382,7 +388,7 @@ const promptTemplates = {
   bots: {
     name: "Боты и автоматизация",
     template:
-      "Создай бота на {language} для платформы {platform}, с функционалом '{idea}'. Включи: описание функций, {functionality}, {additionally}, обработку сообщений и установочные инструкции.",
+      "Создай бота на {language} для платформы {platform}, с функционалом '{idea}'. Сложность реализации: {complexity}. Включи: описание функций, {functionality}, {additionally}, обработку сообщений и установочные инструкции.",
     params: {
       platform: {
         type: "select",
@@ -402,6 +408,12 @@ const promptTemplates = {
         options: ["Админ-панель", "Платежи", "База данных", "API интеграции", "Модерация", "Игры", "Уведомления", "Работа с файлами", "Inline клавиатуры", "Команды"],
         default: "Модерация",
       },
+      complexity: {
+        type: "select",
+        label: "Сложность",
+        options: ["Легкая", "Нормальная", "Сложная", "Невозможная"],
+        default: "Легкая",
+      },
       additionally: {
         type: "multiselect",
         label: "Дополнительно",
@@ -414,7 +426,7 @@ const promptTemplates = {
   minecraft: {
     name: "Моды Minecraft",
     template:
-      "Разработай {type} для Minecraft {version} {loader} для {compatibility} с описанием: '{idea}'. Особенности: {features} и {additionally}. Детально опиши функционал и механики.",
+      "Разработай {type} для Minecraft {version} {loader} для {compatibility} с описанием: '{idea}'. Особенности: {features} и {additionally}. Сложность реализации: {complexity}. Детально опиши функционал и механики.",
     params: {
       type: {
         type: "select",
@@ -443,8 +455,14 @@ const promptTemplates = {
       features: {
         type: "multiselect",
         label: "Особенности",
-        options: ["Новые блоки", "Новые мобы", "Новые предметы", "Генерация структур", "Изменение мира", "Магическая система", "Технологии", "Квесты", "Боссы", "GUI", "Рецепты", "Оптимизация", "Клиентские фишки", "Конфиг", "Технические функции"],
+        options: ["Новые блоки", "Новые мобы", "Новые предметы", "Генерация структур", "Изменение мира", "Магическая система", "Технологии", "Квесты", "Боссы", "GUI", "Рецепты", "Оптимизация", "Клиентские фишки", "Конфиг", "Технические функции", "API интеграции"],
         default: "Оптимизация",
+      },
+      complexity: {
+        type: "select",
+        label: "Сложность",
+        options: ["Легкая", "Нормальная", "Сложная", "Невозможная"],
+        default: "Легкая",
       },
       additionally: {
         type: "multiselect",
@@ -638,7 +656,7 @@ const promptTemplates = {
     setup: {
       name: "Приложения",
       template:
-        "Разработай {type} на {lang} для {oc} с функционалом {hang}, включи {additionally}, и инструкцией по сборке для {setupper}. Подробное описание идеи: '{idea}'",
+        "Разработай {type} на {lang} для {oc} с функционалом {hang}, включи {additionally}, и инструкцией по сборке для {setupper}. Сложность реализации: {complexity}. Подробное описание идеи: '{idea}'",
       params: {
         type: {
           type: "select",
@@ -766,6 +784,12 @@ const promptTemplates = {
           options: ["Windows", "Linux", "Android", "IOS", "MacOS", "Другое"],
           default: "Windows",
         },
+      complexity: {
+        type: "select",
+        label: "Сложность",
+        options: ["Легкая", "Нормальная", "Сложная", "Невозможная"],
+        default: "Легкая",
+      },
         additionally: {
           type: "multiselect",
           label: "Дополнительно",
@@ -845,7 +869,7 @@ const promptTemplates = {
     plugin: {
       name: "Плагины и расширения",
       template:
-        "Разработай {type} на {lang} для {browser} с функционалом {func}, включи {additionally}, и инструкцию по сборке. Подробное описание идеи: '{idea}'",
+        "Разработай {type} на {lang} для {browser} с функционалом {func}, включи {additionally}, и инструкцию по сборке. Сложность реализации: {complexity}. Подробное описание идеи: '{idea}'",
       params: {
         type: {
           type: "select",
@@ -918,6 +942,12 @@ const promptTemplates = {
           ],
           default: "Смена темы",
         },
+      complexity: {
+        type: "select",
+        label: "Сложность",
+        options: ["Легкая", "Нормальная", "Сложная", "Невозможная"],
+        default: "Легкая",
+      },
         additionally: {
           type: "multiselect",
           label: "Дополнительно",
