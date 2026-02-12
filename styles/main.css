@@ -227,7 +227,7 @@ section {
 }
 
 .footer-bottom {
-    text-align: left;
+    text-align: center;
     padding-top: 20px;
     border-top: 1px solid var(--card-border);
     color: var(--secondary-color);
