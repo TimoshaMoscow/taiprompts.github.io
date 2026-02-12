@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 — Страница не найдена | TAIPrompts</title>
+    <meta name="description" content="Страница не найдена. Вернитесь на главную или воспользуйтесь поиском.">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://timoshamoscow.github.io/taiprompts.github.io/404.html">
+    <meta property="og:title" content="404 — Страница не найдена | TAIPrompts">
+    <meta property="og:description" content="Страница не найдена. Вернитесь на главную или воспользуйтесь поиском.">
+    <meta property="og:image" content="https://timoshamoscow.github.io/taiprompts.github.io/images/logo.png">
+    <meta property="og:site_name" content="TAIPrompts">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://timoshamoscow.github.io/taiprompts.github.io/404.html">
+    <meta property="twitter:title" content="404 — Страница не найдена | TAIPrompts">
+    <meta property="twitter:description" content="Страница не найдена. Вернитесь на главную.">
+    <meta property="twitter:image" content="https://timoshamoscow.github.io/taiprompts.github.io/images/logo.png">
+    
+    <link rel="canonical" href="https://timoshamoscow.github.io/taiprompts.github.io/404.html">
+    <link rel="icon" type="image/x-icon" href="images/logo.png">
+    <link rel="apple-touch-icon" href="images/logo.png">
+    
+    <!-- Подключаем те же стили, что и на основном сайте -->
+    <link rel="stylesheet" href="styles/main.css?v=1.1.4">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Дополнительные стили только для 404 */
+        .error-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 100px 20px;
+            background: var(--bg-color);
+        }
+        
+        .error-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .error-code {
+            font-size: 8rem;
+            font-weight: 700;
+            line-height: 1;
+            background: linear-gradient(135deg, var(--accent-color), #4f6cf0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-shadow: 0 10px 30px rgba(94, 114, 228, 0.2);
+        }
+        
+        .error-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+        
+        .error-text {
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        
+        .error-actions {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .error-actions .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 32px;
+            font-size: 1.1rem;
+        }
+        
+        .error-robot {
+            font-size: 6rem;
+            margin-bottom: 20px;
+            opacity: 0.8;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @media (max-width: 768px) {
+            .error-code { font-size: 6rem; }
+            .error-title { font-size: 1.8rem; }
+            .error-text { font-size: 1rem; }
+            .error-robot { font-size: 5rem; }
+            .error-actions .btn { width: 100%; justify-content: center; }
+        }
+        
+        @media (max-width: 480px) {
+            .error-code { font-size: 5rem; }
+            .error-title { font-size: 1.5rem; }
+            .error-robot { font-size: 4rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N8JLTHS6" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    
+    <div id="site-header"></div>
+    
+    <main>
+        <section class="error-page">
+            <div class="container">
+                <div class="error-content">
+                    <div class="error-robot">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="error-code">404</div>
+                    <h1 class="error-title">Страница не найдена</h1>
+                    <p class="error-text">
+                        Кажется, этой страницы не существует.<br>
+                        Возможно, вы перешли по устаревшей ссылке или ошиблись в адресе.
+                    </p>
+                    <div class="error-actions">
+                        <a href="index.html" class="btn btn-primary">
+                            <i class="fa-solid fa-house"></i>
+                            На главную
+                        </a>
+                        <a href="generator.html" class="btn btn-secondary">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            Генератор промптов
+                        </a>
+                    </div>
+                    
+                    <!-- Рекомендуемые категории -->
+                    <div style="margin-top: 60px;">
+                        <p style="color: var(--secondary-color); margin-bottom: 20px;">
+                            Попробуйте популярные категории:
+                        </p>
+                        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                            <a href="generator.html?type=websites" class="badge" style="background: rgba(94, 114, 228, 0.1); color: var(--accent-color); padding: 8px 16px; border-radius: 50px; text-decoration: none;">
+                                <i class="fa-solid fa-globe"></i> Веб-сайты
+                            </a>
+                            <a href="generator.html?type=recipes" class="badge" style="background: rgba(94, 114, 228, 0.1); color: var(--accent-color); padding: 8px 16px; border-radius: 50px; text-decoration: none;">
+                                <i class="fa-solid fa-utensils"></i> Рецепты
+                            </a>
+                            <a href="generator.html?type=images" class="badge" style="background: rgba(94, 114, 228, 0.1); color: var(--accent-color); padding: 8px 16px; border-radius: 50px; text-decoration: none;">
+                                <i class="fa-solid fa-image"></i> Изображения
+                            </a>
+                            <a href="generator.html?type=bots" class="badge" style="background: rgba(94, 114, 228, 0.1); color: var(--accent-color); padding: 8px 16px; border-radius: 50px; text-decoration: none;">
+                                <i class="fa-solid fa-robot"></i> Telegram боты
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <div id="site-footer"></div>
+    
+    <script src="main.js?v=1.1.4"></script>
+    <script>
+        // Для GitHub Pages: добавляем параметры в ссылки категорий
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryLinks = document.querySelectorAll('[href*="generator.html?type="]');
+            categoryLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    window.location.href = href;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
