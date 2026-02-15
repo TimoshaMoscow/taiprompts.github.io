@@ -70,18 +70,17 @@ function incGeneration() {
 // ===== Cookie Banner (создаётся JS-ом, HTML менять не надо) =====
 function initCookieBanner() {
   const existing = getCookie(CONSENT_COOKIE);
-  if (existing === "accepted" || existing === "declined") return;
+  if (existing === "accepted") return;
 
   const banner = document.createElement("div");
   banner.className = "cookie-banner";
   banner.innerHTML = `
     <div class="cookie-banner__inner">
       <div class="cookie-banner__text">
-        Мы используем cookies для простой статистики и сводки.
-        Никаких сторонних сервисов.
+        Мы используем файлы cookies, чтобы улучшить Ваши впечатления от использования сайта. 
+        Нажимая на кнопку 'Принять', вы даете нам разрешение на их использование.
       </div>
       <div class="cookie-banner__actions">
-        <button class="btn btn-secondary cookie-decline">Отказаться</button>
         <button class="btn btn-primary cookie-accept">Принять</button>
       </div>
     </div>
@@ -95,11 +94,6 @@ function initCookieBanner() {
 
     // Сразу запишем просмотр текущей страницы после согласия
     incPathView(location.pathname);
-  });
-
-  banner.querySelector(".cookie-decline").addEventListener("click", () => {
-    setCookie(CONSENT_COOKIE, "declined", 365);
-    banner.remove();
   });
 }
 
