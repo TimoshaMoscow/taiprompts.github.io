@@ -1406,3 +1406,296 @@
         font-size: 1.5rem;
     }
 }
+
+/* ===== Секция улучшения шаблонов ===== */
+.improve-templates-section {
+    padding: 60px 0;
+    position: relative;
+}
+
+.improve-templates-card {
+    background: linear-gradient(135deg, rgba(94, 114, 228, 0.07) 0%, rgba(94, 114, 228, 0.02) 100%);
+    border: 1px solid rgba(94, 114, 228, 0.15);
+    border-radius: 40px;
+    padding: 50px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.improve-templates-card::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(94, 114, 228, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.improve-templates-header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 40px;
+}
+
+.improve-icon-wrapper {
+    width: 70px;
+    height: 70px;
+    background: rgba(94, 114, 228, 0.1);
+    border: 1px solid rgba(94, 114, 228, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+    font-size: 2rem;
+    color: var(--accent-color);
+}
+
+.improve-templates-title {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.improve-templates-subtitle {
+    font-size: 1.1rem;
+    color: var(--secondary-color);
+    line-height: 1.6;
+}
+
+.improve-ideas-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.idea-category h3 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.idea-category h3 i {
+    color: var(--accent-color);
+}
+
+.idea-list {
+    list-style: none;
+    padding: 0;
+}
+
+.idea-list li {
+    padding: 10px 0 10px 25px;
+    position: relative;
+    color: var(--secondary-color);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.idea-list li:last-child {
+    border-bottom: none;
+}
+
+.idea-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent-color);
+}
+
+/* Контакты */
+.improve-contact {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 30px;
+    padding: 30px;
+    margin: 30px 0;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.contact-box {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.contact-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(94, 114, 228, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: var(--accent-color);
+}
+
+.contact-details {
+    flex: 1;
+}
+
+.contact-label {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.contact-email {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 5px;
+    transition: color 0.3s;
+}
+
+.contact-email:hover {
+    color: #4f6cf0;
+    text-decoration: underline;
+}
+
+.contact-time {
+    display: block;
+    color: var(--secondary-color);
+    font-size: 0.95rem;
+}
+
+.contact-note {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    color: var(--secondary-color);
+    font-size: 1rem;
+}
+
+.contact-note i {
+    margin-right: 8px;
+}
+
+/* Примеры */
+.improve-examples {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 25px;
+    padding: 25px;
+}
+
+.improve-examples p {
+    color: var(--text-color);
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.example-bubbles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.example-bubble {
+    background: rgba(94, 114, 228, 0.1);
+    border: 1px solid rgba(94, 114, 228, 0.2);
+    border-radius: 50px;
+    padding: 12px 20px;
+    font-size: 0.95rem;
+    color: var(--text-color);
+    transition: all 0.3s;
+    cursor: default;
+}
+
+.example-bubble:hover {
+    background: rgba(94, 114, 228, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Адаптивность */
+@media (max-width: 992px) {
+    .improve-templates-card {
+        padding: 40px;
+    }
+    
+    .improve-templates-title {
+        font-size: 2rem;
+    }
+    
+    .contact-email {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .improve-templates-card {
+        padding: 30px 20px;
+        border-radius: 30px;
+    }
+    
+    .improve-templates-title {
+        font-size: 1.8rem;
+    }
+    
+    .improve-templates-subtitle {
+        font-size: 1rem;
+    }
+    
+    .improve-ideas-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .contact-box {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .contact-email {
+        font-size: 1.3rem;
+        word-break: break-all;
+    }
+    
+    .example-bubbles {
+        flex-direction: column;
+    }
+    
+    .example-bubble {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .improve-templates-card {
+        padding: 25px 15px;
+    }
+    
+    .improve-templates-title {
+        font-size: 1.5rem;
+    }
+    
+    .improve-icon-wrapper {
+        width: 60px;
+        height: 60px;
+        font-size: 1.6rem;
+    }
+    
+    .contact-email {
+        font-size: 1.2rem;
+    }
+    
+    .idea-list li {
+        font-size: 0.95rem;
+    }
+}
