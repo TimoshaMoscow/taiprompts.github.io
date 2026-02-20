@@ -1,6 +1,6 @@
 // ===== UI-компоненты: анимации, лайтбокс, поиск по карточкам =====
 
-const TAIPrompts = window.TAIPrompts || {};
+window.TAIPrompts = window.TAIPrompts || {};
 TAIPrompts.ui = {};
 
 // ===== АНИМАЦИИ =====
@@ -196,5 +196,3 @@ TAIPrompts.ui.initSearch = function() {
     }
   });
 };
-
-window.TAIPrompts = TAIPrompts;
