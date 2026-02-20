@@ -3,8 +3,14 @@
 async function inject(id, url) {
   const el = document.getElementById(id);
   if (!el) return;
-  const res = await fetch(url, { cache: "no-store" });
-  el.innerHTML = await res.text();
+  try {
+    const res = await fetch(url, { cache: "no-store" });
+    if (res.ok) {
+      el.innerHTML = await res.text();
+    }
+  } catch (e) {
+    console.error(`Ошибка загрузки ${url}:`, e);
+  }
 }
 
 function setActiveNavLink() {
@@ -15,10 +21,9 @@ function setActiveNavLink() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-  // Загружаем компоненты
-  await inject("site-header", "components/header.html");
-  await inject("site-footer", "components/footer.html");
+// Функция для инициализации всего с задержкой
+function initAll() {
+  console.log("🚀 Инициализация TAIPrompts...");
   
   // Инициализируем модули (проверяем их наличие)
   if (window.TAIPrompts?.core) {
@@ -36,16 +41,36 @@ document.addEventListener("DOMContentLoaded", async () => {
   
   if (window.TAIPrompts?.generator) {
     window.TAIPrompts.generator.init();
+    // Переинициализируем карточки через небольшую задержку
+    setTimeout(() => {
+      if (window.TAIPrompts.generator.reinitCards) {
+        window.TAIPrompts.generator.reinitCards();
+      }
+    }, 500);
   }
   
   if (window.TAIPrompts?.pages) {
-    window.TAIPrompts.pages.initFaq();
-    window.TAIPrompts.pages.initIndex();
+    // Задержка для FAQ, чтобы убедиться что DOM готов
+    setTimeout(() => {
+      window.TAIPrompts.pages.initFaq();
+      window.TAIPrompts.pages.initIndex();
+    }, 300);
   }
   
   if (window.TAIPrompts?.debug) {
     window.TAIPrompts.debug.run();
   }
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  console.log("DOM загружен, начинаем загрузку компонентов...");
+  
+  // Загружаем компоненты
+  await inject("site-header", "components/header.html");
+  await inject("site-footer", "components/footer.html");
+  
+  // Даем время на отрисовку компонентов
+  setTimeout(initAll, 200);
 
   // Service Worker
   if ("serviceWorker" in navigator) {
@@ -67,5 +92,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         event.returnValue = '';
       }
     });
+  }
+});
+
+// Дополнительная инициализация после полной загрузки страницы
+window.addEventListener('load', function() {
+  console.log("Страница полностью загружена");
+  
+  // Еще раз пробуем инициализировать FAQ и карточки
+  if (window.TAIPrompts?.pages) {
+    window.TAIPrompts.pages.initFaq();
+  }
+  
+  if (window.TAIPrompts?.generator?.reinitCards) {
+    window.TAIPrompts.generator.reinitCards();
   }
 });
