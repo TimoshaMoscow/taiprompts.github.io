@@ -1,6 +1,6 @@
 // ===== Дебаг-функции для проверки работы сайта =====
 
-const TAIPrompts = window.TAIPrompts || {};
+window.TAIPrompts = window.TAIPrompts || {};
 TAIPrompts.debug = {};
 
 TAIPrompts.debug.run = function() {
@@ -63,7 +63,7 @@ TAIPrompts.debug.run = function() {
 
 // Функция для принудительного запуска дебага
 TAIPrompts.debug.force = function() {
-  const oldDebug = window.TAIPrompts?.debug?.run;
+  const oldDebug = TAIPrompts.debug?.run;
   if (oldDebug) {
     console.clear();
     oldDebug();
@@ -78,5 +78,3 @@ window.debugTAIPrompts = function() {
     console.log("TAIPrompts debug not available yet");
   }
 };
-
-window.TAIPrompts = TAIPrompts;
