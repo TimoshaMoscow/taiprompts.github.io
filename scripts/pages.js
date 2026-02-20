@@ -1,6 +1,6 @@
 // ===== Логика для отдельных страниц: FAQ, Index, Generator-page =====
 
-const TAIPrompts = window.TAIPrompts || {};
+window.TAIPrompts = window.TAIPrompts || {};
 TAIPrompts.pages = {};
 
 // ===== FAQ СТРАНИЦА =====
@@ -178,5 +178,3 @@ TAIPrompts.pages.openFAQQuestion = function(index) {
     items[index].scrollIntoView({ behavior: 'smooth' });
   }
 };
-
-window.TAIPrompts = TAIPrompts;
