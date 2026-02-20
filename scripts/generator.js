@@ -2355,3 +2355,195 @@ TAIPrompts.generator.init = function() {
     }
   });
 };
+
+// Дополнительная инициализация для карточек, которые могли быть загружены позже
+TAIPrompts.generator.reinitCards = function() {
+  const typeCards = document.querySelectorAll(".type-card");
+  const generationSection = document.querySelector(".generation");
+
+  if (typeCards.length === 0 || !generationSection) {
+    return;
+  }
+  
+  console.log("🔄 Переинициализация карточек генератора...");
+  
+  // Удаляем старые обработчики и добавляем новые
+  typeCards.forEach((card) => {
+    // Удаляем старый обработчик, если был
+    const newCard = card.cloneNode(true);
+    card.parentNode.replaceChild(newCard, card);
+    
+    newCard.addEventListener("click", function(e) {
+      e.preventDefault();
+      
+      const type = this.getAttribute("data-type") || "recipes";
+      console.log("Клик по карточке:", type);
+      
+      // Вызываем открытие модалки
+      if (window.TAIPrompts && window.TAIPrompts.generator) {
+        window.TAIPrompts.generator.openModal(type);
+      }
+    });
+  });
+};
+
+// Функция для открытия модалки напрямую
+TAIPrompts.generator.openModal = function(type) {
+  // Проверяем, существует ли модалка
+  let modal = document.querySelector('.customization-modal');
+  
+  if (!modal) {
+    console.error("Модальное окно не найдено");
+    return;
+  }
+  
+  const selectedType = type || "recipes";
+  
+  // Сбрасываем флаги
+  if (this._isPromptGenerated !== undefined) this._isPromptGenerated = false;
+  if (this._isFormDirty !== undefined) this._isFormDirty = false;
+  
+  // Обновляем заголовок
+  const modalTitle = modal.querySelector(".modal-title");
+  if (modalTitle) {
+    modalTitle.textContent = `Кастомизация: ${this.promptTemplates[selectedType]?.name || selectedType}`;
+  }
+  
+  // Рендерим параметры
+  if (typeof this._renderTechnicalParams === 'function') {
+    this._renderTechnicalParams(selectedType);
+  }
+  
+  // Сбрасываем форму
+  const form = modal.querySelector("#prompt-form");
+  if (form) form.reset();
+  
+  const finalPrompt = modal.querySelector("#final-prompt");
+  if (finalPrompt) finalPrompt.textContent = "";
+  
+  // Сбрасываем стадии анимации
+  const stages = document.querySelectorAll('.stage');
+  if (stages.length > 0) {
+    stages.forEach(stage => {
+      stage.classList.remove('active', 'completed');
+    });
+    stages[0]?.classList.add('active');
+  }
+  
+  // Показываем модалку
+  modal.classList.add("active");
+  document.body.style.overflow = "hidden";
+  
+  // Рендерим примеры
+  if (typeof this.renderExamples === 'function') {
+    this.renderExamples(selectedType);
+  }
+  
+  // Отмечаем категорию в статистике
+  if (window.TAIPrompts?.core?.incCategory) {
+    window.TAIPrompts.core.incCategory(selectedType);
+  }
+};
+
+// Переопределяем функцию renderTechnicalParams, чтобы она была доступна
+TAIPrompts.generator._renderTechnicalParams = function(type) {
+  const modal = document.querySelector('.customization-modal');
+  if (!modal) return;
+  
+  const container = modal.querySelector("#technical-params");
+  if (!container) return;
+  
+  const params = this.promptTemplates[type]?.params || {};
+  let html = `<h4 style="margin-bottom: 1.5rem; color: var(--accent-color);">${this.promptTemplates[type]?.name || type}</h4>`;
+  
+  html += `<div id="validationMessages" style="margin-bottom: 20px;"></div>`;
+  
+  const updateValidation = () => {
+    const selectedParams = {};
+    for (const [key, param] of Object.entries(params)) {
+      const element = container.querySelector(`#param-${key}`);
+      if (element) {
+        if (param.type === "select") {
+          selectedParams[key] = element.value;
+        } else if (param.type === "multiselect") {
+          const checked = element.querySelectorAll('input[type="checkbox"]:checked');
+          selectedParams[key] = Array.from(checked).map(cb => cb.value);
+        }
+      }
+    }
+    
+    const validation = this.validateCombination(type, selectedParams);
+    this._showValidationMessages(validation);
+  };
+
+  for (const [key, param] of Object.entries(params)) {
+    html += `<div class="param-group">`;
+    html += `<label>${param.label}</label>`;
+
+    if (param.type === "select") {
+      html += `<select id="param-${key}" class="tech-param" data-param="${key}">`;
+      param.options.forEach((option) => {
+        const selected = option === param.default ? "selected" : "";
+        html += `<option value="${option}" ${selected}>${option}</option>`;
+      });
+      html += `</select>`;
+    } else if (param.type === "multiselect") {
+      html += `<div class="multi-select" id="param-${key}" data-param="${key}">`;
+      const defaultValues = Array.isArray(param.default) ? param.default : [param.default];
+      param.options.forEach((option) => {
+        const checked = defaultValues.includes(option) ? "checked" : "";
+        html += `
+          <label class="checkbox-label">
+            <input type="checkbox" value="${option}" ${checked} data-param="${key}">
+            ${option}
+          </label>
+        `;
+      });
+      html += `</div>`;
+    }
+
+    html += `</div>`;
+  }
+
+  container.innerHTML = html || "<p>Для этого типа промпта не требуется дополнительных параметров.</p>";
+  
+  container.querySelectorAll('select.tech-param, .multi-select input[type="checkbox"]').forEach(element => {
+    element.addEventListener('change', updateValidation);
+  });
+  
+  setTimeout(updateValidation, 100);
+};
+
+TAIPrompts.generator._showValidationMessages = function(validation) {
+  const container = document.getElementById('validationMessages');
+  if (!container) return;
+  
+  container.innerHTML = '';
+  
+  if (validation.errors.length > 0) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'validation-error';
+    errorDiv.innerHTML = `
+      <strong>⚠️ Проблемы с комбинацией:</strong>
+      <ul>${validation.errors.map(e => `<li>${e}</li>`).join('')}</ul>
+    `;
+    container.appendChild(errorDiv);
+  }
+  
+  if (validation.warnings.length > 0) {
+    const warningDiv = document.createElement('div');
+    warningDiv.className = 'validation-warning';
+    warningDiv.innerHTML = `
+      <strong>💡 Рекомендации:</strong>
+      <ul>${validation.warnings.map(w => `<li>${w}</li>`).join('')}</ul>
+    `;
+    container.appendChild(warningDiv);
+  }
+  
+  if (validation.errors.length === 0 && validation.warnings.length === 0) {
+    const successDiv = document.createElement('div');
+    successDiv.className = 'validation-success';
+    successDiv.textContent = '✅ Все параметры совместимы';
+    container.appendChild(successDiv);
+  }
+};
