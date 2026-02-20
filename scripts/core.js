@@ -1,9 +1,11 @@
 // ===== Cookie, согласие, статистика, навигация =====
 
-const TAIPrompts = window.TAIPrompts || {};
+// СОЗДАЕМ ОБЪЕКТ ТОЛЬКО ЗДЕСЬ
+window.TAIPrompts = window.TAIPrompts || {};
+
+// ===== Cookie utils =====
 TAIPrompts.core = {};
 
-// Cookie utils
 TAIPrompts.core.setCookie = function(name, value, days = 365) {
   const maxAge = days * 24 * 60 * 60;
   document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; max-age=${maxAge}; path=/; samesite=lax`;
@@ -136,5 +138,3 @@ TAIPrompts.core.initNav = function() {
     });
   }
 };
-
-window.TAIPrompts = TAIPrompts;
