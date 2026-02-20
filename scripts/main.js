@@ -1,7 +1,5 @@
 // ===== Главный файл инициализации =====
 
-const TAIPrompts = window.TAIPrompts || {};
-
 async function inject(id, url) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -23,30 +21,30 @@ document.addEventListener("DOMContentLoaded", async () => {
   await inject("site-footer", "components/footer.html");
   
   // Инициализируем модули (проверяем их наличие)
-  if (TAIPrompts.core) {
-    TAIPrompts.core.initCookieBanner();
-    TAIPrompts.core.initNav();
+  if (window.TAIPrompts?.core) {
+    window.TAIPrompts.core.initCookieBanner();
+    window.TAIPrompts.core.initNav();
     setActiveNavLink();
-    TAIPrompts.core.incPathView(location.pathname);
+    window.TAIPrompts.core.incPathView(location.pathname);
   }
   
-  if (TAIPrompts.ui) {
-    TAIPrompts.ui.initAnimations();
-    TAIPrompts.ui.initLightbox();
-    TAIPrompts.ui.initSearch();
+  if (window.TAIPrompts?.ui) {
+    window.TAIPrompts.ui.initAnimations();
+    window.TAIPrompts.ui.initLightbox();
+    window.TAIPrompts.ui.initSearch();
   }
   
-  if (TAIPrompts.generator) {
-    TAIPrompts.generator.init();
+  if (window.TAIPrompts?.generator) {
+    window.TAIPrompts.generator.init();
   }
   
-  if (TAIPrompts.pages) {
-    TAIPrompts.pages.initFaq();
-    TAIPrompts.pages.initIndex();
+  if (window.TAIPrompts?.pages) {
+    window.TAIPrompts.pages.initFaq();
+    window.TAIPrompts.pages.initIndex();
   }
   
-  if (TAIPrompts.debug) {
-    TAIPrompts.debug.run();
+  if (window.TAIPrompts?.debug) {
+    window.TAIPrompts.debug.run();
   }
 
   // Service Worker
