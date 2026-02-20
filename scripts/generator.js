@@ -1,6 +1,7 @@
 // ===== Весь код генератора =====
 
-const TAIPrompts = window.TAIPrompts || {};
+// ИСПОЛЬЗУЕМ СУЩЕСТВУЮЩИЙ ОБЪЕКТ
+window.TAIPrompts = window.TAIPrompts || {};
 TAIPrompts.generator = {};
 
 // ===== ЦЕНЗУРА =====
@@ -1531,8 +1532,8 @@ TAIPrompts.generator.renderExamples = function(type) {
 
   if (useBtn) {
     useBtn.onclick = () => {
-      if (window.TAIPrompts?.generator?.openModalWithExample) {
-        window.TAIPrompts.generator.openModalWithExample(type, idea, tone, exampleParams);
+      if (TAIPrompts.generator.openModalWithExample) {
+        TAIPrompts.generator.openModalWithExample(type, idea, tone, exampleParams);
       }
     };
   }
@@ -1970,8 +1971,8 @@ TAIPrompts.generator.init = function() {
 
   function switchToCategory(newCategory, presetParams = {}) {
     selectedType = newCategory;
-    if (window.TAIPrompts?.core?.incCategory) {
-      window.TAIPrompts.core.incCategory(newCategory);
+    if (TAIPrompts.core?.incCategory) {
+      TAIPrompts.core.incCategory(newCategory);
     }
     
     const modalTitle = modal.querySelector(".modal-title");
@@ -2162,8 +2163,8 @@ TAIPrompts.generator.init = function() {
 
     const finalPromptText = TAIPrompts.generator.buildPromptText(selectedType, customText, tone, params);
 
-    if (window.TAIPrompts?.core?.incGeneration) {
-      window.TAIPrompts.core.incGeneration();
+    if (TAIPrompts.core?.incGeneration) {
+      TAIPrompts.core.incGeneration();
     }
     
     finalPrompt.textContent = finalPromptText;
@@ -2316,8 +2317,8 @@ TAIPrompts.generator.init = function() {
       isFormDirty = false;
       
       selectedType = this.getAttribute("data-type") || "recipes";
-      if (window.TAIPrompts?.core?.incCategory) {
-        window.TAIPrompts.core.incCategory(selectedType);
+      if (TAIPrompts.core?.incCategory) {
+        TAIPrompts.core.incCategory(selectedType);
       }
       
       if (typeof TAIPrompts.generator.renderExamples === 'function') {
@@ -2354,5 +2355,3 @@ TAIPrompts.generator.init = function() {
     }
   });
 };
-
-window.TAIPrompts = TAIPrompts;
