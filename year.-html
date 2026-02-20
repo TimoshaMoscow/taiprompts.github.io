@@ -314,7 +314,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- inject footer -->
   <div id="site-footer"></div>
 
-  <script src="main.js"></script>
+<!-- В конце body, перед закрывающим тегом -->
+    <script src="scripts/core.js"></script>
+    <script src="scripts/generator.js"></script>
+    <script src="scripts/ui.js"></script>
+    <script src="scripts/pages.js"></script>
+    <script src="scripts/debug.js"></script>
+    <script src="scripts/main.js"></script>
 
   <!-- Мини-скрипт только для вывода локальной статистики из cookies -->
   <script>
