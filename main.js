@@ -1254,10 +1254,24 @@ const validationRules = {
         when: { type: ["Интернет-магазин", "Социальная сеть", "Панель управления", "Многостраничное приложение"] },
         cannotHave: ["Код в одном файле"],
         message: "Для сложных проектов рекомендуется структура проекта, а не один файл"
+      },
+      {
+        when: { type: ["Блог"] },
+        cannotHave: ["Корзина покупок"],
+        message: "Для блога корзина покупок не требуется"
+      },
+      {
+        when: { type: ["Игра"] },
+        cannotHave: ["SEO оптимизация"],
+        message: "Для игр SEO оптимизация не актуальна"
+      },
+      {
+        when: { additionally: ["Код в одном файле", "Структура проекта"] },
+        cannotHave: [], // специальная проверка на конфликт
+        message: "Нельзя выбрать одновременно 'Код в одном файле' и 'Структура проекта'"
       }
     ],
     
-    // Рекомендации по стилям
     recommendations: [
       {
         when: { type: ["Интернет-магазин", "Панель управления"] },
@@ -1273,10 +1287,24 @@ const validationRules = {
         when: { type: ["Лендинг"] },
         recommendedFeatures: ["SEO оптимизация", "Адаптивный дизайн"],
         message: "Для лендинга обязательно нужны: {features}"
+      },
+      {
+        when: { type: ["Интернет-магазин"] },
+        recommendedFeatures: ["Корзина покупок", "Поиск"],
+        message: "Для интернет-магазина рекомендуем: {features}"
+      },
+      {
+        when: { type: ["Портфолио"] },
+        recommendedFeatures: ["Галерея изображений"],
+        message: "Для портфолио рекомендуем добавить галерею"
+      },
+      {
+        when: { type: ["Социальная сеть"] },
+        recommendedFeatures: ["Комментарии", "Аккаунты"],
+        message: "Для соцсети необходимы: {features}"
       }
     ],
     
-    // Цветовые рекомендации
     colorWarnings: [
       {
         when: { style: ["Киберпанк"] },
@@ -1285,7 +1313,7 @@ const validationRules = {
       },
       {
         when: { type: ["Интернет-магазин"] },
-        recommendedColors: ["Убразный (#db0f00)", "Обнаружение (#26d13c)"],
+        recommendedColors: ["Рубиновый (#db0f00)", "Обнаружение (#26d13c)"],
         message: "Для магазина рекомендуем яркие цвета для призыва к действию"
       }
     ]
@@ -1315,6 +1343,16 @@ const validationRules = {
         when: { functionality: ["Платежи"] },
         recommendedLanguage: ["Python", "JavaScript", "TypeScript"],
         message: "Для платежей рекомендуем языки: {languages}"
+      },
+      {
+        when: { functionality: ["Админ-панель", "Модерация"] },
+        recommendedFeatures: ["Команды"],
+        message: "Для администрирования добавьте команды"
+      },
+      {
+        when: { functionality: ["Платежи"] },
+        recommendedComplexity: ["Нормальная", "Сложная"],
+        message: "Платежи требуют как минимум нормальной сложности"
       }
     ]
   },
@@ -1335,6 +1373,15 @@ const validationRules = {
         when: { aspect_ratio: ["9:16 (вертикальное)"] },
         recommendedStyle: ["реалистичное", "мультяшное", "анимешное"],
         message: "Для вертикального формата лучше подходят эти стили"
+      },
+      {
+        when: { style: ["реалистичное"] },
+        recommendedQuality: ["Высокое (4K)"],
+        message: "Реалистичные изображения лучше выглядят в 4K"
+      },
+      {
+        when: { quality: ["Низкое (144p)"] },
+        message: "Низкое качество не подходит для детализированных стилей"
       }
     ]
   },
@@ -1355,6 +1402,11 @@ const validationRules = {
         when: { emotions: ["Радость", "Смех"] },
         recommendedStyle: ["мультяшный", "мемный"],
         message: "Для весёлых эмоций подходят мультяшные и мемные стили"
+      },
+      {
+        when: { platform: ["WhatsApp"] },
+        cannotHave: ["Удивление"],
+        message: "WhatsApp ограниченно поддерживает сложные эмоции"
       }
     ]
   },
@@ -1365,6 +1417,20 @@ const validationRules = {
         when: { version: ["1.8.9", "1.12.2"] },
         cannotHave: ["Изменение мира", "Конфиг"],
         message: "Для старых версий Minecraft некоторые функции недоступны"
+      },
+      {
+        when: { type: ["Ресурспак"] },
+        cannotHave: ["Новые блоки", "Новые мобы", "Боссы"],
+        message: "Ресурспак не может добавлять новую механику"
+      },
+      {
+        when: { type: ["Датапак"] },
+        cannotHave: ["GUI"],
+        message: "Датапаки не поддерживают GUI"
+      },
+      {
+        when: { type: ["Плагин"], loader: ["Forge", "Fabric"] },
+        message: "Плагины обычно используют Paper/Spigot, не Forge/Fabric"
       }
     ],
     
@@ -1381,8 +1447,18 @@ const validationRules = {
       },
       {
         when: { features: ["Новые мобы", "Боссы"] },
-        recommendedVersion: ["1.20.1", "1.21"],
+        recommendedVersion: ["1.20.1", "1.21", "1.21.4", "1.21.8"],
         message: "Для сложных мобов нужны современные версии"
+      },
+      {
+        when: { features: ["Новые блоки"] },
+        recommendedFeatures: ["Рецепты"],
+        message: "Для новых блоков добавьте рецепты крафта"
+      },
+      {
+        when: { features: ["Боссы"] },
+        recommendedFeatures: ["Новые мобы"],
+        message: "Боссы — это разновидность мобов"
       }
     ]
   },
@@ -1403,6 +1479,10 @@ const validationRules = {
         when: { software: ["Blender"] },
         recommendedStyle: ["реалистичный", "стилизованный", "мультяшный"],
         message: "Blender хорошо подходит для этих стилей"
+      },
+      {
+        when: { style: ["low-poly"], polygons: ["High (50-200k)", "Ultra (>200k)"] },
+        message: "Low-poly стиль несовместим с высокой полигональностью"
       }
     ]
   },
@@ -1423,6 +1503,15 @@ const validationRules = {
         when: { personality: ["Загадочный", "Мудрый"] },
         recommendedName: ["Фэнтези", "Уникальное", "Историческое"],
         message: "Для таких персонажей подходят необычные имена"
+      },
+      {
+        when: { appearance: ["Историческая личность"], name: ["Аниме"] },
+        message: "Историческая личность и аниме имя странно сочетаются"
+      },
+      {
+        when: { personality: ["Дружелюбный", "Юмористический"] },
+        recommendedTone: ["Неформальный", "Дружеский"],
+        message: "Для дружелюбных персонажей выбирайте неформальный тон"
       }
     ]
   },
@@ -1443,6 +1532,15 @@ const validationRules = {
         when: { style: ["Грустный", "Ностальгический"] },
         recommendedTempo: ["Медленный", "Умеренный"],
         message: "Для грустных песен подходит медленный темп"
+      },
+      {
+        when: { genre: ["Классика"], instruments: ["Синтезатор", "Барабаны"] },
+        message: "Классика плохо сочетается с электронными инструментами"
+      },
+      {
+        when: { style: ["Энергичный"] },
+        recommendedTempo: ["Быстрый", "Очень быстрый"],
+        message: "Энергичной песне нужен быстрый темп"
       }
     ]
   },
@@ -1451,21 +1549,39 @@ const validationRules = {
     incompatible: [
       {
         when: { dietary: ["Веганское"] },
-        cannotHave: ["Высокобелковое"], // веганское ≠ высокобелковое по умолчанию
+        cannotHave: ["Высокобелковое"],
         message: "Для веганских блюд сложно достичь высокого содержания белка"
+      },
+      {
+        when: { dietary: ["Без глютена"], complexity: ["Сложная", "Невозможная"] },
+        message: "Безглютеновые блюда лучше делать простыми или нормальной сложности"
       }
     ],
     
     recommendations: [
       {
         when: { cuisine: ["итальянской"] },
-        recommendedComplexity: ["Простое", "Средней сложности"],
+        recommendedComplexity: ["Легкая", "Нормальная"],
         message: "Итальянская кухня обычно проста в приготовлении"
       },
       {
         when: { dietary: ["Низкоуглеводное"] },
         recommendedCuisine: ["азиатской", "средиземноморской"],
         message: "Для низкоуглеводной диеты подходят эти кухни"
+      },
+      {
+        when: { cuisine: ["французской"] },
+        recommendedComplexity: ["Сложная", "Невозможная"],
+        message: "Французская кухня часто требует высокой сложности"
+      },
+      {
+        when: { cuisine: ["русской"] },
+        recommendedComplexity: ["Нормальная"],
+        message: "Русская кухня обычно средней сложности"
+      },
+      {
+        when: { dietary: ["Веганское"], complexity: ["Невозможная"] },
+        message: "Веганское блюдо не может быть невозможной сложности"
       }
     ]
   },
@@ -1481,6 +1597,14 @@ const validationRules = {
         when: { oc: ["Android"] },
         cannotHave: ["Inno Setup", "MSIX", "DMG"],
         message: "Для Android нужны APK, AAB или Google Play"
+      },
+      {
+        when: { oc: ["IOS"], setupper: ["Google Play"] },
+        message: "Google Play не для iOS"
+      },
+      {
+        when: { oc: ["Android"], setupper: ["App Store"] },
+        message: "App Store не для Android"
       }
     ],
     
@@ -1499,6 +1623,11 @@ const validationRules = {
         when: { setupper: ["Google Play", "App Store"] },
         recommendedOC: ["Android", "IOS"],
         message: "Эти установщики для мобильных платформ"
+      },
+      {
+        when: { oc: ["Windows"] },
+        recommendedSetupper: ["Inno Setup", "NSIS", "MSIX"],
+        message: "Для Windows рекомендуем: {setupper}"
       }
     ]
   },
@@ -1519,6 +1648,11 @@ const validationRules = {
         when: { func: ["Нейросеть"] },
         recommendedLang: ["Python", "JavaScript"],
         message: "Для нейросетей рекомендуем: {lang}"
+      },
+      {
+        when: { browser: ["Safari"] },
+        recommendedFunc: [],
+        message: "Safari имеет строгие ограничения на разрешения"
       }
     ]
   },
@@ -1539,6 +1673,20 @@ const validationRules = {
         when: { monetization: ["Реклама", "Спонсорство"] },
         recommendedFrequency: ["Еженедельно", "2-3 раза в неделю"],
         message: "Для монетизации важна регулярность: {frequency}"
+      },
+      {
+        when: { audience: ["Дети"], monetization: ["Реклама"] },
+        message: "Для детского контента реклама ограничена"
+      },
+      {
+        when: { content_type: ["Новости"] },
+        recommendedFrequency: ["Ежедневно"],
+        message: "Новости требуют ежедневного выпуска"
+      },
+      {
+        when: { content_type: ["Кулинария"] },
+        recommendedThumbnail: ["Яркий и контрастный"],
+        message: "Для кулинарии важно яркое превью"
       }
     ]
   },
@@ -1559,6 +1707,15 @@ const validationRules = {
         when: { task: ["Сочинение-рассуждение"] },
         recommendedSubj: ["Литература", "История"],
         message: "Для сочинений-рассуждений подходят предметы: {subj}"
+      },
+      {
+        when: { class: ["1 класс", "2 класс"], task: ["Код", "Чертёж"] },
+        message: "Для младших классов код и чертежи слишком сложны"
+      },
+      {
+        when: { subj: ["Математика"] },
+        recommendedTask: ["Задача", "Чертёж"],
+        message: "Для математики рекомендуем задачи и чертежи"
       }
     ]
   },
@@ -1579,6 +1736,14 @@ const validationRules = {
         when: { materials: ["металл"] },
         recommendedAge: ["6-12 лет", "12+ лет"],
         message: "Металлические игрушки для детей старше 6 лет"
+      },
+      {
+        when: { age_group: ["0-1 год"], type: ["конструктора"] },
+        message: "Конструкторы не подходят для младенцев"
+      },
+      {
+        when: { age_group: ["12+ лет", "взрослые"], type: ["развивающей"] },
+        message: "Развивающие игрушки в основном для детей"
       }
     ]
   }
