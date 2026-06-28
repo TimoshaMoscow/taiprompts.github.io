@@ -299,7 +299,7 @@ const promptTemplates = {
   recipes: {
     name: "Рецепты",
     template:
-      "Создай подробный рецепт {cuisine} кухни, блюда с описанием: '{idea}'. Ограничения: {dietary}, Сложность: {complexity}. Включи ингредиенты, пошаговое приготовление, время готовки и полезную информацию.",
+      "Создай подробный рецепт {cuisine} кухни по идее: '{idea}'. Ограничения: {dietary}. Сложность: {complexity}. Структурируй ответ строго по разделам: название блюда, краткое описание, ингредиенты с количеством, пошаговое приготовление, время готовки, советы по подаче, замены ингредиентов и полезные замечания. Пиши конкретно, без общих фраз и лишней воды.",
     params: {
       cuisine: {
         type: "select",
@@ -325,7 +325,7 @@ const promptTemplates = {
   websites: {
     name: "Веб-сайты",
     template:
-      "Разработай веб-сайт типа {type} на {stack} по описанию: '{idea}'. Основная палитра: {color}. Стиль сайта: {style}. Сложность реализации: {complexity}. Включи: {additionally}, {features} и иконки типа {emoji}.",
+      "Разработай веб-сайт типа {type} на {stack} по описанию: '{idea}'. Основная палитра: {color}. Стиль сайта: {style}. Сложность реализации: {complexity}. В ответе обязательно укажи: структуру страниц и блоков, логику интерфейса, адаптивность, UX-решения, анимации, доступность, SEO-детали и список компонентов. Учитывай: {features}, {emoji}, {additionally}. Если указан полный код, покажи готовую структуру проекта и объясни, как его собрать.",
     params: {
       type: {
         type: "select",
@@ -381,7 +381,7 @@ const promptTemplates = {
   bots: {
     name: "Боты и автоматизация",
     template:
-      "Создай бота на {language} для платформы {platform}, с функционалом '{idea}'. Сложность реализации: {complexity}. Включи: описание функций, {functionality}, {additionally}, обработку сообщений и установочные инструкции.",
+      "Создай бота на {language} для платформы {platform} по идее: '{idea}'. Сложность реализации: {complexity}. Опиши: назначение бота, список команд и сценариев, обработку сообщений и ошибок, работу с хранилищем данных, интеграции, требования к установке и запуску. Учти особенности: {functionality}. Дополнительно включи: {additionally}.",
     params: {
       platform: {
         type: "select",
@@ -419,7 +419,7 @@ const promptTemplates = {
   minecraft: {
     name: "Моды Minecraft",
     template:
-      "Разработай {type} для Minecraft {version} {loader} для {compatibility} с описанием: '{idea}'. Особенности: {features} и {additionally}. Сложность реализации: {complexity}. Детально опиши функционал и механики.",
+      "Разработай {type} для Minecraft {version} {loader} для {compatibility} по описанию: '{idea}'. Сложность реализации: {complexity}. В ответе опиши: основную механику, игровые изменения, блоки/предметы/мобы, рецепты, конфигурацию, совместимость, структуру файлов и этапы реализации. Особенности: {features}. Дополнительно: {additionally}.",
     params: {
       type: {
         type: "select",
@@ -469,7 +469,7 @@ const promptTemplates = {
   images: {
     name: "Генерация изображений",
     template:
-      "Сгенерируй {style} изображение {aspect_ratio} качества {quality} по описанию: '{idea}'.",
+      "Сгенерируй {style} изображение формата {aspect_ratio} качества {quality} по описанию: '{idea}'. Укажи основной объект, композицию, свет, цветовую палитру, настроение, детали окружения и визуальные акценты. Формулируй как готовый промпт для генератора изображений.",
     params: {
       style: {
         type: "select",
@@ -495,7 +495,7 @@ const promptTemplates = {
     stickers: {
       name: "Стикеры и аватары",
       template:
-        "Создай {style} стикерпак для {platform} с описанием: '{idea}'. Нужные эмоции: {emotions}. Включи разнообразные эмоции, действия и ситуации. Сделай всё на прозрачном фоне, чтобы можно было удобно вставить в любой мессенджер.",
+        "Создай {style} стикерпак для {platform} по описанию: '{idea}'. Нужные эмоции и действия: {emotions}. Сделай набор разнообразным: разные эмоции, позы, жесты, реакции и ситуации. Обязательно укажи требования к прозрачному фону, читаемости и единообразию персонажа.",
       params: {
         style: {
           type: "select",
@@ -521,7 +521,7 @@ const promptTemplates = {
     "3d": {
       name: "3D модели",
       template:
-        "Создай {style} 3D модель {type} на тему '{idea}'. ПО: {software} Полигональность: {polygons}. Детально опиши: геометрию, материалы, текстуры, освещение и рендеринг.",
+        "Создай {style} 3D модель {type} на тему '{idea}'. ПО: {software}. Полигональность: {polygons}. Опиши результат как техническое ТЗ: форма и силуэт, топология, материалы, текстуры, UV-развёртка, освещение, рендеринг, а также возможные ограничения и шаги моделинга.",
       params: {
         style: {
           type: "select",
@@ -576,21 +576,57 @@ const promptTemplates = {
       },
     },
 
-    characterai: {
-      name: "Character AI",
-      template:
-        "Создай персонажа для Character AI с описанием '{idea}'. Характеристики: {personality} {appearance}, Тип имени: {name}, Тон общения: {tone2}.",
-      params: {
-        name: {
-          type: "select",
-          label: "Тип имени",
-          options: ["Реалистичное", "Фэнтези", "Научно-фантастическое", "Историческое", "Аниме", "Уникальное", "Другое"],
-          default: "Реалистичное",
-        },
-        personality: {
-          type: "multiselect",
-          label: "Черты характера",
-          options: ["Дружелюбный", "Застенчивый", "Энергичный", "Серьезный", "Юмористический", "Загадочный", "Мудрый", "Наивный"],
+  characterai: {
+    name: "Character AI",
+    template: (params, idea) => {
+      const rawName = normalizeValue(params.name).toLowerCase();
+      const shouldInventName =
+        !rawName ||
+        ["придумать", "придумай", "придумай сам", "сгенерируй", "auto"].includes(rawName);
+
+      const personality = formatPromptValue(params.personality, "не указаны");
+      const appearance = formatPromptValue(params.appearance, "не указана");
+      const tone = formatPromptValue(params.tone2, "Дружеский");
+
+      const nameBlock = shouldInventName
+        ? "Имя персонажа: придумай самостоятельно 3-5 подходящих вариантов и выбери лучший."
+        : `Имя персонажа: "${params.name}".`;
+
+      return [
+        "Создай подробного персонажа для Character AI.",
+        "",
+        `Идея: ${idea}.`,
+        nameBlock,
+        `Личность: ${personality}.`,
+        `Внешность: ${appearance}.`,
+        `Тон общения: ${tone}.`,
+        "",
+        "Сделай результат в таком формате:",
+        "1. Краткое описание персонажа",
+        "2. Имя и почему оно подходит",
+        "3. Манера речи и поведение",
+        "4. Приветственное сообщение",
+        "5. 5 примеров реплик",
+        "6. Ограничения и особенности образа",
+        "",
+        "Требования:",
+        "- Персонаж должен быть последовательным и легко отыгрываться в диалоге.",
+        "- Не делай описание слишком общим.",
+        "- Если имя нужно придумать, предложи только уместные варианты.",
+        "- Учитывай, что это промпт для Character AI, а не для обычного чата."
+      ].join("\n");
+    },
+    params: {
+      name: {
+        type: "text",
+        label: "Имя персонажа",
+        placeholder: "Введите имя или напишите 'придумать'",
+        default: "придумать",
+      },
+      personality: {
+        type: "multiselect",
+        label: "Черты характера",
+        options: ["Дружелюбный", "Застенчивый", "Энергичный", "Серьезный", "Юмористический", "Загадочный", "Мудрый", "Наивный"],
           default: "Дружелюбный",
         },
         appearance: {
@@ -599,19 +635,19 @@ const promptTemplates = {
           options: ["Человек", "Животное", "Робот", "Мифическое существо", "Инопланетянин", "Аниме персонаж", "Историческая личность"],
           default: "Человек",
         },
-        tone2: {
-          type: "select",
-          label: "Тон общения",
-          options: ["Формальный", "Неформальный", "Дружеский", "Профессиональный", "Поэтический", "Драматический"],
-          default: "Дружеский",
-        },
+      tone2: {
+        type: "select",
+        label: "Тон общения",
+        options: ["Формальный", "Неформальный", "Дружеский", "Профессиональный", "Поэтический", "Драматический"],
+        default: "Дружеский",
       },
     },
+  },
 
     suno: {
       name: "Suno AI",
       template:
-        "Создай текст песни для Suno AI по описанию: '{idea}', в стиле {style} и жанре {genre}, В песни должны быть {structure}, Особенности песни: {tempo} темп, {instruments}. Оформление типа: [Verse], [Chorus], [Verse 2] и тд.",
+        "Создай текст песни для Suno AI по описанию: '{idea}'. Жанр: {genre}. Стиль: {style}. Структура: {structure}. Темп: {tempo}. Инструменты: {instruments}. Дай готовый промпт для песни с чёткой атмосферой, темой, структурой куплетов и припева, а также пометками в формате [Verse], [Chorus], [Bridge] и т.д.",
       params: {
         genre: {
           type: "select",
@@ -649,7 +685,7 @@ const promptTemplates = {
     setup: {
       name: "Приложения",
       template:
-        "Разработай {type} на {lang} в стиле {style} (Основная палитра {color}) для {oc} с функционалом {hang}, включи {additionally}, и инструкцией по сборке для {setupper}. Иконку не добавляй если не указано иное. Сложность реализации: {complexity}. Подробное описание идеи: '{idea}'",
+        "Разработай {type} на {lang} в стиле {style} с основной палитрой {color} для {oc} по описанию: '{idea}'. Функционал: {hang}. Дополнительно включи: {additionally}. Обязательно опиши архитектуру, основные экраны или модули, способ сборки и установки через {setupper}, а также ограничения и рекомендации по реализации. Сложность реализации: {complexity}. Иконку не добавляй, если не указано иное.",
       params: {
         type: {
           type: "select",
@@ -967,6 +1003,237 @@ const promptTemplates = {
     },
   };
 
+const CUSTOM_OPTION_VALUE = "__custom__";
+
+function normalizeValue(value) {
+  return value === null || value === undefined ? "" : String(value).trim();
+}
+
+function isCustomOptionLabel(value) {
+  const normalized = normalizeValue(value).toLowerCase();
+  return ["другой", "другое", "свой вариант", "указать свой", "custom"].includes(normalized);
+}
+
+function splitValueList(value) {
+  if (Array.isArray(value)) {
+    return value.map(normalizeValue).filter(Boolean);
+  }
+
+  const text = normalizeValue(value);
+  if (!text) return [];
+
+  return text
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean);
+}
+
+function formatPromptValue(value, fallback = "") {
+  if (Array.isArray(value)) {
+    const parts = value.map(normalizeValue).filter(Boolean);
+    return parts.length > 0 ? parts.join(", ") : fallback;
+  }
+
+  const text = normalizeValue(value);
+  return text || fallback;
+}
+
+function cleanupPromptText(text) {
+  return normalizeValue(text)
+    .replace(/\s+([,.!?;:])/g, "$1")
+    .replace(/([,.!?;:])([^\s])/g, "$1 $2")
+    .replace(/\s{2,}/g, " ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
+function getParamContainerValue(container, key, param) {
+  if (!container || !param) return "";
+
+  if (param.type === "text") {
+    const input = container.querySelector(`#param-${key}`);
+    return normalizeValue(input?.value);
+  }
+
+  if (param.type === "select") {
+    const select = container.querySelector(`#param-${key}`);
+    const customInput = container.querySelector(`[data-custom-input-for="${key}"]`);
+    const value = normalizeValue(select?.value);
+    const isCustomChoice = value === CUSTOM_OPTION_VALUE || isCustomOptionLabel(value);
+
+    if (!isCustomChoice) {
+      return value;
+    }
+
+    const customValue = normalizeValue(customInput?.value);
+    return customValue || normalizeValue(param.customFallback || "свой вариант");
+  }
+
+  if (param.type === "multiselect") {
+    const box = container.querySelector(`#param-${key}`);
+    if (!box) return [];
+
+    const checked = Array.from(box.querySelectorAll('input[type="checkbox"]:checked'))
+      .map((cb) => normalizeValue(cb.value))
+      .filter((item) => item && item !== CUSTOM_OPTION_VALUE && !isCustomOptionLabel(item));
+
+    const customInput = container.querySelector(`[data-custom-input-for="${key}"]`);
+    const customCheckbox = box.querySelector(`[data-custom-checkbox-for="${key}"]`);
+
+    if (customCheckbox?.checked) {
+      const customValues = splitValueList(customInput?.value);
+      if (customValues.length > 0) {
+        checked.push(...customValues);
+      } else {
+        checked.push(normalizeValue(param.customFallback || "свой вариант"));
+      }
+    }
+
+    return checked;
+  }
+
+  return "";
+}
+
+function shouldShowCustomInput(param, value) {
+  if (!param) return false;
+
+  if (param.type === "select") {
+    const normalized = normalizeValue(value);
+    return normalized === CUSTOM_OPTION_VALUE || isCustomOptionLabel(normalized);
+  }
+
+  if (param.type === "multiselect") {
+    const values = Array.isArray(value) ? value : splitValueList(value);
+    return values.some((item) => item === CUSTOM_OPTION_VALUE || isCustomOptionLabel(item));
+  }
+
+  return false;
+}
+
+function syncCustomParamState(container, type) {
+  const params = promptTemplates[type]?.params || {};
+
+  Object.entries(params).forEach(([key, param]) => {
+    if (!param || !container) return;
+
+    const customInput = container.querySelector(`[data-custom-input-for="${key}"]`);
+    if (!customInput) return;
+
+    const currentValue = getParamContainerValue(container, key, param);
+    const shouldShow = shouldShowCustomInput(param, currentValue);
+    customInput.hidden = !shouldShow;
+    customInput.disabled = !shouldShow;
+  });
+}
+
+function collectPromptParams(type, overrideParams = {}) {
+  const tpl = promptTemplates[type];
+  const params = {};
+  const tplParams = tpl?.params || {};
+
+  for (const [key, value] of Object.entries(overrideParams || {})) {
+    params[key] = value;
+  }
+
+  for (const [key, param] of Object.entries(tplParams)) {
+    if (params[key] !== undefined) continue;
+    params[key] = getParamContainerValue(modal, key, param);
+  }
+
+  return params;
+}
+
+function setParamFieldValue(container, key, param, value) {
+  if (!container || !param) return;
+
+  if (param.type === "text") {
+    const input = container.querySelector(`#param-${key}`);
+    if (input) input.value = normalizeValue(value);
+    return;
+  }
+
+  if (param.type === "select") {
+    const select = container.querySelector(`#param-${key}`);
+    const customInput = container.querySelector(`[data-custom-input-for="${key}"]`);
+    if (!select) return;
+
+    const normalizedValue = normalizeValue(value);
+    const optionValues = Array.from(select.options).map((option) => option.value);
+    const hasExactMatch = optionValues.includes(normalizedValue);
+    const needsCustom = !hasExactMatch && normalizedValue !== "";
+
+    if (hasExactMatch) {
+      select.value = normalizedValue;
+      if (customInput) customInput.value = "";
+    } else if (needsCustom) {
+      const customOption = optionValues.includes(CUSTOM_OPTION_VALUE)
+        ? CUSTOM_OPTION_VALUE
+        : Array.from(select.options).find((option) => isCustomOptionLabel(option.value))?.value || CUSTOM_OPTION_VALUE;
+      select.value = customOption;
+      if (customInput) customInput.value = normalizedValue;
+    } else {
+      select.value = param.default || select.options[0]?.value || "";
+      if (customInput) customInput.value = "";
+    }
+
+    return;
+  }
+
+  if (param.type === "multiselect") {
+    const box = container.querySelector(`#param-${key}`);
+    if (!box) return;
+
+    const values = splitValueList(value);
+    const optionValues = Array.from(box.querySelectorAll('input[type="checkbox"]'))
+      .map((checkbox) => normalizeValue(checkbox.value));
+
+    box.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+      const optionValue = normalizeValue(checkbox.value);
+      if (optionValue === CUSTOM_OPTION_VALUE || isCustomOptionLabel(optionValue)) {
+        return;
+      }
+
+      checkbox.checked = values.includes(optionValue);
+    });
+
+    const customCheckbox = box.querySelector(`[data-custom-checkbox-for="${key}"]`);
+    const customInput = container.querySelector(`[data-custom-input-for="${key}"]`);
+    const customValues = values.filter((item) => !optionValues.includes(item));
+
+    if (customCheckbox) {
+      customCheckbox.checked = customValues.length > 0;
+    }
+
+    if (customInput) {
+      customInput.value = customValues.join(", ");
+    }
+  }
+}
+
+function applyPresetParams(presetParams = {}) {
+  if (!modal) return;
+
+  const type = selectedType;
+  const params = promptTemplates[type]?.params || {};
+
+  Object.entries(presetParams).forEach(([key, value]) => {
+    const param = params[key];
+    if (!param) return;
+    setParamFieldValue(modal, key, param, value);
+  });
+
+  syncCustomParamState(modal, type);
+  const validationContainer = modal.querySelector("#validationMessages");
+  if (validationContainer) {
+    const selectedParams = {};
+    Object.entries(params).forEach(([key, param]) => {
+      selectedParams[key] = getParamContainerValue(modal, key, param);
+    });
+    showValidationMessages(validateCombination(type, selectedParams));
+  }
+}
+
 // ===== КРОСС-РЕКОМЕНДАЦИИ =====
 const crossRecommendations = {
   // Если выбрал X категорию, рекомендовать Y
@@ -1199,7 +1466,7 @@ function applyContextualParams(category, userText) {
 
 // Функция для показа suggestions
 function showContextSuggestions(suggestions) {
-  const container = document.getElementById('contextSuggestions');
+  let container = document.getElementById('contextSuggestions');
   if (!container) {
     const newContainer = document.createElement('div');
     newContainer.id = 'contextSuggestions';
@@ -1209,8 +1476,11 @@ function showContextSuggestions(suggestions) {
     if (generatedPrompt) {
       generatedPrompt.parentNode.insertBefore(newContainer, generatedPrompt);
     }
+    container = newContainer;
   }
   
+  if (!container) return;
+
   if (suggestions.length === 0) {
     container.style.display = 'none';
     return;
@@ -1496,21 +1766,17 @@ const validationRules = {
       },
       {
         when: { appearance: ["Робот", "Инопланетянин"] },
-        recommendedTone: ["Формальный", "Профессиональный"],
+        recommendedTone2: ["Формальный", "Профессиональный"],
         message: "Для неорганических существ подходит формальный тон"
       },
       {
         when: { personality: ["Загадочный", "Мудрый"] },
-        recommendedName: ["Фэнтези", "Уникальное", "Историческое"],
-        message: "Для таких персонажей подходят необычные имена"
-      },
-      {
-        when: { appearance: ["Историческая личность"], name: ["Аниме"] },
-        message: "Историческая личность и аниме имя странно сочетаются"
+        recommendedTone2: ["Поэтический", "Драматический"],
+        message: "Для загадочного или мудрого персонажа лучше подходит атмосферный тон общения"
       },
       {
         when: { personality: ["Дружелюбный", "Юмористический"] },
-        recommendedTone: ["Неформальный", "Дружеский"],
+        recommendedTone2: ["Неформальный", "Дружеский"],
         message: "Для дружелюбных персонажей выбирайте неформальный тон"
       }
     ]
@@ -1927,7 +2193,7 @@ function showValidationMessages(validation) {
 
 // ===== КРОСС-РЕКОМЕНДАЦИИ =====
 function showCrossRecommendations() {
-  const recommendationsContainer = document.getElementById('crossRecommendations');
+  let recommendationsContainer = document.getElementById('crossRecommendations');
   if (!recommendationsContainer) {
     // Создаём контейнер если его нет
     const container = document.createElement('div');
@@ -1938,6 +2204,7 @@ function showCrossRecommendations() {
     if (form) {
       form.parentNode.insertBefore(container, form);
     }
+    recommendationsContainer = container;
   }
   
   const userText = customInput.value.trim();
@@ -2096,15 +2363,7 @@ function renderTechnicalParams(type) {
   const updateValidation = () => {
     const selectedParams = {};
     for (const [key, param] of Object.entries(params)) {
-      const element = container.querySelector(`#param-${key}`);
-      if (element) {
-        if (param.type === "select") {
-          selectedParams[key] = element.value;
-        } else if (param.type === "multiselect") {
-          const checked = element.querySelectorAll('input[type="checkbox"]:checked');
-          selectedParams[key] = Array.from(checked).map(cb => cb.value);
-        }
-      }
+      selectedParams[key] = getParamContainerValue(container, key, param);
     }
     
     const validation = validateCombination(type, selectedParams);
@@ -2121,7 +2380,22 @@ function renderTechnicalParams(type) {
         const selected = option === param.default ? "selected" : "";
         html += `<option value="${option}" ${selected}>${option}</option>`;
       });
+      if (!param.options.some((option) => isCustomOptionLabel(option))) {
+        const customSelected = !param.options.includes(param.default || "");
+        html += `<option value="${CUSTOM_OPTION_VALUE}" ${customSelected ? "selected" : ""}>Другое</option>`;
+      }
       html += `</select>`;
+      const customValue = normalizeValue(param.default) && !param.options.includes(param.default || "") ? param.default : "";
+      html += `
+        <input
+          type="text"
+          class="custom-param-input"
+          data-custom-input-for="${key}"
+          placeholder="${param.customPlaceholder || "Введите свой вариант"}"
+          value="${customValue}"
+          ${shouldShowCustomInput(param, param.default) ? "" : 'hidden'}
+        >
+      `;
     } else if (param.type === "multiselect") {
       html += `<div class="multi-select" id="param-${key}" data-param="${key}">`;
       const defaultValues = Array.isArray(param.default) ? param.default : [param.default];
@@ -2134,7 +2408,35 @@ function renderTechnicalParams(type) {
           </label>
         `;
       });
+      if (!param.options.some((option) => isCustomOptionLabel(option))) {
+        html += `
+          <label class="checkbox-label custom-checkbox-label">
+            <input type="checkbox" value="${CUSTOM_OPTION_VALUE}" data-custom-checkbox-for="${key}">
+            Другое
+          </label>
+        `;
+      }
+      html += `
+        <input
+          type="text"
+          class="custom-param-input custom-multi-input"
+          data-custom-input-for="${key}"
+          placeholder="${param.customPlaceholder || "Введите свой вариант через запятую"}"
+          hidden
+        >
+      `;
       html += `</div>`;
+    } else if (param.type === "text") {
+      html += `
+        <input
+          type="text"
+          id="param-${key}"
+          class="tech-param"
+          data-param="${key}"
+          placeholder="${param.placeholder || "Введите значение"}"
+          value="${normalizeValue(param.default)}"
+        >
+      `;
     }
 
     html += `</div>`;
@@ -2143,11 +2445,21 @@ function renderTechnicalParams(type) {
   container.innerHTML = html || "<p>Для этого типа промпта не требуется дополнительных параметров.</p>";
   
   // Добавляем обработчики событий для валидации
-  container.querySelectorAll('select.tech-param, .multi-select input[type="checkbox"]').forEach(element => {
+  container.querySelectorAll('select.tech-param, .multi-select input[type="checkbox"], .custom-param-input, .tech-param').forEach(element => {
     element.addEventListener('change', updateValidation);
+    element.addEventListener('input', updateValidation);
+  });
+
+  container.querySelectorAll('select.tech-param').forEach((select) => {
+    select.addEventListener('change', () => syncCustomParamState(container, type));
+  });
+
+  container.querySelectorAll('.multi-select input[type="checkbox"]').forEach((checkbox) => {
+    checkbox.addEventListener('change', () => syncCustomParamState(container, type));
   });
   
   // Инициализируем валидацию с текущими значениями
+  syncCustomParamState(container, type);
   setTimeout(updateValidation, 100);
 }
 
@@ -2280,48 +2592,25 @@ function buildPromptText(type, idea, tone = "professional", overrideParams = {})
   if (!promptTemplates[type]) return "";
 
   const tpl = promptTemplates[type];
-  const params = {};
-
-  // Сначала копируем значения из overrideParams (это переменные из примера)
-  for (const [key, value] of Object.entries(overrideParams)) {
-    params[key] = value;
-  }
-
-  // Затем заполняем оставшиеся параметры из формы
-  const tplParams = tpl.params || {};
-  for (const [key, param] of Object.entries(tplParams)) {
-    // Если параметр уже есть в overrideParams, пропускаем
-    if (params[key] !== undefined) continue;
-    
-    if (param.type === "select") {
-      const el = modal.querySelector(`#param-${key}`);
-      if (el) params[key] = el.value;
-    } else if (param.type === "multiselect") {
-      const box = modal.querySelector(`#param-${key}`);
-      if (box) {
-        const checked = box.querySelectorAll('input[type="checkbox"]:checked');
-        params[key] = Array.from(checked).map(cb => cb.value);
-      }
-    }
-  }
+  const params = collectPromptParams(type, overrideParams);
 
   // Если шаблон - функция, вызываем её с параметрами
   if (typeof tpl.template === 'function') {
-    return tpl.template(params, idea, tone);
+    return cleanupPromptText(tpl.template(params, idea, tone));
   }
 
   // Иначе используем старый строковый шаблон
   let text = tpl.template;
-  text = text.replace("{idea}", idea);
+  text = text.replace("{idea}", normalizeValue(idea));
 
   // Заменяем все параметры в шаблоне
   for (const [key, value] of Object.entries(params)) {
-    const paramValue = Array.isArray(value) ? value.join(", ") : value || "";
+    const paramValue = Array.isArray(value) ? value.join(", ") : normalizeValue(value);
     text = text.replace(new RegExp(`\\{${key}\\}`, "g"), paramValue);
   }
 
   // Удаляем оставшиеся неиспользованные параметры {param}
-  text = text.replace(/\{[^}]+\}/g, "").replace(/\s{2,}/g, " ").trim();
+  text = cleanupPromptText(text.replace(/\{[^}]+\}/g, ""));
   
   // Добавляем тон в начало для строковых шаблонов
   let tonePrefix = "";
@@ -2333,7 +2622,7 @@ function buildPromptText(type, idea, tone = "professional", overrideParams = {})
     case "detailed": tonePrefix = "Дай максимально детализированный ответ. "; break;
   }
   
-  text = tonePrefix + text + "\n\nПромпт создан с помощью TAIPrompts";
+  text = cleanupPromptText(`${tonePrefix}${text}\n\nПромпт создан с помощью TAIPrompts`);
 
   return text;
 }
@@ -2447,8 +2736,8 @@ const promptExamples = {
   characterai: [
     {
       title: "Аниме девушка",
-      idea: "Дружелюбный, соблазнительная аниме девушка",
-      name: "Аниме",
+      idea: "Дружелюбная, игривая аниме-девушка, которая умеет подшучивать и поддерживать разговор",
+      name: "придумать",
       personality: "Дружелюбный, Юмористический, Наивный",
       appearance: "Аниме персонаж, Человек",
       tone2: "Дружеский",
