@@ -1111,6 +1111,21 @@ function shouldShowCustomInput(param, value) {
   return false;
 }
 
+function isCustomParamActive(container, key, param) {
+  if (!container || !param) return false;
+
+  if (param.type === "select") {
+    const selectValue = normalizeValue(container.querySelector(`#param-${key}`)?.value);
+    return selectValue === CUSTOM_OPTION_VALUE || isCustomOptionLabel(selectValue);
+  }
+
+  if (param.type === "multiselect") {
+    return Boolean(container.querySelector(`#param-${key} [data-custom-checkbox-for="${key}"]`)?.checked);
+  }
+
+  return false;
+}
+
 function syncCustomParamState(container, type) {
   const params = promptTemplates[type]?.params || {};
 
@@ -1121,15 +1136,16 @@ function syncCustomParamState(container, type) {
     const customHint = container.querySelector(`[data-custom-hint-for="${key}"]`);
     if (!customInput) return;
 
-    const currentValue = getParamContainerValue(container, key, param);
-    const shouldShow = shouldShowCustomInput(param, currentValue);
+    const shouldShow = isCustomParamActive(container, key, param);
     customInput.hidden = !shouldShow;
     customInput.disabled = !shouldShow;
 
     if (customHint) {
-      customHint.hidden = !shouldShow || !normalizeValue(customInput.value);
+      customHint.hidden = !shouldShow || normalizeValue(customInput.value).length > 0;
       if (!shouldShow) {
         customHint.textContent = "";
+      } else if (!normalizeValue(customInput.value)) {
+        customHint.textContent = "Введите свой вариант";
       }
     }
   });
@@ -2371,7 +2387,14 @@ function switchToCategory(newCategory, presetParams = {}) {
     }, timeout);
   }
 
-  function showCloseConfirmationModal() {
+  function showGeneratorConfirmationModal({
+    title,
+    message,
+    confirmText,
+    cancelText,
+    iconClass = "fa-triangle-exclamation",
+    confirmVariant = "primary",
+  }) {
     return new Promise((resolve) => {
       let dialog = document.getElementById("generator-confirm-dialog");
       if (!dialog) {
@@ -2381,18 +2404,26 @@ function switchToCategory(newCategory, presetParams = {}) {
         dialog.innerHTML = `
           <div class="generator-confirm-card" role="dialog" aria-modal="true" aria-labelledby="generator-confirm-title">
             <div class="generator-confirm-icon">
-              <i class="fas fa-triangle-exclamation"></i>
+              <i class="fas ${iconClass}"></i>
             </div>
-            <h3 id="generator-confirm-title">Закрыть генератор?</h3>
-            <p>У вас есть несохранённый промпт. Если закрыть окно сейчас, изменения могут пропасть.</p>
+            <h3 id="generator-confirm-title"></h3>
+            <p></p>
             <div class="generator-confirm-actions">
-              <button type="button" class="btn btn-secondary" data-generator-cancel>Остаться</button>
-              <button type="button" class="btn btn-primary" data-generator-confirm>Закрыть</button>
+              <button type="button" class="btn btn-secondary" data-generator-cancel></button>
+              <button type="button" class="btn btn-primary" data-generator-confirm></button>
             </div>
           </div>
         `;
         document.body.appendChild(dialog);
       }
+
+      dialog.querySelector("#generator-confirm-title").textContent = title;
+      dialog.querySelector(".generator-confirm-card p").textContent = message;
+      dialog.querySelector("[data-generator-cancel]").textContent = cancelText;
+      const confirmButton = dialog.querySelector("[data-generator-confirm]");
+      confirmButton.textContent = confirmText;
+      confirmButton.classList.toggle("btn-primary", confirmVariant === "primary");
+      confirmButton.classList.toggle("btn-secondary", confirmVariant === "secondary");
 
       const cleanup = (result) => {
         dialog.classList.remove("active");
@@ -2425,7 +2456,13 @@ function switchToCategory(newCategory, presetParams = {}) {
 
   async function closeModalWithCheck() {
     if (isPromptGenerated || isFormDirty) {
-      const shouldClose = await showCloseConfirmationModal();
+      const shouldClose = await showGeneratorConfirmationModal({
+        title: "Закрыть генератор?",
+        message: "У вас есть несохранённый промпт. Если закрыть окно сейчас, изменения могут пропасть.",
+        confirmText: "Закрыть",
+        cancelText: "Остаться",
+        iconClass: "fa-triangle-exclamation",
+      });
       if (!shouldClose) return;
     }
 
@@ -3133,7 +3170,7 @@ copyButton.addEventListener("click", function () {
 
 const downloadButton = modal.querySelector("#download-prompt");
 
-downloadButton.addEventListener("click", () => {
+  downloadButton.addEventListener("click", () => {
   const text = finalPrompt.textContent?.trim();
   if (!text) {
     showGeneratorToast("Сначала сгенерируйте промпт", "error");
@@ -3154,6 +3191,35 @@ downloadButton.addEventListener("click", () => {
   URL.revokeObjectURL(url);
   showGeneratorToast("Файл с промптом скачан", "success", 1800);
 });
+
+  document.addEventListener("click", async (event) => {
+    const anchor = event.target.closest?.("a[href]");
+    if (!anchor) return;
+    if (anchor.target === "_blank" || anchor.hasAttribute("download")) return;
+
+    const href = anchor.getAttribute("href") || "";
+    if (!href || href.startsWith("#") || href.startsWith("javascript:")) return;
+
+    const targetUrl = new URL(anchor.href, window.location.href);
+    const currentUrl = new URL(window.location.href);
+    const isSamePage = targetUrl.pathname === currentUrl.pathname && targetUrl.search === currentUrl.search && targetUrl.hash === currentUrl.hash;
+    if (isSamePage) return;
+
+    if (!(modal.classList.contains("active") && (isPromptGenerated || isFormDirty))) return;
+
+    event.preventDefault();
+    const shouldLeave = await showGeneratorConfirmationModal({
+      title: "Покинуть генератор?",
+      message: "У вас есть несохранённый промпт. Если перейти на другую страницу, изменения могут пропасть.",
+      confirmText: "Покинуть",
+      cancelText: "Остаться",
+      iconClass: "fa-right-from-bracket",
+    });
+
+    if (shouldLeave) {
+      window.location.href = anchor.href;
+    }
+  }, true);
 
   console.log("✅ Генератор инициализирован");
 
@@ -3407,17 +3473,6 @@ incPathView(location.pathname);
   initAnimations();
   initSearch();
   runDebug();
-
-  // === ЗАЩИТА ОТ ЗАКРЫТИЯ (только на generator.html) ===
-  if (window.location.pathname.includes('generator.html') || 
-      window.location.pathname.endsWith('generator.html') ||
-      window.location.pathname.endsWith('/generator')) {
-    window.addEventListener('beforeunload', function(event) {
-      event.preventDefault();
-      event.returnValue = '';
-    });
-  }
-  // === КОНЕЦ ЗАЩИТЫ ===
 
   // Service Worker
   if ("serviceWorker" in navigator) {
