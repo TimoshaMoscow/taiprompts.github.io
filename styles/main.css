@@ -458,6 +458,10 @@ section {
     font-family: inherit;
 }
 
+.param-group .custom-param-input {
+    margin-top: 0.75rem;
+}
+
 .multi-select {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -474,6 +478,10 @@ section {
     border: 1px solid var(--card-border);
     cursor: pointer;
     transition: all 0.3s;
+}
+
+.custom-checkbox-label {
+    min-height: 42px;
 }
 
 .checkbox-label:hover {
