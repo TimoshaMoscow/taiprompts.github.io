@@ -175,27 +175,44 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 </section>
 
-<!-- доверяют -->
-<section class="possibilities" id="possibilities">
+<!-- ===== Секция "Нам доверяют" ===== -->
+<section class="trust-section">
     <div class="container">
         <h2 class="section-title">Нам доверяют</h2>
-        <div class="possibilities-grid" id="possibilitiesGrid">
+        <p class="trust-subtitle">Множество компаний используют наши промпты ежедневно</p>
+        
+        <div class="trust-grid">
+            <!-- Spraute -->
+            <a href="https://t.me/spraute_esd" target="_blank" rel="noopener noreferrer" class="trust-item" data-tooltip="Spraute Engine">
+                <img src="https://speedtelly1.github.io/DiggyStorage/images/photo_2026-02-26_18-09-14.jpg" alt="Spraute">
+            </a>
+            
+            <!-- KronSendy -->
+            <a href="https://t.me/kronsendy2026" target="_blank" rel="noopener noreferrer" class="trust-item" data-tooltip="KronSendy">
+                <img src="https://speedtelly1.github.io/DiggyStorage/images/kron.jpg" alt="KronSendy">
+            </a>
+            
+            <!-- GoodWay Software -->
+            <a href="https://t.me/goodway_software" target="_blank" rel="noopener noreferrer" class="trust-item" data-tooltip="GoodWay Software">
+                <img src="https://speedtelly1.github.io/DiggyStorage/images/gw.jpg" alt="GoodWay Software">
+            </a>
+            
+            <!-- Cuby -->
+            <a href="https://t.me/cuby_mc" target="_blank" rel="noopener noreferrer" class="trust-item" data-tooltip="Cuby — Майнкрафт сервера">
+                <img src="https://speedtelly1.github.io/DiggyStorage/images/cuby.png" alt="Cuby — Майнкрафт сервера">
+            </a>
+            
+            <!-- Сибилевец -->
+            <a href="https://timoshamoscow.github.io/sibylevec-site.github.io/" target="_blank" rel="noopener noreferrer" class="trust-item" data-tooltip="Сибилевец">
+                <img src="https://speedtelly1.github.io/DiggyStorage/images/sib.png" alt="Сибилевец">
+            </a>
 
-            <div class="possibility-card">
-                <div class="possibility-icon"><i class="fa-solid fa-microchip"></i></div>
-                <h3>Spraute Engine</h3>
-                <p>Идеальный помощник для создания Майнкрафт историй визуально</p>
-            </div>
-            <div class="possibility-card">
-                <div class="possibility-icon"><i class="fa-solid fa-car"></i></div>
-                <h3>GoodWay Software</h3>
-                <p>Профессиональная команда создания проектов, нейросетей, сервисов и т.д.</p>
-            </div>
-            <div class="possibility-card">
-                <div class="possibility-icon"><i class="fa-solid fa-cube"></i></div>
-                <h3>KronSendy</h3>
-                <p>Компания создания Майнкрафт серверов — Kron, Platinum Arena</p>
-            </div>            
+            <!-- Веб жук -->
+            <a href="https://speedtelly1.github.io/WebJudge/" target="_blank" rel="noopener noreferrer" class="trust-item" data-tooltip="WebJudge">
+                <img src="https://speedtelly1.github.io/WebJudge/iconi.png" alt="WebJudge">
+            </a>
+            
+        </div>
     </div>
 </section>
 
@@ -419,6 +436,32 @@ function initPossibilitiesToggle() {
 // Инициализируем при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
     initPossibilitiesToggle();
+});
+
+// ===== Тултип "Нам доверяют" - следит за курсором =====
+document.addEventListener('DOMContentLoaded', function() {
+    const trustItems = document.querySelectorAll('.trust-item');
+    
+    trustItems.forEach(item => {
+        // При движении мыши обновляем позицию тултипа
+        item.addEventListener('mousemove', function(e) {
+            const tooltip = this;
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            
+            // Позиционируем тултип над курсором
+            tooltip.style.setProperty('--tooltip-x', mouseX + 'px');
+            tooltip.style.setProperty('--tooltip-y', mouseY + 'px');
+            
+            // Обновляем позицию через JS (для точности)
+            const after = window.getComputedStyle(tooltip, '::after');
+            const before = window.getComputedStyle(tooltip, '::before');
+            
+            // Устанавливаем позицию через инлайн-стили
+            tooltip.style.setProperty('--mouse-x', mouseX + 'px');
+            tooltip.style.setProperty('--mouse-y', mouseY + 'px');
+        });
+    });
 });
     </script>
 

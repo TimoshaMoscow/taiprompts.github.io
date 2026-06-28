@@ -386,7 +386,7 @@ const promptTemplates = {
       platform: {
         type: "select",
         label: "Платформа",
-        options: ["Telegram", "Discord", "Внешний", "Minecraft", "MAX", "Другой", "Любой"],
+        options: ["Telegram", "Discord", "Внешний", "Minecraft", "MAX", "Любой"],
         default: "Telegram",
       },
       language: {
@@ -649,18 +649,18 @@ const promptTemplates = {
       template:
         "Создай текст песни для Suno AI по описанию: '{idea}'. Жанр: {genre}. Стиль: {style}. Структура: {structure}. Темп: {tempo}. Инструменты: {instruments}. Дай готовый промпт для песни с чёткой атмосферой, темой, структурой куплетов и припева, а также пометками в формате [Verse], [Chorus], [Bridge] и т.д.",
       params: {
-        genre: {
-          type: "select",
-          label: "Музыкальный жанр",
-          options: ["Поп", "Рок", "Хип-хоп", "Электроника", "Джаз", "Классика", "Фолк", "R&B", "Кантри", "Метал", "Другое"],
-          default: "Поп",
-        },
-        style: {
-          type: "select",
-          label: "Стиль исполнения",
-          options: ["Веселый", "Грустный", "Романтический", "Эпический", "Расслабляющий", "Энергичный", "Ностальгический", "Другой"],
-          default: "Веселый",
-        },
+      genre: {
+        type: "select",
+        label: "Музыкальный жанр",
+        options: ["Поп", "Рок", "Хип-хоп", "Электроника", "Джаз", "Классика", "Фолк", "R&B", "Кантри", "Метал"],
+        default: "Поп",
+      },
+      style: {
+        type: "select",
+        label: "Стиль исполнения",
+        options: ["Веселый", "Грустный", "Романтический", "Эпический", "Расслабляющий", "Энергичный", "Ностальгический"],
+        default: "Веселый",
+      },
         tempo: {
           type: "select",
           label: "Темп",
@@ -700,7 +700,6 @@ const promptTemplates = {
             "Конструктор сайтов/приложений",
             "Цифровая визитка",
             "Учебное приложение",
-            "Другое",
           ],
           default: "Игра",
         },
@@ -748,7 +747,6 @@ const promptTemplates = {
             "Verilog",
             "VHDL",
             "CMD-скрипты",
-            "Другое",
           ],
           default: "JavaScript",
         },
@@ -814,15 +812,15 @@ const promptTemplates = {
             "Enterprise distribution",
             "Ad-hoc",
             "SFX архив",
-            "Другой",
-            "Свой установщик",
           ],
           default: "Inno Setup",
+          customPlaceholder: "Введите свой установщик или формат",
+          customFallback: "свой установщик",
         },
         oc: {
           type: "select",
           label: "Система",
-          options: ["Windows", "Linux", "Android", "IOS", "MacOS", "Другое"],
+          options: ["Windows", "Linux", "Android", "IOS", "MacOS"],
           default: "Windows",
         },
       complexity: {
@@ -848,24 +846,25 @@ const promptTemplates = {
       name: "Учёба и школа",
       template: "Помоги с заданием по предмету {subj}, Тип задания: {task}, Учусь в {class}. Подробности по заданию: '{idea}'.",
       params: {
-        subj: {
-          type: "select",
-          label: "Предмет",
-          options: ["Математика", "Русский", "Литература", "Информатика", "География", "Биология", "Физика", "История", "Химия", "Технология", "Другое"],
-          default: "Математика",
-        },
-        task: {
-          type: "select",
-          label: "Задание",
-          options: ["Задача", "Чертёж", "Сочинение", "Изложение", "Код", "Сочинение-рассуждение", "Поделка", "Другое"],
-          default: "Задача",
-        },
-        class: {
-          type: "select",
-          label: "Класс",
-          options: ["1 класс", "2 класс", "3 класс", "5 класс", "6 класс", "7 класс", "8 класс", "9 класс", "10 класс", "11 класс", "Колледж", "Университет", "1 курс", "2 курс", "3 курс", "Другой"],
-          default: "1 класс",
-        },
+      subj: {
+        type: "select",
+        label: "Предмет",
+        options: ["Математика", "Русский", "Литература", "Информатика", "География", "Биология", "Физика", "История", "Химия", "Технология"],
+        default: "Математика",
+      },
+      task: {
+        type: "select",
+        label: "Задание",
+        options: ["Задача", "Чертёж", "Сочинение", "Изложение", "Код", "Сочинение-рассуждение", "Поделка"],
+        default: "Задача",
+      },
+      class: {
+        type: "select",
+        label: "Класс",
+        options: ["1 класс", "2 класс", "3 класс", "5 класс", "6 класс", "7 класс", "8 класс", "9 класс", "10 класс", "11 класс", "Колледж", "Университет", "1 курс", "2 курс", "3 курс"],
+        default: "1 класс",
+        customPlaceholder: "Например: 4 класс или 4 курс",
+      },
       },
     },
 
@@ -898,12 +897,12 @@ const promptTemplates = {
           options: ["Яркий и контрастный", "Минималистичный", "Текстовый", "Эмоциональный", "Загадочный", "Профессиональный"],
           default: "Яркий и контрастный",
         },
-        monetization: {
-          type: "select",
-          label: "Монетизация",
-          options: ["Реклама", "Спонсорство", "Краудфандинг", "Мерч", "Платная подписка", "Бесплатный контент", "Нет", "Другой"],
-          default: "Реклама",
-        },
+      monetization: {
+        type: "select",
+        label: "Монетизация",
+        options: ["Реклама", "Спонсорство", "Краудфандинг", "Мерч", "Платная подписка", "Бесплатный контент", "Нет"],
+        default: "Реклама",
+      },
       },
     },
     
@@ -944,9 +943,9 @@ const promptTemplates = {
             "Roblox",
             "OBS Studio",
             "Медиаплеер",
-            "Другое",
           ],
           default: "Chromium-браузер",
+          customPlaceholder: "Например: Notion, Figma или другое ПО",
         },
         lang: {
           type: "select",
@@ -1040,6 +1039,7 @@ function formatPromptValue(value, fallback = "") {
 
 function cleanupPromptText(text) {
   return normalizeValue(text)
+    .replace(/\b__custom__\b/gi, "")
     .replace(/\s+([,.!?;:])/g, "$1")
     .replace(/([,.!?;:])([^\s])/g, "$1 $2")
     .replace(/\s{2,}/g, " ")
@@ -1118,12 +1118,20 @@ function syncCustomParamState(container, type) {
     if (!param || !container) return;
 
     const customInput = container.querySelector(`[data-custom-input-for="${key}"]`);
+    const customHint = container.querySelector(`[data-custom-hint-for="${key}"]`);
     if (!customInput) return;
 
     const currentValue = getParamContainerValue(container, key, param);
     const shouldShow = shouldShowCustomInput(param, currentValue);
     customInput.hidden = !shouldShow;
     customInput.disabled = !shouldShow;
+
+    if (customHint) {
+      customHint.hidden = !shouldShow || !normalizeValue(customInput.value);
+      if (!shouldShow) {
+        customHint.textContent = "";
+      }
+    }
   });
 }
 
@@ -1133,6 +1141,9 @@ function collectPromptParams(type, overrideParams = {}) {
   const tplParams = tpl?.params || {};
 
   for (const [key, value] of Object.entries(overrideParams || {})) {
+    if (normalizeValue(value) === CUSTOM_OPTION_VALUE || isCustomOptionLabel(value)) {
+      continue;
+    }
     params[key] = value;
   }
 
@@ -1232,6 +1243,8 @@ function applyPresetParams(presetParams = {}) {
     });
     showValidationMessages(validateCombination(type, selectedParams));
   }
+
+  updateGenerateButtonState();
 }
 
 // ===== КРОСС-РЕКОМЕНДАЦИИ =====
@@ -2276,6 +2289,7 @@ function switchToCategory(newCategory, presetParams = {}) {
   
   // Показываем новые рекомендации
   setTimeout(showCrossRecommendations, 300);
+  setTimeout(updateGenerateButtonState, 120);
 }
 
   // ===== МОДАЛКА =====
@@ -2309,7 +2323,7 @@ function switchToCategory(newCategory, presetParams = {}) {
             </select>
           </div>
 
-          <button type="submit" class="btn btn-primary">Сгенерировать промпт</button>
+          <button type="submit" class="btn btn-primary" id="generate-prompt-btn">Сгенерировать промпт</button>
         </form>
 
 <div class="generated-prompt">
@@ -2331,23 +2345,93 @@ function switchToCategory(newCategory, presetParams = {}) {
   let isPromptGenerated = false;
   let isFormDirty = false;
   
-  // Функция проверки перед закрытием модалки
-  function checkBeforeModalClose() {
-    // Если промпт уже сгенерирован или форма заполнена
-    if (isPromptGenerated || isFormDirty) {
-      return confirm('У вас есть несохранённый промпт. Вы уверены, что хотите закрыть?');
-    }
-    return true;
+  function showGeneratorToast(message, variant = "info", timeout = 3000) {
+    const oldToast = document.querySelector(".context-toast");
+    if (oldToast) oldToast.remove();
+
+    const toast = document.createElement("div");
+    toast.className = `context-toast toast-${variant}`;
+    toast.style.setProperty("--toast-duration", `${timeout}ms`);
+    toast.innerHTML = `
+      <div class="toast-content">
+        <span class="toast-icon-wrap">
+          <i class="fas fa-${variant === "error" ? "triangle-exclamation" : variant === "success" ? "circle-check" : variant === "warning" ? "circle-info" : "sparkles"}"></i>
+        </span>
+        <span class="toast-text">${message}</span>
+        <span class="toast-progress"></span>
+      </div>
+    `;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => toast.classList.add("show"), 10);
+    setTimeout(() => {
+      toast.classList.remove("show");
+      setTimeout(() => toast.remove(), 300);
+    }, timeout);
   }
-  
-  // Переопределяем закрытие модалки
-  function closeModalWithCheck() {
-    if (checkBeforeModalClose()) {
-      closeModal();
-      // Сброс флагов после закрытия
-      isPromptGenerated = false;
-      isFormDirty = false;
+
+  function showCloseConfirmationModal() {
+    return new Promise((resolve) => {
+      let dialog = document.getElementById("generator-confirm-dialog");
+      if (!dialog) {
+        dialog = document.createElement("div");
+        dialog.id = "generator-confirm-dialog";
+        dialog.className = "generator-confirm-modal";
+        dialog.innerHTML = `
+          <div class="generator-confirm-card" role="dialog" aria-modal="true" aria-labelledby="generator-confirm-title">
+            <div class="generator-confirm-icon">
+              <i class="fas fa-triangle-exclamation"></i>
+            </div>
+            <h3 id="generator-confirm-title">Закрыть генератор?</h3>
+            <p>У вас есть несохранённый промпт. Если закрыть окно сейчас, изменения могут пропасть.</p>
+            <div class="generator-confirm-actions">
+              <button type="button" class="btn btn-secondary" data-generator-cancel>Остаться</button>
+              <button type="button" class="btn btn-primary" data-generator-confirm>Закрыть</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(dialog);
+      }
+
+      const cleanup = (result) => {
+        dialog.classList.remove("active");
+        const confirmBtn = dialog.querySelector("[data-generator-confirm]");
+        const cancelBtn = dialog.querySelector("[data-generator-cancel]");
+        confirmBtn?.removeEventListener("click", onConfirm);
+        cancelBtn?.removeEventListener("click", onCancel);
+        dialog.removeEventListener("click", onBackdropClick);
+        document.removeEventListener("keydown", onEscape);
+        resolve(result);
+      };
+
+      const onConfirm = () => cleanup(true);
+      const onCancel = () => cleanup(false);
+      const onBackdropClick = (event) => {
+        if (event.target === dialog) cleanup(false);
+      };
+      const onEscape = (event) => {
+        if (event.key === "Escape") cleanup(false);
+      };
+
+      dialog.querySelector("[data-generator-confirm]")?.addEventListener("click", onConfirm);
+      dialog.querySelector("[data-generator-cancel]")?.addEventListener("click", onCancel);
+      dialog.addEventListener("click", onBackdropClick);
+      document.addEventListener("keydown", onEscape);
+
+      dialog.classList.add("active");
+    });
+  }
+
+  async function closeModalWithCheck() {
+    if (isPromptGenerated || isFormDirty) {
+      const shouldClose = await showCloseConfirmationModal();
+      if (!shouldClose) return;
     }
+
+    closeModal();
+    isPromptGenerated = false;
+    isFormDirty = false;
   }
 
 // Модифицируем renderTechnicalParams для добавления валидации
@@ -2367,7 +2451,38 @@ function renderTechnicalParams(type) {
     }
     
     const validation = validateCombination(type, selectedParams);
+
+    Object.entries(params).forEach(([key, param]) => {
+      if (!param) return;
+      if (param.type !== "select" && param.type !== "multiselect") return;
+
+      const customInput = container.querySelector(`[data-custom-input-for="${key}"]`);
+      if (!customInput) return;
+
+      const rawValue = normalizeValue(customInput.value);
+      const selectValue = normalizeValue(container.querySelector(`#param-${key}`)?.value);
+      const customCheckboxChecked = Boolean(container.querySelector(`[data-custom-checkbox-for="${key}"]`)?.checked);
+      const isCustomFieldActive =
+        (param.type === "select" && shouldShowCustomInput(param, selectValue)) ||
+        (param.type === "multiselect" && customCheckboxChecked);
+
+      const hint = container.querySelector(`[data-custom-hint-for="${key}"]`);
+      const shouldWarn = isCustomFieldActive && !rawValue;
+
+      if (hint) {
+        hint.hidden = !shouldWarn;
+        hint.textContent = shouldWarn
+          ? `Введите свой вариант для параметра "${param.label}"`
+          : "";
+      }
+
+      if (shouldWarn) {
+        validation.warnings.push(`Для параметра "${param.label}" выбрано "Другое", но свой вариант не введён`);
+      }
+    });
+
     showValidationMessages(validation);
+    updateGenerateButtonState();
   };
 
   for (const [key, param] of Object.entries(params)) {
@@ -2395,6 +2510,7 @@ function renderTechnicalParams(type) {
           value="${customValue}"
           ${shouldShowCustomInput(param, param.default) ? "" : 'hidden'}
         >
+        <div class="custom-param-hint" data-custom-hint-for="${key}" hidden aria-live="polite"></div>
       `;
     } else if (param.type === "multiselect") {
       html += `<div class="multi-select" id="param-${key}" data-param="${key}">`;
@@ -2424,6 +2540,7 @@ function renderTechnicalParams(type) {
           placeholder="${param.customPlaceholder || "Введите свой вариант через запятую"}"
           hidden
         >
+        <div class="custom-param-hint" data-custom-hint-for="${key}" hidden aria-live="polite"></div>
       `;
       html += `</div>`;
     } else if (param.type === "text") {
@@ -2457,10 +2574,30 @@ function renderTechnicalParams(type) {
   container.querySelectorAll('.multi-select input[type="checkbox"]').forEach((checkbox) => {
     checkbox.addEventListener('change', () => syncCustomParamState(container, type));
   });
+
+  container.querySelectorAll('.custom-param-input').forEach((input) => {
+    input.addEventListener('input', () => {
+      const key = input.getAttribute('data-custom-input-for');
+      const param = params[key];
+      if (!key || !param) return;
+
+      if (param.type === "multiselect") {
+        const box = container.querySelector(`#param-${key}`);
+        const customCheckbox = box?.querySelector(`[data-custom-checkbox-for="${key}"]`);
+        if (customCheckbox) {
+          customCheckbox.checked = normalizeValue(input.value).length > 0;
+        }
+      }
+
+      syncCustomParamState(container, type);
+      updateGenerateButtonState();
+    });
+  });
   
   // Инициализируем валидацию с текущими значениями
   syncCustomParamState(container, type);
   setTimeout(updateValidation, 100);
+  setTimeout(updateGenerateButtonState, 120);
 }
 
 typeCards.forEach((card) => {
@@ -2481,6 +2618,7 @@ typeCards.forEach((card) => {
         const form = modal.querySelector("#prompt-form");
         form.reset();
         modal.querySelector("#final-prompt").textContent = "";
+        setTimeout(updateGenerateButtonState, 50);
 
         // === ДОБАВИТЬ ЭТО ===
         // Сброс стадий анимации
@@ -2523,6 +2661,46 @@ typeCards.forEach((card) => {
   const toneSelect = modal.querySelector("#tone-select");
   const finalPrompt = modal.querySelector("#final-prompt");
   const copyButton = modal.querySelector("#copy-prompt");
+  const generateButton = modal.querySelector("#generate-prompt-btn");
+
+  function getGeneratorRequirementsState() {
+    const params = promptTemplates[selectedType]?.params || {};
+    const selectedParams = {};
+
+    for (const [key, param] of Object.entries(params)) {
+      selectedParams[key] = getParamContainerValue(modal, key, param);
+    }
+
+    const validation = validateCombination(selectedType, selectedParams);
+    const missingCustomFields = Array.from(modal.querySelectorAll(".custom-param-input")).some((input) => {
+      const key = input.getAttribute("data-custom-input-for");
+      const param = params[key];
+      if (!key || !param) return false;
+
+      const selectValue = normalizeValue(modal.querySelector(`#param-${key}`)?.value);
+      const customCheckboxChecked = Boolean(modal.querySelector(`[data-custom-checkbox-for="${key}"]`)?.checked);
+      const isCustomActive =
+        (param.type === "select" && shouldShowCustomInput(param, selectValue)) ||
+        (param.type === "multiselect" && customCheckboxChecked);
+
+      return isCustomActive && !normalizeValue(input.value);
+    });
+
+    return {
+      canGenerate: normalizeValue(customInput.value).length > 0 && validation.valid && !missingCustomFields,
+      validation,
+      missingCustomFields,
+    };
+  }
+
+  function updateGenerateButtonState() {
+    if (!generateButton) return;
+
+    const { canGenerate } = getGeneratorRequirementsState();
+    generateButton.disabled = !canGenerate;
+    generateButton.classList.toggle("is-disabled", !canGenerate);
+    generateButton.setAttribute("aria-disabled", String(!canGenerate));
+  }
 
   // Отслеживаем изменения в текстовом поле
 customInput.addEventListener('input', () => {
@@ -2534,6 +2712,8 @@ customInput.addEventListener('input', () => {
   if (customInput.value.trim().length > 10) {
     showCrossRecommendations();
   }
+
+  updateGenerateButtonState();
 });
 
 // ДОБАВЬТЕ ДЕБАУНС ДЛЯ КОНТЕКСТУАЛЬНЫХ ПАРАМЕТРОВ (после вышеуказанного кода)
@@ -2555,33 +2735,9 @@ customInput.addEventListener('input', debounce(() => {
   showContextSuggestions(result.suggestions);
 }, 800));
 
-// Функция для показа toast-уведомлений
-function showContextToast(message) {
-  // Удаляем старый toast если есть
-  const oldToast = document.querySelector('.context-toast');
-  if (oldToast) oldToast.remove();
-  
-  // Создаём новый toast
-  const toast = document.createElement('div');
-  toast.className = 'context-toast';
-  toast.innerHTML = `
-    <div class="toast-content">
-      <i class="fas fa-magic"></i>
-      <span>${message}</span>
-    </div>
-  `;
-  
-  document.body.appendChild(toast);
-  
-  // Анимация появления
-  setTimeout(() => toast.classList.add('show'), 10);
-  
-  // Удаление через 3 секунды
-  setTimeout(() => {
-    toast.classList.remove('show');
-    setTimeout(() => toast.remove(), 300);
-  }, 3000);
-}
+  function showContextToast(message) {
+    showGeneratorToast(message, "info");
+  }
   
   // Отслеживаем изменения в селектах
   toneSelect.addEventListener('change', () => {
@@ -2869,25 +3025,13 @@ function renderExamples(type) {
       toneSelect.value = tone || "professional";
       customInput.value = idea;
 
-      // Заполняем технические параметры из примера
-      for (const [key, value] of Object.entries(exampleParams)) {
-        const paramEl = modal.querySelector(`#param-${key}`);
-        if (paramEl) {
-          if (paramEl.tagName === 'SELECT') {
-            paramEl.value = value;
-          } else if (paramEl.classList.contains('multi-select')) {
-            // Для мультиселектов
-            const checkboxes = paramEl.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-              checkbox.checked = value.includes(checkbox.value);
-            });
-          }
-        }
-      }
+      // Заполняем технические параметры из примера через единый слой нормализации
+      applyPresetParams(exampleParams);
 
       modal.querySelector("#final-prompt").textContent = "";
       modal.classList.add("active");
       document.body.style.overflow = "hidden";
+      setTimeout(updateGenerateButtonState, 50);
     };
   }
 }
@@ -2901,13 +3045,32 @@ promptForm.addEventListener("submit", async (e) => {
     let customText = customInput.value?.trim();
     const tone = toneSelect.value;
 
-    if (!customText) return alert("Пожалуйста, опишите вашу идею");
+    if (!customText) {
+      showGeneratorToast("Пожалуйста, опишите вашу идею", "error");
+      return;
+    }
     
     // ===== ЦЕНЗУРА =====
     const originalText = customText;
     customText = censorText(customText);
     
-    if (!promptTemplates[selectedType]) return alert("Шаблон для этого типа промпта еще не готов");
+    if (!promptTemplates[selectedType]) {
+      showGeneratorToast("Шаблон для этого типа промпта ещё не готов", "error");
+      return;
+    }
+
+    const requirementsState = getGeneratorRequirementsState();
+    if (!requirementsState.canGenerate) {
+      if (!normalizeValue(customInput.value)) {
+        showGeneratorToast("Пожалуйста, опишите вашу идею", "error");
+      } else if (requirementsState.missingCustomFields) {
+        showGeneratorToast("Заполните поле для варианта 'Другое'", "warning");
+      } else {
+        showGeneratorToast("Проверьте параметры перед генерацией", "warning");
+      }
+      updateGenerateButtonState();
+      return;
+    }
 
     // Показать анимацию
     const overlay = document.getElementById('generationOverlay');
@@ -2929,19 +3092,7 @@ promptForm.addEventListener("submit", async (e) => {
         await animateGenerationProgress(progressFill, progressText, overlay);
     }
 
-    const params = {};
-    for (const [key, param] of Object.entries(promptTemplates[selectedType].params || {})) {
-        if (param.type === "select") {
-            const el = modal.querySelector(`#param-${key}`);
-            if (el) params[key] = el.value;
-        } else if (param.type === "multiselect") {
-            const box = modal.querySelector(`#param-${key}`);
-            if (box) {
-                const checked = box.querySelectorAll('input[type="checkbox"]:checked');
-                params[key] = Array.from(checked).map((cb) => cb.value).join(", ");
-            }
-        }
-    }
+    const params = collectPromptParams(selectedType);
 
     // Небольшая задержка для "реалистичности" генерации
     await new Promise(resolve => setTimeout(resolve, 800));
@@ -2964,11 +3115,15 @@ promptForm.addEventListener("submit", async (e) => {
 
 // ✅ копирование — ОДИН раз, не внутри submit
 copyButton.addEventListener("click", function () {
-  if (!finalPrompt.textContent) return alert("Сначала сгенерируйте промпт");
+  if (!finalPrompt.textContent) {
+    showGeneratorToast("Сначала сгенерируйте промпт", "error");
+    return;
+  }
   navigator.clipboard.writeText(finalPrompt.textContent).then(() => {
     const originalText = this.textContent;
     this.textContent = "Скопировано!";
     this.classList.add("btn-primary");
+    showGeneratorToast("Промпт скопирован", "success", 1800);
     setTimeout(() => {
       this.textContent = originalText;
       this.classList.remove("btn-primary");
@@ -2980,7 +3135,10 @@ const downloadButton = modal.querySelector("#download-prompt");
 
 downloadButton.addEventListener("click", () => {
   const text = finalPrompt.textContent?.trim();
-  if (!text) return alert("Сначала сгенерируйте промпт");
+  if (!text) {
+    showGeneratorToast("Сначала сгенерируйте промпт", "error");
+    return;
+  }
 
   const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
   const url = URL.createObjectURL(blob);
@@ -2994,18 +3152,10 @@ downloadButton.addEventListener("click", () => {
   a.remove();
 
   URL.revokeObjectURL(url);
+  showGeneratorToast("Файл с промптом скачан", "success", 1800);
 });
 
   console.log("✅ Генератор инициализирован");
-
-  // Защита при перезагрузке страницы, если модалка открыта
-  window.addEventListener('beforeunload', function(event) {
-    if (modal.classList.contains('active') && (isPromptGenerated || isFormDirty)) {
-      event.preventDefault();
-      event.returnValue = '';
-      return 'У вас есть несохранённый промпт. Вы уверены, что хотите покинуть страницу?';
-    }
-  });
 
   // Новая функция для анимации прогресса
   async function animateGenerationProgress(progressFill, progressText, overlay) {
