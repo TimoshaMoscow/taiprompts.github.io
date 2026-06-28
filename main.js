@@ -1136,15 +1136,16 @@ function syncCustomParamState(container, type) {
     const customHint = container.querySelector(`[data-custom-hint-for="${key}"]`);
     if (!customInput) return;
 
-    const shouldShow = isCustomParamActive(container, key, param);
+    const typedValue = normalizeValue(customInput.value);
+    const shouldShow = isCustomParamActive(container, key, param) || typedValue.length > 0 || document.activeElement === customInput;
     customInput.hidden = !shouldShow;
     customInput.disabled = !shouldShow;
 
     if (customHint) {
-      customHint.hidden = !shouldShow || normalizeValue(customInput.value).length > 0;
+      customHint.hidden = !shouldShow || typedValue.length > 0;
       if (!shouldShow) {
         customHint.textContent = "";
-      } else if (!normalizeValue(customInput.value)) {
+      } else if (!typedValue) {
         customHint.textContent = "Введите свой вариант";
       }
     }
@@ -2342,6 +2343,26 @@ function switchToCategory(newCategory, presetParams = {}) {
           <button type="submit" class="btn btn-primary" id="generate-prompt-btn">Сгенерировать промпт</button>
         </form>
 
+<section class="generator-examples-panel" aria-label="Примеры промптов">
+  <div class="generator-examples-head">
+    <div>
+      <h4>Примеры промптов</h4>
+      <p class="generator-examples-subtitle">
+        Выбирай категорию выше, а потом бери готовый пример за основу, копируй его или сразу применяй в генераторе.
+      </p>
+    </div>
+    <div class="generator-examples-tip">
+      <i class="fas fa-wand-magic-sparkles"></i>
+      <span>Карточки обновляются под выбранную категорию</span>
+    </div>
+  </div>
+  <div id="examplesGrid" class="examples-grid examples-grid--modal">
+    <div class="examples-placeholder">
+      Выбери категорию, чтобы увидеть примеры прямо здесь.
+    </div>
+  </div>
+</section>
+
 <div class="generated-prompt">
   <h4>Ваш промпт:</h4>
   <div id="final-prompt" class="prompt-output"></div>
@@ -2995,82 +3016,88 @@ function renderExamples(type) {
   if (!grid) return;
 
   const examples = promptExamples[type] || [];
-  const firstExample = examples[0];
-  
-  if (!firstExample) {
+  const visibleExamples = examples.slice(0, 3);
+
+  if (visibleExamples.length === 0) {
     grid.innerHTML = `<div class="examples-placeholder">
-      Выбери категорию, чтобы увидеть пример.
+      Выбери категорию, чтобы увидеть примеры.
     </div>`;
     return;
   }
 
-  // Извлекаем все параметры из примера
-  const { title, idea, tone, ...exampleParams } = firstExample;
-  
-  // Генерируем промпт с параметрами из примера
-  const text = buildPromptText(type, idea, tone || "professional", exampleParams);
-  
-  grid.innerHTML = `
-    <div class="example-card">
-      <div style="display:flex; justify-content:space-between; gap:10px; align-items:center; margin-bottom: 15px;">
-        <strong style="font-size: 1.1rem;">${title || "Пример промпта"}</strong>
-        <span class="tag" style="margin:0; background: rgba(94, 114, 228, 0.2); color: var(--accent-color); padding: 4px 10px; border-radius: 20px; font-size: 0.85rem;">
-          ${(tone || "professional")}
-        </span>
-      </div>
+  const cardsHtml = visibleExamples.map((example, index) => {
+    const { title, idea, tone, ...exampleParams } = example;
+    const text = buildPromptText(type, idea, tone || "professional", exampleParams);
+    const paramEntries = Object.entries(exampleParams)
+      .filter(([_, value]) => normalizeValue(value).length > 0)
+      .slice(0, 4);
 
-      <pre>${text}</pre>
+    return `
+      <article class="example-card example-card--modal" data-example-index="${index}">
+        <div class="example-card-top">
+          <div class="example-card-title-wrap">
+            <strong class="example-card-title">${title || "Пример промпта"}</strong>
+            <p class="example-card-idea">${idea}</p>
+          </div>
+          <span class="tag example-tone-tag">${tone || "professional"}</span>
+        </div>
 
-      <div class="example-actions">
-        <button class="btn btn-secondary" data-copy style="flex: 1;">
-          Копировать
-        </button>
-        <button class="btn btn-primary" data-use style="flex: 1;">
-          Использовать
-        </button>
-      </div>
-    </div>
-  `;
+        <div class="example-meta">
+          ${paramEntries.map(([key, value]) => `<span class="example-chip"><span>${key}</span>${Array.isArray(value) ? value.join(", ") : value}</span>`).join("")}
+        </div>
 
-  // Кнопки
-  const copyBtn = grid.querySelector("[data-copy]");
-  const useBtn = grid.querySelector("[data-use]");
+        <pre>${text}</pre>
 
-  if (copyBtn) {
-    copyBtn.onclick = () => {
-      navigator.clipboard.writeText(text);
-      const originalText = copyBtn.textContent;
-      copyBtn.textContent = "Скопировано!";
-      copyBtn.classList.add("btn-primary");
-      setTimeout(() => {
-        copyBtn.textContent = originalText;
-        copyBtn.classList.remove("btn-primary");
-      }, 2000);
-    };
-  }
+        <div class="example-actions">
+          <button class="btn btn-secondary" data-copy-example="${index}" type="button">Копировать</button>
+          <button class="btn btn-primary" data-use-example="${index}" type="button">Использовать</button>
+        </div>
+      </article>
+    `;
+  }).join("");
 
-  if (useBtn) {
-    useBtn.onclick = () => {
-      selectedType = type;
+  grid.innerHTML = cardsHtml;
 
-      const modalTitle = modal.querySelector(".modal-title");
-      modalTitle.textContent = `Кастомизация: ${promptTemplates[selectedType]?.name || selectedType}`;
+  visibleExamples.forEach((example, index) => {
+    const { title, idea, tone, ...exampleParams } = example;
+    const text = buildPromptText(type, idea, tone || "professional", exampleParams);
 
-      renderTechnicalParams(selectedType);
+    const copyBtn = grid.querySelector(`[data-copy-example="${index}"]`);
+    const useBtn = grid.querySelector(`[data-use-example="${index}"]`);
 
-      // Заполняем значения из примера
-      toneSelect.value = tone || "professional";
-      customInput.value = idea;
+    if (copyBtn) {
+      copyBtn.onclick = () => {
+        navigator.clipboard.writeText(text);
+        const originalText = copyBtn.textContent;
+        copyBtn.textContent = "Скопировано!";
+        copyBtn.classList.add("btn-primary");
+        setTimeout(() => {
+          copyBtn.textContent = originalText;
+          copyBtn.classList.remove("btn-primary");
+        }, 1800);
+      };
+    }
 
-      // Заполняем технические параметры из примера через единый слой нормализации
-      applyPresetParams(exampleParams);
+    if (useBtn) {
+      useBtn.onclick = () => {
+        selectedType = type;
 
-      modal.querySelector("#final-prompt").textContent = "";
-      modal.classList.add("active");
-      document.body.style.overflow = "hidden";
-      setTimeout(updateGenerateButtonState, 50);
-    };
-  }
+        const modalTitle = modal.querySelector(".modal-title");
+        modalTitle.textContent = `Кастомизация: ${promptTemplates[selectedType]?.name || selectedType}`;
+
+        renderTechnicalParams(selectedType);
+
+        toneSelect.value = tone || "professional";
+        customInput.value = idea;
+        applyPresetParams(exampleParams);
+
+        modal.querySelector("#final-prompt").textContent = "";
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+        setTimeout(updateGenerateButtonState, 50);
+      };
+    }
+  });
 }
 
 promptForm.addEventListener("submit", async (e) => {
