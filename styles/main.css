@@ -610,6 +610,195 @@ section {
     border-radius: 10px;
 }
 
+/* Генераторские уведомления */
+.context-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 32px;
+    transform: translateX(-50%) translateY(18px);
+    z-index: 4000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    min-width: min(92vw, 420px);
+}
+
+.context-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.context-toast .toast-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    border-radius: 16px;
+    background: rgba(18, 18, 18, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+.context-toast .toast-icon-wrap {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.08);
+    flex: 0 0 auto;
+}
+
+.context-toast .toast-text {
+    flex: 1;
+    line-height: 1.45;
+}
+
+.context-toast .toast-progress {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 100%;
+    transform-origin: left;
+    background: linear-gradient(90deg, rgba(94,114,228,0.15), rgba(94,114,228,0.95));
+    animation: toastProgress var(--toast-duration, 3000ms) linear forwards;
+}
+
+.context-toast.toast-success .toast-content {
+    border-color: rgba(63, 191, 127, 0.35);
+    background: linear-gradient(135deg, rgba(18, 18, 18, 0.95), rgba(16, 34, 24, 0.95));
+}
+
+.context-toast.toast-error .toast-content {
+    border-color: rgba(255, 94, 94, 0.35);
+    background: linear-gradient(135deg, rgba(18, 18, 18, 0.95), rgba(41, 16, 16, 0.95));
+}
+
+.context-toast.toast-warning .toast-content {
+    border-color: rgba(255, 193, 7, 0.35);
+    background: linear-gradient(135deg, rgba(18, 18, 18, 0.95), rgba(40, 30, 10, 0.95));
+}
+
+.context-toast.toast-info .toast-content {
+    border-color: rgba(94, 114, 228, 0.35);
+}
+
+.context-toast.toast-success i {
+    color: #3fbf7f;
+}
+
+.context-toast.toast-error i {
+    color: #ff5e5e;
+}
+
+.context-toast.toast-warning i {
+    color: #ffc107;
+}
+
+.context-toast.toast-info i {
+    color: var(--accent-color);
+}
+
+@keyframes toastProgress {
+    from {
+        transform: scaleX(1);
+    }
+    to {
+        transform: scaleX(0);
+    }
+}
+
+.custom-param-hint {
+    margin-top: 0.5rem;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(255, 193, 7, 0.12);
+    color: #ffd86b;
+    border: 1px solid rgba(255, 193, 7, 0.18);
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+.btn.is-disabled,
+.btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.generator-confirm-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 4500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.72);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+.generator-confirm-modal.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.generator-confirm-card {
+    width: min(100%, 480px);
+    padding: 28px;
+    border-radius: 24px;
+    background: rgba(26, 26, 26, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+    color: var(--text-color);
+    text-align: center;
+    transform: translateY(14px) scale(0.98);
+    transition: transform 0.25s ease;
+}
+
+.generator-confirm-modal.active .generator-confirm-card {
+    transform: translateY(0) scale(1);
+}
+
+.generator-confirm-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(94, 114, 228, 0.16);
+    color: var(--accent-color);
+    font-size: 1.4rem;
+}
+
+.generator-confirm-card h3 {
+    margin-bottom: 10px;
+    font-size: 1.35rem;
+}
+
+.generator-confirm-card p {
+    color: var(--secondary-color);
+    line-height: 1.55;
+    margin-bottom: 22px;
+}
+
+.generator-confirm-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
 /* Адаптивность модального окна */
 @media (max-width: 768px) {
     .customization-modal .modal-content {

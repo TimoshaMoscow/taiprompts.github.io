@@ -1699,3 +1699,218 @@
         font-size: 0.95rem;
     }
 }
+
+/* ===== Секция "Нам доверяют" ===== */
+/* ===== Секция "Нам доверяют" ===== */
+.trust-section {
+    padding: 80px 0;
+    background: var(--bg-color);
+    position: relative;
+}
+
+.trust-subtitle {
+    text-align: center;
+    color: var(--secondary-color);
+    font-size: 1.1rem;
+    margin-top: -20px;
+    margin-bottom: 50px;
+}
+
+.trust-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 30px;
+    align-items: center;
+    justify-items: center;
+}
+
+/* Карточка как ссылка */
+.trust-item {
+    width: 100%;
+    max-width: 180px;
+    padding: 20px 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.trust-item img {
+    max-width: 100%;
+    height: auto;
+    max-height: 60px;
+    filter: grayscale(100%) brightness(0.6);
+    opacity: 0.5;
+    transition: all 0.4s ease;
+    display: block;
+    pointer-events: none; /* Чтобы клик проходил сквозь картинку на ссылку */
+}
+
+/* Эффект при наведении */
+.trust-item:hover {
+    background: rgba(94, 114, 228, 0.08);
+    border-color: rgba(94, 114, 228, 0.2);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.trust-item:hover img {
+    filter: grayscale(0%) brightness(1);
+    opacity: 1;
+}
+
+/* ===== КАСТОМНЫЙ ТУЛТИП (появляется рядом с курсором) ===== */
+.trust-item {
+    position: relative;
+}
+
+.trust-item::after {
+    content: attr(data-tooltip);
+    position: fixed;
+    padding: 8px 16px;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, -120%) scale(0.9);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 9999;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.3px;
+}
+
+/* Маленький треугольник снизу тултипа */
+.trust-item::before {
+    content: '';
+    position: fixed;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 9999;
+    border: 6px solid transparent;
+    border-top-color: rgba(0, 0, 0, 0.9);
+    transform: translateX(-50%);
+}
+
+/* Показываем тултип при наведении */
+.trust-item:hover::after {
+    opacity: 1;
+    transform: translate(-50%, -130%) scale(1);
+}
+
+.trust-item:hover::before {
+    opacity: 1;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .trust-section {
+        padding: 60px 0;
+    }
+    
+    .trust-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 20px;
+    }
+    
+    .trust-item {
+        max-width: 140px;
+        padding: 15px 10px;
+    }
+    
+    .trust-item img {
+        max-height: 45px;
+    }
+    
+    .trust-subtitle {
+        font-size: 0.95rem;
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .trust-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+    
+    .trust-item {
+        max-width: 100%;
+        padding: 12px 8px;
+    }
+    
+    .trust-item img {
+        max-height: 35px;
+    }
+    
+    .trust-item::after {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+        white-space: normal;
+        max-width: 200px;
+    }
+}
+
+.trust-item-free {
+    position: relative;
+}
+.trust-free-label {
+    position: absolute;
+    bottom: 8px;
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.trust-item {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: trustFadeIn 0.6s ease forwards;
+}
+
+.trust-item:nth-child(1) { animation-delay: 0.05s; }
+.trust-item:nth-child(2) { animation-delay: 0.1s; }
+.trust-item:nth-child(3) { animation-delay: 0.15s; }
+.trust-item:nth-child(4) { animation-delay: 0.2s; }
+.trust-item:nth-child(5) { animation-delay: 0.25s; }
+.trust-item:nth-child(6) { animation-delay: 0.3s; }
+.trust-item:nth-child(7) { animation-delay: 0.35s; }
+.trust-item:nth-child(8) { animation-delay: 0.4s; }
+
+@keyframes trustFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.trust-item[data-tooltip="Ваше место!"] {
+    animation: trustPulse 2.5s ease-in-out infinite;
+    border-color: rgba(94, 114, 228, 0.15);
+}
+
+@keyframes trustPulse {
+    0%, 100% { 
+        border-color: rgba(94, 114, 228, 0.15);
+        background: rgba(255,255,255,0.02);
+    }
+    50% { 
+        border-color: rgba(94, 114, 228, 0.4);
+        background: rgba(94, 114, 228, 0.05);
+    }
+}
