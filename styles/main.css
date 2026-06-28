@@ -610,6 +610,133 @@ section {
     border-radius: 10px;
 }
 
+.generator-examples-panel {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(94, 114, 228, 0.08), rgba(94, 114, 228, 0.03));
+    border: 1px solid rgba(94, 114, 228, 0.14);
+}
+
+.generator-examples-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.generator-examples-head h4 {
+    margin-bottom: 0.35rem;
+    font-size: 1.15rem;
+}
+
+.generator-examples-subtitle {
+    color: var(--secondary-color);
+    line-height: 1.5;
+    max-width: 70ch;
+}
+
+.generator-examples-tip {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(94, 114, 228, 0.12);
+    color: var(--accent-color);
+    border: 1px solid rgba(94, 114, 228, 0.2);
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.examples-grid--modal {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+    align-items: stretch;
+}
+
+.example-card--modal {
+    max-width: none;
+    width: 100%;
+    text-align: left;
+    background: rgba(18, 18, 18, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 18px;
+}
+
+.example-card-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.example-card-title-wrap {
+    min-width: 0;
+}
+
+.example-card-title {
+    display: block;
+    font-size: 1.05rem;
+    line-height: 1.3;
+    margin-bottom: 6px;
+}
+
+.example-card-idea {
+    color: var(--secondary-color);
+    line-height: 1.5;
+    font-size: 0.92rem;
+}
+
+.example-tone-tag {
+    margin: 0;
+    flex: 0 0 auto;
+}
+
+.example-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0 12px;
+}
+
+.example-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-color);
+    font-size: 0.8rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.example-chip span {
+    color: var(--secondary-color);
+    text-transform: capitalize;
+}
+
+.example-card--modal pre {
+    max-height: 240px;
+    margin: 0;
+    border-radius: 14px;
+}
+
+.example-card--modal .example-actions {
+    justify-content: stretch;
+    margin-top: 14px;
+}
+
+.example-card--modal .example-actions .btn {
+    min-width: 0;
+    flex: 1;
+}
+
 /* Генераторские уведомления */
 .context-toast {
     position: fixed;
@@ -642,6 +769,26 @@ section {
     color: #fff;
     position: relative;
     overflow: hidden;
+}
+
+.context-toast .toast-progress {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 100%;
+    transform-origin: left;
+    background: linear-gradient(90deg, rgba(94,114,228,0.15), rgba(94,114,228,0.95));
+    animation: toastProgress var(--toast-duration, 3000ms) linear forwards;
+}
+
+@keyframes toastProgress {
+    from {
+        transform: scaleX(1);
+    }
+    to {
+        transform: scaleX(0);
+    }
 }
 
 .context-toast .toast-icon-wrap {
