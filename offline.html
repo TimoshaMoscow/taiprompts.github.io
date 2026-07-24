@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Нет соединения — TAIPrompts</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            background: #121212;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+        .offline-card {
+            max-width: 420px;
+            width: 100%;
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 32px;
+            padding: 48px 32px 40px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+        }
+        .offline-icon {
+            font-size: 56px;
+            margin-bottom: 20px;
+            opacity: 0.6;
+        }
+        .offline-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+        .offline-subtitle {
+            color: #adb5bd;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: inherit;
+            color: #fff;
+            background: #5e72e4;
+            margin-bottom: 12px;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(94, 114, 228, 0.25);
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.12);
+            box-shadow: none;
+        }
+        .btn-geo {
+            background: rgba(94, 114, 228, 0.15);
+            border: 1px solid rgba(94, 114, 228, 0.25);
+            position: relative;
+        }
+        .btn-geo:hover {
+            background: rgba(94, 114, 228, 0.25);
+            box-shadow: 0 10px 30px rgba(94, 114, 228, 0.15);
+        }
+        .btn-label {
+            font-size: 13px;
+            color: #adb5bd;
+            margin-top: 6px;
+            display: block;
+        }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(30,30,40,0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 16px 24px;
+            color: #fff;
+            font-size: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            opacity: 0;
+            transition: all 0.4s ease;
+            pointer-events: none;
+            max-width: 90%;
+            text-align: center;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast-success {
+            border-color: rgba(94, 114, 228, 0.3);
+        }
+        .status-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ff6b6b;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        .offline-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: #adb5bd;
+        }
+        @media (max-width: 480px) {
+            .offline-card { padding: 32px 20px 28px; }
+            .offline-title { font-size: 24px; }
+            .btn { padding: 14px; font-size: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="offline-card">
+        <div class="offline-icon">📡</div>
+        <div class="offline-title">Вы оффлайн</div>
+        <p class="offline-subtitle">
+            Подключитесь к сети, чтобы создавать крутые промпты уже сегодня!
+        </p>
+
+        <div class="offline-status">
+            <span class="status-dot"></span>
+            Нет соединения с сервером
+        </div>
+
+        <button class="btn" id="retryBtn">🔄 Попробовать снова</button>
+
+        <button class="btn btn-geo" id="geoBtn">
+            📍 Проверить доступ к серверам
+            <span class="btn-label">Это может помочь восстановить соединение быстрее</span>
+        </button>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        (function() {
+            const retryBtn = document.getElementById('retryBtn');
+            const geoBtn = document.getElementById('geoBtn');
+            const toast = document.getElementById('toast');
+
+            let toastTimeout = null;
+
+            function showToast(message, isSuccess = true) {
+                if (toastTimeout) {
+                    clearTimeout(toastTimeout);
+                    toast.classList.remove('show');
+                }
+
+                toast.textContent = message;
+                toast.className = 'toast' + (isSuccess ? ' toast-success' : '');
+                
+                // Триггерим reflow
+                void toast.offsetWidth;
+                toast.classList.add('show');
+
+                toastTimeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                    toastTimeout = null;
+                }, 3500);
+            }
+
+            retryBtn.addEventListener('click', function() {
+                location.reload();
+            });
+
+            geoBtn.addEventListener('click', function() {
+                if (!navigator.geolocation) {
+                    showToast('Геолокация не поддерживается вашим браузером', false);
+                    return;
+                }
+
+                showToast('🔍 Ищем ближайший сервер...');
+
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        // Успешно получили координаты — показываем дружелюбное сообщение
+                        showToast('✅ Спасибо! Оптимальный маршрут найден. Подключитесь к сети, чтобы продолжить.');
+                    },
+                    function(error) {
+                        // Ошибка геолокации — не страшно
+                        showToast('🔌 Не удалось определить местоположение. Проверьте доступ к сети.', false);
+                    },
+                    {
+                        enableHighAccuracy: false,
+                        timeout: 5000,
+                        maximumAge: 60000
+                    }
+                );
+            });
+
+            // Если страница загружена и сеть появилась — предлагаем перезагрузиться
+            window.addEventListener('online', function() {
+                showToast('🔄 Соединение восстановлено! Нажмите "Попробовать снова".');
+            });
+
+        })();
+    </script>
+</body>
+</html>
