@@ -575,6 +575,102 @@ section {
     padding: 1rem 0;
 }
 
+.modal-tabs {
+    display: inline-flex;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 18px;
+    margin-bottom: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    flex-wrap: wrap;
+}
+
+.modal-tab {
+    border: none;
+    border-radius: 999px;
+    padding: 11px 16px;
+    background: transparent;
+    color: var(--secondary-color);
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modal-tab:hover {
+    transform: translateY(-1px);
+    color: var(--text-color);
+}
+
+.modal-tab.is-active {
+    background: linear-gradient(135deg, var(--accent-color), #7d8df5);
+    color: #fff;
+    box-shadow: 0 12px 24px rgba(94, 114, 228, 0.28);
+}
+
+.generator-tab-panel {
+    display: none;
+}
+
+.generator-tab-panel.is-active {
+    display: block;
+}
+
+.generator-tab-panel + .generator-tab-panel {
+    margin-top: 1rem;
+}
+
+.prompt-preview-panel {
+    margin: 1.25rem 0 1.5rem;
+    padding: 1rem 1.1rem;
+    border-radius: 16px;
+    border: 1px dashed rgba(94, 114, 228, 0.25);
+    background: rgba(94, 114, 228, 0.06);
+}
+
+.prompt-preview-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 0.9rem;
+}
+
+.prompt-preview-head h4 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.prompt-preview-head span {
+    color: var(--secondary-color);
+    font-size: 0.88rem;
+}
+
+.prompt-output--preview {
+    min-height: 110px;
+    white-space: pre-wrap;
+    line-height: 1.6;
+}
+
+.prompt-output--preview.is-placeholder {
+    color: var(--secondary-color);
+    opacity: 0.85;
+}
+
+.custom-param-input.is-custom-empty {
+    border-color: rgba(94, 114, 228, 0.45);
+    box-shadow: 0 0 0 1px rgba(94, 114, 228, 0.12);
+}
+
+.custom-param-input.is-custom-missing {
+    border-color: rgba(231, 76, 60, 0.8);
+    box-shadow: 0 0 0 1px rgba(231, 76, 60, 0.18);
+}
+
+.custom-param-hint.is-warning {
+    color: #ff8f8f;
+}
+
 .form-group {
     margin-bottom: 1.5rem;
 }
