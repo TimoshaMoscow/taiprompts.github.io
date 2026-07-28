@@ -3,7 +3,7 @@
   "short_name": "TAIPrompts",
   "description": "Создавайте идеальные промпты для нейросетей. Работает оффлайн.",
   "start_url": "https://timoshamoscow.github.io/taiprompts.github.io/",
-  "scope": "https://timoshamoscow.github.io/taiprompts.github.io/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#121212",
   "theme_color": "#5e72e4",

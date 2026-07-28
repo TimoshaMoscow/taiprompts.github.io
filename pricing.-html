@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Тарифы — TAIPrompts</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css?v=1.1.1">
+  <link rel="stylesheet" href="styles/pricing.css?v=1.1.1">
+  <link rel="stylesheet" href="styles/generator.css?v=1.1.1">
+  <link rel="icon" type="image/x-icon" href="images/logo.png">
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-N8JLTHS6');</script>
+    <!-- End Google Tag Manager -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N8JLTHS6"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <!-- inject placeholders -->
+  <div id="site-header"></div>
+
+  <!-- чтобы контент не прятался под fixed header -->
+  <div style="height: 90px;"></div>
+
+  <section class="pricing pricing-hero">
+    <div class="container">
+
+      <h2 class="section-title">Тарифы</h2>
+
+      <div class="pricing-warning">
+        <i class="fa-solid fa-triangle-exclamation"></i> Покупка подписок временно недоступна. Будет доступно скоро. Следите за новостями!
+      </div>
+
+      <!-- Переключатель периодов -->
+      <div class="billing-toggle">
+        <div class="billing-options">
+          <button class="billing-option active" data-period="monthly">
+            Ежемесячно
+          </button>
+          <button class="billing-option" data-period="yearly">
+            Ежегодно <span class="billing-badge">15%</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="pricing-grid" id="pricingGrid">
+
+        <!-- FREE -->
+        <div class="card pricing-card">
+          <h3 class="pricing-title">FREE</h3>
+          
+          <!-- Месячная цена -->
+          <div class="pricing-price monthly">
+            0 ₽ <span>/ мес</span>
+          </div>
+          
+          <!-- Годовая цена -->
+          <div class="pricing-price yearly" style="display: none;">
+            0 ₽ <span>/ год</span>
+            <div class="per-month">0 ₽ / мес</div>
+          </div>
+
+          <ul class="pricing-features">
+            <li>Базовые категории для старта</li>
+            <li>Подходит, чтобы "попробовать продукт"</li>
+            <li>Ознакомление с PRO-возможностями</li>
+          </ul>
+
+          <button class="btn pricing-btn disabled" type="button" aria-disabled="true">
+            У вас уже есть эта подписка
+          </button>
+        </div>
+
+        <!-- BASIC -->
+        <div class="card pricing-card">
+          <h3 class="pricing-title">BASIC</h3>
+          
+          <!-- Месячная цена -->
+          <div class="pricing-price monthly">
+            199 ₽ <span>/ мес</span>
+          </div>
+          <!-- Годовая цена -->
+          <div class="pricing-price yearly" style="display: none;">
+            165 ₽ <span>/ мес</span>
+            <div class="per-month">1990 ₽ / год</div>
+            <div class="savings">Экономия 15%</div>
+          </div>
+
+          <ul class="pricing-features">
+            <li>Все возможности FREE</li>
+            <li>+ творческие категории</li>
+            <li>Оптимально для школьников/дизайна</li>
+          </ul>
+
+          <button class="btn pricing-btn disabled" type="button" aria-disabled="true">
+            Покупка недоступна
+          </button>
+        </div>
+
+        <!-- PRO -->
+        <div class="card pricing-card popular">
+          <div class="pricing-badge">Популярный</div>
+          <h3 class="pricing-title">PRO</h3>
+          
+          <!-- Месячная цена -->
+          <div class="pricing-price monthly">
+            399 ₽ <span>/ мес</span>
+          </div>
+          
+          <!-- Годовая цена -->
+          <div class="pricing-price yearly" style="display: none;">
+            333 ₽ <span>/ мес</span>
+            <div class="per-month">3990 ₽ / год</div>
+            <div class="savings">Экономия 15%</div>
+          </div>
+
+          <ul class="pricing-features">
+            <li>Полный технический функционал</li>
+            <li>Лучшее соотношение цена/возможности</li>
+            <li>Подходит 90% пользователей</li>
+          </ul>
+
+          <button class="btn pricing-btn disabled" type="button" aria-disabled="true">
+            Покупка недоступна
+          </button>
+        </div>
+
+        <!-- FULL -->
+        <div class="card pricing-card">
+          <h3 class="pricing-title">FULL</h3>
+          
+          <!-- Месячная цена -->
+          <div class="pricing-price monthly">
+            899 ₽ <span>/ мес</span>
+          </div>
+          
+          <!-- Годовая цена -->
+          <div class="pricing-price yearly" style="display: none;">
+            749 ₽ <span>/ мес</span>
+            <div class="per-month">8990 ₽ / год</div>
+            <div class="savings">Экономия 15%</div>
+          </div>
+
+          <ul class="pricing-features">
+            <li>Все категории PRO</li>
+            <li>Категория приложений и дополнений</li>
+            <li>Без ограничений</li>
+          </ul>
+
+          <button class="btn pricing-btn disabled" type="button" aria-disabled="true">
+            Покупка недоступна
+          </button>
+        </div>
+
+      </div>
+
+      <p class="pricing-note">
+        Ниже — сравнение по категориям и возможностям.
+      </p>
+
+      <!-- TABLE -->
+      <div class="pricing-table-wrap">
+        <div class="pricing-table-header">
+          <h3>Сравнение тарифов</h3>
+          <p>Категории и доступ по подпискам</p>
+        </div>
+
+        <div class="table-scroll">
+          <table class="pricing-table">
+            <thead>
+              <tr>
+                <th>Возможности</th>
+                <th><span class="tier-chip">FREE</span></th>
+                <th><span class="tier-chip">BASIC</span></th>
+                <th class="accent-col"><span class="tier-chip">PRO</span></th>
+                <th><span class="tier-chip">FULL</span></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td><i class="fa-solid fa-plus"></i> Категория Рецепты</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td><i class="fa-solid fa-plus"></i> Категория Веб-сайты</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td><i class="fa-solid fa-plus"></i> Категория Стикеры и аватары</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td><i class="fa-solid fa-plus"></i> Категория Учёба и школа</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td><i class="fa-solid fa-plus"></i> Категория Генерация изображений</td>
+                <td class="no">—</td>
+                <td class="yes">✓</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td><i class="fa-solid fa-plus"></i> Категория Игрушки</td>
+                <td class="no">—</td>
+                <td class="yes">✓</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td><i class="fa-solid fa-plus"></i> Категория 3D модели</td>
+                <td class="no">—</td>
+                <td class="yes">✓</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td><i class="fa-solid fa-plus"></i> Категория Боты и автоматизация</td>
+                <td class="no">—</td>
+                <td class="no">—</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td><i class="fa-solid fa-plus"></i> Категория Minecraft</td>
+                <td class="no">—</td>
+                <td class="no">—</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td><i class="fa-solid fa-plus"></i> Категория Character AI</td>
+                <td class="no">—</td>
+                <td class="no">—</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td><i class="fa-solid fa-plus"></i> Категория Suno AI</td>
+                <td class="no">—</td>
+                <td class="no">—</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td><i class="fa-solid fa-plus"></i> Категория YouTube</td>
+                <td class="no">—</td>
+                <td class="no">—</td>
+                <td class="yes accent-col">✓</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td><i class="fa-solid fa-plus"></i> Категория Плагины</td>
+                <td class="no">—</td>
+                <td class="no">—</td>
+                <td class="no accent-col">—</td>
+                <td class="yes">✓</td>
+              </tr>
+
+              <tr>
+                <td><i class="fa-solid fa-plus"></i> Категория Приложения</td>
+                <td class="no">—</td>
+                <td class="no">—</td>
+                <td class="no accent-col">—</td>
+                <td class="yes">✓</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <div style="height: 90px;"></div>
+
+  <div id="site-footer"></div>
+
+  <!-- JS для переключения тарифов -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const billingOptions = document.querySelectorAll('.billing-option');
+      const billingNote = document.getElementById('billingNote');
+      
+      billingOptions.forEach(option => {
+        option.addEventListener('click', function() {
+          const period = this.dataset.period;
+          
+          // Убираем активный класс у всех
+          billingOptions.forEach(opt => opt.classList.remove('active'));
+          // Добавляем активный класс текущему
+          this.classList.add('active');
+          
+          // Показываем/скрываем цены
+          document.querySelectorAll('.pricing-price.monthly').forEach(el => {
+            el.style.display = period === 'monthly' ? 'block' : 'none';
+          });
+          
+          document.querySelectorAll('.pricing-price.yearly').forEach(el => {
+            el.style.display = period === 'yearly' ? 'block' : 'none';
+          });
+          
+          // Обновляем заметку
+          if (period === 'yearly') {
+            billingNote.textContent = 'Оплачивайте раз в год, экономите до 15%';
+          } else {
+            billingNote.textContent = 'Оплачивайте ежемесячно, отмена в любой момент';
+          }
+        });
+      });
+    });
+  </script>
+  
+  <!-- JS (только для инжекта хедера/футера + год) -->
+  <script src="main.js?v=1.1.1"></script>
+</body>
+</html>

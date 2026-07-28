@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Настройки — TAIPrompts</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/settings.css">
+  <link rel="stylesheet" href="styles/pricing.css">
+  <link rel="icon" type="image/x-icon" href="images/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-N8JLTHS6');</script>
+    <!-- End Google Tag Manager -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N8JLTHS6"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <div id="site-header"></div>
+
+  <main class="settings-page">
+    <div class="container">
+      <h1 class="section-title">Настройки</h1>
+      
+      <div class="settings-grid">
+
+        <!-- Cookies и статистика -->
+        <section class="setting-section">
+          <h2>Cookies и статистика</h2>
+          
+          <div class="setting-toggle-group">
+            <label class="setting-toggle">
+              <input type="checkbox" id="cookie-toggle" checked>
+              <span class="toggle-switch"></span>
+              <span class="toggle-label">Сбор статистики</span>
+            </label>
+            <p class="toggle-description">
+              Мы собираем анонимную статистику (просмотры страниц, клики по категориям) 
+              только локально в вашем браузере. Эти данные никуда не отправляются.
+            </p>
+            
+            <div class="cookie-actions">
+              <button class="btn btn-secondary" id="view-stats">Показать статистику</button>
+            </div>
+          </div>
+          
+          <div class="stats-info" id="stats-info" style="display: none;">
+            <h4>Ваша локальная статистика</h4>
+            <div class="stats-list" id="stats-list">
+              <!-- Заполнится JavaScript -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Опасная зона -->
+        <section class="setting-section danger-section">
+          <h2 style="color: #ff6b6b;">Опасная зона</h2>
+          <p style="color: var(--secondary-color); margin-bottom: 20px;">
+            Эти действия нельзя отменить
+          </p>
+          
+          <div class="soon-card danger-soon">
+            <div class="soon-icon">
+              <i class="fa-solid fa-ban"></i>
+            </div>
+            <div class="soon-content">
+              <h4>Доступно позже</h4>
+              <p>Сброс настроек будет доступен скоро</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="main.js?v=1.1.4"></script>
+  
+  <script>
+    // Простой JavaScript для страницы настроек
+    document.addEventListener('DOMContentLoaded', function() {
+      const cookieToggle = document.getElementById('cookie-toggle');
+      const cookieStatus = document.getElementById('cookie-status');
+      const viewStatsBtn = document.getElementById('view-stats');
+      const clearStatsBtn = document.getElementById('clear-stats');
+      const statsInfo = document.getElementById('stats-info');
+      const statsList = document.getElementById('stats-list');
+      
+      // Функция для получения статистики из cookies
+      function getStats() {
+        const raw = getCookie('tp_stats');
+        if (!raw) return null;
+        try {
+          return JSON.parse(raw);
+        } catch {
+          return null;
+        }
+      }
+      
+      // Функция для получения cookie (из main.js)
+      function getCookie(name) {
+        const n = encodeURIComponent(name) + "=";
+        const parts = document.cookie.split("; ");
+        for (const p of parts) {
+          if (p.startsWith(n)) return decodeURIComponent(p.slice(n.length));
+        }
+        return null;
+      }
+      
+      // Показать статистику
+      viewStatsBtn.addEventListener('click', function() {
+        const stats = getStats();
+        if (!stats) {
+          statsList.innerHTML = '<div class="stat-item"><span class="stat-label">Нет данных</span><span class="stat-value">—</span></div>';
+        } else {
+          const pageViews = stats.pageViews || {};
+          const categoryClicks = stats.categoryClicks || {};
+          const generations = stats.generations || 0;
+          
+          let html = '';
+          
+          // Сумма просмотров
+          const viewsSum = Object.values(pageViews).reduce((a, b) => a + Number(b || 0), 0);
+          html += `<div class="stat-item"><span class="stat-label">Всего просмотров</span><span class="stat-value">${viewsSum}</span></div>`;
+          
+          // Сумма кликов
+          const clicksSum = Object.values(categoryClicks).reduce((a, b) => a + Number(b || 0), 0);
+          html += `<div class="stat-item"><span class="stat-label">Всего кликов</span><span class="stat-value">${clicksSum}</span></div>`;
+          
+          // Генерации
+          html += `<div class="stat-item"><span class="stat-label">Генераций промптов</span><span class="stat-value">${generations}</span></div>`;
+          
+          // Топ категорий
+          const topCategories = Object.entries(categoryClicks)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 3);
+          
+          topCategories.forEach(([cat, count], idx) => {
+            const names = {
+              recipes: 'Рецепты',
+              websites: 'Веб-сайты',
+              bots: 'Боты',
+              minecraft: 'Minecraft',
+              images: 'Изображения',
+              stickers: 'Стикеры',
+              '3d': '3D модели',
+              toys: 'Игрушки',
+              characterai: 'Character AI',
+              suno: 'Suno AI',
+              setup: 'Приложения',
+              school: 'Учёба',
+              youtube: 'YouTube',
+              plugin: 'Плагины'
+            };
+            html += `<div class="stat-item"><span class="stat-label">${names[cat] || cat}</span><span class="stat-value">${count}</span></div>`;
+          });
+          
+          statsList.innerHTML = html;
+        }
+        
+        statsInfo.style.display = 'block';
+      });
+      
+      // Очистить статистику
+      clearStatsBtn.addEventListener('click', function() {
+        if (confirm('Вы уверены? Вся локальная статистика будет удалена.')) {
+          document.cookie = 'tp_stats=; max-age=0; path=/';
+          updateCookieStatus();
+          statsInfo.style.display = 'none';
+          alert('Статистика очищена');
+        }
+      });
+      
+      // Переключатель cookies
+      cookieToggle.addEventListener('change', function() {
+        if (this.checked) {
+          document.cookie = 'tp_consent=accepted; max-age=31536000; path=/';
+        } else {
+          document.cookie = 'tp_consent=declined; max-age=31536000; path=/';
+        }
+        updateCookieStatus();
+      });
+      
+      // Инициализация
+      updateCookieStatus();
+      
+      // Проверяем текущее состояние
+      const consent = getCookie('tp_consent');
+      cookieToggle.checked = consent === 'accepted';
+    });
+  </script>
+</body>
+</html>

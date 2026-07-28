@@ -684,8 +684,27 @@ const promptTemplates = {
 
     setup: {
       name: "Приложения",
-      template:
-        "Разработай {type} на {lang} в стиле {style} с основной палитрой {color} для {oc} по описанию: '{idea}'. Функционал: {hang}. Дополнительно включи: {additionally}. Обязательно опиши архитектуру, основные экраны или модули, способ сборки и установки через {setupper}, а также ограничения и рекомендации по реализации. Сложность реализации: {complexity}. Иконку не добавляй, если не указано иное.",
+      template: (params, idea) => {
+        const applicationLabel = formatSetupApplicationLabel(params.type);
+        const language = formatPromptValue(params.lang, "выбранном языке");
+        const style = formatPromptValue(params.style, "подходящем стиле");
+        const color = formatPromptValue(params.color, "базовой палитре");
+        const os = formatPromptValue(params.oc, "целевой ОС");
+        const features = formatPromptValue(params.hang, "основной функционал");
+        const extras = formatPromptValue(params.additionally, "дополнительные требования");
+        const installer = formatPromptValue(params.setupper, "подходящим установщиком");
+        const complexity = formatPromptValue(params.complexity, "небольшой");
+
+        return [
+          `Создай ${applicationLabel} на ${language} по идее: "${idea}".`,
+          `Визуальный стиль: ${style}. Основная палитра: ${color}. Целевая ОС: ${os}.`,
+          `Функционал: ${features}.`,
+          `Дополнительно включи: ${extras}.`,
+          `Обязательно опиши архитектуру, основные экраны или модули, сборку, установку через ${installer}, ограничения, риски и рекомендации по реализации.`,
+          `Сложность реализации: ${complexity}.`,
+          "Иконку не добавляй, если это явно не требуется.",
+        ].join(" ");
+      },
       params: {
         type: {
           type: "select",
@@ -698,10 +717,10 @@ const promptTemplates = {
             "Стриминговый сервис",
             "Видеохостинг",
             "Конструктор сайтов/приложений",
-            "Цифровая визитка",
-            "Учебное приложение",
-          ],
-          default: "Игра",
+          "Цифровая визитка",
+          "Учебное приложение",
+        ],
+          default: "Утилита",
         },
         lang: {
           type: "select",
@@ -1037,6 +1056,28 @@ function formatPromptValue(value, fallback = "") {
   return text || fallback;
 }
 
+function getPromptInstructionPrefix(tone = "professional", generationMode = "standard") {
+  const tonePrefix = {
+    professional: "Используй профессиональный язык.",
+    friendly: "Будь дружелюбным и приветливым.",
+    creative: "Прояви креативность и оригинальность.",
+    technical: "Сфокусируйся на технических деталях.",
+    detailed: "Дай максимально детализированный ответ.",
+  }[tone] || "Используй нейтральный и ясный язык.";
+
+  const modePrefix = {
+    short: "Сделай ответ компактным и без лишней воды.",
+    standard: "Соблюдай баланс между краткостью и детализацией.",
+    detailed: "Раскрой тему максимально полно, структурно и с пояснениями.",
+  }[generationMode] || "Соблюдай баланс между краткостью и детализацией.";
+
+  if (generationMode === "standard") {
+    return `${tonePrefix} `;
+  }
+
+  return `${tonePrefix} ${modePrefix} `;
+}
+
 function cleanupPromptText(text) {
   return normalizeValue(text)
     .replace(/\b__custom__\b/gi, "")
@@ -1045,6 +1086,29 @@ function cleanupPromptText(text) {
     .replace(/\s{2,}/g, " ")
     .replace(/\n{3,}/g, "\n\n")
     .trim();
+}
+
+function formatSetupApplicationLabel(typeValue) {
+  const normalized = normalizeValue(typeValue);
+  const lower = normalized.toLowerCase();
+
+  const labelMap = {
+    "игра": "игру",
+    "мессенджер": "мессенджер",
+    "утилита": "утилиту",
+    "приложение для видеоконференций": "приложение для видеоконференций",
+    "стриминговый сервис": "стриминговый сервис",
+    "видеохостинг": "видеохостинг",
+    "конструктор сайтов/приложений": "конструктор сайтов и приложений",
+    "цифровая визитка": "цифровую визитку",
+    "учебное приложение": "учебное приложение",
+  };
+
+  if (labelMap[lower]) {
+    return labelMap[lower];
+  }
+
+  return normalized ? `приложение типа "${normalized}"` : "приложение";
 }
 
 function getParamContainerValue(container, key, param) {
@@ -1140,13 +1204,20 @@ function syncCustomParamState(container, type) {
     const shouldShow = isCustomParamActive(container, key, param) || typedValue.length > 0 || document.activeElement === customInput;
     customInput.hidden = !shouldShow;
     customInput.disabled = !shouldShow;
+    customInput.classList.toggle("is-custom-empty", shouldShow && !typedValue);
+    customInput.classList.toggle("is-custom-filled", shouldShow && typedValue.length > 0);
 
     if (customHint) {
-      customHint.hidden = !shouldShow || typedValue.length > 0;
+      customHint.hidden = !shouldShow;
       if (!shouldShow) {
         customHint.textContent = "";
+        customHint.classList.remove("is-warning");
       } else if (!typedValue) {
         customHint.textContent = "Введите свой вариант";
+        customHint.classList.remove("is-warning");
+      } else {
+        customHint.textContent = `Будет подставлено: ${typedValue}`;
+        customHint.classList.remove("is-warning");
       }
     }
   });
@@ -1262,6 +1333,7 @@ function applyPresetParams(presetParams = {}) {
   }
 
   updateGenerateButtonState();
+  updatePromptPreview();
 }
 
 // ===== КРОСС-РЕКОМЕНДАЦИИ =====
@@ -1925,6 +1997,17 @@ const validationRules = {
         recommendedSetupper: ["Inno Setup", "NSIS", "MSIX"],
         message: "Для Windows рекомендуем: {setupper}"
       }
+    ],
+
+    advice: [
+      {
+        when: { type: ["Игра"], lang: ["JavaScript"] },
+        message: "Для игры на JavaScript лучше явно указать веб- или браузерный формат, иначе запрос может звучать слишком обобщённо"
+      },
+      {
+        when: { type: ["Утилита"], setupper: ["Google Play", "App Store"] },
+        message: "Для утилиты мобильный установщик обычно лишний, лучше выбрать десктопный формат"
+      }
     ]
   },
   
@@ -2060,7 +2143,7 @@ function validateCombination(type, selectedParams) {
       Object.keys(rule.when).forEach(paramKey => {
         const paramValue = selectedParams[paramKey];
         // Поддержка как одиночных значений, так и массивов
-        if (!paramValue || !rule.when[paramKey].includes(paramValue)) {
+        if (!paramValue || !matchesExpectedValue(paramValue, rule.when[paramKey])) {
           conditionMet = false;
         }
       });
@@ -2097,7 +2180,7 @@ function validateCombination(type, selectedParams) {
       let conditionMet = true;
       Object.keys(rule.when).forEach(paramKey => {
         const paramValue = selectedParams[paramKey];
-        if (!paramValue || !rule.when[paramKey].includes(paramValue)) {
+        if (!paramValue || !matchesExpectedValue(paramValue, rule.when[paramKey])) {
           conditionMet = false;
         }
       });
@@ -2122,8 +2205,11 @@ function validateCombination(type, selectedParams) {
               });
             }
             
+            const actualValues = Array.isArray(actualValue) ? actualValue : [actualValue];
+            const hasInvalidValue = actualValues.some((value) => value && !rule[ruleKey].includes(value));
+
             // Если нашли значение и оно не входит в рекомендованные
-            if (actualValue && !rule[ruleKey].includes(actualValue)) {
+            if (actualValue && hasInvalidValue) {
               const recommendations = rule[ruleKey].join(', ');
               let message = rule.message;
               
@@ -2157,13 +2243,29 @@ function validateCombination(type, selectedParams) {
       }
     });
   }
+
+  if (rules.advice) {
+    rules.advice.forEach((rule) => {
+      let conditionMet = true;
+      Object.keys(rule.when).forEach((paramKey) => {
+        const paramValue = selectedParams[paramKey];
+        if (!paramValue || !matchesExpectedValue(paramValue, rule.when[paramKey])) {
+          conditionMet = false;
+        }
+      });
+
+      if (conditionMet) {
+        warnings.push(`💡 ${rule.message}`);
+      }
+    });
+  }
   
   // Проверка цветовых рекомендаций (только для websites)
   if (rules.colorWarnings && type === 'websites') {
     rules.colorWarnings.forEach(rule => {
       let conditionMet = true;
       Object.keys(rule.when).forEach(paramKey => {
-        if (!selectedParams[paramKey] || !rule.when[paramKey].includes(selectedParams[paramKey])) {
+        if (!selectedParams[paramKey] || !matchesExpectedValue(selectedParams[paramKey], rule.when[paramKey])) {
           conditionMet = false;
         }
       });
@@ -2219,6 +2321,15 @@ function showValidationMessages(validation) {
     successDiv.textContent = '✅ Все параметры совместимы';
     container.appendChild(successDiv);
   }
+}
+
+function matchesExpectedValue(paramValue, expectedValues) {
+  const expectedList = Array.isArray(expectedValues) ? expectedValues : [expectedValues];
+  if (Array.isArray(paramValue)) {
+    return paramValue.some((item) => expectedList.includes(item));
+  }
+
+  return expectedList.includes(paramValue);
 }
 
 // ===== КРОСС-РЕКОМЕНДАЦИИ =====
@@ -2298,6 +2409,8 @@ function switchToCategory(newCategory, presetParams = {}) {
   const currentText = customInput.value;
   renderTechnicalParams(newCategory);
   customInput.value = currentText;
+  modal.querySelector("#crossRecommendations")?.remove();
+  modal.querySelector("#contextSuggestions")?.remove();
   
   // Применяем пресет параметры
   if (Object.keys(presetParams).length > 0) {
@@ -2306,11 +2419,13 @@ function switchToCategory(newCategory, presetParams = {}) {
   
   // Показываем новые рекомендации
   setTimeout(showCrossRecommendations, 300);
+  setTimeout(() => setGeneratorTab("generate"), 0);
   setTimeout(updateGenerateButtonState, 120);
 }
 
   // ===== МОДАЛКА =====
   let selectedType = "recipes";
+  let activeGeneratorTab = "generate";
 
   const modal = document.createElement("div");
   modal.className = "customization-modal";
@@ -2378,6 +2493,80 @@ function switchToCategory(newCategory, presetParams = {}) {
   `;
   document.body.appendChild(modal);
 
+  const modalBody = modal.querySelector(".modal-body");
+  const promptFormPanel = modal.querySelector("#prompt-form");
+  const generatedPromptPanel = modal.querySelector(".generated-prompt");
+  const examplesPanel = modal.querySelector(".generator-examples-panel");
+
+  if (modalBody && promptFormPanel && generatedPromptPanel && examplesPanel) {
+    const tabs = document.createElement("div");
+    tabs.className = "modal-tabs";
+    tabs.setAttribute("role", "tablist");
+    tabs.setAttribute("aria-label", "Разделы генератора");
+    tabs.innerHTML = `
+      <button type="button" class="modal-tab is-active" data-generator-tab="generate" aria-selected="true">Генерация</button>
+      <button type="button" class="modal-tab" data-generator-tab="examples" aria-selected="false">Примеры</button>
+    `;
+
+    const generatePanel = document.createElement("section");
+    generatePanel.className = "generator-tab-panel is-active";
+    generatePanel.setAttribute("data-generator-tab-panel", "generate");
+
+    const examplesPanelWrap = document.createElement("section");
+    examplesPanelWrap.className = "generator-tab-panel";
+    examplesPanelWrap.setAttribute("data-generator-tab-panel", "examples");
+
+    generatePanel.append(promptFormPanel, generatedPromptPanel);
+    examplesPanelWrap.append(examplesPanel);
+
+    const toneGroup = promptFormPanel.querySelector('[for="tone-select"]')?.closest(".form-group");
+    if (toneGroup) {
+      const depthGroup = document.createElement("div");
+      depthGroup.className = "form-group";
+      depthGroup.innerHTML = `
+        <label for="generation-mode-select">Глубина генерации</label>
+        <select id="generation-mode-select">
+          <option value="short">Короткий</option>
+          <option value="standard" selected>Стандартный</option>
+          <option value="detailed">Максимально подробный</option>
+        </select>
+      `;
+      toneGroup.insertAdjacentElement("afterend", depthGroup);
+    }
+
+    const previewPanel = document.createElement("div");
+    previewPanel.className = "prompt-preview-panel";
+    previewPanel.innerHTML = `
+      <div class="prompt-preview-head">
+        <h4>Предпросмотр</h4>
+        <span>обновляется автоматически</span>
+      </div>
+      <div id="prompt-preview" class="prompt-output prompt-output--preview"></div>
+    `;
+    generatePanel.insertBefore(previewPanel, generatedPromptPanel);
+
+    modalBody.innerHTML = "";
+    modalBody.append(tabs, generatePanel, examplesPanelWrap);
+  }
+
+  function setGeneratorTab(tabName) {
+    activeGeneratorTab = tabName === "examples" ? "examples" : "generate";
+
+    modal.querySelectorAll("[data-generator-tab]").forEach((button) => {
+      const isActive = button.getAttribute("data-generator-tab") === activeGeneratorTab;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-selected", String(isActive));
+    });
+
+    modal.querySelectorAll("[data-generator-tab-panel]").forEach((panel) => {
+      panel.classList.toggle("is-active", panel.getAttribute("data-generator-tab-panel") === activeGeneratorTab);
+    });
+
+    if (activeGeneratorTab === "examples") {
+      renderExamples(selectedType);
+    }
+  }
+
   // ===== ЗАЩИТА МОДАЛКИ ОТ ЗАКРЫТИЯ =====
   let isPromptGenerated = false;
   let isFormDirty = false;
@@ -2438,6 +2627,10 @@ function switchToCategory(newCategory, presetParams = {}) {
         document.body.appendChild(dialog);
       }
 
+      const iconWrap = dialog.querySelector(".generator-confirm-icon");
+      if (iconWrap) {
+        iconWrap.innerHTML = `<i class="fas ${iconClass}"></i>`;
+      }
       dialog.querySelector("#generator-confirm-title").textContent = title;
       dialog.querySelector(".generator-confirm-card p").textContent = message;
       dialog.querySelector("[data-generator-cancel]").textContent = cancelText;
@@ -2528,11 +2721,14 @@ function renderTechnicalParams(type) {
       const shouldWarn = isCustomFieldActive && !rawValue;
 
       if (hint) {
-        hint.hidden = !shouldWarn;
-        hint.textContent = shouldWarn
-          ? `Введите свой вариант для параметра "${param.label}"`
-          : "";
+        hint.classList.toggle("is-warning", shouldWarn);
+        if (shouldWarn) {
+          hint.hidden = false;
+          hint.textContent = `Введите свой вариант для параметра "${param.label}"`;
+        }
       }
+
+      customInput.classList.toggle("is-custom-missing", shouldWarn);
 
       if (shouldWarn) {
         validation.warnings.push(`Для параметра "${param.label}" выбрано "Другое", но свой вариант не введён`);
@@ -2541,6 +2737,7 @@ function renderTechnicalParams(type) {
 
     showValidationMessages(validation);
     updateGenerateButtonState();
+    updatePromptPreview();
   };
 
   for (const [key, param] of Object.entries(params)) {
@@ -2676,6 +2873,10 @@ typeCards.forEach((card) => {
         const form = modal.querySelector("#prompt-form");
         form.reset();
         modal.querySelector("#final-prompt").textContent = "";
+        modal.querySelector("#crossRecommendations")?.remove();
+        modal.querySelector("#contextSuggestions")?.remove();
+        updatePromptPreview();
+        setGeneratorTab("generate");
         setTimeout(updateGenerateButtonState, 50);
 
         // === ДОБАВИТЬ ЭТО ===
@@ -2702,6 +2903,13 @@ typeCards.forEach((card) => {
 
   modal.querySelector(".modal-close").addEventListener("click", closeModalWithCheck);
 
+  modal.querySelectorAll("[data-generator-tab]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const nextTab = button.getAttribute("data-generator-tab") || "generate";
+      setGeneratorTab(nextTab);
+    });
+  });
+
   modal.addEventListener("click", (e) => {
     if (e.target === modal) closeModalWithCheck();
   });
@@ -2717,7 +2925,9 @@ typeCards.forEach((card) => {
   const promptForm = modal.querySelector("#prompt-form");
   const customInput = modal.querySelector("#custom-input");
   const toneSelect = modal.querySelector("#tone-select");
+  const generationModeSelect = modal.querySelector("#generation-mode-select");
   const finalPrompt = modal.querySelector("#final-prompt");
+  const promptPreview = modal.querySelector("#prompt-preview");
   const copyButton = modal.querySelector("#copy-prompt");
   const generateButton = modal.querySelector("#generate-prompt-btn");
 
@@ -2760,6 +2970,28 @@ typeCards.forEach((card) => {
     generateButton.setAttribute("aria-disabled", String(!canGenerate));
   }
 
+  function updatePromptPreview() {
+    if (!promptPreview) return;
+
+    const idea = normalizeValue(customInput.value);
+    if (!idea) {
+      promptPreview.textContent = "Введите идею или описание, чтобы увидеть предпросмотр.";
+      promptPreview.classList.add("is-placeholder");
+      return;
+    }
+
+    const previewText = buildPromptText(
+      selectedType,
+      idea,
+      toneSelect.value,
+      {},
+      normalizeValue(generationModeSelect?.value) || "standard"
+    );
+
+    promptPreview.textContent = previewText;
+    promptPreview.classList.remove("is-placeholder");
+  }
+
   // Отслеживаем изменения в текстовом поле
 customInput.addEventListener('input', () => {
   if (customInput.value.trim()) {
@@ -2772,6 +3004,7 @@ customInput.addEventListener('input', () => {
   }
 
   updateGenerateButtonState();
+  updatePromptPreview();
 });
 
 // ДОБАВЬТЕ ДЕБАУНС ДЛЯ КОНТЕКСТУАЛЬНЫХ ПАРАМЕТРОВ (после вышеуказанного кода)
@@ -2800,17 +3033,24 @@ customInput.addEventListener('input', debounce(() => {
   // Отслеживаем изменения в селектах
   toneSelect.addEventListener('change', () => {
     isFormDirty = true;
+    updatePromptPreview();
   });
 
-function buildPromptText(type, idea, tone = "professional", overrideParams = {}) {
+  generationModeSelect?.addEventListener('change', () => {
+    isFormDirty = true;
+    updatePromptPreview();
+  });
+
+function buildPromptText(type, idea, tone = "professional", overrideParams = {}, generationMode = "standard") {
   if (!promptTemplates[type]) return "";
 
   const tpl = promptTemplates[type];
   const params = collectPromptParams(type, overrideParams);
+  const promptPrefix = getPromptInstructionPrefix(tone, generationMode);
 
   // Если шаблон - функция, вызываем её с параметрами
   if (typeof tpl.template === 'function') {
-    return cleanupPromptText(tpl.template(params, idea, tone));
+    return cleanupPromptText(`${promptPrefix}${tpl.template(params, idea, tone)}\n\nПромпт создан с помощью TAIPrompts`);
   }
 
   // Иначе используем старый строковый шаблон
@@ -2825,18 +3065,8 @@ function buildPromptText(type, idea, tone = "professional", overrideParams = {})
 
   // Удаляем оставшиеся неиспользованные параметры {param}
   text = cleanupPromptText(text.replace(/\{[^}]+\}/g, ""));
-  
-  // Добавляем тон в начало для строковых шаблонов
-  let tonePrefix = "";
-  switch (tone) {
-    case "professional": tonePrefix = "Используй профессиональный язык. "; break;
-    case "friendly": tonePrefix = "Будь дружелюбным и приветливым. "; break;
-    case "creative": tonePrefix = "Прояви креативность и оригинальность. "; break;
-    case "technical": tonePrefix = "Сфокусируйся на технических деталях. "; break;
-    case "detailed": tonePrefix = "Дай максимально детализированный ответ. "; break;
-  }
-  
-  text = cleanupPromptText(`${tonePrefix}${text}\n\nПромпт создан с помощью TAIPrompts`);
+
+  text = cleanupPromptText(`${promptPrefix}${text}\n\nПромпт создан с помощью TAIPrompts`);
 
   return text;
 }
@@ -2850,6 +3080,14 @@ const promptExamples = {
       dietary: "Высокобелковое",
       complexity: "Простое",
       tone: "friendly"
+    },
+    {
+      title: "Полезный завтрак",
+      idea: "Белковый завтрак без глютена на каждый день",
+      cuisine: "средиземноморской",
+      dietary: "Без глютена",
+      complexity: "Легкая",
+      tone: "detailed"
     }
   ],
 
@@ -2860,9 +3098,19 @@ const promptExamples = {
       type: "Портфолио",
       stack: "React",
       style: "Матовое стекло",
-      color: "Тайский тип (#5c71e5)",
+      color: "Тайские подсказки (#5c71e5)",
       features: "Адаптивный дизайн, PWA, SEO оптимизация",
       tone: "creative"
+    },
+    {
+      title: "Интернет-магазин",
+      idea: "Современный интернет-магазин одежды с каталогом и корзиной",
+      type: "Интернет-магазин",
+      stack: "HTML/CSS/JS",
+      style: "Минимализм",
+      color: "Обнаружение (#26d13c)",
+      features: "Адаптивный дизайн, Корзина покупок, Поиск, SEO оптимизация",
+      tone: "professional"
     }
   ],
 
@@ -2956,6 +3204,15 @@ const promptExamples = {
       appearance: "Аниме персонаж, Человек",
       tone2: "Дружеский",
       tone: "friendly"
+    },
+    {
+      title: "Мудрый наставник",
+      idea: "Спокойный и мудрый персонаж-наставник с мягкой манерой общения и глубокими ответами",
+      name: "Старый Мастер",
+      personality: "Мудрый, Серьезный, Загадочный",
+      appearance: "Человек",
+      tone2: "Формальный",
+      tone: "detailed"
     }
   ],
 
@@ -2999,14 +3256,43 @@ const promptExamples = {
 
   setup: [
     {
-      title: "Десктоп-приложение",
-      idea: "Приложение для учёта личных задач",
+      title: "Планировщик задач",
+      idea: "Приложение для учёта личных задач с календарём, напоминаниями и приоритетами",
       type: "Утилита",
       lang: "Python",
-      hang: "Смена темы, Горячие клавиши, Сохранение чего-то в собственный формат файла",
+      style: "Матовое стекло",
+      color: "Тайские подсказки (#5c71e5)",
+      hang: "Смена темы, Горячие клавиши, Сохранение данных в собственный формат файла",
+      additionally: "Структура проекта, Объяснение ключевых понятий",
       setupper: "Inno Setup",
       oc: "Windows",
       tone: "technical"
+    },
+    {
+      title: "Чат-приложение",
+      idea: "Кроссплатформенный мессенджер с чатами, уведомлениями и синхронизацией",
+      type: "Мессенджер",
+      lang: "JavaScript",
+      style: "Минимализм",
+      color: "Обнаружение (#26d13c)",
+      hang: "Чаты, Уведомления, Синхронизация сообщений",
+      additionally: "Полный код, Архитектура проекта",
+      setupper: "MSIX",
+      oc: "Windows",
+      tone: "professional"
+    },
+    {
+      title: "Видеоконференции",
+      idea: "Приложение для онлайн-встреч с комнатами, демонстрацией экрана и историей звонков",
+      type: "Приложение для видеоконференций",
+      lang: "TypeScript",
+      style: "Стекломорфизм",
+      color: "Подход звезды (#e431f5)",
+      hang: "Комнаты, Демонстрация экрана, История звонков",
+      additionally: "Структура проекта, Объяснение ключевых понятий",
+      setupper: "PKG",
+      oc: "MacOS",
+      tone: "detailed"
     }
   ]
 };
@@ -3015,8 +3301,19 @@ function renderExamples(type) {
   const grid = document.getElementById("examplesGrid");
   if (!grid) return;
 
+  const panel = grid.closest(".generator-examples-panel");
+  if (panel) {
+    const title = panel.querySelector(".generator-examples-head h4");
+    const subtitle = panel.querySelector(".generator-examples-subtitle");
+    const templateName = promptTemplates[type]?.name || type;
+    if (title) title.textContent = `Примеры для: ${templateName}`;
+    if (subtitle) {
+      subtitle.textContent = "Карточки собраны именно под этот шаблон. Их можно скопировать или сразу применить.";
+    }
+  }
+
   const examples = promptExamples[type] || [];
-  const visibleExamples = examples.slice(0, 3);
+  const visibleExamples = examples.slice(0, 4);
 
   if (visibleExamples.length === 0) {
     grid.innerHTML = `<div class="examples-placeholder">
@@ -3027,7 +3324,7 @@ function renderExamples(type) {
 
   const cardsHtml = visibleExamples.map((example, index) => {
     const { title, idea, tone, ...exampleParams } = example;
-    const text = buildPromptText(type, idea, tone || "professional", exampleParams);
+    const text = buildPromptText(type, idea, tone || "professional", exampleParams, "standard");
     const paramEntries = Object.entries(exampleParams)
       .filter(([_, value]) => normalizeValue(value).length > 0)
       .slice(0, 4);
@@ -3060,7 +3357,7 @@ function renderExamples(type) {
 
   visibleExamples.forEach((example, index) => {
     const { title, idea, tone, ...exampleParams } = example;
-    const text = buildPromptText(type, idea, tone || "professional", exampleParams);
+    const text = buildPromptText(type, idea, tone || "professional", exampleParams, "standard");
 
     const copyBtn = grid.querySelector(`[data-copy-example="${index}"]`);
     const useBtn = grid.querySelector(`[data-use-example="${index}"]`);
@@ -3090,6 +3387,8 @@ function renderExamples(type) {
         toneSelect.value = tone || "professional";
         customInput.value = idea;
         applyPresetParams(exampleParams);
+        updatePromptPreview();
+        setGeneratorTab("generate");
 
         modal.querySelector("#final-prompt").textContent = "";
         modal.classList.add("active");
@@ -3161,10 +3460,20 @@ promptForm.addEventListener("submit", async (e) => {
     // Небольшая задержка для "реалистичности" генерации
     await new Promise(resolve => setTimeout(resolve, 800));
 
-    const finalPromptText = buildPromptText(selectedType, customText, tone, params);
+    const finalPromptText = buildPromptText(
+      selectedType,
+      customText,
+      tone,
+      params,
+      normalizeValue(generationModeSelect?.value) || "standard"
+    );
 
     incGeneration();
     finalPrompt.textContent = finalPromptText;
+    if (promptPreview) {
+      promptPreview.textContent = finalPromptText;
+      promptPreview.classList.remove("is-placeholder");
+    }
     finalPrompt.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
     // Устанавливаем флаг, что промпт сгенерирован
