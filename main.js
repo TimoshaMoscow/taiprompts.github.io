@@ -2534,17 +2534,6 @@ function switchToCategory(newCategory, presetParams = {}) {
       toneGroup.insertAdjacentElement("afterend", depthGroup);
     }
 
-    const previewPanel = document.createElement("div");
-    previewPanel.className = "prompt-preview-panel";
-    previewPanel.innerHTML = `
-      <div class="prompt-preview-head">
-        <h4>Предпросмотр</h4>
-        <span>обновляется автоматически</span>
-      </div>
-      <div id="prompt-preview" class="prompt-output prompt-output--preview"></div>
-    `;
-    generatePanel.insertBefore(previewPanel, generatedPromptPanel);
-
     modalBody.innerHTML = "";
     modalBody.append(tabs, generatePanel, examplesPanelWrap);
   }
