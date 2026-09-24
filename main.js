@@ -99,22 +99,28 @@ function initCookieBanner() {
 
 function setActiveNavLink() {
   const path = location.pathname.split("/").pop() || "index.html";
-  document.querySelectorAll(".nav-link").forEach((a) => {
+  document.querySelectorAll(".nav-list .nav-link").forEach((a) => {
     const href = a.getAttribute("href");
-    a.classList.toggle("active", href === path);
+    const active = href === path;
+    a.classList.toggle("active", active);
+    if (active) a.setAttribute("aria-current", "page");
+    else a.removeAttribute("aria-current");
   });
 }
 
 function initNav() {
   const burger = document.querySelector(".burger");
   const navList = document.querySelector(".nav-list");
-  const navLinks = document.querySelectorAll(".nav-link");
+  const navLinks = document.querySelectorAll(".nav-list a");
 
   // Бургер меню
   if (burger && navList) {
     burger.addEventListener("click", () => {
-      burger.classList.toggle("active");
-      navList.classList.toggle("active");
+      const expanded = burger.getAttribute("aria-expanded") === "true";
+      burger.setAttribute("aria-expanded", String(!expanded));
+      burger.setAttribute("aria-label", expanded ? "Открыть меню" : "Закрыть меню");
+      burger.classList.toggle("active", !expanded);
+      navList.classList.toggle("active", !expanded);
     });
   }
 
@@ -126,6 +132,8 @@ function initNav() {
       if (navList?.classList.contains("active")) {
         navList.classList.remove("active");
         burger?.classList.remove("active");
+        burger?.setAttribute("aria-expanded", "false");
+        burger?.setAttribute("aria-label", "Открыть меню");
       }
 
       // Якоря (#)
@@ -157,6 +165,23 @@ function initNav() {
       });
     });
   }
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || !navList?.classList.contains("active")) return;
+    navList.classList.remove("active");
+    burger?.classList.remove("active");
+    burger?.setAttribute("aria-expanded", "false");
+    burger?.setAttribute("aria-label", "Открыть меню");
+    burger?.focus();
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!navList?.classList.contains("active") || event.target.closest(".nav")) return;
+    navList.classList.remove("active");
+    burger?.classList.remove("active");
+    burger?.setAttribute("aria-expanded", "false");
+    burger?.setAttribute("aria-label", "Открыть меню");
+  });
 }
 
 function initAnimations() {
@@ -299,7 +324,7 @@ const promptTemplates = {
   recipes: {
     name: "Рецепты",
     template:
-      "Создай подробный рецепт {cuisine} кухни по идее: '{idea}'. Ограничения: {dietary}. Сложность: {complexity}. Структурируй ответ строго по разделам: название блюда, краткое описание, ингредиенты с количеством, пошаговое приготовление, время готовки, советы по подаче, замены ингредиентов и полезные замечания. Пиши конкретно, без общих фраз и лишней воды.",
+      "Создай подробный рецепт {cuisine} кухни по идее: '{idea}'. Ограничения: {dietary}. Сложность: {complexity}. Уточнения по ограничениям: {dietaryDetails}. Структурируй ответ строго по разделам: название блюда, краткое описание, ингредиенты с количеством, пошаговое приготовление, время готовки, советы по подаче, замены ингредиентов и полезные замечания. Пиши конкретно, без общих фраз и лишней воды.",
     params: {
       cuisine: {
         type: "select",
@@ -313,6 +338,10 @@ const promptTemplates = {
         options: ["Без ограничений", "Веганское", "Вегетарианское", "Без глютена", "Низкоуглеводное", "Высокобелковое"],
         default: "Без ограничений",
       },
+      dietaryDetails: {
+        type: "text", label: "Что исключить или учесть", placeholder: "Например: без арахиса, заменить молоко овсяным", default: "",
+        showWhen: { key: "dietary", values: ["Веганское", "Вегетарианское", "Без глютена", "Низкоуглеводное", "Высокобелковое"] },
+      },
       complexity: {
         type: "select",
         label: "Сложность",
@@ -325,7 +354,7 @@ const promptTemplates = {
   websites: {
     name: "Веб-сайты",
     template:
-      "Разработай веб-сайт типа {type} на {stack} по описанию: '{idea}'. Основная палитра: {color}. Стиль сайта: {style}. Сложность реализации: {complexity}. В ответе обязательно укажи: структуру страниц и блоков, логику интерфейса, адаптивность, UX-решения, анимации, доступность, SEO-детали и список компонентов. Учитывай: {features}, {emoji}, {additionally}. Если указан полный код, покажи готовую структуру проекта и объясни, как его собрать.",
+      "Разработай веб-сайт типа {type} на {stack} по описанию: '{idea}'. Основная палитра: {color}. Стиль сайта: {style}. Сложность реализации: {complexity}. В ответе обязательно укажи: структуру страниц и блоков, логику интерфейса, адаптивность, UX-решения, анимации, доступность, SEO-детали и список компонентов. Учитывай: {features}, {emoji}, {additionally}. SEO-настройки: {seoDetails}. Целевые запросы и регион: {seoKeywords}. Подключаемые API: {apiDetails}. Если указан полный код, покажи готовую структуру проекта и объясни, как его собрать.",
     params: {
       type: {
         type: "select",
@@ -356,6 +385,18 @@ const promptTemplates = {
         label: "Функции",
         options: ["Адаптивный дизайн", "PWA функции", "SEO оптимизация", "Корзина покупок", "Блог", "Комментарии", "Поиск", "Смена темы", "Бекенд", "Аккаунты", "Тарифы", "Галерея изображений", "Блок для отзывов"],
         default: "Адаптивный дизайн",
+      },
+      seoDetails: {
+        type: "multiselect", label: "Что включить в SEO", options: ["Уникальные title и description", "Семантическая HTML-разметка", "Open Graph для соцсетей", "Schema.org / JSON-LD", "XML-карта сайта и robots.txt", "Canonical и мета robots", "Оптимизация скорости и Core Web Vitals", "Доступность и alt-тексты"], default: [],
+        showWhen: { key: "features", values: ["SEO оптимизация"] },
+      },
+      seoKeywords: {
+        type: "text", label: "Ключевые слова и регион", placeholder: "Например: кофейня, Москва, specialty coffee", default: "",
+        showWhen: { key: "features", values: ["SEO оптимизация"] },
+      },
+      apiDetails: {
+        type: "text", label: "Какие API подключить", placeholder: "Например: платёжный шлюз, CRM, карта", default: "",
+        showWhen: { key: "features", values: ["Бекенд"] },
       },
       emoji: {
         type: "select",
@@ -419,7 +460,7 @@ const promptTemplates = {
   minecraft: {
     name: "Моды Minecraft",
     template:
-      "Разработай {type} для Minecraft {version} {loader} для {compatibility} по описанию: '{idea}'. Сложность реализации: {complexity}. В ответе опиши: основную механику, игровые изменения, блоки/предметы/мобы, рецепты, конфигурацию, совместимость, структуру файлов и этапы реализации. Особенности: {features}. Дополнительно: {additionally}.",
+      "Разработай {type} для Minecraft {version} {loader} для {compatibility} по описанию: '{idea}'. Сложность реализации: {complexity}. В ответе опиши: основную механику, игровые изменения, блоки/предметы/мобы, рецепты, конфигурацию, совместимость, структуру файлов и этапы реализации. Особенности: {features}. Настройки конфига: {configDetails}. Дополнительно: {additionally}.",
     params: {
       type: {
         type: "select",
@@ -451,6 +492,10 @@ const promptTemplates = {
         options: ["Новые блоки", "Новые мобы", "Новые предметы", "Генерация структур", "Изменение мира", "Магическая система", "Технологии", "Квесты", "Боссы", "GUI", "Рецепты", "Оптимизация", "Клиентские фишки", "Конфиг", "Технические функции", "API интеграции"],
         default: "Оптимизация",
       },
+      configDetails: {
+        type: "text", label: "Параметры конфига", placeholder: "Какие настройки должны менять игроки?", default: "",
+        showWhen: { key: "features", values: ["Конфиг"] },
+      },
       complexity: {
         type: "select",
         label: "Сложность",
@@ -469,7 +514,7 @@ const promptTemplates = {
   images: {
     name: "Генерация изображений",
     template:
-      "Сгенерируй {style} изображение формата {aspect_ratio} качества {quality} по описанию: '{idea}'. Укажи основной объект, композицию, свет, цветовую палитру, настроение, детали окружения и визуальные акценты. Формулируй как готовый промпт для генератора изображений.",
+      "Сгенерируй {style} изображение формата {aspect_ratio} качества {quality} по описанию: '{idea}'. Укажи основной объект, композицию, свет, цветовую палитру, настроение, детали окружения и визуальные акценты. Композиция и референсы: {imageDetails}. Формулируй как готовый промпт для генератора изображений.",
     params: {
       style: {
         type: "select",
@@ -488,6 +533,10 @@ const promptTemplates = {
         label: "Качество",
         options: ["Высокое (4K)", "Среднее (HD)", "Низкое (144p)"],
         default: "Высокое (4K)",
+      },
+      imageDetails: {
+        type: "text", label: "Композиция и референсы", placeholder: "Например: крупный план, мягкий боковой свет, без текста", default: "",
+        showWhen: { key: "style", values: ["реалистичное", "фэнтези", "футуристическое", "анимешное"] },
       },
     },
   },
@@ -1235,12 +1284,34 @@ function collectPromptParams(type, overrideParams = {}) {
     params[key] = value;
   }
 
-  for (const [key, param] of Object.entries(tplParams)) {
+  const activeParams = Object.fromEntries(Object.entries(tplParams).filter(([, param]) => !param.showWhen || isConditionalParamVisible(modal, param, type)));
+  for (const [key, param] of Object.entries(activeParams)) {
     if (params[key] !== undefined) continue;
     params[key] = getParamContainerValue(modal, key, param);
   }
 
   return params;
+}
+
+function isConditionalParamVisible(container, param, type) {
+  if (!param?.showWhen) return true;
+  const { key, values = [] } = param.showWhen;
+  const controller = promptTemplates[type]?.params?.[key];
+  const selected = getParamContainerValue(container, key, controller);
+  const selectedValues = Array.isArray(selected) ? selected : [selected];
+  return values.some((value) => selectedValues.includes(value));
+}
+
+function syncConditionalParamState(container, type) {
+  const params = promptTemplates[type]?.params || {};
+  Object.entries(params).forEach(([key, param]) => {
+    if (!param.showWhen) return;
+    const group = container.querySelector(`[data-param-group="${key}"]`);
+    if (!group) return;
+    const visible = isConditionalParamVisible(container, param, type);
+    group.hidden = !visible;
+    group.setAttribute("aria-hidden", String(!visible));
+  });
 }
 
 function setParamFieldValue(container, key, param, value) {
@@ -1322,6 +1393,7 @@ function applyPresetParams(presetParams = {}) {
     setParamFieldValue(modal, key, param, value);
   });
 
+  syncConditionalParamState(modal, type);
   syncCustomParamState(modal, type);
   const validationContainer = modal.querySelector("#validationMessages");
   if (validationContainer) {
@@ -2730,7 +2802,7 @@ function renderTechnicalParams(type) {
   };
 
   for (const [key, param] of Object.entries(params)) {
-    html += `<div class="param-group">`;
+    html += `<div class="param-group" data-param-group="${key}" ${param.showWhen ? 'hidden aria-hidden="true"' : ""}>`;
     html += `<label>${param.label}</label>`;
 
     if (param.type === "select") {
@@ -2809,6 +2881,8 @@ function renderTechnicalParams(type) {
   container.querySelectorAll('select.tech-param, .multi-select input[type="checkbox"], .custom-param-input, .tech-param').forEach(element => {
     element.addEventListener('change', updateValidation);
     element.addEventListener('input', updateValidation);
+    element.addEventListener('change', () => syncConditionalParamState(container, type));
+    element.addEventListener('input', () => syncConditionalParamState(container, type));
   });
 
   container.querySelectorAll('select.tech-param').forEach((select) => {
@@ -2839,6 +2913,7 @@ function renderTechnicalParams(type) {
   });
   
   // Инициализируем валидацию с текущими значениями
+  syncConditionalParamState(container, type);
   syncCustomParamState(container, type);
   setTimeout(updateValidation, 100);
   setTimeout(updateGenerateButtonState, 120);
@@ -3045,6 +3120,14 @@ function buildPromptText(type, idea, tone = "professional", overrideParams = {},
   // Иначе используем старый строковый шаблон
   let text = tpl.template;
   text = text.replace("{idea}", normalizeValue(idea));
+
+  // Убираем целиком отдельные предложения с зависимыми полями, если они скрыты или пусты.
+  for (const [key, param] of Object.entries(tpl.params || {})) {
+    if (!param.showWhen) continue;
+    const value = params[key];
+    const empty = value === undefined || value === null || value === "" || (Array.isArray(value) && value.length === 0);
+    if (empty) text = text.replace(new RegExp(`[^.!?]*\\{${key}\\}[^.!?]*[.!?]?`, "g"), "");
+  }
 
   // Заменяем все параметры в шаблоне
   for (const [key, value] of Object.entries(params)) {
@@ -3768,22 +3851,13 @@ function initSearch() {
     });
 }
 
-function runDebug() {
-  console.log("=== TAIPrompts Debug ===");
-  console.log("Current page:", window.location.pathname);
-
-  const files = ["index.html", "generator.html", "pricing.html", "development.html", "year.html", "faq.html", "settings.html"];
-  files.forEach((file) => {
-    fetch(file)
-      .then((response) => console.log(`${file}: ${response.ok ? "✅ OK" : "❌ Not found"}`))
-      .catch((error) => console.log(`${file}: ❌ Error - ${error.message}`));
-  });
-}
-
 // ====== START ======
 document.addEventListener("DOMContentLoaded", async () => {
   await inject("site-header", "components/header.html");
   await inject("site-footer", "components/footer.html");
+  document.querySelectorAll("[data-current-year]").forEach((element) => {
+    element.textContent = String(new Date().getFullYear());
+  });
   
 initCookieBanner();
 
@@ -3797,7 +3871,6 @@ incPathView(location.pathname);
   initLightbox();
   initAnimations();
   initSearch();
-  runDebug();
 
   // Service Worker
   if ("serviceWorker" in navigator) {

@@ -7,9 +7,9 @@
     <meta name="description" content="Ответы на частые вопросы о TAIPrompts. Узнайте о работе генератора, цензуре, тарифах и многом другом.">
     
     <!-- Основные стили -->
-    <link rel="stylesheet" href="styles/main.css?v=1.1.3">
+    <link rel="stylesheet" href="styles/main.css?v=1.1.5">
     <!-- Стили для FAQ -->
-    <link rel="stylesheet" href="styles/faq.css?v=1.0">
+    <link rel="stylesheet" href="styles/faq.css?v=1.1">
     <!-- Шрифт Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -233,7 +233,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div id="site-footer"></div>
 
     <!-- Скрипты -->
-    <script src="main.js?v=1.1.4"></script>
+    <script src="main.js?v=1.1.6"></script>
     <script>
     // Инициализация FAQ после загрузки страницы
     document.addEventListener('DOMContentLoaded', function() {
@@ -252,28 +252,48 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             let searchQuery = '';
 
             // Открытие/закрытие вопросов
-            faqItems.forEach(item => {
+            faqItems.forEach((item, index) => {
                 const question = item.querySelector('.faq-question');
                 const toggle = item.querySelector('.faq-toggle');
+                const answer = item.querySelector('.faq-answer');
+                const answerId = `faq-answer-${index + 1}`;
+                const questionId = `faq-question-${index + 1}`;
+                question.id = questionId;
+                question.setAttribute('role', 'button');
+                question.setAttribute('tabindex', '0');
+                question.setAttribute('aria-expanded', 'false');
+                question.setAttribute('aria-controls', answerId);
+                answer.id = answerId;
+                answer.setAttribute('role', 'region');
+                answer.setAttribute('aria-labelledby', questionId);
                 
-                question.addEventListener('click', () => {
+                const toggleQuestion = () => {
                     const isActive = item.classList.contains('active');
                     
                     // Закрываем все вопросы
                     faqItems.forEach(i => {
                         i.classList.remove('active');
                         i.querySelector('.faq-toggle').textContent = '+';
+                        i.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
                     });
                     
                     // Если вопрос не был активен, открываем его
                     if (!isActive) {
                         item.classList.add('active');
                         toggle.textContent = '−';
+                        question.setAttribute('aria-expanded', 'true');
                         
                         // Плавная прокрутка к открытому вопросу
                         setTimeout(() => {
                             item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                         }, 100);
+                    }
+                };
+                question.addEventListener('click', toggleQuestion);
+                question.addEventListener('keydown', event => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        toggleQuestion();
                     }
                 });
             });
@@ -335,9 +355,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     if (searchQuery) {
                         const firstVisible = document.querySelector('.faq-item[style="display: block"]');
                         if (firstVisible && !firstVisible.classList.contains('active')) {
-                            faqItems.forEach(i => i.classList.remove('active'));
+                            faqItems.forEach(i => {
+                                i.classList.remove('active');
+                                i.querySelector('.faq-toggle').textContent = '+';
+                                i.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+                            });
                             firstVisible.classList.add('active');
                             firstVisible.querySelector('.faq-toggle').textContent = '−';
+                            firstVisible.querySelector('.faq-question').setAttribute('aria-expanded', 'true');
                         }
                     }
                 }
@@ -347,6 +372,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             if (faqItems.length > 0) {
                 faqItems[0].classList.add('active');
                 faqItems[0].querySelector('.faq-toggle').textContent = '−';
+                faqItems[0].querySelector('.faq-question').setAttribute('aria-expanded', 'true');
             }
             
             // Добавляем аккордеону анимацию появления
@@ -362,9 +388,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         function openQuestionByIndex(index) {
             const items = document.querySelectorAll('.faq-item');
             if (items[index]) {
-                items.forEach(item => item.classList.remove('active'));
+                items.forEach(item => {
+                    item.classList.remove('active');
+                    item.querySelector('.faq-toggle').textContent = '+';
+                    item.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+                });
                 items[index].classList.add('active');
                 items[index].querySelector('.faq-toggle').textContent = '−';
+                items[index].querySelector('.faq-question').setAttribute('aria-expanded', 'true');
                 items[index].scrollIntoView({ behavior: 'smooth' });
             }
         }

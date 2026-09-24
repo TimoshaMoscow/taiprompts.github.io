@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Настройки — TAIPrompts</title>
-  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/main.css?v=1.1.5">
   <link rel="stylesheet" href="styles/settings.css">
   <link rel="stylesheet" href="styles/pricing.css">
   <link rel="icon" type="image/x-icon" href="images/logo.png">
@@ -86,7 +86,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <div id="site-footer"></div>
 
-  <script src="main.js?v=1.1.4"></script>
+  <script src="main.js?v=1.1.6"></script>
   
   <script>
     // Простой JavaScript для страницы настроек
