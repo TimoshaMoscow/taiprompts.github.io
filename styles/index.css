@@ -4,7 +4,6 @@
     min-height: 100vh;
     display: flex;
     align-items: center;
-    background: url('https://timoshamoscow.github.io/taiprompts.github.io/images/hero-bg.jpg') center/cover no-repeat;
     padding: 120px 0 80px;
     overflow: hidden;
 }
@@ -131,6 +130,72 @@
         font-size: 2.5rem;
     }
 }
+
+/* Современная композиция главной страницы, палитра проекта сохранена. */
+.hero {
+    min-height: min(820px, 100svh);
+    padding: 132px 0 100px;
+    background: radial-gradient(ellipse at 78% 45%, rgba(94,114,228,.16), transparent 38%), var(--bg-color);
+}
+.hero::before { display: none; }
+.hero-layout {
+    display: grid !important;
+    grid-template-columns: minmax(0, .92fr) minmax(420px, 1.08fr) !important;
+    gap: clamp(32px, 6vw, 82px) !important;
+}
+.hero-content { max-width: 570px; }
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 9px; padding: 8px 13px; border: 1px solid var(--card-border); border-radius: 999px; color: var(--secondary-color); background: var(--card-bg); font-size: .82rem; letter-spacing: .02em; }
+.hero-eyebrow span { width: 8px; height: 8px; background: var(--accent-color); border-radius: 50%; box-shadow: 0 0 14px var(--accent-color); }
+.hero-title { margin: 22px 0 18px; font-size: clamp(2.8rem, 5.2vw, 4.65rem); letter-spacing: -.065em; line-height: 1.04; }
+.hero-title span { color: var(--accent-color); }
+.hero-description { max-width: 510px; font-size: clamp(1.05rem, 1.5vw, 1.2rem); line-height: 1.75; color: var(--secondary-color); }
+.hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 24px; margin-top: 30px; }
+.hero-actions .btn { display: inline-flex; align-items: center; gap: 12px; border-radius: 12px; padding: 15px 22px; box-shadow: 0 12px 30px rgba(94,114,228,.22); }
+.hero-secondary-link { color: var(--text-color); text-decoration: none; font-weight: 500; }
+.hero-secondary-link i { color: var(--accent-color); margin-left: 6px; }
+.hero-proof { display: flex; align-items: center; gap: 13px; margin-top: 36px; color: var(--secondary-color); font-size: .85rem; }
+.proof-avatars { display: flex; }
+.proof-avatars span { display: grid; place-items: center; width: 30px; height: 30px; margin-right: -7px; border: 2px solid var(--bg-color); border-radius: 50%; background: var(--light-color); color: var(--accent-color); font-size: .72rem; font-weight: 700; }
+.proof-avatars span:first-child { background: var(--accent-color); color: white; }
+.hero-visual { position: relative; align-self: center; }
+.hero-visual img { display: block; width: 100%; max-width: 700px; margin: auto; filter: drop-shadow(0 24px 54px rgba(0,0,0,.25)); }
+.hero-float-chip { position: absolute; display: flex; align-items: center; gap: 9px; padding: 12px 15px; border: 1px solid var(--card-border); border-radius: 12px; background: rgba(33,37,41,.88); color: var(--text-color); box-shadow: var(--shadow); backdrop-filter: blur(14px); font-size: .82rem; }
+.hero-float-chip i { color: var(--accent-color); }
+.chip-one { top: 17%; right: -2%; }.chip-two { bottom: 13%; left: -4%; }
+.hero-scroll-down { bottom: 24px; }
+.hero-scroll-down .scroll-arrow { width: 15px; height: 15px; border-width: 0 2px 2px 0; }
+.possibilities { padding-top: 100px; }
+.section-title { letter-spacing: -.04em; }
+.possibility-card { text-align: left; border-radius: 18px; padding: 28px; transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+.possibility-card:hover { transform: translateY(-5px); border-color: rgba(94,114,228,.55); box-shadow: 0 18px 44px rgba(0,0,0,.22); }
+.possibility-icon { display: grid; place-items: center; width: 54px; height: 54px; border-radius: 15px; background: rgba(94,114,228,.14); color: var(--accent-color); font-size: 1.35rem; }
+.possibility-card h3 { margin: 20px 0 9px; }.possibility-card p { color: var(--secondary-color); }
+.trust-section, .testimonials { position: relative; }
+.trust-item { border-radius: 16px; transition: transform .2s ease, border-color .2s ease; }
+.trust-item:hover { transform: translateY(-4px); border-color: var(--accent-color); }
+.cta { padding-top: 38px; padding-bottom: 80px; }
+.cta .comparison-cta { margin-top: 0 !important; padding: 42px 24px; border: 1px solid var(--card-border); border-radius: 22px; background: linear-gradient(135deg, rgba(94,114,228,.12), var(--card-bg)); }
+.donate-card { border-radius: 24px; }
+@media (max-width: 900px) {
+    .hero { min-height: auto; padding: 128px 0 90px; }
+    .hero-layout { grid-template-columns: 1fr !important; gap: 26px !important; }
+    .hero-content { max-width: 680px; margin: auto; text-align: center; }
+    .hero-description { margin-left: auto; margin-right: auto; }
+    .hero-actions, .hero-proof { justify-content: center; }
+    .hero-visual { width: min(100%, 650px); margin: auto; }
+    .chip-one { right: 0; }.chip-two { left: 0; }
+}
+@media (max-width: 560px) {
+    .hero { padding-top: 112px; }
+    .hero-title { font-size: clamp(2.5rem, 12vw, 3.5rem); }
+    .hero-actions { gap: 17px; }
+    .hero-actions .btn { width: 100%; justify-content: center; }
+    .hero-float-chip { padding: 9px 11px; font-size: .7rem; }
+    .chip-one { top: 6%; }.chip-two { bottom: 5%; }
+    .hero-proof { font-size: .76rem; }
+    .possibilities { padding-top: 70px; }
+}
+@media (prefers-reduced-motion: reduce) { .hero-scroll-down, .possibility-card, .trust-item { animation: none !important; transition: none !important; } }
 
 
 /* Призыв к действию */

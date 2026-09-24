@@ -125,6 +125,29 @@
     border-color: var(--accent-color);
 }
 
+/* Карточки категорий и раскрываемые уточнения */
+.generator-heading { display: flex; align-items: center; justify-content: space-between; max-width: 960px; margin: 0 auto 34px; padding: 22px 30px; border: 1px solid var(--card-border); border-radius: 22px; background: radial-gradient(circle at 85% 50%, rgba(94,114,228,.13), transparent 24%), var(--card-bg); }
+.generator-heading .section-title { margin: 8px 0 7px; text-align: left; font-size: clamp(2rem, 4vw, 3rem); }
+.generator-heading .section-title::after { display: none; }
+.generator-heading p { color: var(--secondary-color); }
+.generator-kicker { color: var(--accent-color); font-size: .82rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+.generator-heading img { width: 180px; height: auto; }
+.generation > .container > .section-title { letter-spacing: -.045em; margin-bottom: 2.7rem; }
+.type-card { border-radius: 18px; text-align: left; padding: 1.65rem; }
+.type-card h3 { display: flex; align-items: center; gap: 12px; }
+.type-card h3 i { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px; background: rgba(94,114,228,.15); color: var(--accent-color); }
+.type-card .vibe-tags { justify-content: flex-start; gap: 7px; margin-top: 15px; }
+.vibe-tag { padding: 5px 10px; background: rgba(94,114,228,.1); }
+.param-group[hidden] { display: none !important; }
+.param-group { animation: paramReveal .22s ease both; }
+.param-group:has([data-param]) > label { display: block; margin-bottom: 9px; font-weight: 600; }
+.param-group input[type="text"], .param-group select { border-radius: 11px; }
+.param-group .multi-select { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 8px; }
+.param-group .checkbox-label { border: 1px solid var(--card-border); border-radius: 10px; padding: 9px 11px; background: rgba(255,255,255,.025); }
+.param-group .checkbox-label:has(input:checked) { border-color: rgba(94,114,228,.6); background: rgba(94,114,228,.1); }
+@keyframes paramReveal { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 600px) { .generator-heading { padding: 20px; margin-bottom: 25px; } .generator-heading img { width: 88px; } }
+
 .type-card h3 {
     margin-bottom: 0.5rem;
     font-size: 1.3rem;
