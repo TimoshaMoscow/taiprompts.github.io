@@ -1,20 +1,22 @@
 <header class="header">
   <div class="container">
     <nav class="nav">
-      <a href="https://timoshamoscow.github.io/taiprompts.github.io/" class="logo">
+      <a href="index.html" class="logo" aria-label="TAIPrompts — на главную">
         <img src="images/logo.png" alt="TAIPrompts — генератор промптов для ChatGPT и нейросетей" class="logo-img">
         <span class="logo-text">TAIPrompts</span>
       </a>
-      <ul class="nav-list">
-        <li><a href="/taiprompts.github.io" class="nav-link">Главная</a></li>
+      <ul class="nav-list" id="primary-navigation">
+        <li><a href="index.html" class="nav-link">Главная</a></li>
         <li><a href="generator.html" class="nav-link">Генератор</a></li>
         <li><a href="faq.html" class="nav-link">FAQ</a></li>
+        <li class="nav-mobile-cta"><a href="generator.html" class="btn btn-primary">Создать промпт <i class="fa-solid fa-arrow-right"></i></a></li>
       </ul>
-      <div class="burger">
+      <a href="generator.html" class="btn btn-primary nav-cta">Создать промпт <i class="fa-solid fa-arrow-right"></i></a>
+      <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="primary-navigation">
         <span></span>
         <span></span>
         <span></span>
-      </div>
+      </button>
     </nav>
   </div>
 </header>
