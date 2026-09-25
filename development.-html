@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#121212" />
+  <meta name="theme-color" content="#5e72e4" />
   <title>Развитие — TAIPrompts</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -23,6 +23,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles/page-loader.css?v=1.0.0">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles/pwa.css?v=1.1.0">
+  <link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
 <div class="site-loader" role="status" aria-live="polite" aria-label="Загрузка страницы"><div class="site-loader__content"><span class="site-loader__mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3.5 14.4 9.6 20.5 12l-6.1 2.4L12 20.5l-2.4-6.1L3.5 12l6.1-2.4L12 3.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m18.5 3 .7 1.8L21 5.5l-1.8.7-.7 1.8L17.8 6.2 16 5.5l1.8-.7.7-1.8Z" fill="currentColor"/></svg></span><span>TAIPrompts</span><span class="site-loader__track" aria-hidden="true"></span></div></div>
@@ -175,7 +180,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div id="site-footer"></div>
 
   <!-- нужен для inject header/footer и активной ссылки -->
-  <script src="main.js?v=1.1.8"></script>
+  <script src="main.js?v=1.1.10"></script>
     <script src="page-loader.js?v=1.0.0"></script>
+  <script src="pwa.js?v=1.1.0"></script>
 </body>
 </html>

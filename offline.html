@@ -17,6 +17,26 @@
             padding: 20px;
             margin: 0;
         }
+        .offline-loader {
+            position: fixed;
+            inset: 0;
+            z-index: 10;
+            display: grid;
+            place-items: center;
+            background: #121212;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity .3s ease, visibility .3s ease;
+        }
+        .offline-loader.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .offline-loader-content { display: grid; justify-items: center; gap: 16px; color: #fff; font: 600 14px/1.4 Inter, system-ui, sans-serif; }
+        .offline-loader-mark { display: grid; width: 52px; height: 52px; place-items: center; border: 1px solid rgba(94,114,228,.45); border-radius: 18px; color: #5e72e4; background: rgba(94,114,228,.1); box-shadow: 0 0 36px rgba(94,114,228,.18); }
+        .offline-loader-mark svg { width: 25px; height: 25px; animation: offline-loader-spin 2.8s ease-in-out infinite; }
+        .offline-loader-track { width: 100px; height: 3px; overflow: hidden; border-radius: 99px; background: rgba(255,255,255,.1); }
+        .offline-loader-track::before { display: block; width: 42%; height: 100%; border-radius: inherit; background: #5e72e4; content: ""; animation: offline-loader-progress 1.2s ease-in-out infinite; }
+        @keyframes offline-loader-spin { 50% { transform: rotate(90deg) scale(.9); } }
+        @keyframes offline-loader-progress { from { transform: translateX(-110%); } to { transform: translateX(260%); } }
+        @media (prefers-reduced-motion: reduce) { .offline-loader-mark svg, .offline-loader-track::before { animation-duration: 2.5s; } .offline-loader { transition-duration: .01ms; } }
         .offline-card {
             max-width: 420px;
             width: 100%;
@@ -76,17 +96,16 @@
         .btn-geo {
             background: rgba(94, 114, 228, 0.15);
             border: 1px solid rgba(94, 114, 228, 0.25);
-            position: relative;
         }
         .btn-geo:hover {
             background: rgba(94, 114, 228, 0.25);
             box-shadow: 0 10px 30px rgba(94, 114, 228, 0.15);
         }
         .btn-label {
-            font-size: 13px;
-            color: #adb5bd;
-            margin-top: 6px;
             display: block;
+            margin-top: 6px;
+            color: #adb5bd;
+            font-size: 13px;
         }
         .toast {
             position: fixed;
@@ -141,23 +160,20 @@
             .btn { padding: 14px; font-size: 15px; }
         }
     </style>
-    <link rel="stylesheet" href="styles/page-loader.css?v=1.0.0">
+  <meta name="theme-color" content="#121212">
 </head>
 <body>
-<div class="site-loader" role="status" aria-live="polite" aria-label="Загрузка страницы">
-  <div class="site-loader__content">
-    <span class="site-loader__mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3.5 14.4 9.6 20.5 12l-6.1 2.4L12 20.5l-2.4-6.1L3.5 12l6.1-2.4L12 3.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m18.5 3 .7 1.8L21 5.5l-1.8.7-.7 1.8L17.8 6.2 16 5.5l1.8-.7.7-1.8Z" fill="currentColor"/></svg></span>
-    <span>TAIPrompts</span>
-    <span class="site-loader__track" aria-hidden="true"></span>
-  </div>
-</div>
-
+    <div class="offline-loader" id="offlineLoader" role="status" aria-live="polite" aria-label="Загрузка страницы">
+        <div class="offline-loader-content">
+            <span class="offline-loader-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3.5 14.4 9.6 20.5 12l-6.1 2.4L12 20.5l-2.4-6.1L3.5 12l6.1-2.4L12 3.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m18.5 3 .7 1.8L21 5.5l-1.8.7-.7 1.8L17.8 6.2 16 5.5l1.8-.7.7-1.8Z" fill="currentColor"/></svg></span>
+            <span>TAIPrompts</span>
+            <span class="offline-loader-track" aria-hidden="true"></span>
+        </div>
+    </div>
     <div class="offline-card">
         <div class="offline-icon">📡</div>
         <div class="offline-title">Вы оффлайн</div>
-        <p class="offline-subtitle">
-            Подключитесь к сети, чтобы создавать крутые промпты уже сегодня!
-        </p>
+        <p class="offline-subtitle">Подключитесь к сети, чтобы создавать крутые промпты уже сегодня.</p>
 
         <div class="offline-status">
             <span class="status-dot"></span>
@@ -166,14 +182,27 @@
 
         <button class="btn" id="retryBtn">🔄 Попробовать снова</button>
 
-        <button class="btn btn-geo" id="geoBtn">
-            📍 Проверить доступ к серверам
-            <span class="btn-label">Это может помочь восстановить соединение быстрее</span>
+        <button class="btn btn-geo" id="geoBtn" type="button">
+            📍 Проверить геолокацию
+            <span class="btn-label">Нажмите, чтобы проверить доступ</span>
         </button>
+
     </div>
 
     <div class="toast" id="toast"></div>
 
+    <script>
+        (function() {
+            const loader = document.getElementById('offlineLoader');
+            const finish = () => {
+                loader.classList.add('is-hidden');
+                setTimeout(() => loader.remove(), 350);
+            };
+            if (document.readyState === 'complete') finish();
+            else window.addEventListener('load', finish, { once: true });
+            setTimeout(finish, 2500);
+        })();
+    </script>
     <script>
         (function() {
             const retryBtn = document.getElementById('retryBtn');
@@ -207,36 +236,30 @@
 
             geoBtn.addEventListener('click', function() {
                 if (!navigator.geolocation) {
-                    showToast('Геолокация не поддерживается вашим браузером', false);
+                    showToast('Геолокация не поддерживается этим браузером.', false);
                     return;
                 }
 
-                showToast('🔍 Ищем ближайший сервер...');
-
+                showToast('📍 Проверяем доступ к геолокации…');
                 navigator.geolocation.getCurrentPosition(
-                    function(position) {
-                        // Успешно получили координаты — показываем дружелюбное сообщение
-                        showToast('✅ Спасибо! Оптимальный маршрут найден. Подключитесь к сети, чтобы продолжить.');
+                    function() {
+                        showToast('Доступ к геолокации разрешён.');
                     },
                     function(error) {
-                        // Ошибка геолокации — не страшно
-                        showToast('🔌 Не удалось определить местоположение. Проверьте доступ к сети.', false);
+                        const message = error.code === error.PERMISSION_DENIED
+                            ? 'Доступ не выдан — всё в порядке, геолокация для сайта не обязательна.'
+                            : 'Не удалось получить доступ к геолокации. Попробуйте ещё раз.';
+                        showToast(message, false);
                     },
-                    {
-                        enableHighAccuracy: false,
-                        timeout: 5000,
-                        maximumAge: 60000
-                    }
+                    { enableHighAccuracy: false, timeout: 8000, maximumAge: 60000 }
                 );
             });
 
-            // Если страница загружена и сеть появилась — предлагаем перезагрузиться
             window.addEventListener('online', function() {
-                showToast('🔄 Соединение восстановлено! Нажмите "Попробовать снова".');
+                showToast('🔄 Соединение восстановлено. Нажмите «Попробовать снова».');
             });
 
         })();
     </script>
-    <script src="page-loader.js?v=1.0.0"></script>
 </body>
 </html>
