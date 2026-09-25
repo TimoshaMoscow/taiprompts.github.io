@@ -1,0 +1,55 @@
+.pwa-install-link {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+}
+.pwa-install-link[hidden], .pwa-install-button[hidden], #pwa-ios-help[hidden] { display: none !important; }
+.pwa-install-link button, .pwa-install-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 13px;
+  border: 1px solid rgba(94,114,228,.28);
+  border-radius: 10px;
+  background: rgba(94,114,228,.1);
+  color: var(--text-color);
+  font: inherit;
+  font-size: .88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s ease, border-color .2s ease, transform .2s ease;
+}
+.pwa-install-link button:hover, .pwa-install-button:hover { transform: translateY(-1px); border-color: var(--accent-color); background: rgba(94,114,228,.18); }
+.pwa-connectivity-toast {
+  position: fixed;
+  z-index: 10001;
+  right: 20px;
+  bottom: 20px;
+  max-width: min(420px, calc(100vw - 32px));
+  padding: 13px 17px;
+  border: 1px solid var(--card-border, rgba(255,255,255,.12));
+  border-radius: 14px;
+  background: rgba(24,26,36,.96);
+  color: var(--text-color, #fff);
+  box-shadow: 0 15px 40px rgba(0,0,0,.35);
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+}
+.pwa-connectivity-toast.is-visible { opacity: 1; transform: translateY(0); }
+.pwa-connectivity-toast[data-state="offline"] { border-color: rgba(255,184,77,.3); }
+.pwa-connectivity-toast[data-state="online"] { border-color: rgba(94,114,228,.38); }
+.pwa-settings-status { display: flex; align-items: flex-start; gap: 10px; margin: 12px 0 16px; color: var(--secondary-color); line-height: 1.55; }
+.pwa-settings-status::before { flex: 0 0 9px; width: 9px; height: 9px; margin-top: .48em; border-radius: 50%; background: var(--accent-color); content: ""; }
+.pwa-settings-status[data-network="offline"]::before { background: #ffb84d; }
+.pwa-settings-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.pwa-settings-note { margin-top: 12px; color: var(--secondary-color); font-size: .9rem; line-height: 1.55; }
+@media (max-width: 768px) {
+  .pwa-install-link { margin-top: 6px; padding: 4px 12px; }
+  .pwa-install-link button { justify-content: flex-start; width: 100%; }
+  .pwa-connectivity-toast { right: 16px; bottom: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { .pwa-connectivity-toast, .pwa-install-link button, .pwa-install-button { transition: none; } }
