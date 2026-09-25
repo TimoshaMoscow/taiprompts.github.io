@@ -89,8 +89,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/page-loader.css?v=1.0.0">
 </head>
 <body>
+<div class="site-loader" role="status" aria-live="polite" aria-label="Загрузка страницы">
+  <div class="site-loader__content">
+    <span class="site-loader__mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3.5 14.4 9.6 20.5 12l-6.1 2.4L12 20.5l-2.4-6.1L3.5 12l6.1-2.4L12 3.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m18.5 3 .7 1.8L21 5.5l-1.8.7-.7 1.8L17.8 6.2 16 5.5l1.8-.7.7-1.8Z" fill="currentColor"/></svg></span>
+    <span>TAIPrompts</span>
+    <span class="site-loader__track" aria-hidden="true"></span>
+  </div>
+</div>
 
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N8JLTHS6"
@@ -348,7 +356,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   🎉 Посмотреть итоги года
 </a>
 
-    <script src="main.js?v=1.1.6"></script>
+    <script src="main.js?v=1.1.8"></script>
 
     <script>
         
@@ -436,6 +444,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
     </script>
 
+    <script src="page-loader.js?v=1.0.0"></script>
 </body>
 </html>
 

@@ -23,6 +23,28 @@ function getCookie(name) {
   return null;
 }
 
+async function copyTextToClipboard(text) {
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (_) {
+      // Попробуем резервный способ для браузеров без разрешения на Clipboard API.
+    }
+  }
+
+  const field = document.createElement("textarea");
+  field.value = text;
+  field.setAttribute("readonly", "");
+  field.style.cssText = "position:fixed;inset:auto auto 0 -9999px;opacity:0";
+  document.body.appendChild(field);
+  field.select();
+  const copied = document.execCommand("copy");
+  field.remove();
+  if (!copied) throw new Error("Clipboard copy is unavailable");
+  return true;
+}
+
 // ===== Consent + Stats =====
 const CONSENT_COOKIE = "tp_consent"; // accepted | declined
 const STATS_COOKIE = "tp_stats";     // json
@@ -1405,7 +1427,6 @@ function applyPresetParams(presetParams = {}) {
   }
 
   updateGenerateButtonState();
-  updatePromptPreview();
 }
 
 // ===== КРОСС-РЕКОМЕНДАЦИИ =====
@@ -2502,10 +2523,10 @@ function switchToCategory(newCategory, presetParams = {}) {
   const modal = document.createElement("div");
   modal.className = "customization-modal";
   modal.innerHTML = `
-    <div class="modal-content" role="dialog" aria-modal="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="generator-dialog-title" aria-describedby="generator-dialog-description" tabindex="-1">
       <div class="modal-header">
-        <h3 class="modal-title">Кастомизация промпта</h3>
-        <button class="modal-close" aria-label="Закрыть">&times;</button>
+        <div><span class="modal-kicker">Шаг 2 · Настройка</span><h3 class="modal-title" id="generator-dialog-title">Кастомизация промпта</h3><p class="modal-description" id="generator-dialog-description">Настройте параметры и опишите результат, который хотите получить.</p></div>
+        <button class="modal-close" type="button" aria-label="Закрыть">&times;</button>
       </div>
       <div class="modal-body">
         <form id="prompt-form">
@@ -2513,7 +2534,8 @@ function switchToCategory(newCategory, presetParams = {}) {
 
           <div class="form-group">
             <label for="custom-input">Ваша идея или описание</label>
-            <textarea id="custom-input" placeholder="Опишите вашу идею детально..." required></textarea>
+            <textarea id="custom-input" placeholder="Например: сайт-портфолио для UX-дизайнера с кейсами, контактами и адаптивной версией" maxlength="3000" aria-describedby="idea-hint idea-counter" required></textarea>
+            <div class="idea-field-meta"><span id="idea-hint">Опишите цель, аудиторию и важные ограничения.</span><span id="idea-counter" aria-live="polite"><b id="idea-count">0</b> / 3000</span></div>
           </div>
 
           <div class="form-group">
@@ -2527,7 +2549,7 @@ function switchToCategory(newCategory, presetParams = {}) {
             </select>
           </div>
 
-          <button type="submit" class="btn btn-primary" id="generate-prompt-btn">Сгенерировать промпт</button>
+          <button type="submit" class="btn btn-primary" id="generate-prompt-btn"><span>Сгенерировать промпт</span><i class="fa-solid fa-arrow-right"></i></button>
         </form>
 
 <section class="generator-examples-panel" aria-label="Примеры промптов">
@@ -2588,6 +2610,19 @@ function switchToCategory(newCategory, presetParams = {}) {
     examplesPanelWrap.className = "generator-tab-panel";
     examplesPanelWrap.setAttribute("data-generator-tab-panel", "examples");
 
+    tabs.querySelectorAll("[data-generator-tab]").forEach((tab) => {
+      const name = tab.getAttribute("data-generator-tab");
+      tab.setAttribute("role", "tab");
+      tab.id = `generator-tab-${name}`;
+      tab.setAttribute("aria-controls", `generator-panel-${name}`);
+    });
+    [[generatePanel, "generate"], [examplesPanelWrap, "examples"]].forEach(([panel, name]) => {
+      panel.id = `generator-panel-${name}`;
+      panel.setAttribute("role", "tabpanel");
+      panel.setAttribute("aria-labelledby", `generator-tab-${name}`);
+      panel.setAttribute("tabindex", "0");
+    });
+
     generatePanel.append(promptFormPanel, generatedPromptPanel);
     examplesPanelWrap.append(examplesPanel);
 
@@ -2617,6 +2652,7 @@ function switchToCategory(newCategory, presetParams = {}) {
       const isActive = button.getAttribute("data-generator-tab") === activeGeneratorTab;
       button.classList.toggle("is-active", isActive);
       button.setAttribute("aria-selected", String(isActive));
+      button.tabIndex = isActive ? 0 : -1;
     });
 
     modal.querySelectorAll("[data-generator-tab-panel]").forEach((panel) => {
@@ -2627,6 +2663,19 @@ function switchToCategory(newCategory, presetParams = {}) {
       renderExamples(selectedType);
     }
   }
+
+  modal.querySelector(".modal-tabs")?.addEventListener("keydown", (event) => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    const tabButtons = Array.from(modal.querySelectorAll('.modal-tabs [role="tab"]'));
+    const currentIndex = tabButtons.indexOf(document.activeElement);
+    const nextIndex = event.key === "Home" ? 0
+      : event.key === "End" ? tabButtons.length - 1
+        : (currentIndex + (event.key === "ArrowRight" ? 1 : -1) + tabButtons.length) % tabButtons.length;
+    const nextTab = tabButtons[nextIndex];
+    nextTab?.focus();
+    if (nextTab) setGeneratorTab(nextTab.getAttribute("data-generator-tab"));
+  });
 
   // ===== ЗАЩИТА МОДАЛКИ ОТ ЗАКРЫТИЯ =====
   let isPromptGenerated = false;
@@ -2798,12 +2847,13 @@ function renderTechnicalParams(type) {
 
     showValidationMessages(validation);
     updateGenerateButtonState();
-    updatePromptPreview();
   };
 
   for (const [key, param] of Object.entries(params)) {
     html += `<div class="param-group" data-param-group="${key}" ${param.showWhen ? 'hidden aria-hidden="true"' : ""}>`;
-    html += `<label>${param.label}</label>`;
+    const labelId = `param-label-${key}`;
+    if (param.type === "multiselect") html += `<div class="param-label" id="${labelId}">${param.label}</div>`;
+    else html += `<label class="param-label" for="param-${key}">${param.label}</label>`;
 
     if (param.type === "select") {
       html += `<select id="param-${key}" class="tech-param" data-param="${key}">`;
@@ -2829,7 +2879,7 @@ function renderTechnicalParams(type) {
         <div class="custom-param-hint" data-custom-hint-for="${key}" hidden aria-live="polite"></div>
       `;
     } else if (param.type === "multiselect") {
-      html += `<div class="multi-select" id="param-${key}" data-param="${key}">`;
+      html += `<div class="multi-select" id="param-${key}" data-param="${key}" role="group" aria-labelledby="${labelId}">`;
       const defaultValues = Array.isArray(param.default) ? param.default : [param.default];
       param.options.forEach((option) => {
         const checked = defaultValues.includes(option) ? "checked" : "";
@@ -2920,6 +2970,14 @@ function renderTechnicalParams(type) {
 }
 
 typeCards.forEach((card) => {
+    card.setAttribute("role", "button");
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("aria-haspopup", "dialog");
+    card.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      card.click();
+    });
     card.addEventListener("click", function () {
         // Сброс флагов при выборе новой категории
         isPromptGenerated = false;
@@ -2936,10 +2994,10 @@ typeCards.forEach((card) => {
 
         const form = modal.querySelector("#prompt-form");
         form.reset();
+        updateIdeaMeter();
         modal.querySelector("#final-prompt").textContent = "";
         modal.querySelector("#crossRecommendations")?.remove();
         modal.querySelector("#contextSuggestions")?.remove();
-        updatePromptPreview();
         setGeneratorTab("generate");
         setTimeout(updateGenerateButtonState, 50);
 
@@ -2954,8 +3012,7 @@ typeCards.forEach((card) => {
         }
         // === КОНЕЦ ДОБАВЛЕНИЯ ===
 
-        modal.classList.add("active");
-        document.body.style.overflow = "hidden";
+        openGeneratorModal();
     });
 });
 
@@ -2963,6 +3020,8 @@ typeCards.forEach((card) => {
   function closeModal() {
     modal.classList.remove("active");
     document.body.style.overflow = "auto";
+    if (lastGeneratorTrigger?.isConnected && lastGeneratorTrigger.getClientRects().length > 0) lastGeneratorTrigger.focus();
+    lastGeneratorTrigger = null;
   }
 
   modal.querySelector(".modal-close").addEventListener("click", closeModalWithCheck);
@@ -2991,9 +3050,47 @@ typeCards.forEach((card) => {
   const toneSelect = modal.querySelector("#tone-select");
   const generationModeSelect = modal.querySelector("#generation-mode-select");
   const finalPrompt = modal.querySelector("#final-prompt");
-  const promptPreview = modal.querySelector("#prompt-preview");
   const copyButton = modal.querySelector("#copy-prompt");
   const generateButton = modal.querySelector("#generate-prompt-btn");
+  const dialogSurface = modal.querySelector(".modal-content");
+  let lastGeneratorTrigger = null;
+
+  function openGeneratorModal() {
+    lastGeneratorTrigger = document.activeElement;
+    modal.classList.add("active");
+    document.body.style.overflow = "hidden";
+    requestAnimationFrame(() => customInput.focus());
+  }
+
+  dialogSurface?.addEventListener("keydown", (event) => {
+    if (event.key !== "Tab") return;
+    const focusable = Array.from(dialogSurface.querySelectorAll('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), summary, [tabindex]:not([tabindex="-1"])'))
+      .filter((element) => element.getClientRects().length > 0);
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+
+  function updateIdeaMeter() {
+    const count = modal.querySelector("#idea-count");
+    const hint = modal.querySelector("#idea-hint");
+    if (count) count.textContent = String(customInput.value.length);
+    if (!hint) return;
+    const length = normalizeValue(customInput.value).length;
+    hint.textContent = length === 0
+      ? "Опишите цель, аудиторию и важные ограничения."
+      : length < 50
+        ? "Добавьте детали: для кого результат и что он должен уметь."
+        : "Хорошая основа. Уточните желаемый результат и важные ограничения.";
+  }
+  updateIdeaMeter();
 
   function getGeneratorRequirementsState() {
     const params = promptTemplates[selectedType]?.params || {};
@@ -3034,30 +3131,9 @@ typeCards.forEach((card) => {
     generateButton.setAttribute("aria-disabled", String(!canGenerate));
   }
 
-  function updatePromptPreview() {
-    if (!promptPreview) return;
-
-    const idea = normalizeValue(customInput.value);
-    if (!idea) {
-      promptPreview.textContent = "Введите идею или описание, чтобы увидеть предпросмотр.";
-      promptPreview.classList.add("is-placeholder");
-      return;
-    }
-
-    const previewText = buildPromptText(
-      selectedType,
-      idea,
-      toneSelect.value,
-      {},
-      normalizeValue(generationModeSelect?.value) || "standard"
-    );
-
-    promptPreview.textContent = previewText;
-    promptPreview.classList.remove("is-placeholder");
-  }
-
   // Отслеживаем изменения в текстовом поле
 customInput.addEventListener('input', () => {
+  updateIdeaMeter();
   if (customInput.value.trim()) {
     isFormDirty = true;
   }
@@ -3068,7 +3144,6 @@ customInput.addEventListener('input', () => {
   }
 
   updateGenerateButtonState();
-  updatePromptPreview();
 });
 
 // ДОБАВЬТЕ ДЕБАУНС ДЛЯ КОНТЕКСТУАЛЬНЫХ ПАРАМЕТРОВ (после вышеуказанного кода)
@@ -3097,12 +3172,10 @@ customInput.addEventListener('input', debounce(() => {
   // Отслеживаем изменения в селектах
   toneSelect.addEventListener('change', () => {
     isFormDirty = true;
-    updatePromptPreview();
   });
 
   generationModeSelect?.addEventListener('change', () => {
     isFormDirty = true;
-    updatePromptPreview();
   });
 
 function buildPromptText(type, idea, tone = "professional", overrideParams = {}, generationMode = "standard") {
@@ -3435,8 +3508,13 @@ function renderExamples(type) {
     const useBtn = grid.querySelector(`[data-use-example="${index}"]`);
 
     if (copyBtn) {
-      copyBtn.onclick = () => {
-        navigator.clipboard.writeText(text);
+      copyBtn.onclick = async () => {
+        try {
+          await copyTextToClipboard(text);
+        } catch (_) {
+          showGeneratorToast("Не удалось скопировать. Выделите текст и скопируйте его вручную.", "error");
+          return;
+        }
         const originalText = copyBtn.textContent;
         copyBtn.textContent = "Скопировано!";
         copyBtn.classList.add("btn-primary");
@@ -3458,13 +3536,12 @@ function renderExamples(type) {
 
         toneSelect.value = tone || "professional";
         customInput.value = idea;
+        updateIdeaMeter();
         applyPresetParams(exampleParams);
-        updatePromptPreview();
         setGeneratorTab("generate");
 
         modal.querySelector("#final-prompt").textContent = "";
-        modal.classList.add("active");
-        document.body.style.overflow = "hidden";
+        openGeneratorModal();
         setTimeout(updateGenerateButtonState, 50);
       };
     }
@@ -3513,8 +3590,22 @@ promptForm.addEventListener("submit", async (e) => {
     const progressText = document.getElementById('progressText');
     const animationTitle = document.getElementById('animationTitle');
     const animationSubtitle = document.getElementById('animationSubtitle');
-    
+    const params = collectPromptParams(selectedType);
+    const finalPromptText = buildPromptText(
+      selectedType,
+      customText,
+      tone,
+      params,
+      normalizeValue(generationModeSelect?.value) || "standard"
+    );
+
     if (overlay) {
+        if (progressFill) progressFill.style.width = "0%";
+        if (progressText) progressText.textContent = "0%";
+        document.querySelectorAll('.stage').forEach((stage, index) => {
+          stage.classList.toggle('active', index === 0);
+          stage.classList.remove('completed');
+        });
         // Устанавливаем заголовок в зависимости от типа промпта
         const typeName = promptTemplates[selectedType]?.name || selectedType;
         animationTitle.textContent = `Генерируем ${typeName.toLowerCase()}...`;
@@ -3524,28 +3615,11 @@ promptForm.addEventListener("submit", async (e) => {
         document.body.style.overflow = 'hidden';
         
         // Запускаем анимацию прогресса
-        await animateGenerationProgress(progressFill, progressText, overlay);
+        await animateGenerationProgress(progressFill, progressText, overlay, finalPromptText.length);
     }
-
-    const params = collectPromptParams(selectedType);
-
-    // Небольшая задержка для "реалистичности" генерации
-    await new Promise(resolve => setTimeout(resolve, 800));
-
-    const finalPromptText = buildPromptText(
-      selectedType,
-      customText,
-      tone,
-      params,
-      normalizeValue(generationModeSelect?.value) || "standard"
-    );
 
     incGeneration();
     finalPrompt.textContent = finalPromptText;
-    if (promptPreview) {
-      promptPreview.textContent = finalPromptText;
-      promptPreview.classList.remove("is-placeholder");
-    }
     finalPrompt.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
     // Устанавливаем флаг, что промпт сгенерирован
@@ -3559,12 +3633,13 @@ promptForm.addEventListener("submit", async (e) => {
 });
 
 // ✅ копирование — ОДИН раз, не внутри submit
-copyButton.addEventListener("click", function () {
+copyButton.addEventListener("click", async function () {
   if (!finalPrompt.textContent) {
     showGeneratorToast("Сначала сгенерируйте промпт", "error");
     return;
   }
-  navigator.clipboard.writeText(finalPrompt.textContent).then(() => {
+  try {
+    await copyTextToClipboard(finalPrompt.textContent);
     const originalText = this.textContent;
     this.textContent = "Скопировано!";
     this.classList.add("btn-primary");
@@ -3573,7 +3648,9 @@ copyButton.addEventListener("click", function () {
       this.textContent = originalText;
       this.classList.remove("btn-primary");
     }, 2000);
-  });
+  } catch (_) {
+    showGeneratorToast("Не удалось скопировать. Выделите текст и скопируйте его вручную.", "error");
+  }
 });
 
 const downloadButton = modal.querySelector("#download-prompt");
@@ -3631,77 +3708,47 @@ const downloadButton = modal.querySelector("#download-prompt");
 
   console.log("✅ Генератор инициализирован");
 
-  // Новая функция для анимации прогресса
-  async function animateGenerationProgress(progressFill, progressText, overlay) {
-    return new Promise(resolve => {
-      let progress = 0;
-      const stages = [
-        { percent: 10, text: "10% - Анализ параметров" },
-        { percent: 25, text: "25% - Инициализация ИИ" },
-        { percent: 40, text: "40% - Обработка запроса" },
-        { percent: 55, text: "55% - Генерация шаблона" },
-        { percent: 70, text: "70% - Оптимизация промпта" },
-        { percent: 85, text: "85% - Добавление деталей" },
-        { percent: 95, text: "95% - Финальная проверка" },
-        { percent: 100, text: "100% - Готово!" }
-      ];
-      
-      const stagesElements = document.querySelectorAll('.stage');
-      
-      function updateProgress() {
-        if (progress < 100) {
-          const nextStage = stages.find(s => s.percent > progress) || stages[stages.length - 1];
-          const increment = Math.random() * 15 + 5; // 5-20% за шаг
-          
-          progress = Math.min(progress + increment, nextStage.percent);
-          
-          progressFill.style.width = `${progress}%`;
-          progressText.textContent = `${Math.round(progress)}%`;
-          
-          // Обновляем заголовок прогресса
-          const stage = stages.find(s => s.percent >= progress) || stages[stages.length - 1];
-          progressText.textContent = stage.text;
-          
-          // Активируем стадии
-          const activeIndex = Math.floor((progress / 100) * stagesElements.length);
-          stagesElements.forEach((el, index) => {
-            if (index <= activeIndex) {
-              el.classList.add('active');
-              if (index < activeIndex) {
-                el.classList.add('completed');
-              }
-            } else {
-              el.classList.remove('active');
-            }
-          });
-          
-          // Случайная задержка для реалистичности
-          const delay = Math.random() * 300 + 100; // 100-400ms
-          setTimeout(updateProgress, delay);
-        } else {
-          // Все стадии завершены
-          stagesElements.forEach(el => {
-            el.classList.add('completed');
-            el.classList.add('active');
-          });
-          
-          // Небольшая задержка перед закрытием
-          setTimeout(() => {
-            if (overlay) {
-              overlay.classList.add('closing');
-              setTimeout(() => {
-                overlay.classList.remove('active', 'closing');
-                resolve();
-              }, 300);
-            } else {
-              resolve();
-            }
-          }, 800);
-        }
-      }
-      
-      updateProgress();
+  const requestedCategory = window.location.hash.slice(1);
+  const requestedCategoryCard = Array.from(typeCards).find((card) => card.getAttribute("data-type") === requestedCategory);
+  if (requestedCategoryCard) {
+    setTimeout(() => requestedCategoryCard.click(), 120);
+  }
+
+  // Smooth, predictable progress with stage changes synchronized to the bar.
+  async function animateGenerationProgress(progressFill, progressText, overlay, promptLength = 0) {
+    if (!progressFill || !progressText) return;
+    const stages = Array.from(document.querySelectorAll('.stage'));
+    const start = performance.now();
+    const duration = Math.min(7000, 1500 + Math.max(0, promptLength) * 0.8);
+    const labels = ["Анализируем параметры", "Собираем структуру", "Уточняем детали", "Проверяем результат"];
+
+    await new Promise(resolve => {
+      const tick = (now) => {
+        const raw = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - raw, 3);
+        const progress = Math.round(eased * 100);
+        const stageIndex = Math.min(Math.floor(raw * stages.length), stages.length - 1);
+
+        progressFill.style.width = `${progress}%`;
+        progressText.textContent = `${progress}%`;
+        if (animationSubtitle) animationSubtitle.textContent = labels[stageIndex] || labels.at(-1);
+        stages.forEach((stage, index) => {
+          stage.classList.toggle('completed', index < stageIndex || raw === 1);
+          stage.classList.toggle('active', index === stageIndex && raw < 1);
+        });
+
+        if (raw < 1) requestAnimationFrame(tick);
+        else resolve();
+      };
+      requestAnimationFrame(tick);
     });
+
+    stages.forEach(stage => stage.classList.add('active', 'completed'));
+    if (overlay) {
+      overlay.classList.add('closing');
+      await new Promise(resolve => setTimeout(resolve, 260));
+      overlay.classList.remove('active', 'closing');
+    }
   }
 }
 
