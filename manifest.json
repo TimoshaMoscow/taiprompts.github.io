@@ -2,7 +2,7 @@
   "id": "./",
   "name": "TAIPrompts — Генератор промптов для ChatGPT",
   "short_name": "TAIPrompts",
-  "description": "Генератор промптов TAIPrompts.",
+  "description": "Настраиваемые промпты для учёбы, работы, творчества и продвижения контента.",
   "start_url": "./index.html?source=pwa",
   "scope": "./",
   "display": "standalone",

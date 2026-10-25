@@ -959,40 +959,118 @@ const promptTemplates = {
     },
 
     youtube: {
-      name: "YouTube",
-      template:
-        "Создай контент для YouTube канала на тему '{idea}'. Формат контента: {content_type}, Целевая аудитория: {audience}, Частота выпуска: {frequency}, Превью: {thumbnail_style}, Монетизация контента: {monetization}",
+      name: "Продвижение соцсетей",
+      template: (params, idea) => {
+        const value = (key) => {
+          const item = params[key];
+          return Array.isArray(item) ? item.filter(Boolean).join(", ") : String(item || "").trim();
+        };
+        const platformFeatures = ["instagramFeatures", "tiktokFeatures", "youtubeFeatures", "vkFeatures", "telegramFeatures", "twitchFeatures", "pinterestFeatures", "linkedinFeatures"]
+          .map(value).filter(Boolean).join("; ");
+        const deliverable = value("deliverable");
+        const audience = [value("audience"), value("audienceDetails")].filter(Boolean).join(" — ");
+        const isContentPlan = ["Контент на период", "Контент-план"].includes(deliverable);
+        const isStrategy = ["Стратегия развития", "Комплексное продвижение"].includes(deliverable);
+        const isBranding = ["Оформление канала или профиля", "Комплексное продвижение"].includes(deliverable);
+        const tasks = {
+          "Контент на период": "Составь готовый контент на выбранный период. Для каждой публикации укажи дату или день, формат, цепляющий заголовок или хук, тезисы или сценарий, призыв к действию и цель публикации.",
+          "Контент-план": "Составь календарный контент-план с темами, рубриками, форматами, датами, целями публикаций и логикой чередования контента.",
+          "Стратегия развития": "Разработай стратегию развития площадки: позиционирование, рубрики, контентные направления, привлечение и удержание аудитории, продвижение, регулярные эксперименты и план оценки результата.",
+          "Оформление канала или профиля": "Подготовь концепцию оформления площадки: позиционирование в профиле, описание, визуальная система и рекомендации по каждому выбранному элементу упаковки.",
+          "Аудит и улучшения": "Проведи структурированный аудит исходной информации, найди точки роста и составь приоритетный список улучшений с ожидаемым эффектом.",
+          "Комплексное продвижение": "Собери комплексный план: стратегия, контент-календарь, механики роста, оформление площадки и измеримые показатели результата.",
+          "Идеи отдельных публикаций": "Предложи набор разнообразных идей публикаций с хуками, кратким содержанием, форматом и призывом к действию."
+        }[deliverable] || "Составь практичный план продвижения с понятными действиями и примерами.";
+        const sections = [
+          "Ты — опытный стратег по развитию социальных сетей. Подготовь конкретный, реалистичный и адаптированный к площадке результат. Не выдумывай статистику, результаты исследований или гарантии роста.",
+          `Площадка: ${value("platform")}.`,
+          value("channelName") ? `Название канала или профиля: ${value("channelName")}.` : "Если название не задано, предложи несколько вариантов позиционирования без навязывания нового названия.",
+          `Тема, продукт или задача: ${idea}.`,
+          audience ? `Целевая аудитория: ${audience}.` : "Если аудитория не описана, сформулируй разумную гипотезу и пометь её как предположение.",
+          value("goals") ? `Цели: ${value("goals")}.` : "Сначала определи приоритетную цель продвижения.",
+          `Что нужно подготовить: ${deliverable}. ${tasks}`,
+          platformFeatures ? `Подходящие для площадки функции и форматы: ${platformFeatures}.` : "Подбирай форматы с учётом особенностей выбранной площадки.",
+          value("channelStage") ? `Текущий этап развития: ${value("channelStage")}.` : "",
+          value("brandVoice") ? `Тон и характер коммуникации: ${value("brandVoice")}.` : "",
+          value("resources") ? `Ресурсы и ограничения: ${value("resources")}.` : "",
+          value("competitors") ? `Референсы или конкуренты: ${value("competitors")}.` : ""
+        ];
+        if ((isContentPlan || isStrategy) && value("period")) sections.push(`Период планирования: ${value("period")}. Частота выхода: ${value("frequency") || "предложи подходящую"}.`);
+        if (isBranding && value("brandAssets")) sections.push(`Элементы оформления: ${value("brandAssets")}. Визуальное направление: ${value("visualStyle") || "предложи на основе темы и аудитории"}.`);
+        if (isStrategy && value("kpis")) sections.push(`Показатели для отслеживания: ${value("kpis")}. Объясни, как часто их оценивать и какие действия предпринимать по результатам.`);
+        sections.push("Оформи ответ в ясных разделах и таблицах там, где они упрощают применение. Объясняй логику рекомендаций, избегай общих советов и учитывай правила и формат выбранной площадки.");
+        return sections.filter(Boolean).join("\n\n");
+      },
       params: {
-        content_type: {
+        platform: {
           type: "select",
-          label: "Тип контента",
-          options: ["Обзоры", "Образовательный", "Развлекательный", "Влоги", "Гейминг", "Кулинария", "Музыка", "Новости", "Спорт"],
-          default: "Развлекательный",
+          label: "Площадка",
+          options: ["Instagram", "TikTok", "YouTube", "ВКонтакте", "Telegram", "Twitch", "Pinterest", "LinkedIn", "Другое"],
+          default: "Instagram",
+          customPlaceholder: "Укажите платформу или соцсеть",
+        },
+        channelName: {
+          type: "text", label: "Название канала или профиля", placeholder: "Например: Кофейня «Север»", default: "",
         },
         audience: {
+          type: "multiselect", label: "Сегменты аудитории", options: ["Подростки и студенты", "Молодые специалисты", "Семьи с детьми", "Предприниматели", "Профессиональное сообщество", "Покупатели товаров и услуг", "Локальная аудитория", "Начинающие в теме"], default: [],
+        },
+        audienceDetails: {
+          type: "text", label: "Описание аудитории", placeholder: "Интересы, потребности, возраст или регион", default: "",
+        },
+        goals: {
+          type: "multiselect", label: "Цели продвижения", options: ["Рост охватов", "Привлечение подписчиков", "Продажи", "Заявки", "Узнаваемость бренда", "Удержание аудитории", "Переходы на сайт"], default: ["Рост охватов", "Привлечение подписчиков"],
+        },
+        deliverable: {
           type: "select",
-          label: "Целевая аудитория",
-          options: ["Дети", "Подростки", "Взрослые", "Семейная", "Профессиональная", "Нишевая"],
-          default: "Взрослые",
+          label: "Что подготовить",
+          options: ["Контент на период", "Контент-план", "Стратегия развития", "Оформление канала или профиля", "Аудит и улучшения", "Комплексное продвижение", "Идеи отдельных публикаций"],
+          default: "Контент-план",
+        },
+        period: {
+          type: "select",
+          label: "Период планирования",
+          options: ["7 дней", "14 дней", "1 месяц", "3 месяца"],
+          default: "1 месяц",
+          customPlaceholder: "Например: с 1 по 20 ноября",
+          showWhen: { key: "deliverable", values: ["Контент на период", "Контент-план", "Стратегия развития", "Комплексное продвижение"] },
         },
         frequency: {
-          type: "select",
-          label: "Частота выпуска",
-          options: ["Ежедневно", "2-3 раза в неделю", "Еженедельно", "Раз в две недели", "Ежемесячно"],
-          default: "Еженедельно",
+          type: "select", label: "Частота публикаций", options: ["Ежедневно", "5 раз в неделю", "3 раза в неделю", "2 раза в неделю", "Раз в неделю", "Предложить оптимальный график"], default: "3 раза в неделю",
+          showWhen: { key: "deliverable", values: ["Контент на период", "Контент-план", "Стратегия развития", "Комплексное продвижение"] },
         },
-        thumbnail_style: {
-          type: "select",
-          label: "Стиль превью",
-          options: ["Яркий и контрастный", "Минималистичный", "Текстовый", "Эмоциональный", "Загадочный", "Профессиональный"],
-          default: "Яркий и контрастный",
+        channelStage: {
+          type: "select", label: "Стадия развития", options: ["Запуск с нуля", "Начало роста", "Уже есть активная аудитория", "Перезапуск или смена направления"], default: "Начало роста",
         },
-      monetization: {
-        type: "select",
-        label: "Монетизация",
-        options: ["Реклама", "Спонсорство", "Краудфандинг", "Мерч", "Платная подписка", "Бесплатный контент", "Нет"],
-        default: "Реклама",
-      },
+        brandVoice: {
+          type: "select", label: "Стиль общения", options: ["Дружелюбный", "Экспертный", "Лёгкий и юмористический", "Деловой", "Вдохновляющий", "Спокойный и заботливый"], default: "Дружелюбный",
+        },
+        resources: {
+          type: "text", label: "Ресурсы и ограничения", placeholder: "Время, команда, бюджет, оборудование или запреты", default: "",
+        },
+        competitors: {
+          type: "text", label: "Конкуренты или референсы", placeholder: "Ссылки или названия аккаунтов для ориентира", default: "",
+        },
+        instagramFeatures: { type: "multiselect", label: "Форматы Instagram", options: ["Reels", "Stories", "Посты", "Карусели", "Прямые эфиры", "Заметки"], default: ["Reels", "Stories"], showWhen: { key: "platform", values: ["Instagram"] } },
+        tiktokFeatures: { type: "multiselect", label: "Форматы TikTok", options: ["Короткие видео", "Серии роликов", "Stories", "Прямые эфиры", "Ответы на комментарии видео"], default: ["Короткие видео", "Ответы на комментарии видео"], showWhen: { key: "platform", values: ["TikTok"] } },
+        youtubeFeatures: { type: "multiselect", label: "Форматы YouTube", options: ["Длинные видео", "Shorts", "Сообщество", "Прямые эфиры", "Плейлисты"], default: ["Длинные видео", "Shorts"], showWhen: { key: "platform", values: ["YouTube"] } },
+        vkFeatures: { type: "multiselect", label: "Форматы ВКонтакте", options: ["Клипы", "Истории", "Посты сообщества", "Видео", "Опросы", "Товары"], default: ["Клипы", "Посты сообщества"], showWhen: { key: "platform", values: ["ВКонтакте"] } },
+        telegramFeatures: { type: "multiselect", label: "Форматы Telegram", options: ["Посты канала", "Истории", "Опросы", "Обсуждения", "Рубрики", "Короткие видео"], default: ["Посты канала", "Опросы"], showWhen: { key: "platform", values: ["Telegram"] } },
+        twitchFeatures: { type: "multiselect", label: "Форматы Twitch", options: ["Стримы", "Клипы", "Расписание трансляций", "Общение с чатом", "Совместные эфиры"], default: ["Стримы", "Клипы"], showWhen: { key: "platform", values: ["Twitch"] } },
+        pinterestFeatures: { type: "multiselect", label: "Форматы Pinterest", options: ["Пины", "Доски", "Видео-пины", "Подборки идей", "Тематические коллекции"], default: ["Пины", "Доски"], showWhen: { key: "platform", values: ["Pinterest"] } },
+        linkedinFeatures: { type: "multiselect", label: "Форматы LinkedIn", options: ["Экспертные публикации", "Статьи", "Рассылки", "Истории проектов", "Мероприятия"], default: ["Экспертные публикации", "Статьи"], showWhen: { key: "platform", values: ["LinkedIn"] } },
+        brandAssets: {
+          type: "multiselect", label: "Что оформить", options: ["Аватар", "Обложка или шапка", "Описание профиля", "Закреплённые публикации", "Обложки видео", "Цвета и шрифты", "Шаблоны публикаций"], default: ["Описание профиля", "Аватар", "Обложка или шапка"],
+          showWhen: { key: "deliverable", values: ["Оформление канала или профиля", "Стратегия развития", "Комплексное продвижение"] },
+        },
+        visualStyle: {
+          type: "select", label: "Визуальное направление", options: ["Минималистичное", "Яркое и энергичное", "Экспертное и сдержанное", "Тёплое и естественное", "Премиальное", "Предложить варианты"], default: "Предложить варианты",
+          showWhen: { key: "deliverable", values: ["Оформление канала или профиля", "Стратегия развития", "Комплексное продвижение"] },
+        },
+        kpis: {
+          type: "multiselect", label: "Показатели эффективности", options: ["Охват", "Досмотры и удержание", "Вовлечённость", "Прирост аудитории", "Переходы", "Заявки и продажи"], default: ["Охват", "Вовлечённость", "Прирост аудитории"],
+          showWhen: { key: "deliverable", values: ["Стратегия развития", "Аудит и улучшения", "Комплексное продвижение"] },
+        },
       },
     },
     
@@ -1319,6 +1397,8 @@ function isConditionalParamVisible(container, param, type) {
   if (!param?.showWhen) return true;
   const { key, values = [] } = param.showWhen;
   const controller = promptTemplates[type]?.params?.[key];
+  if (!controller) return false;
+  if (controller.showWhen && !isConditionalParamVisible(container, controller, type)) return false;
   const selected = getParamContainerValue(container, key, controller);
   const selectedValues = Array.isArray(selected) ? selected : [selected];
   return values.some((value) => selectedValues.includes(value));
@@ -1456,8 +1536,9 @@ const crossRecommendations = {
       recommendCategory: 'youtube',
       message: 'Создайте контент для продвижения магазина!',
       presetParams: {
-        content_type: 'Обзоры',
-        audience: 'Взрослые'
+        platform: 'Instagram',
+        deliverable: 'Контент-план',
+        goals: ['Продажи', 'Узнаваемость бренда']
       }
     }
   ],
@@ -1513,13 +1594,10 @@ const crossRecommendations = {
   
   youtube: [
     {
-      triggerKeywords: ['обучен', 'туториал', 'инструкц', 'как сделать'],
-      recommendCategory: 'school',
-      message: 'Создайте учебные материалы по теме!',
-      presetParams: {
-        subj: 'Информатика',
-        task: 'Код'
-      }
+      triggerKeywords: ['сайт', 'интернет-магазин', 'посадочн', 'ссылка в профиле'],
+      recommendCategory: 'websites',
+      message: 'Подготовьте страницу, куда вести аудиторию из соцсетей',
+      presetParams: { type: 'Лендинг', features: ['Адаптивный дизайн', 'SEO оптимизация'] }
     }
   ]
 };
@@ -2125,40 +2203,6 @@ const validationRules = {
         when: { browser: ["Safari"] },
         recommendedFunc: [],
         message: "Safari имеет строгие ограничения на разрешения"
-      }
-    ]
-  },
-  
-  youtube: {
-    recommendations: [
-      {
-        when: { content_type: ["Образовательный"] },
-        recommendedAudience: ["Взрослые", "Профессиональная"],
-        message: "Для образовательного контента подходит аудитория: {audience}"
-      },
-      {
-        when: { audience: ["Дети"] },
-        recommendedContent: ["Развлекательный", "Образовательный"],
-        message: "Для детской аудитории рекомендуем: {content}"
-      },
-      {
-        when: { monetization: ["Реклама", "Спонсорство"] },
-        recommendedFrequency: ["Еженедельно", "2-3 раза в неделю"],
-        message: "Для монетизации важна регулярность: {frequency}"
-      },
-      {
-        when: { audience: ["Дети"], monetization: ["Реклама"] },
-        message: "Для детского контента реклама ограничена"
-      },
-      {
-        when: { content_type: ["Новости"] },
-        recommendedFrequency: ["Ежедневно"],
-        message: "Новости требуют ежедневного выпуска"
-      },
-      {
-        when: { content_type: ["Кулинария"] },
-        recommendedThumbnail: ["Яркий и контрастный"],
-        message: "Для кулинарии важно яркое превью"
       }
     ]
   },
@@ -3376,14 +3420,51 @@ const promptExamples = {
 
   youtube: [
     {
-      title: "Идея видео",
-      idea: "Видео про изучение программирования с нуля",
-      content_type: "Образовательный",
-      audience: "Взрослые",
-      frequency: "Еженедельно",
-      thumbnail_style: "Профессиональный",
-      monetization: "Реклама",
+      title: "Контент-план Instagram",
+      idea: "Продвижение локальной кофейни с авторскими напитками и завтраками",
+      platform: "Instagram",
+      channelName: "Кофейня «Север»",
+      audience: ["Молодые специалисты", "Локальная аудитория"],
+      audienceDetails: "Жители района 20–40 лет, которым интересны кофе, завтраки и уютные места",
+      goals: ["Рост охватов", "Продажи"],
+      deliverable: "Контент-план",
+      period: "1 месяц",
+      frequency: "3 раза в неделю",
+      instagramFeatures: ["Reels", "Stories", "Карусели"],
+      brandVoice: "Дружелюбный",
+      channelStage: "Начало роста",
+      resources: "Съёмка на телефон, 3 часа в неделю",
       tone: "professional"
+    },
+    {
+      title: "Стратегия YouTube-канала",
+      idea: "Канал о практическом изучении графического дизайна",
+      platform: "YouTube",
+      channelName: "Дизайн по делу",
+      audience: ["Начинающие в теме", "Профессиональное сообщество"],
+      audienceDetails: "Люди, осваивающие профессию самостоятельно",
+      goals: ["Узнаваемость бренда", "Привлечение подписчиков"],
+      deliverable: "Стратегия развития",
+      period: "3 месяца",
+      youtubeFeatures: ["Длинные видео", "Shorts", "Плейлисты"],
+      brandAssets: ["Описание профиля", "Обложка или шапка", "Обложки видео"],
+      visualStyle: "Экспертное и сдержанное",
+      kpis: ["Досмотры и удержание", "Прирост аудитории", "Переходы"],
+      tone: "detailed"
+    },
+    {
+      title: "Упаковка Telegram-канала",
+      idea: "Канал с простыми рецептами для занятых людей",
+      platform: "Telegram",
+      channelName: "Ужин за 20 минут",
+      audience: ["Локальная аудитория", "Покупатели товаров и услуг"],
+      audienceDetails: "Люди, которые хотят готовить дома без сложных рецептов",
+      goals: ["Удержание аудитории", "Продажи"],
+      deliverable: "Оформление канала или профиля",
+      telegramFeatures: ["Посты канала", "Опросы", "Рубрики"],
+      brandAssets: ["Описание профиля", "Аватар", "Закреплённые публикации", "Шаблоны публикаций"],
+      visualStyle: "Тёплое и естественное",
+      tone: "friendly"
     }
   ],
 
