@@ -1,0 +1,77 @@
+/* Общая визуальная система для страниц TAIPrompts. Цветовая палитра проекта сохранена. */
+:root {
+  --surface-raised: rgba(30, 34, 49, .78);
+  --surface-soft: rgba(255, 255, 255, .035);
+  --surface-line: rgba(255, 255, 255, .09);
+  --surface-shadow: 0 20px 55px rgba(0, 0, 0, .22);
+}
+html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+body {
+  background-image: radial-gradient(ellipse at 85% 0%, rgba(94,114,228,.075), transparent 32%);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+::selection { background: rgba(94,114,228,.42); color: #fff; }
+:focus-visible { outline: 2px solid var(--accent-color); outline-offset: 3px; }
+img { max-width: 100%; }
+h1, h2, h3 { text-wrap: pretty; }
+.section-title, .hero-title, .faq-title, .dev-title { text-wrap: balance; }
+.header {
+  background: rgba(16, 18, 27, .86);
+  border-bottom-color: rgba(255,255,255,.075);
+  box-shadow: 0 8px 30px rgba(0,0,0,.18);
+}
+.logo { letter-spacing: -.035em; }
+.logo-img { object-fit: contain; }
+.nav { gap: clamp(12px, 2vw, 26px); }
+.nav-link { font-weight: 500; }
+.btn { font-family: inherit; font-weight: 650; transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; }
+.btn-primary { box-shadow: 0 8px 22px rgba(94,114,228,.17); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(94,114,228,.27); }
+.btn:active { transform: translateY(0) scale(.985); }
+.card, .pricing-card, .faq-item, .dev-card, .setting-section, .type-card, .possibility-card {
+  border-color: var(--surface-line);
+  box-shadow: var(--surface-shadow);
+}
+.type-card, .possibility-card, .pricing-card, .faq-item, .dev-card {
+  background-color: var(--surface-raised);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.type-card { border-radius: 20px; }
+.type-card:hover { transform: translateY(-4px); box-shadow: 0 22px 50px rgba(0,0,0,.28); }
+.section-title::after { border-radius: 99px; }
+input:not([type="checkbox"]):not([type="radio"]), select, textarea {
+  border-color: rgba(255,255,255,.12);
+  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+input:not([type="checkbox"]):not([type="radio"]):focus, select:focus, textarea:focus {
+  border-color: rgba(94,114,228,.78);
+  box-shadow: 0 0 0 4px rgba(94,114,228,.12);
+}
+.footer { border-top: 1px solid rgba(255,255,255,.07); background: rgba(12,14,21,.62); }
+.footer-bottom { color: rgba(173,181,189,.78); }
+.generation { padding-top: 122px; }
+.generator-heading { box-shadow: 0 18px 50px rgba(0,0,0,.18); }
+.param-group { padding: 15px; border: 1px solid rgba(255,255,255,.07); border-radius: 14px; background: rgba(255,255,255,.018); }
+.param-group > .param-label { color: var(--text-color); }
+.param-group .checkbox-label { transition: border-color .18s ease, background .18s ease, transform .18s ease; }
+.param-group .checkbox-label:hover { transform: translateY(-1px); border-color: rgba(94,114,228,.42); }
+.customization-modal .modal-content { border-color: rgba(255,255,255,.12); box-shadow: 0 32px 100px rgba(0,0,0,.55); }
+.footer-logo { transition: opacity .2s ease; }
+.footer-logo:hover { opacity: .82; }
+.footer-content { grid-template-columns: minmax(240px, 1.2fr) minmax(220px, .8fr); gap: 30px; align-items: start; }
+.footer-links { display: grid; grid-template-columns: repeat(2, minmax(120px, 1fr)); gap: 12px 24px; justify-self: end; }
+.footer-links a { color: var(--secondary-color); text-decoration: none; transition: color .18s ease; }
+.footer-links a:hover { color: var(--text-color); }
+@media (max-width: 768px) {
+  html { scroll-padding-top: 72px; }
+  .generation { padding-top: 102px; }
+  .param-group { padding: 12px; }
+  .footer-content { grid-template-columns: 1fr; }
+  .footer-links { justify-self: start; width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
