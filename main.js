@@ -1228,11 +1228,13 @@ function getPromptInstructionPrefix(tone = "professional", generationMode = "sta
 }
 
 function cleanupPromptText(text) {
-  return normalizeValue(text)
+  return String(text ?? "")
+    .replace(/\r\n?/g, "\n")
+    .replace(/[\t ]+/g, " ")
     .replace(/\b__custom__\b/gi, "")
     .replace(/\s+([,.!?;:])/g, "$1")
     .replace(/([,.!?;:])([^\s])/g, "$1 $2")
-    .replace(/\s{2,}/g, " ")
+    .replace(/ *\n */g, "\n")
     .replace(/\n{3,}/g, "\n\n")
     .trim();
 }
@@ -1378,13 +1380,15 @@ function collectPromptParams(type, overrideParams = {}) {
   const tplParams = tpl?.params || {};
 
   for (const [key, value] of Object.entries(overrideParams || {})) {
+    const param = tplParams[key];
+    if (!param || (param.showWhen && !isConditionalParamVisible(modal, param, type, overrideParams))) continue;
     if (normalizeValue(value) === CUSTOM_OPTION_VALUE || isCustomOptionLabel(value)) {
       continue;
     }
     params[key] = value;
   }
 
-  const activeParams = Object.fromEntries(Object.entries(tplParams).filter(([, param]) => !param.showWhen || isConditionalParamVisible(modal, param, type)));
+  const activeParams = Object.fromEntries(Object.entries(tplParams).filter(([, param]) => !param.showWhen || isConditionalParamVisible(modal, param, type, overrideParams)));
   for (const [key, param] of Object.entries(activeParams)) {
     if (params[key] !== undefined) continue;
     params[key] = getParamContainerValue(modal, key, param);
@@ -1393,13 +1397,13 @@ function collectPromptParams(type, overrideParams = {}) {
   return params;
 }
 
-function isConditionalParamVisible(container, param, type) {
+function isConditionalParamVisible(container, param, type, overrides = {}) {
   if (!param?.showWhen) return true;
   const { key, values = [] } = param.showWhen;
   const controller = promptTemplates[type]?.params?.[key];
   if (!controller) return false;
-  if (controller.showWhen && !isConditionalParamVisible(container, controller, type)) return false;
-  const selected = getParamContainerValue(container, key, controller);
+  if (controller.showWhen && !isConditionalParamVisible(container, controller, type, overrides)) return false;
+  const selected = Object.prototype.hasOwnProperty.call(overrides, key) ? overrides[key] : getParamContainerValue(container, key, controller);
   const selectedValues = Array.isArray(selected) ? selected : [selected];
   return values.some((value) => selectedValues.includes(value));
 }
@@ -3222,42 +3226,53 @@ customInput.addEventListener('input', debounce(() => {
     isFormDirty = true;
   });
 
+const promptQualityGuides = {
+  recipes: "Проверь совместимость ингредиентов и ограничений. Укажи точные количества, единицы измерения, подготовку продуктов, температуру и время там, где это важно. Разделяй обязательные шаги и варианты замен; не приписывай блюду медицинских свойств.",
+  websites: "Работай как продуктовая команда: зафиксируй цель и пользователей, затем предложи структуру, сценарии и визуальную иерархию. Привязывай каждую функцию к задаче сайта; для кода укажи состояния интерфейса, валидацию, доступность, адаптивность и проверяемые критерии готовности. Не выдумывай интеграции.",
+  bots: "Опиши сценарии по шагам: событие, проверки, ответ и обработка сбоя. Уточни команды, права доступа, хранение секретов, ограничения API, журналирование и защиту от повторных запросов. Если данных не хватает, обозначь допущения; код и инструкция запуска должны быть согласованы.",
+  minecraft: "Сверяй решения с выбранной версией игры и загрузчиком. Разделяй концепцию и техническую реализацию; укажи файлы, регистрации, рецепты, конфигурацию, совместимость и способ проверки. Не предлагай API, не подходящие выбранной версии.",
+  images: "Собери цельное визуальное описание: главный объект и его признаки, композиция, ракурс, свет, материалы, палитра, фон и настроение. Избегай конфликтующих указаний и случайного текста; важные объекты должны оставаться читаемыми в выбранном формате.",
+  stickers: "Опиши единый узнаваемый дизайн персонажа и правила его повторяемости. Для каждого варианта задай ясную эмоцию, жест и силуэт; проверь читаемость в малом размере, чистый контур и требования выбранной платформы.",
+  "3d": "Сделай ТЗ пригодным для моделирования: пропорции и силуэт, основные формы, топология, материалы, UV и текстуры, освещение и рендер. Согласуй детализацию с бюджетом полигонов и программой; заверши этапами и критериями проверки модели.",
+  toys: "Учитывай возраст, понятность правил и реальный сценарий игры. Опиши масштаб, материалы, детали, безопасность и уход, если это уместно; отделяй проверяемые требования от творческих предположений.",
+  characterai: "Сделай образ последовательным и пригодным для длительного диалога. Раздели устойчивые черты, контекстные реакции и границы поведения; примеры реплик должны показывать голос персонажа, а не повторяться.",
+  suno: "Сохрани цельное настроение и естественную вокальную фразировку. Разведи описание звучания и текст песни; сделай секции контрастными, припев запоминающимся, а указания по динамике и инструментам согласованными с жанром и темпом.",
+  setup: "Учитывай целевого пользователя и платформенные ограничения. Предложи реализуемую архитектуру, состояния интерфейса, хранение и обработку ошибок; инструкции сборки и установки должны соответствовать выбранной ОС, языку и формату дистрибуции.",
+  school: "Подстрой объяснение под уровень обучения. Разбери условие и покажи ход решения понятными шагами, затем проверь результат. Для творческого задания соблюдай жанр и требования; не подменяй объяснение одним готовым ответом.",
+  youtube: "Используй нативные форматы выбранной площадки. Связывай рекомендации с целью, аудиторией и ресурсами; для публикаций добавляй хук, содержание и призыв к действию, избегай кликбейта и обещаний роста. Разделяй факты, гипотезы и метрики оценки.",
+  plugin: "Учитывай API и ограничения выбранного приложения или браузера. Опиши минимально необходимые разрешения, структуру проекта, сценарии, ошибки, установку и проверку. Не запрашивай избыточный доступ и не выдумывай API.",
+};
+
 function buildPromptText(type, idea, tone = "professional", overrideParams = {}, generationMode = "standard") {
   if (!promptTemplates[type]) return "";
 
   const tpl = promptTemplates[type];
   const params = collectPromptParams(type, overrideParams);
   const promptPrefix = getPromptInstructionPrefix(tone, generationMode);
+  let body;
 
-  // Если шаблон - функция, вызываем её с параметрами
-  if (typeof tpl.template === 'function') {
-    return cleanupPromptText(`${promptPrefix}${tpl.template(params, idea, tone)}\n\nПромпт создан с помощью TAIPrompts`);
+  if (typeof tpl.template === "function") {
+    body = tpl.template(params, idea, tone);
+  } else {
+    body = tpl.template.replace(/\{idea\}/g, normalizeValue(idea));
+    for (const [key, param] of Object.entries(tpl.params || {})) {
+      if (!param.showWhen) continue;
+      const value = params[key];
+      const empty = value === undefined || value === null || value === "" || (Array.isArray(value) && value.length === 0);
+      if (empty) body = body.replace(new RegExp(`[^.!?]*\\{${key}\\}[^.!?]*[.!?]?`, "g"), "");
+    }
+    for (const [key, value] of Object.entries(params)) {
+      const paramValue = Array.isArray(value) ? value.join(", ") : normalizeValue(value);
+      body = body.replace(new RegExp(`\\{${key}\\}`, "g"), paramValue);
+    }
+    body = body.replace(/\{[^}]+\}/g, "");
   }
 
-  // Иначе используем старый строковый шаблон
-  let text = tpl.template;
-  text = text.replace("{idea}", normalizeValue(idea));
-
-  // Убираем целиком отдельные предложения с зависимыми полями, если они скрыты или пусты.
-  for (const [key, param] of Object.entries(tpl.params || {})) {
-    if (!param.showWhen) continue;
-    const value = params[key];
-    const empty = value === undefined || value === null || value === "" || (Array.isArray(value) && value.length === 0);
-    if (empty) text = text.replace(new RegExp(`[^.!?]*\\{${key}\\}[^.!?]*[.!?]?`, "g"), "");
-  }
-
-  // Заменяем все параметры в шаблоне
-  for (const [key, value] of Object.entries(params)) {
-    const paramValue = Array.isArray(value) ? value.join(", ") : normalizeValue(value);
-    text = text.replace(new RegExp(`\\{${key}\\}`, "g"), paramValue);
-  }
-
-  // Удаляем оставшиеся неиспользованные параметры {param}
-  text = cleanupPromptText(text.replace(/\{[^}]+\}/g, ""));
-
-  text = cleanupPromptText(`${promptPrefix}${text}\n\nПромпт создан с помощью TAIPrompts`);
-
-  return text;
+  const quality = promptQualityGuides[type];
+  const sections = [promptPrefix, body, quality ? `Требования к качеству результата:\n${quality}` : ""]
+    .map(cleanupPromptText)
+    .filter(Boolean);
+  return `${sections.join("\n\n")}\n\nПромпт создан с помощью TAIPrompts`;
 }
 
 const promptExamples = {
