@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -85,6 +85,7 @@
     <!-- End Google Tag Manager -->
     <link rel="stylesheet" href="styles/main.css?v=1.1.5">
     <link rel="stylesheet" href="styles/index.css?v=1.1.4">
+    <link rel="stylesheet" href="styles/generator.css?v=1.1.6">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -107,7 +108,16 @@
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-  <div id="site-header"></div>
+<header class="header">
+  <div class="container">
+    <nav class="nav">
+      <a href="index.html" class="logo" aria-label="TAIPrompts — на главную">
+        <img src="images/logo.png" alt="TAIPrompts — генератор промптов для ChatGPT и нейросетей" class="logo-img">
+        <span class="logo-text">TAIPrompts</span>
+      </a>
+    </nav>
+  </div>
+</header>
 
     <main>
         <!-- Герой секция -->
@@ -118,8 +128,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <h1 class="hero-title">Идея есть.<br><span>Сильный промпт тоже.</span></h1>
                     <p class="hero-description">Соберите точный запрос для нейросети за пару минут — без пустого листа и бесконечных правок.</p>
                     <div class="hero-actions">
-                        <a href="generator.html" class="btn btn-primary">Создать промпт <i class="fa-solid fa-arrow-right"></i></a>
-                        <a href="#possibilities" class="hero-secondary-link">Как это работает <i class="fa-solid fa-arrow-down"></i></a>
+                        <a href="#generator" class="btn btn-primary">Создать промпт <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                     <div class="hero-proof"><div class="proof-avatars"><span>✦</span><span>AI</span><span>+</span></div><span>Шаблоны для творчества, работы и разработки</span></div>
                 </div>
@@ -129,181 +138,350 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <div class="hero-float-chip chip-two"><i class="fa-solid fa-check"></i> Точно по задаче</div>
                 </div>
             </div>
-            <a href="#possibilities" class="hero-scroll-down" aria-label="Прокрутить к преимуществам"><span class="scroll-arrow"></span></a>
         </section>
 
-<!-- секцию возможностей: -->
-<section class="possibilities" id="possibilities">
+<section class="cta" id="generator">
     <div class="container">
-        <h2 class="section-title">Преимущества TAIPrompts</h2>
-        <div class="possibilities-grid" id="possibilitiesGrid">
-
-            <div class="possibility-card">
-                <div class="possibility-icon"><i class="fa-solid fa-rocket"></i></div>
-                <h3>Быстрая генерация</h3>
-                <p>Создавайте промпты за секунды с помощью нашего интеллектуального генератора</p>
-            </div>
-            <div class="possibility-card">
-                <div class="possibility-icon"><i class="fa-solid fa-palette"></i></div>
-                <h3>Кастомизация</h3>
-                <p>Настраивайте промпты под свои конкретные нужды и требования</p>
-            </div>
-            <div class="possibility-card">
-                <div class="possibility-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
-                <h3>10+ категорий</h3>
-                <p>От рецептов и стикеров до Minecraft-модов и стратегий продвижения соцсетей</p>
-            </div>
-            <div class="possibility-card hidden-card">
-                <div class="possibility-icon"><i class="fa-solid fa-mobile"></i></div>
-                <h3>Полная адаптивность</h3>
-                <p>Работайте с любого устройства - компьютера, планшета или телефона</p>
-            </div>
-            <div class="possibility-card hidden-card">
-                <div class="possibility-icon"><i class="fa-solid fa-floppy-disk"></i></div>
-                <h3>Сохранение результатов</h3>
-                <p>Сохраняйте понравившиеся промпты для будущего использования</p>
-            </div>
-            <div class="possibility-card hidden-card">
-                <div class="possibility-icon"><i class="fa-solid fa-robot"></i></div>
-                <h3>Технические шаблоны</h3>
-                <p>Готовые параметры для точных промптов любой сложности</p>
-            </div>
-            
-            <!-- Дополнительные карточки (изначально скрыты) -->
-            <div class="possibility-card hidden-card">
-                <div class="possibility-icon"><i class="fa-solid fa-square-poll-vertical"></i></div>
-                <h3>Аналитика использования</h3>
-                <p>Отслеживайте эффективность промптов и оптимизируйте их</p>
-            </div>
-            <div class="possibility-card hidden-card">
-                <div class="possibility-icon"><i class="fa-solid fa-rotate"></i></div>
-                <h3>Регулярные обновления</h3>
-                <p>Новые шаблоны и функции добавляются каждую неделю</p>
-            </div>
-            <div class="possibility-card hidden-card">
-                <div class="possibility-icon"><i class="fa-solid fa-comments"></i></div>
-                <h3>Сообщество</h3>
-                <p>Обменивайтесь промптами с другими пользователями платформы</p>
-            </div>
+        <div class="studio-head">
+            <span class="generator-kicker"><i class="fa-solid fa-wand-magic-sparkles"></i> TAIPrompts Studio</span>
+            <h2 class="section-title">Генератор промптов</h2>
+            <p>Выберите шаблон, настройте параметры и получите готовый промпт.</p>
         </div>
-        
-        <!-- Кнопка "Показать всё" -->
-        <div class="possibilities-actions" style="text-align: center; margin-top: 40px;">
-            <button id="showAllBtn" class="btn btn-secondary">
-                <span class="btn-text">Показать всё</span>
-                <span class="btn-icon">↓</span>
-            </button>
+        <div class="studio-layout">
+            <aside class="studio-templates" aria-label="Выбор шаблона">
+                <div class="studio-templates-head">
+                    <span class="studio-step">Шаг 1</span>
+                    <h3>Выберите шаблон</h3>
+                </div>
+
+                <div class="search-container">
+                    <div class="search-wrapper">
+                        <input
+                            type="text"
+                            class="search-input"
+                            id="searchInput"
+                            placeholder="Поиск по категориям..."
+                            aria-label="Поиск по карточкам промптов"
+                        >
+                        <div class="search-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                    <div class="search-stats" id="searchStats">
+                        Найдено <span id="foundCount">0</span> из <span id="totalCount">0</span> карточек
+                    </div>
+                </div>
+
+                <div class="prompt-types-grid">
+                    <div class="type-card" data-type="recipes">
+                        <h3><i class="fa-solid fa-burger"></i> Рецепты</h3>
+                        <p>Создание или улучшение рецептов</p>
+                        <div class="vibe-description">Генерация кулинарных промптов с точными пропорциями и инструкциями</div>
+                        <div class="vibe-tags">
+                            <span class="vibe-tag">гастрономия</span>
+                            <span class="vibe-tag">ингредиенты</span>
+                            <span class="vibe-tag">step-by-step</span>
+                        </div>
+                    </div>
+
+                    <div class="type-card" data-type="websites">
+                        <h3><i class="fa-solid fa-globe"></i> Веб-сайты</h3>
+                        <p>Современные веб-сайты</p>
+                        <div class="vibe-description">Генерируйте промпты для создания современных сайтов с HTML, CSS и JavaScript</div>
+                        <div class="vibe-tags">
+                            <span class="vibe-tag">HTML/CSS/JS</span>
+                            <span class="vibe-tag">адаптивность</span>
+                            <span class="vibe-tag">PWA</span>
+                        </div>
+                    </div>
+
+                    <div class="type-card" data-type="stickers">
+                        <h3><i class="fa-solid fa-user"></i> Стикеры и аватары</h3>
+                        <p>Генерация идей для стикеров и аватаров</p>
+                        <div class="vibe-description">Промпты для создания стикерпаков и цифровых аватаров</div>
+                        <div class="vibe-tags">
+                            <span class="vibe-tag">вектор</span>
+                            <span class="vibe-tag">эмоции</span>
+                            <span class="vibe-tag">Telegram</span>
+                        </div>
+                    </div>
+
+                    <div class="type-card" data-type="school">
+                        <h3><i class="fa-solid fa-graduation-cap"></i> Учёба и школа</h3>
+                        <p>Написание сочинений, решение задач и тд</p>
+                        <div class="vibe-description">Генерация промптов для написания сочинений, решения задач и тд</div>
+                        <div class="vibe-tags">
+                            <span class="vibe-tag">школа</span>
+                            <span class="vibe-tag">учеба</span>
+                            <span class="vibe-tag">сочинения</span>
+                        </div>
+                    </div>
+
+                    <div class="type-card" data-type="images">
+                        <h3><i class="fa-solid fa-palette"></i> Генерация изображений</h3>
+                        <p>Промпты для создания изображений</p>
+                        <div class="vibe-description">Создавайте детальные промпты для генерации визуального контента</div>
+                        <div class="vibe-tags">
+                            <span class="vibe-tag">Stable Diffusion</span>
+                            <span class="vibe-tag">DALL-E</span>
+                            <span class="vibe-tag">композиция</span>
+                        </div>
+                    </div>
+
+                    <div class="type-card" data-type="toys">
+                        <h3><i class="fa-solid fa-car-side"></i> Игрушки</h3>
+                        <p>Идеи для создания игрушек</p>
+                        <div class="vibe-description">Генерация промптов для разработки игр и игрушек</div>
+                        <div class="vibe-tags">
+                            <span class="vibe-tag">геймдизайн</span>
+                            <span class="vibe-tag">механики</span>
+                            <span class="vibe-tag">персонажи</span>
+                        </div>
+                    </div>
+
+                    <div class="type-card" data-type="3d">
+                        <h3><i class="fa-solid fa-diamond"></i> 3D модели</h3>
+                        <p>Промпты для 3D моделирования</p>
+                        <div class="vibe-description">Промпты для создания трехмерных моделей и ассетов</div>
+                        <div class="vibe-tags">
+                            <span class="vibe-tag">Blender</span>
+                            <span class="vibe-tag">текстуры</span>
+                            <span class="vibe-tag">рендеринг</span>
+                        </div>
+                    </div>
+
+                    <div class="type-card" data-type="bots">
+                        <h3><i class="fa-solid fa-robot"></i> Боты и автоматизация</h3>
+                        <p>Создавайте промпты для ботов на любую платформу.</p>
+                        <div class="vibe-description">Готовые шаблоны команд, обработчиков и функций</div>
+                        <div class="vibe-tags">
+                            <span class="vibe-tag">боты</span>
+                            <span class="vibe-tag">асинхронность</span>
+                            <span class="vibe-tag">API</span>
+                        </div>
+                    </div>
+
+                    <div class="type-card" data-type="minecraft">
+                        <h3><i class="fa-solid fa-cubes"></i> Моды Minecraft</h3>
+                        <p>Моды для Minecraft (и не только моды)</p>
+                        <div class="vibe-description">Создавайте промпты для разработки модов с настройкой IntelliJ IDEA</div>
+                        <div class="vibe-tags">
+                            <span class="vibe-tag">Forge</span>
+                            <span class="vibe-tag">Моды</span>
+                            <span class="vibe-tag">Java</span>
+                        </div>
+                    </div>
+
+                    <div class="type-card" data-type="characterai">
+                        <h3><i class="fa-solid fa-robot"></i> Character AI</h3>
+                        <p>Создание персонажей для character.ai</p>
+                        <div class="vibe-description">Генерация промптов для персонажей с именем, слоганом, приветствием и описанием</div>
+                        <div class="vibe-tags">
+                            <span class="vibe-tag">персонажи</span>
+                            <span class="vibe-tag">диалоги</span>
+                            <span class="vibe-tag">c.ai</span>
+                        </div>
+                    </div>
+
+                    <div class="type-card" data-type="suno">
+                        <h3><i class="fa-solid fa-music"></i> Suno AI</h3>
+                        <p>Создание песен в Suno AI</p>
+                        <div class="vibe-description">Генерация промптов для создания песен с текстом, жанром и структурой</div>
+                        <div class="vibe-tags">
+                            <span class="vibe-tag">музыка</span>
+                            <span class="vibe-tag">тексты</span>
+                            <span class="vibe-tag">Suno</span>
+                        </div>
+                    </div>
+
+                    <div class="type-card" data-type="youtube">
+                        <h3><i class="fa-solid fa-chart-line"></i> Продвижение соцсетей</h3>
+                        <p>Развитие каналов, профилей и сообществ</p>
+                        <div class="vibe-description">Контент-планы, стратегии роста и оформление площадок с учётом выбранной платформы</div>
+                        <div class="vibe-tags">
+                            <span class="vibe-tag">Instagram</span>
+                            <span class="vibe-tag">TikTok</span>
+                            <span class="vibe-tag">контент-план</span>
+                        </div>
+                    </div>
+
+                    <div class="type-card" data-type="plugin">
+                        <h3><i class="fa-solid fa-up-down"></i> Плагины и расширения</h3>
+                        <p>Написание кода для расширений</p>
+                        <div class="vibe-description">Генерация промптов для написания кода для расширений на Chrome, Roblox, VS Code и тд.</div>
+                        <div class="vibe-tags">
+                            <span class="vibe-tag">расширения</span>
+                            <span class="vibe-tag">плагины</span>
+                            <span class="vibe-tag">браузер</span>
+                        </div>
+                    </div>
+
+                    <div class="type-card" data-type="setup">
+                        <h3><i class="fa-solid fa-laptop-code"></i> Приложения</h3>
+                        <p>Написание кода приложений</p>
+                        <div class="vibe-description">Генерация промптов для написания кода для приложения для MacOS, Linux, Windows и тд.</div>
+                        <div class="vibe-tags">
+                            <span class="vibe-tag">приложения</span>
+                            <span class="vibe-tag">windows</span>
+                            <span class="vibe-tag">установщик</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <div class="studio-generator" id="generator-studio">
+                <div class="studio-generator-head">
+                    <span class="modal-kicker">Шаг 2 · Настройка</span>
+                    <h3 class="modal-title" id="generator-dialog-title">Настройка: Рецепты</h3>
+                    <p class="modal-description" id="generator-dialog-description">Настройте параметры и опишите результат, который хотите получить.</p>
+                </div>
+
+                <div class="modal-tabs" role="tablist" aria-label="Разделы генератора">
+                    <button type="button" class="modal-tab is-active" data-generator-tab="generate" role="tab" id="generator-tab-generate" aria-controls="generator-panel-generate" aria-selected="true">Генерация</button>
+                    <button type="button" class="modal-tab" data-generator-tab="examples" role="tab" id="generator-tab-examples" aria-controls="generator-panel-examples" aria-selected="false" tabindex="-1">Примеры</button>
+                </div>
+
+                <section class="generator-tab-panel is-active" data-generator-tab-panel="generate" id="generator-panel-generate" role="tabpanel" aria-labelledby="generator-tab-generate" tabindex="0">
+                    <form id="prompt-form">
+                        <div id="technical-params" class="technical-params"></div>
+
+                        <div class="form-group">
+                            <label for="custom-input">Ваша идея или описание</label>
+                            <textarea id="custom-input" placeholder="Например: романтическая история про аниме-девушку, которая ждёт встречи под сакурой" maxlength="3000" aria-describedby="idea-hint idea-counter" required></textarea>
+                            <div class="idea-field-meta"><span id="idea-hint">Опишите цель, аудиторию и важные ограничения.</span><span id="idea-counter" aria-live="polite"><b id="idea-count">0</b> / 3000</span></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tone-select">Стиль промпта</label>
+                            <select id="tone-select">
+                                <option value="professional">Профессиональный</option>
+                                <option value="friendly">Дружеский</option>
+                                <option value="creative">Креативный</option>
+                                <option value="technical">Технический</option>
+                                <option value="detailed">Детализированный</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="generation-mode-select">Глубина генерации</label>
+                            <select id="generation-mode-select">
+                                <option value="short">Короткий</option>
+                                <option value="standard" selected>Стандартный</option>
+                                <option value="detailed">Максимально подробный</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" id="generate-prompt-btn"><span>Сгенерировать промпт</span><i class="fa-solid fa-arrow-right"></i></button>
+                    </form>
+
+                    <div class="generated-prompt">
+                        <h4>Ваш промпт:</h4>
+                        <div id="final-prompt" class="prompt-output"></div>
+
+                        <div class="example-actions" style="margin-top:12px; justify-content:flex-start;">
+                            <button id="copy-prompt" class="btn btn-secondary" type="button">Копировать</button>
+                            <button id="download-prompt" class="btn btn-primary" type="button">Скачать</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="generator-tab-panel" data-generator-tab-panel="examples" id="generator-panel-examples" role="tabpanel" aria-labelledby="generator-tab-examples" tabindex="0">
+                    <section class="generator-examples-panel" aria-label="Примеры промптов">
+                        <div class="generator-examples-head">
+                            <div>
+                                <h4>Примеры промптов</h4>
+                                <p class="generator-examples-subtitle">Выбери шаблон слева, а затем возьми готовый пример за основу, скопируй его или сразу примени в генераторе.</p>
+                            </div>
+                            <div class="generator-examples-tip">
+                                <i class="fas fa-wand-magic-sparkles"></i>
+                                <span>Карточки обновляются под выбранный шаблон</span>
+                            </div>
+                        </div>
+                        <div id="examplesGrid" class="examples-grid examples-grid--modal">
+                            <div class="examples-placeholder">Выбери шаблон, чтобы увидеть примеры прямо здесь.</div>
+                        </div>
+                    </section>
+                </section>
+            </div>
         </div>
     </div>
-</section>
-
-<!-- Секция попробовать -->
-<section class="cta">
-    <div class="container">
-        
-        <div class="comparison-cta" style="text-align: center; margin-top: 50px;">
-            <p style="font-size: 1.2rem; margin-bottom: 25px; color: var(--text-color);">
-                Хотите создавать качественные промпты за секунды?
-            </p>
-            <a href="generator.html" class="btn btn-primary" style="font-size: 1.1rem; padding: 15px 40px;">
-                Попробовать генератор
-            </a>
-        </div>
-    </div>
-</div>
 </section>
 
     </main>
 
-    <div id="site-footer"></div>
+    <!-- Анимация генерации (полный экран) -->
+    <div class="generation-overlay" id="generationOverlay">
+        <div class="generation-animation">
+            <div class="animation-content">
+                <div class="ai-icon">
+                    <div class="ai-circle"></div>
+                    <div class="ai-line line-1"></div>
+                    <div class="ai-line line-2"></div>
+                    <div class="ai-line line-3"></div>
+                    <div class="ai-dot dot-1"></div>
+                    <div class="ai-dot dot-2"></div>
+                    <div class="ai-dot dot-3"></div>
+                    <div class="sparkle s1"></div>
+                    <div class="sparkle s2"></div>
+                    <div class="sparkle s3"></div>
+                    <div class="sparkle s4"></div>
+                </div>
 
-    <script src="main.js?v=1.1.14"></script>
+                <h3 class="animation-title" id="animationTitle">Генерируем промпт...</h3>
+                <p class="animation-subtitle" id="animationSubtitle">Анализируем ваши параметры</p>
 
-    <script>
-        
-// Функция для управления отображением карточек преимуществ
-function initPossibilitiesToggle() {
-    const grid = document.getElementById('possibilitiesGrid');
-    const button = document.getElementById('showAllBtn');
-    const btnText = button.querySelector('.btn-text');
-    const btnIcon = button.querySelector('.btn-icon');
-    
-    if (!grid || !button) return;
-    
-    // Проверяем, есть ли скрытые карточки
-    const hiddenCards = grid.querySelectorAll('.possibility-card.hidden-card');
-    if (hiddenCards.length === 0) {
-        button.style.display = 'none';
-        return;
-    }
-    
-    // Добавляем пульсацию для привлечения внимания
-    button.classList.add('pulse');
-    
-    // Обработчик клика
-    button.addEventListener('click', function() {
-        const isShowingAll = grid.classList.toggle('show-all');
-        
-        if (isShowingAll) {
-            btnText.textContent = 'Скрыть';
-            button.classList.add('show-all');
-            button.classList.remove('pulse');
-        } else {
-            btnText.textContent = 'Показать всё';
-            button.classList.remove('show-all');
-            // Добавляем пульсацию обратно, когда скрываем
-            setTimeout(() => button.classList.add('pulse'), 500);
-        }
-        
-        // Плавная прокрутка к кнопке, если показываем все
-        if (isShowingAll) {
-            setTimeout(() => {
-                button.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'center'
-                });
-            }, 100);
-        }
-    });
-    
-    // Автоматически показываем кнопку, если карточек много
-    setTimeout(() => {
-        button.style.opacity = '1';
-        button.style.transform = 'translateY(0)';
-    }, 1000);
-}
+                <div class="loading-stages">
+                    <div class="stage active">
+                        <div class="stage-icon">🔍</div>
+                        <div class="stage-text">Анализ параметров</div>
+                        <div class="stage-check">✓</div>
+                    </div>
+                    <div class="stage">
+                        <div class="stage-icon">🧠</div>
+                        <div class="stage-text">Собираем структуру</div>
+                        <div class="stage-check"></div>
+                    </div>
+                    <div class="stage">
+                        <div class="stage-icon">✨</div>
+                        <div class="stage-text">Уточняем детали</div>
+                        <div class="stage-check"></div>
+                    </div>
+                    <div class="stage">
+                        <div class="stage-icon">✅</div>
+                        <div class="stage-text">Проверка результата</div>
+                        <div class="stage-check"></div>
+                    </div>
+                </div>
 
-// Инициализируем при загрузке страницы
-document.addEventListener('DOMContentLoaded', function() {
-    initPossibilitiesToggle();
-});
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">0%</div>
+                </div>
 
-// ===== Тултип "Нам доверяют" - следит за курсором =====
-document.addEventListener('DOMContentLoaded', function() {
-    const trustItems = document.querySelectorAll('.trust-item');
-    
-    trustItems.forEach(item => {
-        // При движении мыши обновляем позицию тултипа
-        item.addEventListener('mousemove', function(e) {
-            const tooltip = this;
-            const mouseX = e.clientX;
-            const mouseY = e.clientY;
-            
-            // Позиционируем тултип над курсором
-            tooltip.style.setProperty('--tooltip-x', mouseX + 'px');
-            tooltip.style.setProperty('--tooltip-y', mouseY + 'px');
-            
-            // Обновляем позицию через JS (для точности)
-            const after = window.getComputedStyle(tooltip, '::after');
-            const before = window.getComputedStyle(tooltip, '::before');
-            
-            // Устанавливаем позицию через инлайн-стили
-            tooltip.style.setProperty('--mouse-x', mouseX + 'px');
-            tooltip.style.setProperty('--mouse-y', mouseY + 'px');
-        });
-    });
-});
-    </script>
+                <div class="hint">Подождите немного, магия в процессе...</div>
+            </div>
+        </div>
+    </div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo"><img src="images/logo.png" alt="" width="36" height="36"><span>TAIPrompts</span></a>
+        <p>Собирайте точные промпты для работы, творчества и разработки.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-current-year>2026</span> TAIPrompts. Все права защищены.</p>
+    </div>
+  </div>
+</footer>
+
+    <script src="main.js?v=1.1.15"></script>
+
+
 
     <script src="page-loader.js?v=1.0.0"></script>
   <script src="pwa.js?v=1.2.0"></script>

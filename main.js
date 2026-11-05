@@ -1,12 +1,6 @@
-// ===== Push Notifications =====
+﻿// ===== Push Notifications =====
 const publicVapidKey = 'BCBq3QR9iEjgOXLnElnkvjdEnIkgeBLoff5E_S6k9G7NXB7xOfyNdAaQhAz7nb9qr4e7aZg6S4yvbEu7hllX_8E';
 
-async function inject(id, url) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  const res = await fetch(url, { cache: "no-store" });
-  el.innerHTML = await res.text();
-}
 
 // ===== Cookie Utils =====
 function setCookie(name, value, days = 365) {
@@ -269,7 +263,7 @@ function initLightbox() {
 function initGenerator() {
 
   const typeCards = document.querySelectorAll(".type-card");
-  const generationSection = document.querySelector(".generation");
+  const generationSection = document.getElementById("generator-studio");
 
   if (typeCards.length === 0 || !generationSection) {
     console.log("Генератор не найден на этой странице");
@@ -2564,134 +2558,12 @@ function switchToCategory(newCategory, presetParams = {}) {
   setTimeout(updateGenerateButtonState, 120);
 }
 
-  // ===== МОДАЛКА =====
+  // ===== ГЕНЕРАТОР В СЕКЦИИ CTA =====
   let selectedType = "recipes";
   let activeGeneratorTab = "generate";
 
-  const modal = document.createElement("div");
-  modal.className = "customization-modal";
-  modal.innerHTML = `
-    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="generator-dialog-title" aria-describedby="generator-dialog-description" tabindex="-1">
-      <div class="modal-header">
-        <div><span class="modal-kicker">Шаг 2 · Настройка</span><h3 class="modal-title" id="generator-dialog-title">Кастомизация промпта</h3><p class="modal-description" id="generator-dialog-description">Настройте параметры и опишите результат, который хотите получить.</p></div>
-        <button class="modal-close" type="button" aria-label="Закрыть">&times;</button>
-      </div>
-      <div class="modal-body">
-        <form id="prompt-form">
-          <div id="technical-params" class="technical-params"></div>
-
-          <div class="form-group">
-            <label for="custom-input">Ваша идея или описание</label>
-            <textarea id="custom-input" placeholder="Например: сайт-портфолио для UX-дизайнера с кейсами, контактами и адаптивной версией" maxlength="3000" aria-describedby="idea-hint idea-counter" required></textarea>
-            <div class="idea-field-meta"><span id="idea-hint">Опишите цель, аудиторию и важные ограничения.</span><span id="idea-counter" aria-live="polite"><b id="idea-count">0</b> / 3000</span></div>
-          </div>
-
-          <div class="form-group">
-            <label for="tone-select">Стиль промпта</label>
-            <select id="tone-select">
-              <option value="professional">Профессиональный</option>
-              <option value="friendly">Дружеский</option>
-              <option value="creative">Креативный</option>
-              <option value="technical">Технический</option>
-              <option value="detailed">Детализированный</option>
-            </select>
-          </div>
-
-          <button type="submit" class="btn btn-primary" id="generate-prompt-btn"><span>Сгенерировать промпт</span><i class="fa-solid fa-arrow-right"></i></button>
-        </form>
-
-<section class="generator-examples-panel" aria-label="Примеры промптов">
-  <div class="generator-examples-head">
-    <div>
-      <h4>Примеры промптов</h4>
-      <p class="generator-examples-subtitle">
-        Выбирай категорию выше, а потом бери готовый пример за основу, копируй его или сразу применяй в генераторе.
-      </p>
-    </div>
-    <div class="generator-examples-tip">
-      <i class="fas fa-wand-magic-sparkles"></i>
-      <span>Карточки обновляются под выбранную категорию</span>
-    </div>
-  </div>
-  <div id="examplesGrid" class="examples-grid examples-grid--modal">
-    <div class="examples-placeholder">
-      Выбери категорию, чтобы увидеть примеры прямо здесь.
-    </div>
-  </div>
-</section>
-
-<div class="generated-prompt">
-  <h4>Ваш промпт:</h4>
-  <div id="final-prompt" class="prompt-output"></div>
-
-  <div class="example-actions" style="margin-top:12px; justify-content:flex-start;">
-    <button id="copy-prompt" class="btn btn-secondary" type="button">Копировать</button>
-    <button id="download-prompt" class="btn btn-primary" type="button">Скачать</button>
-  </div>
-</div>
-
-      </div>
-    </div>
-  `;
-  document.body.appendChild(modal);
-
-  const modalBody = modal.querySelector(".modal-body");
-  const promptFormPanel = modal.querySelector("#prompt-form");
-  const generatedPromptPanel = modal.querySelector(".generated-prompt");
-  const examplesPanel = modal.querySelector(".generator-examples-panel");
-
-  if (modalBody && promptFormPanel && generatedPromptPanel && examplesPanel) {
-    const tabs = document.createElement("div");
-    tabs.className = "modal-tabs";
-    tabs.setAttribute("role", "tablist");
-    tabs.setAttribute("aria-label", "Разделы генератора");
-    tabs.innerHTML = `
-      <button type="button" class="modal-tab is-active" data-generator-tab="generate" aria-selected="true">Генерация</button>
-      <button type="button" class="modal-tab" data-generator-tab="examples" aria-selected="false">Примеры</button>
-    `;
-
-    const generatePanel = document.createElement("section");
-    generatePanel.className = "generator-tab-panel is-active";
-    generatePanel.setAttribute("data-generator-tab-panel", "generate");
-
-    const examplesPanelWrap = document.createElement("section");
-    examplesPanelWrap.className = "generator-tab-panel";
-    examplesPanelWrap.setAttribute("data-generator-tab-panel", "examples");
-
-    tabs.querySelectorAll("[data-generator-tab]").forEach((tab) => {
-      const name = tab.getAttribute("data-generator-tab");
-      tab.setAttribute("role", "tab");
-      tab.id = `generator-tab-${name}`;
-      tab.setAttribute("aria-controls", `generator-panel-${name}`);
-    });
-    [[generatePanel, "generate"], [examplesPanelWrap, "examples"]].forEach(([panel, name]) => {
-      panel.id = `generator-panel-${name}`;
-      panel.setAttribute("role", "tabpanel");
-      panel.setAttribute("aria-labelledby", `generator-tab-${name}`);
-      panel.setAttribute("tabindex", "0");
-    });
-
-    generatePanel.append(promptFormPanel, generatedPromptPanel);
-    examplesPanelWrap.append(examplesPanel);
-
-    const toneGroup = promptFormPanel.querySelector('[for="tone-select"]')?.closest(".form-group");
-    if (toneGroup) {
-      const depthGroup = document.createElement("div");
-      depthGroup.className = "form-group";
-      depthGroup.innerHTML = `
-        <label for="generation-mode-select">Глубина генерации</label>
-        <select id="generation-mode-select">
-          <option value="short">Короткий</option>
-          <option value="standard" selected>Стандартный</option>
-          <option value="detailed">Максимально подробный</option>
-        </select>
-      `;
-      toneGroup.insertAdjacentElement("afterend", depthGroup);
-    }
-
-    modalBody.innerHTML = "";
-    modalBody.append(tabs, generatePanel, examplesPanelWrap);
-  }
+  const modal = document.getElementById("generator-studio");
+  if (!modal) return;
 
   function setGeneratorTab(tabName) {
     activeGeneratorTab = tabName === "examples" ? "examples" : "generate";
@@ -2725,10 +2597,6 @@ function switchToCategory(newCategory, presetParams = {}) {
     if (nextTab) setGeneratorTab(nextTab.getAttribute("data-generator-tab"));
   });
 
-  // ===== ЗАЩИТА МОДАЛКИ ОТ ЗАКРЫТИЯ =====
-  let isPromptGenerated = false;
-  let isFormDirty = false;
-  
   function showGeneratorToast(message, variant = "info", timeout = 3000) {
     const oldToast = document.querySelector(".context-toast");
     if (oldToast) oldToast.remove();
@@ -2753,94 +2621,6 @@ function switchToCategory(newCategory, presetParams = {}) {
       toast.classList.remove("show");
       setTimeout(() => toast.remove(), 300);
     }, timeout);
-  }
-
-  function showGeneratorConfirmationModal({
-    title,
-    message,
-    confirmText,
-    cancelText,
-    iconClass = "fa-triangle-exclamation",
-    confirmVariant = "primary",
-  }) {
-    return new Promise((resolve) => {
-      let dialog = document.getElementById("generator-confirm-dialog");
-      if (!dialog) {
-        dialog = document.createElement("div");
-        dialog.id = "generator-confirm-dialog";
-        dialog.className = "generator-confirm-modal";
-        dialog.innerHTML = `
-          <div class="generator-confirm-card" role="dialog" aria-modal="true" aria-labelledby="generator-confirm-title">
-            <div class="generator-confirm-icon">
-              <i class="fas ${iconClass}"></i>
-            </div>
-            <h3 id="generator-confirm-title"></h3>
-            <p></p>
-            <div class="generator-confirm-actions">
-              <button type="button" class="btn btn-secondary" data-generator-cancel></button>
-              <button type="button" class="btn btn-primary" data-generator-confirm></button>
-            </div>
-          </div>
-        `;
-        document.body.appendChild(dialog);
-      }
-
-      const iconWrap = dialog.querySelector(".generator-confirm-icon");
-      if (iconWrap) {
-        iconWrap.innerHTML = `<i class="fas ${iconClass}"></i>`;
-      }
-      dialog.querySelector("#generator-confirm-title").textContent = title;
-      dialog.querySelector(".generator-confirm-card p").textContent = message;
-      dialog.querySelector("[data-generator-cancel]").textContent = cancelText;
-      const confirmButton = dialog.querySelector("[data-generator-confirm]");
-      confirmButton.textContent = confirmText;
-      confirmButton.classList.toggle("btn-primary", confirmVariant === "primary");
-      confirmButton.classList.toggle("btn-secondary", confirmVariant === "secondary");
-
-      const cleanup = (result) => {
-        dialog.classList.remove("active");
-        const confirmBtn = dialog.querySelector("[data-generator-confirm]");
-        const cancelBtn = dialog.querySelector("[data-generator-cancel]");
-        confirmBtn?.removeEventListener("click", onConfirm);
-        cancelBtn?.removeEventListener("click", onCancel);
-        dialog.removeEventListener("click", onBackdropClick);
-        document.removeEventListener("keydown", onEscape);
-        resolve(result);
-      };
-
-      const onConfirm = () => cleanup(true);
-      const onCancel = () => cleanup(false);
-      const onBackdropClick = (event) => {
-        if (event.target === dialog) cleanup(false);
-      };
-      const onEscape = (event) => {
-        if (event.key === "Escape") cleanup(false);
-      };
-
-      dialog.querySelector("[data-generator-confirm]")?.addEventListener("click", onConfirm);
-      dialog.querySelector("[data-generator-cancel]")?.addEventListener("click", onCancel);
-      dialog.addEventListener("click", onBackdropClick);
-      document.addEventListener("keydown", onEscape);
-
-      dialog.classList.add("active");
-    });
-  }
-
-  async function closeModalWithCheck() {
-    if (isPromptGenerated || isFormDirty) {
-      const shouldClose = await showGeneratorConfirmationModal({
-        title: "Закрыть генератор?",
-        message: "У вас есть несохранённый промпт. Если закрыть окно сейчас, изменения могут пропасть.",
-        confirmText: "Закрыть",
-        cancelText: "Остаться",
-        iconClass: "fa-triangle-exclamation",
-      });
-      if (!shouldClose) return;
-    }
-
-    closeModal();
-    isPromptGenerated = false;
-    isFormDirty = false;
   }
 
 // Модифицируем renderTechnicalParams для добавления валидации
@@ -3020,28 +2800,24 @@ function renderTechnicalParams(type) {
 typeCards.forEach((card) => {
     card.setAttribute("role", "button");
     card.setAttribute("tabindex", "0");
-    card.setAttribute("aria-haspopup", "dialog");
     card.addEventListener("keydown", (event) => {
       if (event.key !== "Enter" && event.key !== " ") return;
       event.preventDefault();
       card.click();
     });
     card.addEventListener("click", function () {
-        // Сброс флагов при выборе новой категории
-        isPromptGenerated = false;
-        isFormDirty = false;
-        
         selectedType = this.getAttribute("data-type") || "recipes";
+        typeCards.forEach((item) => item.classList.toggle("is-active", item === this));
         incCategory(selectedType);
         renderExamples(selectedType);
 
         const modalTitle = modal.querySelector(".modal-title");
-        modalTitle.textContent = `Кастомизация: ${promptTemplates[selectedType]?.name || selectedType}`;
-
-        renderTechnicalParams(selectedType);
+        if (modalTitle) modalTitle.textContent = `Настройка: ${promptTemplates[selectedType]?.name || selectedType}`;
 
         const form = modal.querySelector("#prompt-form");
         form.reset();
+        renderTechnicalParams(selectedType);
+
         updateIdeaMeter();
         modal.querySelector("#final-prompt").textContent = "";
         modal.querySelector("#crossRecommendations")?.remove();
@@ -3049,47 +2825,19 @@ typeCards.forEach((card) => {
         setGeneratorTab("generate");
         setTimeout(updateGenerateButtonState, 50);
 
-        // === ДОБАВИТЬ ЭТО ===
-        // Сброс стадий анимации
         const stages = document.querySelectorAll('.stage');
         if (stages.length > 0) {
-            stages.forEach(stage => {
-                stage.classList.remove('active', 'completed');
-            });
+            stages.forEach(stage => stage.classList.remove('active', 'completed'));
             stages[0].classList.add('active');
         }
-        // === КОНЕЦ ДОБАВЛЕНИЯ ===
-
-        openGeneratorModal();
     });
 });
-
-  // Закрытие
-  function closeModal() {
-    modal.classList.remove("active");
-    document.body.style.overflow = "auto";
-    if (lastGeneratorTrigger?.isConnected && lastGeneratorTrigger.getClientRects().length > 0) lastGeneratorTrigger.focus();
-    lastGeneratorTrigger = null;
-  }
-
-  modal.querySelector(".modal-close").addEventListener("click", closeModalWithCheck);
 
   modal.querySelectorAll("[data-generator-tab]").forEach((button) => {
     button.addEventListener("click", () => {
       const nextTab = button.getAttribute("data-generator-tab") || "generate";
       setGeneratorTab(nextTab);
     });
-  });
-
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) closeModalWithCheck();
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal.classList.contains("active")) {
-      e.preventDefault(); // Предотвращаем мгновенное закрытие
-      closeModalWithCheck();
-    }
   });
 
   // ===== Генерация =====
@@ -3100,31 +2848,6 @@ typeCards.forEach((card) => {
   const finalPrompt = modal.querySelector("#final-prompt");
   const copyButton = modal.querySelector("#copy-prompt");
   const generateButton = modal.querySelector("#generate-prompt-btn");
-  const dialogSurface = modal.querySelector(".modal-content");
-  let lastGeneratorTrigger = null;
-
-  function openGeneratorModal() {
-    lastGeneratorTrigger = document.activeElement;
-    modal.classList.add("active");
-    document.body.style.overflow = "hidden";
-    requestAnimationFrame(() => customInput.focus());
-  }
-
-  dialogSurface?.addEventListener("keydown", (event) => {
-    if (event.key !== "Tab") return;
-    const focusable = Array.from(dialogSurface.querySelectorAll('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), summary, [tabindex]:not([tabindex="-1"])'))
-      .filter((element) => element.getClientRects().length > 0);
-    if (!focusable.length) return;
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
-  });
 
   function updateIdeaMeter() {
     const count = modal.querySelector("#idea-count");
@@ -3182,10 +2905,7 @@ typeCards.forEach((card) => {
   // Отслеживаем изменения в текстовом поле
 customInput.addEventListener('input', () => {
   updateIdeaMeter();
-  if (customInput.value.trim()) {
-    isFormDirty = true;
-  }
-  
+
   // Анализируем текст для кросс-рекомендаций
   if (customInput.value.trim().length > 10) {
     showCrossRecommendations();
@@ -3217,14 +2937,6 @@ customInput.addEventListener('input', debounce(() => {
     showGeneratorToast(message, "info");
   }
   
-  // Отслеживаем изменения в селектах
-  toneSelect.addEventListener('change', () => {
-    isFormDirty = true;
-  });
-
-  generationModeSelect?.addEventListener('change', () => {
-    isFormDirty = true;
-  });
 
 const promptQualityGuides = {
   recipes: "Проверь совместимость ингредиентов и ограничений. Укажи точные количества, единицы измерения, подготовку продуктов, температуру и время там, где это важно. Разделяй обязательные шаги и варианты замен; не приписывай блюду медицинских свойств.",
@@ -3272,272 +2984,330 @@ function buildPromptText(type, idea, tone = "professional", overrideParams = {},
   const sections = [promptPrefix, body, quality ? `Требования к качеству результата:\n${quality}` : ""]
     .map(cleanupPromptText)
     .filter(Boolean);
-  return `${sections.join("\n\n")}\n\nПромпт создан с помощью TAIPrompts`;
+  return `${sections.join("\n\n")}\n\nСоздан на TAIPrompts от TStudios`;
 }
 
 const promptExamples = {
   recipes: [
     {
-      title: "Быстрый ужин",
-      idea: "Быстрый ужин из курицы и овощей на сковороде",
-      cuisine: "мексиканской",
-      dietary: "Высокобелковое",
-      complexity: "Простое",
+      title: "Десерт для свидания",
+      idea: "романтический десерт для свидания в аниме-кафе: моти с клубникой и матча-кремом, поданные как в сцене из сёдзё",
+      cuisine: "азиатской",
+      dietary: "Без ограничений",
+      complexity: "Нормальная",
       tone: "friendly"
     },
     {
-      title: "Полезный завтрак",
-      idea: "Белковый завтрак без глютена на каждый день",
-      cuisine: "средиземноморской",
-      dietary: "Без глютена",
-      complexity: "Легкая",
+      title: "Рамен для героини",
+      idea: "согревающий рамен, который аниме-девушка готовит после школы и подаёт парню, за которого переживает",
+      cuisine: "азиатской",
+      dietary: "Без ограничений",
+      complexity: "Сложная",
       tone: "detailed"
     }
   ],
-
   websites: [
     {
-      title: "Портфолио дизайнера",
-      idea: "Портфолио UI/UX дизайнера в стиле матового стекла",
-      type: "Портфолио",
-      stack: "React",
-      style: "Матовое стекло",
-      color: "Тайские подсказки (#5c71e5)",
-      features: "Адаптивный дизайн, PWA, SEO оптимизация",
+      title: "Фан-сайт аниме-пары",
+      idea: "романтический фан-сайт про пару из аниме: галерея кадров, таймлайн истории и письма героини",
+      type: "Лендинг",
+      stack: "HTML/CSS/JS",
+      style: "Аниме-фэнтези",
+      color: "Подход звезды (#e431f5)",
+      features: "Адаптивный дизайн, Галерея изображений, Блок для отзывов",
+      emoji: "Изображения",
+      complexity: "Нормальная",
+      additionally: "Полный код",
       tone: "creative"
     },
     {
-      title: "Интернет-магазин",
-      idea: "Современный интернет-магазин одежды с каталогом и корзиной",
-      type: "Интернет-магазин",
-      stack: "HTML/CSS/JS",
-      style: "Минимализм",
-      color: "Обнаружение (#26d13c)",
-      features: "Адаптивный дизайн, Корзина покупок, Поиск, SEO оптимизация",
-      tone: "professional"
-    }
-  ],
-
-  images: [
-    {
-      title: "Киберпанк-город",
-      idea: "Ночной киберпанк город под дождём с неоновыми вывесками",
-      style: "футуристическое",
-      aspect_ratio: "16:9 (широкоэкранное)",
-      quality: "Высокое (4K)",
-      tone: "creative"
-    }
-  ],
-
-  stickers: [
-    {
-      title: "Мем-пак",
-      idea: "Мемные стикеры для чата друзей",
-      style: "мемный",
-      platform: "Telegram",
-      emotions: "Радость, Смех, Удивление, Одобрение",
-      tone: "creative"
-    }
-  ],
-
-  school: [
-    {
-      title: "Сочинение",
-      idea: "Сочинение на тему дружбы для 7 класса",
-      subj: "Литература",
-      task: "Сочинение",
-      class: "5-8 класс",
+      title: "Дневник романтики",
+      idea: "блог девушки, которая пишет о романтических аниме и встречах под сакурой",
+      type: "Блог",
+      stack: "React",
+      style: "Матовое стекло",
+      color: "Тайские подсказки (#5c71e5)",
+      features: "Адаптивный дизайн, Комментарии, Смена темы",
+      emoji: "Иконки Font Awesome",
+      complexity: "Нормальная",
+      additionally: "Структура проекта",
       tone: "friendly"
     }
   ],
-
-  toys: [
+  images: [
     {
-      title: "Настольная игра",
-      idea: "Настольная игра для всей семьи",
-      type: "настольной игры",
-      materials: "комбинированные",
-      age_group: "6-12 лет",
+      title: "Девушка под сакурой",
+      idea: "аниме-девушка в школьной форме ждёт возлюбленного под цветущей сакурой, лепестки кружат вокруг",
+      style: "анимешное",
+      aspect_ratio: "9:16 (вертикальное)",
+      quality: "Высокое (4K)",
+      imageDetails: "крупный план героини, мягкий закатный свет, романтическое настроение, лёгкий ветер, без текста",
       tone: "creative"
+    },
+    {
+      title: "Встреча на крыше",
+      idea: "двое школьников встречаются на крыше после уроков, акцент на смущённой девушке",
+      style: "анимешное",
+      aspect_ratio: "16:9 (широкоэкранное)",
+      quality: "Высокое (4K)",
+      imageDetails: "средний план, тёплый вечерний свет, силуэты города, романтичная атмосфера, без текста",
+      tone: "detailed"
     }
   ],
-
+  stickers: [
+    {
+      title: "Кавайная героиня",
+      idea: "стикеры с аниме-девушкой, которая смущается, влюбляется и радуется встречам",
+      style: "кавайный",
+      platform: "Telegram",
+      emotions: "Любовь, Радость, Приветствие, Удивление",
+      tone: "creative"
+    },
+    {
+      title: "Стикеры для пары",
+      idea: "аниме-пара в стикерах: девушка обнимает, прощается и смотрит с нежностью",
+      style: "анимешный",
+      platform: "Discord",
+      emotions: "Любовь, Прощание, Одобрение, Смех",
+      tone: "friendly"
+    }
+  ],
+  school: [
+    {
+      title: "Сочинение о первой любви",
+      idea: "сочинение по аниме о первой любви, расстоянии и обещании встретиться снова",
+      subj: "Литература",
+      task: "Сочинение",
+      class: "9 класс",
+      tone: "detailed"
+    },
+    {
+      title: "Сильная героиня",
+      idea: "сочинение-рассуждение о том, как романтическая линия и характер девушки делают историю сильнее",
+      subj: "Литература",
+      task: "Сочинение-рассуждение",
+      class: "11 класс",
+      tone: "friendly"
+    }
+  ],
+  toys: [
+    {
+      title: "Кукла-героиня",
+      idea: "коллекционная кукла аниме-девушки в школьной форме с кулоном в форме сердца",
+      type: "коллекционной",
+      materials: "комбинированные",
+      age_group: "12+ лет",
+      tone: "creative"
+    },
+    {
+      title: "Настольная игра о свиданиях",
+      idea: "настольная игра про романтические встречи в аниме-городе: свидание под сакурой, фестиваль и признание",
+      type: "настольной игры",
+      materials: "дерево",
+      age_group: "12+ лет",
+      tone: "friendly"
+    }
+  ],
   "3d": [
     {
-      title: "Персонаж",
-      idea: "Фэнтези персонаж — аниме девушка, по стилю напоминает Genshin Impact",
+      title: "Аниме-девушка",
+      idea: "аниме-девушка в романтическом платье с цветами в волосах, смотрит прямо в камеру",
       style: "стилизованный",
       type: "персонажа",
       software: "Blender",
       polygons: "Medium (10-50k)",
       tone: "detailed"
+    },
+    {
+      title: "Балкон для свидания",
+      idea: "балкон с видом на ночной аниме-город для романтической сцены, гирлянды и цветы",
+      style: "low-poly",
+      type: "окружения",
+      software: "Любая",
+      polygons: "Low-poly (<10k)",
+      tone: "creative"
     }
   ],
-
   bots: [
     {
-      title: "Telegram-бот",
-      idea: "Telegram-бот для напоминаний и заметок",
+      title: "Бот-сэмпай",
+      idea: "Telegram-бот, который отправляет милые комплименты девушке и напоминает о важных датах",
       platform: "Telegram",
       language: "Python",
-      functionality: "Команды, Уведомления, База данных",
-      ai: "Нет",
-      tone: "professional"
+      functionality: "Команды, Уведомления, Inline клавиатуры",
+      complexity: "Легкая",
+      additionally: "Полный код",
+      tone: "friendly"
+    },
+    {
+      title: "Discord-бот для пары",
+      idea: "Discord-бот для сервера аниме-пары: цитаты о любви, ежедневные вопросы и мини-игры",
+      platform: "Discord",
+      language: "JavaScript",
+      functionality: "Команды, Игры, Модерация",
+      complexity: "Нормальная",
+      additionally: "Структура проекта",
+      tone: "creative"
     }
   ],
-
   minecraft: [
     {
-      title: "Квесты",
-      idea: "Датапак с системой квестов и наград",
-      type: "Датапак",
+      title: "Сад сакуры",
+      idea: "мод с садом сакуры, где аниме-девушка даёт квесты и ждёт героя на свидании",
+      type: "Мод",
       version: "1.20.1",
-      loader: "Fabric",
+      loader: "Forge",
+      compatibility: "Клиент",
+      features: "Новые блоки, Новые мобы, Квесты, Рецепты",
+      complexity: "Нормальная",
+      additionally: "Структура проекта",
+      tone: "creative"
+    },
+    {
+      title: "Подарки для героини",
+      idea: "датапак с романтическими подарками и системой доверия аниме-персонажа",
+      type: "Датапак",
+      version: "1.21",
+      loader: "Vanilla",
       compatibility: "Сервер",
-      features: "Квесты, Награды, GUI, Конфиг",
-      tone: "professional"
+      features: "Квесты, GUI, Конфиг",
+      complexity: "Нормальная",
+      additionally: "Полный код",
+      tone: "friendly"
     }
   ],
-
   characterai: [
     {
-      title: "Аниме девушка",
-      idea: "Дружелюбная, игривая аниме-девушка, которая умеет подшучивать и поддерживать разговор",
+      title: "Застенчивая героиня",
+      idea: "застенчивая аниме-девушка, которая тайно влюблена в пользователя и постепенно раскрывается в разговоре",
       name: "придумать",
-      personality: "Дружелюбный, Юмористический, Наивный",
-      appearance: "Аниме персонаж, Человек",
+      personality: "Застенчивый, Дружелюбный, Наивный",
+      appearance: "Аниме персонаж",
       tone2: "Дружеский",
       tone: "friendly"
     },
     {
-      title: "Мудрый наставник",
-      idea: "Спокойный и мудрый персонаж-наставник с мягкой манерой общения и глубокими ответами",
-      name: "Старый Мастер",
-      personality: "Мудрый, Серьезный, Загадочный",
-      appearance: "Человек",
-      tone2: "Формальный",
-      tone: "detailed"
+      title: "Цундэрэ",
+      idea: "цундэрэ-девушка из школьного аниме: колкая снаружи, но искренне влюблённая внутри",
+      name: "придумать",
+      personality: "Юмористический, Загадочный, Энергичный",
+      appearance: "Аниме персонаж",
+      tone2: "Драматический",
+      tone: "creative"
     }
   ],
-
   suno: [
     {
-      title: "Ностальгия",
-      idea: "Ностальгичная песня про школьные годы",
+      title: "Первая любовь",
+      idea: "романтическая песня от лица аниме-девушки о первой любви под сакурой",
       genre: "Поп",
-      style: "Ностальгический",
+      style: "Романтический",
       tempo: "Медленный",
-      instruments: "Фортепиано, Гитара, Вокал",
+      instruments: "Фортепиано, Скрипка, Вокал",
       structure: "Куплет-Припев-Мост",
       tone: "detailed"
+    },
+    {
+      title: "Опенинг о любви",
+      idea: "энергичный опенинг про девушку, которая ждёт героя на крыше и верит в встречу",
+      genre: "Рок",
+      style: "Энергичный",
+      tempo: "Быстрый",
+      instruments: "Гитара, Барабаны, Синтезатор, Вокал",
+      structure: "Интро-Куплет-Припев-Куплет-Мост-Аутро",
+      tone: "creative"
     }
   ],
-
   youtube: [
     {
-      title: "Контент-план Instagram",
-      idea: "Продвижение локальной кофейни с авторскими напитками и завтраками",
+      title: "Фан-страница аниме-романтики",
+      idea: "эстетичный аккаунт о романтических аниме и сильных героинях",
       platform: "Instagram",
-      channelName: "Кофейня «Север»",
-      audience: ["Молодые специалисты", "Локальная аудитория"],
-      audienceDetails: "Жители района 20–40 лет, которым интересны кофе, завтраки и уютные места",
-      goals: ["Рост охватов", "Продажи"],
+      channelName: "Sakura Notes",
+      audience: "Подростки и студенты, Начинающие в теме",
+      audienceDetails: "девушки 16–24 лет, которые любят аниме-романтику и ищут вдохновляющие подборки",
+      goals: "Рост охватов, Привлечение подписчиков",
       deliverable: "Контент-план",
       period: "1 месяц",
       frequency: "3 раза в неделю",
-      instagramFeatures: ["Reels", "Stories", "Карусели"],
-      brandVoice: "Дружелюбный",
+      instagramFeatures: "Reels, Stories, Карусели",
+      brandVoice: "Вдохновляющий",
       channelStage: "Начало роста",
-      resources: "Съёмка на телефон, 3 часа в неделю",
-      tone: "professional"
+      resources: "Съёмка на телефон, 2 часа в неделю",
+      tone: "friendly"
     },
     {
-      title: "Стратегия YouTube-канала",
-      idea: "Канал о практическом изучении графического дизайна",
+      title: "YouTube о романтических аниме",
+      idea: "канал с разборами романтических аниме и обсуждением героинь",
       platform: "YouTube",
-      channelName: "Дизайн по делу",
-      audience: ["Начинающие в теме", "Профессиональное сообщество"],
-      audienceDetails: "Люди, осваивающие профессию самостоятельно",
-      goals: ["Узнаваемость бренда", "Привлечение подписчиков"],
+      channelName: "Romance Frame",
+      audience: "Подростки и студенты, Профессиональное сообщество",
+      audienceDetails: "зрители, которые любят романтические сюжеты с сильными героинями",
+      goals: "Узнаваемость бренда, Привлечение подписчиков",
       deliverable: "Стратегия развития",
       period: "3 месяца",
-      youtubeFeatures: ["Длинные видео", "Shorts", "Плейлисты"],
-      brandAssets: ["Описание профиля", "Обложка или шапка", "Обложки видео"],
-      visualStyle: "Экспертное и сдержанное",
-      kpis: ["Досмотры и удержание", "Прирост аудитории", "Переходы"],
-      tone: "detailed"
-    },
-    {
-      title: "Упаковка Telegram-канала",
-      idea: "Канал с простыми рецептами для занятых людей",
-      platform: "Telegram",
-      channelName: "Ужин за 20 минут",
-      audience: ["Локальная аудитория", "Покупатели товаров и услуг"],
-      audienceDetails: "Люди, которые хотят готовить дома без сложных рецептов",
-      goals: ["Удержание аудитории", "Продажи"],
-      deliverable: "Оформление канала или профиля",
-      telegramFeatures: ["Посты канала", "Опросы", "Рубрики"],
-      brandAssets: ["Описание профиля", "Аватар", "Закреплённые публикации", "Шаблоны публикаций"],
+      youtubeFeatures: "Длинные видео, Shorts, Плейлисты",
+      brandAssets: "Описание профиля, Обложки видео, Аватар",
       visualStyle: "Тёплое и естественное",
-      tone: "friendly"
+      kpis: "Досмотры и удержание, Прирост аудитории, Вовлечённость",
+      tone: "detailed"
     }
   ],
-
   plugin: [
     {
-      title: "Плагин для ютуба",
-      idea: "Плагин, который показывает всю информацию о видео на ютубе",
-      type: "Плагин",
+      title: "Копилка аниме-цитат",
+      idea: "расширение, которое находит романтические цитаты аниме на странице и сохраняет понравившиеся",
+      type: "Расширение",
       browser: "Chromium-браузер",
-      func: "Нейросеть",
+      lang: "HTML/CSS/JS",
+      func: "Нейросеть, Хранилище данных, Уведомления",
+      complexity: "Нормальная",
       additionally: "Полный код",
-      tone: "professional"
+      tone: "friendly"
+    },
+    {
+      title: "Розовая тема для VS Code",
+      idea: "плагин с темой в розово-фиолетовых тонах в стиле аниме-романтики",
+      type: "Плагин",
+      browser: "VS Code",
+      lang: "TypeScript",
+      func: "Смена темы, Иконка приложения, Меню",
+      complexity: "Легкая",
+      additionally: "Полный код",
+      tone: "creative"
     }
   ],
-
   setup: [
     {
-      title: "Планировщик задач",
-      idea: "Приложение для учёта личных задач с календарём, напоминаниями и приоритетами",
+      title: "Дневник романтики",
+      idea: "приложение-дневник для романтических моментов с аниме-девушкой-помощницей",
       type: "Утилита",
       lang: "Python",
-      style: "Матовое стекло",
-      color: "Тайские подсказки (#5c71e5)",
-      hang: "Смена темы, Горячие клавиши, Сохранение данных в собственный формат файла",
-      additionally: "Структура проекта, Объяснение ключевых понятий",
+      style: "Аниме-фэнтези",
+      color: "Подход звезды (#e431f5)",
+      hang: "Смена темы, Хранилище данных, Уведомления",
+      additionally: "Полный код, Структура проекта",
       setupper: "Inno Setup",
       oc: "Windows",
-      tone: "technical"
+      complexity: "Нормальная",
+      tone: "friendly"
     },
     {
-      title: "Чат-приложение",
-      idea: "Кроссплатформенный мессенджер с чатами, уведомлениями и синхронизацией",
-      type: "Мессенджер",
-      lang: "JavaScript",
-      style: "Минимализм",
-      color: "Обнаружение (#26d13c)",
-      hang: "Чаты, Уведомления, Синхронизация сообщений",
-      additionally: "Полный код, Архитектура проекта",
-      setupper: "MSIX",
-      oc: "Windows",
-      tone: "professional"
-    },
-    {
-      title: "Видеоконференции",
-      idea: "Приложение для онлайн-встреч с комнатами, демонстрацией экрана и историей звонков",
-      type: "Приложение для видеоконференций",
+      title: "Новелла о знакомстве",
+      idea: "визуальная новелла о знакомстве с аниме-героиней и развитии романтической истории",
+      type: "Игра",
       lang: "TypeScript",
-      style: "Стекломорфизм",
-      color: "Подход звезды (#e431f5)",
-      hang: "Комнаты, Демонстрация экрана, История звонков",
-      additionally: "Структура проекта, Объяснение ключевых понятий",
+      style: "Матовое стекло",
+      color: "Тайские подсказки (#5c71e5)",
+      hang: "Собственный тип файла, Хранилище данных, Меню",
+      additionally: "Полный код",
       setupper: "PKG",
       oc: "MacOS",
+      complexity: "Сложная",
       tone: "detailed"
     }
   ]
 };
-
 function renderExamples(type) {
   const grid = document.getElementById("examplesGrid");
   if (!grid) return;
@@ -3626,7 +3396,8 @@ function renderExamples(type) {
         selectedType = type;
 
         const modalTitle = modal.querySelector(".modal-title");
-        modalTitle.textContent = `Кастомизация: ${promptTemplates[selectedType]?.name || selectedType}`;
+        if (modalTitle) modalTitle.textContent = `Настройка: ${promptTemplates[selectedType]?.name || selectedType}`;
+        typeCards.forEach((item) => item.classList.toggle("is-active", item.getAttribute("data-type") === type));
 
         renderTechnicalParams(selectedType);
 
@@ -3637,7 +3408,6 @@ function renderExamples(type) {
         setGeneratorTab("generate");
 
         modal.querySelector("#final-prompt").textContent = "";
-        openGeneratorModal();
         setTimeout(updateGenerateButtonState, 50);
       };
     }
@@ -3647,9 +3417,7 @@ function renderExamples(type) {
 promptForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Отслеживаем изменения
-    isFormDirty = true;
-    
+
     let customText = customInput.value?.trim();
     const tone = toneSelect.value;
 
@@ -3719,7 +3487,6 @@ promptForm.addEventListener("submit", async (e) => {
     finalPrompt.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
     // Устанавливаем флаг, что промпт сгенерирован
-    isPromptGenerated = true;
   
     // Скрыть анимацию
     if (overlay) {
@@ -3773,34 +3540,15 @@ const downloadButton = modal.querySelector("#download-prompt");
   showGeneratorToast("Файл с промптом скачан", "success", 1800);
 });
 
-  document.addEventListener("click", async (event) => {
-    const anchor = event.target.closest?.("a[href]");
-    if (!anchor) return;
-    if (anchor.target === "_blank" || anchor.hasAttribute("download")) return;
 
-    const href = anchor.getAttribute("href") || "";
-    if (!href || href.startsWith("#") || href.startsWith("javascript:")) return;
-
-    const targetUrl = new URL(anchor.href, window.location.href);
-    const currentUrl = new URL(window.location.href);
-    const isSamePage = targetUrl.pathname === currentUrl.pathname && targetUrl.search === currentUrl.search && targetUrl.hash === currentUrl.hash;
-    if (isSamePage) return;
-
-    if (!(modal.classList.contains("active") && (isPromptGenerated || isFormDirty))) return;
-
-    event.preventDefault();
-    const shouldLeave = await showGeneratorConfirmationModal({
-      title: "Покинуть генератор?",
-      message: "У вас есть несохранённый промпт. Если перейти на другую страницу, изменения могут пропасть.",
-      confirmText: "Покинуть",
-      cancelText: "Остаться",
-      iconClass: "fa-right-from-bracket",
-    });
-
-    if (shouldLeave) {
-      window.location.href = anchor.href;
-    }
-  }, true);
+  const initialCard = Array.from(typeCards).find((card) => card.getAttribute("data-type") === selectedType) || typeCards[0];
+  if (initialCard) {
+    selectedType = initialCard.getAttribute("data-type") || "recipes";
+    initialCard.classList.add("is-active");
+    renderExamples(selectedType);
+    renderTechnicalParams(selectedType);
+    updateGenerateButtonState();
+  }
 
   console.log("✅ Генератор инициализирован");
 
@@ -3995,9 +3743,7 @@ function initSearch() {
 }
 
 // ====== START ======
-document.addEventListener("DOMContentLoaded", async () => {
-  await inject("site-header", "components/header.html");
-  await inject("site-footer", "components/footer.html");
+document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("[data-current-year]").forEach((element) => {
     element.textContent = String(new Date().getFullYear());
   });

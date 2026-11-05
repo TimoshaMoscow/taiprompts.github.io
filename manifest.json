@@ -1,4 +1,4 @@
-{
+﻿{
   "id": "./",
   "name": "TAIPrompts — Генератор промптов для ChatGPT",
   "short_name": "TAIPrompts",
@@ -44,7 +44,7 @@
       "name": "Создать промпт",
       "short_name": "Генератор",
       "description": "Открыть генератор промптов",
-      "url": "./generator.html?source=shortcut",
+      "url": "./index.html#generator",
       "icons": [{ "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
     }
   ]

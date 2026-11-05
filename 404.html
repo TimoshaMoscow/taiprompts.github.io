@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -133,9 +133,7 @@
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N8JLTHS6" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    
-    <div id="site-header"></div>
-    
+        
     <main>
         <section class="error-page">
             <div class="container">
@@ -154,10 +152,6 @@
                             <i class="fa-solid fa-house"></i>
                             На главную
                         </a>
-                        <a href="generator.html" class="btn btn-secondary">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i>
-                            Генератор промптов
-                        </a>
                     </div>
                     
                     <!-- Рекомендуемые категории -->
@@ -166,16 +160,16 @@
                             Попробуйте популярные категории:
                         </p>
                         <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                            <a href="generator.html?type=websites" class="badge" style="background: rgba(94, 114, 228, 0.1); color: var(--accent-color); padding: 8px 16px; border-radius: 50px; text-decoration: none;">
+                            <a href="index.html#generator" class="badge" style="background: rgba(94, 114, 228, 0.1); color: var(--accent-color); padding: 8px 16px; border-radius: 50px; text-decoration: none;">
                                 <i class="fa-solid fa-globe"></i> Веб-сайты
                             </a>
-                            <a href="generator.html?type=recipes" class="badge" style="background: rgba(94, 114, 228, 0.1); color: var(--accent-color); padding: 8px 16px; border-radius: 50px; text-decoration: none;">
+                            <a href="index.html#generator" class="badge" style="background: rgba(94, 114, 228, 0.1); color: var(--accent-color); padding: 8px 16px; border-radius: 50px; text-decoration: none;">
                                 <i class="fa-solid fa-utensils"></i> Рецепты
                             </a>
-                            <a href="generator.html?type=images" class="badge" style="background: rgba(94, 114, 228, 0.1); color: var(--accent-color); padding: 8px 16px; border-radius: 50px; text-decoration: none;">
+                            <a href="index.html#generator" class="badge" style="background: rgba(94, 114, 228, 0.1); color: var(--accent-color); padding: 8px 16px; border-radius: 50px; text-decoration: none;">
                                 <i class="fa-solid fa-image"></i> Изображения
                             </a>
-                            <a href="generator.html?type=bots" class="badge" style="background: rgba(94, 114, 228, 0.1); color: var(--accent-color); padding: 8px 16px; border-radius: 50px; text-decoration: none;">
+                            <a href="index.html#generator" class="badge" style="background: rgba(94, 114, 228, 0.1); color: var(--accent-color); padding: 8px 16px; border-radius: 50px; text-decoration: none;">
                                 <i class="fa-solid fa-robot"></i> Telegram боты
                             </a>
                         </div>
@@ -184,23 +178,9 @@
             </div>
         </section>
     </main>
-    
-    <div id="site-footer"></div>
-    
+        
     <script src="main.js?v=1.1.14"></script>
-    <script>
-        // Для GitHub Pages: добавляем параметры в ссылки категорий
-        document.addEventListener('DOMContentLoaded', function() {
-            const categoryLinks = document.querySelectorAll('[href*="generator.html?type="]');
-            categoryLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const href = this.getAttribute('href');
-                    window.location.href = href;
-                });
-            });
-        });
-    </script>
+
     <script src="page-loader.js?v=1.0.0"></script>
   <script src="pwa.js?v=1.2.0"></script>
 </body>
